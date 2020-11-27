@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1087703919330-8aihbuuh08bsogp64nm3s309rl7cohcc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1087703919330-8aihbuuh08bsogp64nm3s309rl7cohcc</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBpeIpB5h7EDzLErOY7fal37e0DUefrqaA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1087703919330</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.francisnormanmacabunga.BeStrokes</string>
+	<key>PROJECT_ID</key>
+	<string>bestrokes-f5c28</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bestrokes-f5c28.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1087703919330:ios:128a5f79016ea1e0e2ccbb</string>
+	<key>DATABASE_URL</key>
+	<string>https://bestrokes-f5c28.firebaseio.com</string>
+</dict>
+</plist>
