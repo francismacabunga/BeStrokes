@@ -9,6 +9,10 @@ import UIKit
 import FirebaseAuth
 import Firebase
 
+protocol HomeViewControllerDelegate {
+    func sendString(_ words: String)
+}
+
 class HomeViewController: UIViewController {
     
     @IBOutlet weak var welcomeLabel: UILabel!
@@ -17,12 +21,19 @@ class HomeViewController: UIViewController {
     
     let user = Auth.auth().currentUser
     let db = Firestore.firestore()
+    var stickerDictionary: [String: Any] = [:]
+    
+    var delegate: HomeViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         getNameOfSignedInUser()
         checkIfEmailIsVerified()
+        
+        getSampleSticker()
+        
+        
         
     }
     
@@ -55,6 +66,40 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    
+    func getSampleSticker() {
+        
+        let collectionReference = db.collection("stickers").document("sample-stickers")
+        let sample = collectionReference.getDocument { [self] (result, error) in
+            if error != nil {
+                // Show error
+            } else {
+                if let result = result?.data() {
+                    stickerDictionary = result
+                    
+                    for everySticker in stickerDictionary {
+                        let stickerValue = everySticker.value as! String
+                        
+                        print(stickerValue)
+                        delegate?.sendString(stickerValue)
+                        
+                        
+                        
+                    }
+                    
+                    
+                    
+                }
+            }
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
     
 }
 

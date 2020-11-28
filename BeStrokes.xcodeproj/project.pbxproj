@@ -18,9 +18,12 @@
 		2F393A13255AEB57006CDBDE /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F393A12255AEB57006CDBDE /* LandingViewController.swift */; };
 		2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F393A16255AEBBE006CDBDE /* LandingPageContentViewController.swift */; };
 		2F402CA6256806DD00666028 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F402CA5256806DD00666028 /* User.storyboard */; };
+		2F464F6A25719A9A00D86CE7 /* StickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F464F6825719A9A00D86CE7 /* StickerCell.swift */; };
+		2F464F6B25719A9A00D86CE7 /* StickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F464F6925719A9A00D86CE7 /* StickerCell.xib */; };
 		2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */; };
 		2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */; };
 		2F8F950D2565C59A00ECDF83 /* SignUpViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */; };
+		2F9BD06F2571B36D007E1A3B /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9BD06E2571B36D007E1A3B /* SampleViewController.swift */; };
 		2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1ABE42552ED8C0076A8FD /* Strings.swift */; };
 		2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */; };
 		2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */; };
@@ -44,8 +47,11 @@
 		2F393A12255AEB57006CDBDE /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		2F393A16255AEBBE006CDBDE /* LandingPageContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageContentViewController.swift; sourceTree = "<group>"; };
 		2F402CA5256806DD00666028 /* User.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
+		2F464F6825719A9A00D86CE7 /* StickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCell.swift; sourceTree = "<group>"; };
+		2F464F6925719A9A00D86CE7 /* StickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickerCell.xib; sourceTree = "<group>"; };
 		2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewControllerContainer.swift; sourceTree = "<group>"; };
 		2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewControllerContainer.swift; sourceTree = "<group>"; };
+		2F9BD06E2571B36D007E1A3B /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
 		2FB1ABE42552ED8C0076A8FD /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerContainer.swift; sourceTree = "<group>"; };
 		2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +103,8 @@
 				2FE99CFD25183D3F002AFFDC /* Main.storyboard */,
 				2F402CA5256806DD00666028 /* User.storyboard */,
 				2FE99D0225183D40002AFFDC /* LaunchScreen.storyboard */,
+				2F464F6825719A9A00D86CE7 /* StickerCell.swift */,
+				2F464F6925719A9A00D86CE7 /* StickerCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -133,6 +141,7 @@
 				2F11255D2551A083004A02B1 /* HomeViewController.swift */,
 				2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */,
 				2F1125612551A097004A02B1 /* ProfileViewController.swift */,
+				2F9BD06E2571B36D007E1A3B /* SampleViewController.swift */,
 			);
 			path = Users;
 			sourceTree = "<group>";
@@ -239,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FE99CFA25183D3F002AFFDC /* art.scnassets in Resources */,
+				2F464F6B25719A9A00D86CE7 /* StickerCell.xib in Resources */,
 				2FE99D0425183D40002AFFDC /* LaunchScreen.storyboard in Resources */,
 				2F1125662551AE59004A02B1 /* GoogleService-Info.plist in Resources */,
 				2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */,
@@ -304,11 +314,13 @@
 				2F11255E2551A083004A02B1 /* HomeViewController.swift in Sources */,
 				2F8F950D2565C59A00ECDF83 /* SignUpViewControllerContainer.swift in Sources */,
 				2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */,
+				2F9BD06F2571B36D007E1A3B /* SampleViewController.swift in Sources */,
 				2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */,
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
 				2F393A0F255AEAEA006CDBDE /* LandingPageViewController.swift in Sources */,
 				2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */,
 				2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */,
+				2F464F6A25719A9A00D86CE7 /* StickerCell.swift in Sources */,
 				2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */,
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
 				2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */,
