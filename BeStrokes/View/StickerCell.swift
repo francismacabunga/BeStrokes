@@ -14,7 +14,6 @@ class StickerCell: UITableViewCell {
     @IBOutlet weak var stickerImageView: UIImageView!
     
     
-    @IBOutlet weak var stickerLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
