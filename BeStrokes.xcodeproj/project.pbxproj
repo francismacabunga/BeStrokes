@@ -25,6 +25,8 @@
 		2F8F950D2565C59A00ECDF83 /* SignUpViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */; };
 		2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1ABE42552ED8C0076A8FD /* Strings.swift */; };
 		2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */; };
+		2FBCA86A2578112B001B2C56 /* FeaturedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBCA8682578112B001B2C56 /* FeaturedCollectionViewCell.swift */; };
+		2FBCA86B2578112B001B2C56 /* FeaturedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FBCA8692578112B001B2C56 /* FeaturedCollectionViewCell.xib */; };
 		2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */; };
 		2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE99CF725183D3F002AFFDC /* AppDelegate.swift */; };
 		2FE99CFA25183D3F002AFFDC /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99CF925183D3F002AFFDC /* art.scnassets */; };
@@ -52,6 +54,8 @@
 		2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewControllerContainer.swift; sourceTree = "<group>"; };
 		2FB1ABE42552ED8C0076A8FD /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerContainer.swift; sourceTree = "<group>"; };
+		2FBCA8682578112B001B2C56 /* FeaturedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedCollectionViewCell.swift; sourceTree = "<group>"; };
+		2FBCA8692578112B001B2C56 /* FeaturedCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeaturedCollectionViewCell.xib; sourceTree = "<group>"; };
 		2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedViewController.swift; sourceTree = "<group>"; };
 		2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2FE99CF425183D3F002AFFDC /* BeStrokes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeStrokes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +107,8 @@
 				2FE99D0225183D40002AFFDC /* LaunchScreen.storyboard */,
 				2F464F6825719A9A00D86CE7 /* StickerCell.swift */,
 				2F464F6925719A9A00D86CE7 /* StickerCell.xib */,
+				2FBCA8682578112B001B2C56 /* FeaturedCollectionViewCell.swift */,
+				2FBCA8692578112B001B2C56 /* FeaturedCollectionViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -218,6 +224,7 @@
 				TargetAttributes = {
 					2FE99CF325183D3F002AFFDC = {
 						CreatedOnToolsVersion = 12.0;
+						LastSwiftMigration = 1220;
 					};
 				};
 			};
@@ -250,6 +257,7 @@
 				2F1125662551AE59004A02B1 /* GoogleService-Info.plist in Resources */,
 				2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */,
 				2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */,
+				2FBCA86B2578112B001B2C56 /* FeaturedCollectionViewCell.xib in Resources */,
 				2F402CA6256806DD00666028 /* User.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,6 +325,7 @@
 				2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */,
 				2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */,
 				2F464F6A25719A9A00D86CE7 /* StickerCell.swift in Sources */,
+				2FBCA86A2578112B001B2C56 /* FeaturedCollectionViewCell.swift in Sources */,
 				2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */,
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
 				2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */,
@@ -467,6 +476,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 45SQC9S7Z7;
 				INFOPLIST_FILE = BeStrokes/Info.plist;
@@ -476,6 +486,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.francisnormanmacabunga.BeStrokes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -487,6 +498,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 45SQC9S7Z7;
 				INFOPLIST_FILE = BeStrokes/Info.plist;
@@ -496,6 +508,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.francisnormanmacabunga.BeStrokes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

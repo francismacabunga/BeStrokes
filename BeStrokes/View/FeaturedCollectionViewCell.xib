@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeaturedCollectionViewCell" id="gTV-IL-0wX" customClass="FeaturedCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="280"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="200" height="280"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bfF-OB-Klf">
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="280"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bX6-u7-2ce">
+                                <rect key="frame" x="79" y="129.5" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                        <constraints>
+                            <constraint firstItem="bX6-u7-2ce" firstAttribute="centerX" secondItem="bfF-OB-Klf" secondAttribute="centerX" id="XO6-Rq-aK0"/>
+                            <constraint firstItem="bX6-u7-2ce" firstAttribute="centerY" secondItem="bfF-OB-Klf" secondAttribute="centerY" id="hTT-iO-dvW"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="bfF-OB-Klf" secondAttribute="trailing" id="50K-Wa-T29"/>
+                <constraint firstItem="bfF-OB-Klf" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="CDL-Bp-F9Z"/>
+                <constraint firstAttribute="bottom" secondItem="bfF-OB-Klf" secondAttribute="bottom" id="Jsb-Rw-92y"/>
+                <constraint firstItem="bfF-OB-Klf" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="nkl-Dc-thZ"/>
+            </constraints>
+            <size key="customSize" width="138" height="102"/>
+            <connections>
+                <outlet property="containerView" destination="bfF-OB-Klf" id="OO6-8l-bVa"/>
+                <outlet property="sampleLabel" destination="bX6-u7-2ce" id="04d-La-3xN"/>
+            </connections>
+            <point key="canvasLocation" x="46.376811594202906" y="145.98214285714286"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

@@ -14,36 +14,60 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var welcomeLabel: UILabel!
     @IBOutlet weak var emailWarning: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var featuredCollectionView: UICollectionView!
+    
+
+    
+    
     
     let user = Auth.auth().currentUser
     let db = Firestore.firestore()
     var stickerDictionary: [String: Any] = [:]
-    var sampleShit = ["Array"]
     var stickerArray = [Data?]()
-    var convertedImageData: String?
-    var sample = [Data?]()
     
+    
+    let sampleArray = ["Francis", "Norman", "Creed"]
+    
+  
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.register(UINib(nibName: "StickerCell", bundle: nil), forCellReuseIdentifier: "StickerCell")
+        tableView.dataSource = self
+        
+        featuredCollectionView.delegate = self
+        featuredCollectionView.dataSource = self
+        featuredCollectionView.register(UINib(nibName: "FeaturedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "FeaturedCollectionViewCell")
+        
+        
+        
+        
+        
+        
+        
+        
+        
         getNameOfSignedInUser()
         checkIfEmailIsVerified()
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: "StickerCell", bundle: nil), forCellReuseIdentifier: "StickerCell")
+        getProfilePicture()
+        changeElements()
         
         getSampleSticker { [self] (result) in
             stickerArray = result
             tableView.reloadData()
-            //print("Inside: \(stickerArray)")
-            
-            
-            
-            
         }
         
+    }
+    
+    func changeElements() {
         
         
-        
+        profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
+        profileImageView.clipsToBounds = true
+        profileImageView.contentMode = .scaleAspectFill
         
     }
     
@@ -51,6 +75,7 @@ class HomeViewController: UIViewController {
         
         if user != nil {
             let UID = user?.uid
+        
             let collectionReference = db.collection(Strings.collectionName).whereField(Strings.UID, isEqualTo: UID)
             collectionReference.getDocuments { [self] (snapshot, error) in
                 if error != nil {
@@ -76,6 +101,62 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    
+    
+    
+
+    func getProfilePicture() {
+        
+        if user != nil {
+            let UID = user?.uid
+            let collectionReference = db.collection("users").whereField("UID", isEqualTo: UID)
+            collectionReference.getDocuments { [self] (result, error) in
+                if error != nil {
+                    // Show error
+                } else {
+                    if let documents = result?.documents.first {
+                        let profilePicture = documents["profilePic"] as! String
+                        
+            
+                        if let imageData = changeToData(link: profilePicture) {
+                            profileImageView.image = UIImage(data: imageData)
+                        }
+                        
+                      
+                        
+                    }
+                }
+            }
+        }
+        
+        
+        
+    }
+    
+    
+    
+    func changeToData(link: String) -> Data? {
+        
+        if let imageURL = URL(string: link) {
+            
+            do {
+                let imageData = try Data(contentsOf: imageURL)
+                
+                return imageData
+            } catch {
+                
+            }
+            
+            
+        
+        
+        
+        }
+        
+        
+        return nil
+    }
+    
     
     
     
@@ -109,7 +190,6 @@ class HomeViewController: UIViewController {
                     }
                     
                 }
-                print(myArray)
                 completion(myArray)
             }
             
@@ -134,15 +214,45 @@ extension HomeViewController: UITableViewDataSource {
         
     }
     
+}
+
+
+
+extension HomeViewController: UICollectionViewDelegate {
+    
+    
+}
+
+extension HomeViewController: UICollectionViewDataSource {
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        sampleArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath) as! FeaturedCollectionViewCell
+        cell.sampleLabel.text = sampleArray[indexPath.row]
+        return cell
+        
+    }
+    
     
     
     
 }
 
 
-
-
-
-
-
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let collectionViewWidth = collectionView.bounds.width
+        var cellWidth = collectionViewWidth - 20
+        
+        
+        return CGSize(width: cellWidth, height: 280)
+    }
+}
 
