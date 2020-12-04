@@ -24,10 +24,6 @@
 		2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1ABE42552ED8C0076A8FD /* Strings.swift */; };
 		2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */; };
 		2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */; };
-		2FD6E4C7257AC8F600B49E41 /* UserHeading1CollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4C5257AC8F600B49E41 /* UserHeading1CollectionReusableView.swift */; };
-		2FD6E4C8257AC8F600B49E41 /* UserHeading1CollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4C6257AC8F600B49E41 /* UserHeading1CollectionReusableView.xib */; };
-		2FD6E4CC257AC91300B49E41 /* UserHeading2CollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4CA257AC91300B49E41 /* UserHeading2CollectionReusableView.swift */; };
-		2FD6E4CD257AC91300B49E41 /* UserHeading2CollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4CB257AC91300B49E41 /* UserHeading2CollectionReusableView.xib */; };
 		2FD6E4D2257AC96100B49E41 /* FeaturedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */; };
 		2FD6E4D3257AC96100B49E41 /* FeaturedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */; };
 		2FD6E4DA257AC99900B49E41 /* StickersCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D8257AC99900B49E41 /* StickersCollectionViewCell.swift */; };
@@ -59,10 +55,6 @@
 		2FB1ABE42552ED8C0076A8FD /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerContainer.swift; sourceTree = "<group>"; };
 		2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedViewController.swift; sourceTree = "<group>"; };
-		2FD6E4C5257AC8F600B49E41 /* UserHeading1CollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHeading1CollectionReusableView.swift; sourceTree = "<group>"; };
-		2FD6E4C6257AC8F600B49E41 /* UserHeading1CollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserHeading1CollectionReusableView.xib; sourceTree = "<group>"; };
-		2FD6E4CA257AC91300B49E41 /* UserHeading2CollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHeading2CollectionReusableView.swift; sourceTree = "<group>"; };
-		2FD6E4CB257AC91300B49E41 /* UserHeading2CollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserHeading2CollectionReusableView.xib; sourceTree = "<group>"; };
 		2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedCollectionViewCell.swift; sourceTree = "<group>"; };
 		2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeaturedCollectionViewCell.xib; sourceTree = "<group>"; };
 		2FD6E4D8257AC99900B49E41 /* StickersCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -115,12 +107,8 @@
 		2F23FCA82578462500E69933 /* Xib */ = {
 			isa = PBXGroup;
 			children = (
-				2FD6E4C5257AC8F600B49E41 /* UserHeading1CollectionReusableView.swift */,
-				2FD6E4C6257AC8F600B49E41 /* UserHeading1CollectionReusableView.xib */,
 				2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */,
 				2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */,
-				2FD6E4CA257AC91300B49E41 /* UserHeading2CollectionReusableView.swift */,
-				2FD6E4CB257AC91300B49E41 /* UserHeading2CollectionReusableView.xib */,
 				2FD6E4DE257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.swift */,
 				2FD6E4DF257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.xib */,
 				2FD6E4D8257AC99900B49E41 /* StickersCollectionViewCell.swift */,
@@ -291,9 +279,7 @@
 				2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */,
 				2FD6E4E1257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.xib in Resources */,
 				2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */,
-				2FD6E4CD257AC91300B49E41 /* UserHeading2CollectionReusableView.xib in Resources */,
 				2F402CA6256806DD00666028 /* User.storyboard in Resources */,
-				2FD6E4C8257AC8F600B49E41 /* UserHeading1CollectionReusableView.xib in Resources */,
 				2FD6E4DB257AC99900B49E41 /* StickersCollectionViewCell.xib in Resources */,
 				2FD6E4D3257AC96100B49E41 /* FeaturedCollectionViewCell.xib in Resources */,
 			);
@@ -350,7 +336,6 @@
 			files = (
 				2F1125622551A097004A02B1 /* ProfileViewController.swift in Sources */,
 				2F11255B2551A03E004A02B1 /* ForgotPasswordViewController.swift in Sources */,
-				2FD6E4CC257AC91300B49E41 /* UserHeading2CollectionReusableView.swift in Sources */,
 				2F393A13255AEB57006CDBDE /* LandingViewController.swift in Sources */,
 				2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */,
 				2FD6E4DA257AC99900B49E41 /* StickersCollectionViewCell.swift in Sources */,
@@ -366,7 +351,6 @@
 				2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */,
 				2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */,
 				2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */,
-				2FD6E4C7257AC8F600B49E41 /* UserHeading1CollectionReusableView.swift in Sources */,
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
 				2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */,
 			);
