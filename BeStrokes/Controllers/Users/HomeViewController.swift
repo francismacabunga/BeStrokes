@@ -8,103 +8,95 @@
 import UIKit
 import FirebaseAuth
 import Firebase
+import MSPeekCollectionViewDelegateImplementation
 
 class HomeViewController: UIViewController {
     
-    @IBOutlet weak var welcomeLabel: UILabel!
-    @IBOutlet weak var emailWarning: UILabel!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var profileImageView: UIImageView!
+    //MARK: - IBOutlets
+    
+    @IBOutlet weak var profilePictureImageView: UIImageView!
+    @IBOutlet weak var homeHeading1: UILabel!
+    @IBOutlet weak var homeHeading2: UILabel!
+    @IBOutlet weak var stickerButton: UIButton!
+    
     @IBOutlet weak var featuredCollectionView: UICollectionView!
-    
-
-    
-    
-    
-    let user = Auth.auth().currentUser
-    let db = Firestore.firestore()
-    var stickerDictionary: [String: Any] = [:]
-    var stickerArray = [Data?]()
+    @IBOutlet weak var stickersCategoryCollectionView: UICollectionView!
+    @IBOutlet weak var stickersCollectionView: UICollectionView!
     
     
-    let sampleArray = ["Francis", "Norman", "Creed"]
+    //MARK: - Private Constants/Variables
     
-  
+    private let user = Auth.auth().currentUser
+    private let db = Firestore.firestore()
+    private let sampleArray = ["Francis", "Norman", "Creed", "Luther", "Apple", "Samsung"]
+    private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
+    private var stickerDictionary: [String: Any] = [:]
+    private var stickerArray = [Data?]()
     
-
+    
+    //MARK: - View Controller Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.register(UINib(nibName: "StickerCell", bundle: nil), forCellReuseIdentifier: "StickerCell")
-        tableView.dataSource = self
+        designElements()
+        setCollectionView()
+        setDelegate()
         
-        featuredCollectionView.delegate = self
-        featuredCollectionView.dataSource = self
+    }
+    
+    func designElements() {
+        
+//        setProfilePicture()
+        
+    }
+    
+    func setCollectionView() {
+    
+        registerNib()
+        
+        viewPeekingBehavior = MSCollectionViewPeekingBehavior()
+        setViewPeekingBehavior(using: viewPeekingBehavior)
+        
+        
+        
+        
+    }
+    
+    func registerNib() {
         featuredCollectionView.register(UINib(nibName: "FeaturedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "FeaturedCollectionViewCell")
+//        featuredCollectionView.register(UINib(nibName: "StickersCategoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickersCategoryCollectionViewCell")
+//        featuredCollectionView.register(UINib(nibName: "StickersCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickersCollectionViewCell")
+    }
+    
+    func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
         
-        
-        
-        
-        
-        
-        
-        
-        
-        getNameOfSignedInUser()
-        checkIfEmailIsVerified()
-        getProfilePicture()
-        changeElements()
-        
-        getSampleSticker { [self] (result) in
-            stickerArray = result
-            tableView.reloadData()
-        }
+        featuredCollectionView.configureForPeekingBehavior(behavior: behavior)
+        behavior.cellPeekWidth = 10
+        behavior.cellSpacing = 10
         
     }
     
-    func changeElements() {
-        
-        
-        profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
-        profileImageView.clipsToBounds = true
-        profileImageView.contentMode = .scaleAspectFill
-        
-    }
     
-    func getNameOfSignedInUser() {
-        
-        if user != nil {
-            let UID = user?.uid
-        
-            let collectionReference = db.collection(Strings.collectionName).whereField(Strings.UID, isEqualTo: UID)
-            collectionReference.getDocuments { [self] (snapshot, error) in
-                if error != nil {
-                    print("Cannot retrieve data to database now.")
-                } else {
-                    guard let snapshotResult = snapshot?.documents.first else {
-                        return
-                    }
-                    let firstName = snapshotResult[Strings.firstName] as! String
-                    welcomeLabel.text = "Welcome \(firstName)"
-                }
-            }
-        }
-    }
-    
-    func checkIfEmailIsVerified() {
-        
-        if user != nil {
-            if user!.isEmailVerified {
-                emailWarning.text = "Your email is verified."
-            } else {
-                emailWarning.text = "Your email is not yet verified. Check your email."
-            }
-        }
+    func setDelegate() {
+        featuredCollectionView.delegate = self
+//        stickersCategoryCollectionView.delegate = self
+//        stickersCollectionView.delegate = self
+        featuredCollectionView.dataSource = self
+//        stickersCategoryCollectionView.dataSource = self
+//        stickersCollectionView.dataSource = self
     }
     
     
+    //MARK: - Setting Profile Picture Process
     
-
+//    func setProfilePicture() {
+//        profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
+//        profilePictureImageView.clipsToBounds = true
+//        profilePictureImageView.contentMode = .scaleAspectFill
+//        getProfilePicture()
+//    }
+    
     func getProfilePicture() {
         
         if user != nil {
@@ -112,27 +104,18 @@ class HomeViewController: UIViewController {
             let collectionReference = db.collection("users").whereField("UID", isEqualTo: UID)
             collectionReference.getDocuments { [self] (result, error) in
                 if error != nil {
-                    // Show error
+                    
                 } else {
                     if let documents = result?.documents.first {
                         let profilePicture = documents["profilePic"] as! String
-                        
-            
                         if let imageData = changeToData(link: profilePicture) {
-                            profileImageView.image = UIImage(data: imageData)
+                            profilePictureImageView.image = UIImage(data: imageData)
                         }
-                        
-                      
-                        
                     }
                 }
             }
         }
-        
-        
-        
     }
-    
     
     
     func changeToData(link: String) -> Data? {
@@ -148,9 +131,9 @@ class HomeViewController: UIViewController {
             }
             
             
-        
-        
-        
+            
+            
+            
         }
         
         
@@ -158,63 +141,106 @@ class HomeViewController: UIViewController {
     }
     
     
+    //    func getNameOfSignedInUser() {
+    //
+    //        if user != nil {
+    //            let UID = user?.uid
+    //
+    //            let collectionReference = db.collection(Strings.collectionName).whereField(Strings.UID, isEqualTo: UID)
+    //            collectionReference.getDocuments { [self] (snapshot, error) in
+    //                if error != nil {
+    //                    print("Cannot retrieve data to database now.")
+    //                } else {
+    //                    guard let snapshotResult = snapshot?.documents.first else {
+    //                        return
+    //                    }
+    //                    let firstName = snapshotResult[Strings.firstName] as! String
+    //                    welcomeLabel.text = "Welcome \(firstName)"
+    //                }
+    //            }
+    //        }
+    //    }
+    
+    //    func checkIfEmailIsVerified() {
+    //
+    //        if user != nil {
+    //            if user!.isEmailVerified {
+    //                emailWarning.text = "Your email is verified."
+    //            } else {
+    //                emailWarning.text = "Your email is not yet verified. Check your email."
+    //            }
+    //        }
+    //    }
     
     
-    func getSampleSticker(completion: @escaping([Data]) -> Void) {
-        
-        var myArray = [Data]()
-        let collectionReference = db.collection("stickers").document("sample-stickers")
-        let sample = collectionReference.getDocument { [self] (result, error) in
-            
-            if error != nil {
-                // Show error
-            } else {
-                
-                if let result = result?.data() {
-                    stickerDictionary = result
-                    
-                    for everySticker in stickerDictionary {
-                        let stickerValue = everySticker.value as! String
-                        
-                        
-                        let imageURL = URL(string: stickerValue)
-                        
-                        do {
-                            let imageData = try Data(contentsOf: imageURL!)
-                            
-                            myArray.append(imageData)
-                        } catch {
-                            
-                        }
-                        
-                    }
-                    
-                }
-                completion(myArray)
-            }
-            
-        }
-    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //    func getSampleSticker(completion: @escaping([Data]) -> Void) {
+    //
+    //        var myArray = [Data]()
+    //        let collectionReference = db.collection("stickers").document("sample-stickers")
+    //        let sample = collectionReference.getDocument { [self] (result, error) in
+    //
+    //            if error != nil {
+    //                // Show error
+    //            } else {
+    //
+    //                if let result = result?.data() {
+    //                    stickerDictionary = result
+    //
+    //                    for everySticker in stickerDictionary {
+    //                        let stickerValue = everySticker.value as! String
+    //
+    //
+    //                        let imageURL = URL(string: stickerValue)
+    //
+    //                        do {
+    //                            let imageData = try Data(contentsOf: imageURL!)
+    //
+    //                            myArray.append(imageData)
+    //                        } catch {
+    //
+    //                        }
+    //
+    //                    }
+    //
+    //                }
+    //                completion(myArray)
+    //            }
+    //
+    //        }
+    //    }
 }
 
 
-extension HomeViewController: UITableViewDataSource {
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return stickerArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "StickerCell", for: indexPath) as! StickerCell
-        cell.stickerImageView.image = UIImage(data: stickerArray[indexPath.row]!)
-        return cell
-        
-    }
-    
-}
+//extension HomeViewController: UITableViewDataSource {
+//
+//
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//
+//        return stickerArray.count
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "StickerCell", for: indexPath) as! StickerCell
+//        cell.stickerImageView.image = UIImage(data: stickerArray[indexPath.row]!)
+//        return cell
+//
+//    }
+//
+//
+//
+//}
 
 
 
@@ -225,6 +251,9 @@ extension HomeViewController: UICollectionViewDelegate {
 
 extension HomeViewController: UICollectionViewDataSource {
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 3
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         sampleArray.count
@@ -233,7 +262,7 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath) as! FeaturedCollectionViewCell
-        cell.sampleLabel.text = sampleArray[indexPath.row]
+//        cell.sampleLabel.text = sampleArray[indexPath.row]
         return cell
         
     }
@@ -246,13 +275,15 @@ extension HomeViewController: UICollectionViewDataSource {
 
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        let collectionViewWidth = collectionView.bounds.width
-        var cellWidth = collectionViewWidth - 20
-        
-        
-        return CGSize(width: cellWidth, height: 280)
+        viewPeekingBehavior.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
     }
+    
 }
+
+
+
 

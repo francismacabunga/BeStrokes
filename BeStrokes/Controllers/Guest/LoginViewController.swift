@@ -10,7 +10,7 @@ import Firebase
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var headingLabel: UILabel!
+    @IBOutlet weak var mainHeadingLabel: UILabel!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -37,7 +37,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         errorLabel.isHidden = true
         UIScrollView.appearance().indicatorStyle = .white
         
-        Utilities.putDesignOn(whitePopupHeadingLabel: headingLabel)
+        Utilities.putDesignOn(whitePopupHeadingLabel: mainHeadingLabel)
         Utilities.putDesignOn(errorLabel: errorLabel)
         Utilities.putDesignOn(textField: emailTextField, placeholder: Strings.emailPlaceholder)
         Utilities.putDesignOn(textField: passwordTextField, placeholder: Strings.passwordPlaceholder)

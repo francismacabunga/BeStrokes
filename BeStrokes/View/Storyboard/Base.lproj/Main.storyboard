@@ -251,8 +251,8 @@
                         <outlet property="emailTextField" destination="1jG-Sw-Ks2" id="WS2-pz-nKi"/>
                         <outlet property="errorLabel" destination="cBY-aq-OWg" id="5g4-ic-1EA"/>
                         <outlet property="forgotPasswordButton" destination="o00-JQ-Hqv" id="DkJ-1f-Qw5"/>
-                        <outlet property="headingLabel" destination="hZ5-g2-GW0" id="2Bk-h8-TxW"/>
                         <outlet property="loginButton" destination="L20-xw-Qhq" id="dtw-JW-CxT"/>
+                        <outlet property="mainHeadingLabel" destination="hZ5-g2-GW0" id="2Bk-h8-TxW"/>
                         <outlet property="passwordTextField" destination="joa-vI-Q4y" id="8R1-iz-VYQ"/>
                     </connections>
                 </viewController>

@@ -14,5 +14,6 @@ target 'BeStrokes' do
   pod 'Firebase/Storage'
   pod 'IQKeyboardManagerSwift'
   pod 'CropViewController'
+  pod 'MSPeekCollectionViewDelegateImplementation'
 
 end

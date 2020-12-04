@@ -334,6 +334,7 @@ PODS:
   - GTMSessionFetcher/Core (1.5.0)
   - IQKeyboardManagerSwift (6.5.6)
   - leveldb-library (1.22)
+  - MSPeekCollectionViewDelegateImplementation (3.1.1)
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
     - nanopb/encode (= 1.30906.0)
@@ -350,6 +351,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - FirebaseFirestoreSwift
   - IQKeyboardManagerSwift
+  - MSPeekCollectionViewDelegateImplementation
 
 SPEC REPOS:
   trunk:
@@ -373,6 +375,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - IQKeyboardManagerSwift
     - leveldb-library
+    - MSPeekCollectionViewDelegateImplementation
     - nanopb
     - PromisesObjC
 
@@ -397,9 +400,10 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
+  MSPeekCollectionViewDelegateImplementation: f86fd6a6ce284723343e8697a013f5294c05e745
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
 
-PODFILE CHECKSUM: 237fb8817480212407f9ffe7e5659eded7e80d27
+PODFILE CHECKSUM: d5984bf3f1bdb0edbe48103f47316e032555ee12
 
 COCOAPODS: 1.9.3
