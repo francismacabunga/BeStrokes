@@ -8,10 +8,17 @@
 import UIKit
 
 class StickersCategoryCollectionViewCell: UICollectionViewCell {
+    
+    
+    @IBOutlet weak var stickersCategoryContentView: UIView!
+    
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        stickersCategoryContentView.layer.cornerRadius = 15
+    
     }
 
 }

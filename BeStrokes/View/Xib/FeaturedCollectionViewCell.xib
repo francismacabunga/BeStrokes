@@ -11,15 +11,18 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeaturedCollectionViewCell" id="gTV-IL-0wX" customClass="FeaturedCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="117" height="280"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="117" height="280"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hmF-Fx-H3d">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="117" height="280"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="280" id="qgn-CJ-gob"/>
+                        </constraints>
                     </view>
                 </subviews>
             </view>
@@ -30,7 +33,11 @@
                 <constraint firstItem="hmF-Fx-H3d" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="RnE-Ko-zut"/>
                 <constraint firstItem="hmF-Fx-H3d" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="zsI-ds-aPw"/>
             </constraints>
-            <point key="canvasLocation" x="-197.10144927536234" y="88.392857142857139"/>
+            <size key="customSize" width="117" height="84"/>
+            <connections>
+                <outlet property="featuredContentView" destination="hmF-Fx-H3d" id="jNc-eY-9Sa"/>
+            </connections>
+            <point key="canvasLocation" x="-148.55072463768118" y="99.776785714285708"/>
         </collectionViewCell>
     </objects>
     <resources>

@@ -9,9 +9,13 @@ import UIKit
 
 class FeaturedCollectionViewCell: UICollectionViewCell {
 
+    @IBOutlet weak var featuredContentView: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        featuredContentView.layer.cornerRadius = 30
+        
     }
 
 }

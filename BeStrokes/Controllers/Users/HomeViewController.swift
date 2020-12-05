@@ -20,12 +20,9 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var stickerButton: UIButton!
     
     @IBOutlet weak var featuredCollectionView: UICollectionView!
-    
-   
-    
-    
-    
     @IBOutlet weak var stickersCategoryCollectionView: UICollectionView!
+    
+    
     @IBOutlet weak var stickersCollectionView: UICollectionView!
     
     
@@ -44,18 +41,24 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        designElements()
+        getProfilePicture()
+        setProfilePicture()
+ 
+        
         setCollectionView()
         setDelegate()
         
         
         
-        
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     func designElements() {
         
-        //        setProfilePicture()
+        setProfilePicture()
         
     }
     
@@ -73,7 +76,7 @@ class HomeViewController: UIViewController {
     
     func registerNib() {
         featuredCollectionView.register(UINib(nibName: "FeaturedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "FeaturedCollectionViewCell")
-        //        featuredCollectionView.register(UINib(nibName: "StickersCategoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickersCategoryCollectionViewCell")
+        stickersCategoryCollectionView.register(UINib(nibName: "StickersCategoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickersCategoryCollectionViewCell")
         //        featuredCollectionView.register(UINib(nibName: "StickersCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickersCollectionViewCell")
     }
     
@@ -88,22 +91,22 @@ class HomeViewController: UIViewController {
     
     func setDelegate() {
         featuredCollectionView.delegate = self
-        //        stickersCategoryCollectionView.delegate = self
+        stickersCategoryCollectionView.delegate = self
         //        stickersCollectionView.delegate = self
         featuredCollectionView.dataSource = self
-        //        stickersCategoryCollectionView.dataSource = self
+        stickersCategoryCollectionView.dataSource = self
         //        stickersCollectionView.dataSource = self
     }
     
     
     //MARK: - Setting Profile Picture Process
     
-    //    func setProfilePicture() {
-    //        profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
-    //        profilePictureImageView.clipsToBounds = true
-    //        profilePictureImageView.contentMode = .scaleAspectFill
-    //        getProfilePicture()
-    //    }
+    func setProfilePicture() {
+        profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
+        profilePictureImageView.clipsToBounds = true
+        profilePictureImageView.contentMode = .scaleAspectFill
+        
+    }
     
     func getProfilePicture() {
         
@@ -260,6 +263,8 @@ extension HomeViewController: UICollectionViewDelegate {
 extension HomeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        
+
         return 1
     }
     
@@ -269,13 +274,45 @@ extension HomeViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath) as! FeaturedCollectionViewCell
-        //        cell.sampleLabel.text = sampleArray[indexPath.row]
-        return cell
+    
+    
+       
+        
+        
+        if collectionView == featuredCollectionView {
+    
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath)
+
+            return cell
+            
+        }
+        
+        if collectionView == stickersCategoryCollectionView {
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCategoryCollectionViewCell", for: indexPath)
+            return cell
+            
+        }
+        
+    
+        
+        
+        
+        
+//        let FeaturedCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath) as! FeaturedCollectionViewCell
+      
+    
+//        if featuredCollectionView.beginInteractiveMovementForItem(at: indexPath) {
+//            return cell
+//        }
+        
+        return UICollectionViewCell()
+        
+//        return UICollectionViewCell()
         
     }
     
-   
+    
     
     
     
@@ -299,9 +336,16 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         viewPeekingBehavior.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
         
         
-
-      
+        
+        
     }
+    
+    
+    
+    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    //
+    //        print()
+    //    }
     
 }
 

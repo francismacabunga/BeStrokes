@@ -55,6 +55,7 @@ class ProfileViewController: UIViewController {
                         if let imageURL = URL(string: profilePicLocation) {
                             
                             do {
+                                print("Hello")
                                 let imageData = try Data(contentsOf: imageURL)
                                 profileIcon.image = UIImage(data: imageData)
                                 profileIcon.layer.cornerRadius = profileIcon.frame.size.width / 2
