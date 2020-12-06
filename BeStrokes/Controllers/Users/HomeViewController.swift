@@ -15,14 +15,11 @@ class HomeViewController: UIViewController {
     //MARK: - IBOutlets
     
     @IBOutlet weak var profilePictureImageView: UIImageView!
-    @IBOutlet weak var homeHeading1: UILabel!
-    @IBOutlet weak var homeHeading2: UILabel!
+    @IBOutlet weak var featuredHeading: UILabel!
+    @IBOutlet weak var stickersHeading: UILabel!
     @IBOutlet weak var stickerButton: UIButton!
-    
     @IBOutlet weak var featuredCollectionView: UICollectionView!
     @IBOutlet weak var stickersCategoryCollectionView: UICollectionView!
-    
-    
     @IBOutlet weak var stickersCollectionView: UICollectionView!
     
     
@@ -41,14 +38,9 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getProfilePicture()
-        setProfilePicture()
- 
-        
+        designElements()
         setCollectionView()
         setDelegate()
-        
-        
         
     }
     
@@ -58,6 +50,7 @@ class HomeViewController: UIViewController {
     
     func designElements() {
         
+        getProfilePicture()
         setProfilePicture()
         
     }
@@ -65,19 +58,15 @@ class HomeViewController: UIViewController {
     func setCollectionView() {
         
         registerNib()
-        
         viewPeekingBehavior = MSCollectionViewPeekingBehavior()
         setViewPeekingBehavior(using: viewPeekingBehavior)
-        
-        
-        
         
     }
     
     func registerNib() {
         featuredCollectionView.register(UINib(nibName: "FeaturedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "FeaturedCollectionViewCell")
         stickersCategoryCollectionView.register(UINib(nibName: "StickersCategoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickersCategoryCollectionViewCell")
-        //        featuredCollectionView.register(UINib(nibName: "StickersCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickersCollectionViewCell")
+        stickersCollectionView.register(UINib(nibName: "StickersCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickersCollectionViewCell")
     }
     
     func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
@@ -88,14 +77,13 @@ class HomeViewController: UIViewController {
         
     }
     
-    
     func setDelegate() {
         featuredCollectionView.delegate = self
         stickersCategoryCollectionView.delegate = self
-        //        stickersCollectionView.delegate = self
+        stickersCollectionView.delegate = self
         featuredCollectionView.dataSource = self
         stickersCategoryCollectionView.dataSource = self
-        //        stickersCollectionView.dataSource = self
+        stickersCollectionView.dataSource = self
     }
     
     
@@ -128,227 +116,67 @@ class HomeViewController: UIViewController {
         }
     }
     
-    
     func changeToData(link: String) -> Data? {
         
         if let imageURL = URL(string: link) {
-            
             do {
-                let imageData = try Data(contentsOf: imageURL)
                 
+                let imageData = try Data(contentsOf: imageURL)
                 return imageData
+                
             } catch {
                 
             }
-            
-            
-            
-            
-            
         }
-        
-        
         return nil
     }
     
-    
-    //    func getNameOfSignedInUser() {
-    //
-    //        if user != nil {
-    //            let UID = user?.uid
-    //
-    //            let collectionReference = db.collection(Strings.collectionName).whereField(Strings.UID, isEqualTo: UID)
-    //            collectionReference.getDocuments { [self] (snapshot, error) in
-    //                if error != nil {
-    //                    print("Cannot retrieve data to database now.")
-    //                } else {
-    //                    guard let snapshotResult = snapshot?.documents.first else {
-    //                        return
-    //                    }
-    //                    let firstName = snapshotResult[Strings.firstName] as! String
-    //                    welcomeLabel.text = "Welcome \(firstName)"
-    //                }
-    //            }
-    //        }
-    //    }
-    
-    //    func checkIfEmailIsVerified() {
-    //
-    //        if user != nil {
-    //            if user!.isEmailVerified {
-    //                emailWarning.text = "Your email is verified."
-    //            } else {
-    //                emailWarning.text = "Your email is not yet verified. Check your email."
-    //            }
-    //        }
-    //    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //    func getSampleSticker(completion: @escaping([Data]) -> Void) {
-    //
-    //        var myArray = [Data]()
-    //        let collectionReference = db.collection("stickers").document("sample-stickers")
-    //        let sample = collectionReference.getDocument { [self] (result, error) in
-    //
-    //            if error != nil {
-    //                // Show error
-    //            } else {
-    //
-    //                if let result = result?.data() {
-    //                    stickerDictionary = result
-    //
-    //                    for everySticker in stickerDictionary {
-    //                        let stickerValue = everySticker.value as! String
-    //
-    //
-    //                        let imageURL = URL(string: stickerValue)
-    //
-    //                        do {
-    //                            let imageData = try Data(contentsOf: imageURL!)
-    //
-    //                            myArray.append(imageData)
-    //                        } catch {
-    //
-    //                        }
-    //
-    //                    }
-    //
-    //                }
-    //                completion(myArray)
-    //            }
-    //
-    //        }
-    //    }
 }
 
 
-//extension HomeViewController: UITableViewDataSource {
-//
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//
-//        return stickerArray.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "StickerCell", for: indexPath) as! StickerCell
-//        cell.stickerImageView.image = UIImage(data: stickerArray[indexPath.row]!)
-//        return cell
-//
-//    }
-//
-//
-//
-//}
-
-
-
 extension HomeViewController: UICollectionViewDelegate {
-    
     
 }
 
 extension HomeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        
-
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 50
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-    
-    
-       
-        
-        
         if collectionView == featuredCollectionView {
-    
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath)
-
             return cell
-            
         }
         
         if collectionView == stickersCategoryCollectionView {
-            
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCategoryCollectionViewCell", for: indexPath)
             return cell
-            
         }
         
-    
-        
-        
-        
-        
-//        let FeaturedCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath) as! FeaturedCollectionViewCell
-      
-    
-//        if featuredCollectionView.beginInteractiveMovementForItem(at: indexPath) {
-//            return cell
-//        }
+        if collectionView == stickersCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCollectionViewCell", for: indexPath)
+            return cell
+        }
         
         return UICollectionViewCell()
         
-//        return UICollectionViewCell()
-        
     }
-    
-    
-    
-    
-    
     
 }
 
-
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
-    
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    //
-    //        let layout = featuredCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-    //        let cellWidth = layout.itemSize.width
-    //        let cellHeight = CGFloat(50)
-    //
-    //       return CGSize(width: cellWidth, height: cellHeight)
-    //    }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
         viewPeekingBehavior.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
         
-        
-        
-        
     }
     
-    
-    
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    //
-    //        print()
-    //    }
-    
 }
-
-
-
-

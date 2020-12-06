@@ -8,14 +8,38 @@
 import UIKit
 
 class FeaturedCollectionViewCell: UICollectionViewCell {
-
+    
     @IBOutlet weak var featuredContentView: UIView!
+    @IBOutlet weak var featuredLabel: UILabel!
+    @IBOutlet weak var featuredOptionButtonLabel: UIButton!
+    @IBOutlet weak var featuredTryMeButtonLabel: UIButton!
+    
+    @IBOutlet weak var featuredImageView: UIImageView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        featuredContentView.layer.cornerRadius = 30
+        featuredContentView.layer.cornerRadius = 40
+        featuredContentView.clipsToBounds = true
         
+        
+        
+        featuredOptionButtonLabel.setTitleColor(.black, for: .normal)
+        
+        featuredTryMeButtonLabel.layer.cornerRadius = featuredTryMeButtonLabel.bounds.height / 2
+        featuredTryMeButtonLabel.clipsToBounds = true
+        featuredTryMeButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 15)
+        featuredTryMeButtonLabel.setTitleColor(.white, for: .normal)
+        featuredTryMeButtonLabel.backgroundColor = .black
+                
     }
-
+    
+    @IBAction func featuredOptionButton(_ sender: UIButton) {
+    }
+    
+    @IBAction func tryMeButton(_ sender: UIButton) {
+    }
+    
+    
 }

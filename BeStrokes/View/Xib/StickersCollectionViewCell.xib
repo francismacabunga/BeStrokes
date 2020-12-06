@@ -30,6 +30,9 @@
                 <constraint firstAttribute="bottom" secondItem="ygQ-zI-xqz" secondAttribute="bottom" id="aZd-G8-RkC"/>
                 <constraint firstItem="ygQ-zI-xqz" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="qcq-sf-gag"/>
             </constraints>
+            <connections>
+                <outlet property="stickersCollectionContentView" destination="ygQ-zI-xqz" id="9bb-jC-08n"/>
+            </connections>
             <point key="canvasLocation" x="-197.10144927536234" y="88.392857142857139"/>
         </collectionViewCell>
     </objects>

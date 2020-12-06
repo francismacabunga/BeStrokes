@@ -138,7 +138,6 @@
 		2FB1ABE32552ED430076A8FD /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				2FE99CF925183D3F002AFFDC /* art.scnassets */,
 				2FB1ABE42552ED8C0076A8FD /* Strings.swift */,
 				2F382FC52562E3CD00D3A125 /* Utilities.swift */,
 			);
@@ -195,6 +194,7 @@
 			children = (
 				2FE99CF725183D3F002AFFDC /* AppDelegate.swift */,
 				2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */,
+				2FE99CF925183D3F002AFFDC /* art.scnassets */,
 				2FB1ABE32552ED430076A8FD /* Helpers */,
 				2F90B467253C984B000AD29A /* Controllers */,
 				2F90B46D253C987A000AD29A /* View */,

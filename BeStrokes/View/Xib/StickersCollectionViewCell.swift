@@ -8,10 +8,14 @@
 import UIKit
 
 class StickersCollectionViewCell: UICollectionViewCell {
-
+    
+    @IBOutlet weak var stickersCollectionContentView: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        stickersCollectionContentView.layer.cornerRadius = stickersCollectionContentView.bounds.width / 2
+        
     }
-
+    
 }
