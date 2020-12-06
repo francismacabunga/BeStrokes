@@ -4,41 +4,110 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="StickersCollectionViewCell" id="gTV-IL-0wX" customClass="StickersCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygQ-zI-xqz">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tvo-u6-d0N">
+                                <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gQ1-r7-crn">
+                                        <rect key="frame" x="0.0" y="0.0" width="140" height="50"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EoK-Rm-OEV">
+                                                <rect key="frame" x="0.0" y="0.0" width="16" height="50"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="16" id="iXP-UL-1u6"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oF8-Em-LRd">
+                                                <rect key="frame" x="16" y="0.0" width="45" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="45" id="Rk0-xS-Uwj"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1VE-9i-zw3">
+                                                <rect key="frame" x="61" y="0.0" width="44" height="50"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dMW-hg-JcR">
+                                                <rect key="frame" x="105" y="0.0" width="30" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="25" id="3yW-Dx-mYD"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                <state key="normal" title="···">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="stickersOptionButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="iIC-9c-Ixb"/>
+                                                </connections>
+                                            </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nJf-5s-9mm">
+                                                <rect key="frame" x="135" y="0.0" width="5" height="50"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="5" id="Epy-p0-9Qa"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="rfh-M2-EBM"/>
+                                        </constraints>
+                                    </stackView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Lion" translatesAutoresizingMaskIntoConstraints="NO" id="94b-kE-gCd">
+                                        <rect key="frame" x="0.0" y="50" width="140" height="90"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="tvo-u6-d0N" secondAttribute="trailing" id="HRZ-iP-eOq"/>
+                            <constraint firstAttribute="height" constant="140" id="Hoi-hj-v6J"/>
+                            <constraint firstAttribute="width" constant="140" id="JPM-9P-A1M"/>
+                            <constraint firstItem="tvo-u6-d0N" firstAttribute="leading" secondItem="ygQ-zI-xqz" secondAttribute="leading" id="WUf-ok-29w"/>
+                            <constraint firstAttribute="bottom" secondItem="tvo-u6-d0N" secondAttribute="bottom" id="a0P-of-QnN"/>
+                            <constraint firstItem="tvo-u6-d0N" firstAttribute="top" secondItem="ygQ-zI-xqz" secondAttribute="top" id="wJ0-5h-KWb"/>
+                        </constraints>
                     </view>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="ygQ-zI-xqz" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="6Th-Jb-RbC"/>
                 <constraint firstAttribute="trailing" secondItem="ygQ-zI-xqz" secondAttribute="trailing" id="L9u-CX-xak"/>
                 <constraint firstAttribute="bottom" secondItem="ygQ-zI-xqz" secondAttribute="bottom" id="aZd-G8-RkC"/>
                 <constraint firstItem="ygQ-zI-xqz" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="qcq-sf-gag"/>
             </constraints>
+            <size key="customSize" width="140" height="140"/>
             <connections>
                 <outlet property="stickersCollectionContentView" destination="ygQ-zI-xqz" id="9bb-jC-08n"/>
+                <outlet property="stickersLabel" destination="oF8-Em-LRd" id="Vl7-H5-ey5"/>
+                <outlet property="stickersOptionButtonLabel" destination="dMW-hg-JcR" id="GrR-kX-o0z"/>
             </connections>
-            <point key="canvasLocation" x="-197.10144927536234" y="88.392857142857139"/>
+            <point key="canvasLocation" x="-131.8840579710145" y="118.52678571428571"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="Lion" width="275" height="321"/>
     </resources>
 </document>

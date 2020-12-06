@@ -22,8 +22,10 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         
         featuredContentView.layer.cornerRadius = 40
         featuredContentView.clipsToBounds = true
+        featuredContentView.backgroundColor = .white
         
-        
+        featuredLabel.textColor = .black
+        featuredLabel.font = UIFont(name: "Futura-Bold", size: 25)
         
         featuredOptionButtonLabel.setTitleColor(.black, for: .normal)
         
