@@ -41,6 +41,7 @@ class HomeViewController: UIViewController {
         designElements()
         setCollectionView()
         setDelegate()
+        navigationController?.setNavigationBarHidden(true, animated: true)
         
     }
     
