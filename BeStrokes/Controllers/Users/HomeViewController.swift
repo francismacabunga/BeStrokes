@@ -61,7 +61,7 @@ class HomeViewController: UIViewController {
         setProfilePicture()
         
         
-        view.backgroundColor = UIColor.black
+        view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         featuredView.backgroundColor = UIColor.clear
         stickersView.backgroundColor = UIColor.clear
         
@@ -91,6 +91,9 @@ class HomeViewController: UIViewController {
         
         
         
+        
+        tabBarController?.tabBar.barTintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        tabBarController?.tabBar.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
         
 
