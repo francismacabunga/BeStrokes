@@ -17,11 +17,17 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var featuredHeading: UILabel!
     @IBOutlet weak var stickersHeading: UILabel!
-    @IBOutlet weak var stickerButton: UIButton!
     @IBOutlet weak var featuredCollectionView: UICollectionView!
+    
+    
     @IBOutlet weak var stickersCategoryCollectionView: UICollectionView!
     @IBOutlet weak var stickersCollectionView: UICollectionView!
     
+    
+    @IBOutlet weak var featuredView: UIView!
+    @IBOutlet weak var stickersView: UIView!
+    
+
     
     //MARK: - Private Constants/Variables
     
@@ -53,6 +59,43 @@ class HomeViewController: UIViewController {
         
         getProfilePicture()
         setProfilePicture()
+        
+        
+        view.backgroundColor = UIColor.black
+        featuredView.backgroundColor = UIColor.clear
+        stickersView.backgroundColor = UIColor.clear
+        
+        featuredHeading.text = "Featured"
+        featuredHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        featuredHeading.font = UIFont(name: "Futura-Bold", size: 35)
+        
+        stickersHeading.text = "Stickers"
+        stickersHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        stickersHeading.font = UIFont(name: "Futura-Bold", size: 35)
+        
+        
+        featuredCollectionView.backgroundColor = UIColor.clear
+        featuredCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
+        featuredCollectionView.showsHorizontalScrollIndicator = false
+        
+        stickersCategoryCollectionView.backgroundColor = UIColor.clear
+        stickersCategoryCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
+        stickersCategoryCollectionView.showsHorizontalScrollIndicator = false
+        
+
+        
+        
+        stickersCollectionView.backgroundColor = UIColor.clear
+        stickersCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
+        stickersCollectionView.showsHorizontalScrollIndicator = false
+        
+        
+        
+        
+        
+
+        
+        
         
     }
     
@@ -108,28 +151,60 @@ class HomeViewController: UIViewController {
                 } else {
                     if let documents = result?.documents.first {
                         let profilePicture = documents["profilePic"] as! String
-                        if let imageData = changeToData(link: profilePicture) {
-                            profilePictureImageView.image = UIImage(data: imageData)
+                     
+                        if let profilePictureURL = URL(string: profilePicture) {
+                            
+//                            let convertURLtoData = URLSession.shared.dataTask(with: profilePictureURL) { (data, response, error) in
+//
+//                                if error != nil {
+//                                    // Show error
+//                                } else {
+//
+//                                    guard let data = data else {return}
+//
+//                                    DispatchQueue.main.async {
+//                                        profilePictureImageView.image = UIImage(data: data)
+//                                    }
+//
+//                                }
+//
+//                            }
+                            
+                            if let imageData = convertURLtoData(using: profilePictureURL) {
+                                profilePictureImageView.image = UIImage(data: imageData)
+                            }
+                            
+                            
                         }
+                        
+                        
+                        
                     }
                 }
             }
         }
     }
     
-    func changeToData(link: String) -> Data? {
+    func convertURLtoData(using URL: URL) -> Data? {
         
-        if let imageURL = URL(string: link) {
+//        if let imageURL = URL(string: link) {
             do {
-                
-                let imageData = try Data(contentsOf: imageURL)
+
+                let imageData = try Data(contentsOf: URL)
                 return imageData
-                
+
             } catch {
-                
+
             }
-        }
+//        }
         return nil
+        
+        
+        
+        
+        
+        
+        return Data()
     }
     
 }
@@ -146,7 +221,7 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return 50
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -160,7 +235,7 @@ extension HomeViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCategoryCollectionViewCell", for: indexPath)
             return cell
         }
-        
+
         if collectionView == stickersCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCollectionViewCell", for: indexPath)
             return cell
@@ -179,5 +254,29 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         viewPeekingBehavior.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        if collectionView == stickersCategoryCollectionView {
+            let stickersCategoryCollectionViewLayout = stickersCategoryCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+            stickersCategoryCollectionViewLayout.sectionInset.left = 25
+            return CGSize(width: 100, height: 30)
+        }
+        
+        
+        if collectionView == stickersCollectionView {
+            
+            let stickersCollectionViewLayout = stickersCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+            stickersCollectionViewLayout.sectionInset.left = 25
+            return CGSize(width: 140, height: 140)
+        }
+        
+
+        return CGSize()
+
+    }
+    
+    
+    
     
 }

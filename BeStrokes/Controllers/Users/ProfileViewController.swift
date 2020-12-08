@@ -16,7 +16,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Auth.auth().currentUser?.reload(completion: nil)
-        getProfileIcon()
+        //getProfileIcon()
     }
     
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
@@ -36,58 +36,58 @@ class ProfileViewController: UIViewController {
     
     
     
-    func getProfileIcon() {
-        
-        guard let user = Auth.auth().currentUser else {return}
-        let userID = user.uid
-        
-        let db = Firestore.firestore()
-        
-        let collectionRef = db.collection(Strings.collectionName).whereField("UID", isEqualTo: userID)
-        collectionRef.getDocuments { [self] (snapshotResult, error) in
-            
-            if error != nil {
-                print("There has been an error!")
-            } else {
-                if let profilePic = snapshotResult?.documents.first {
-                    if let profilePicLocation = profilePic["profilePic"] as? String {
-                     
-                        if let imageURL = URL(string: profilePicLocation) {
-                            
-                            do {
-                                print("Hello")
-                                let imageData = try Data(contentsOf: imageURL)
-                                profileIcon.image = UIImage(data: imageData)
-                                profileIcon.layer.cornerRadius = profileIcon.frame.size.width / 2
-                                profileIcon.clipsToBounds = true
-                                profileIcon.contentMode = .scaleAspectFill
-                            } catch {
-                                print("There has been an error")
-                            }
-                            
-                            
-                            
-                            
-                            
-                         
-                               
-                            
-                        }
-                        
-                            
-                        
-                        
-                        
-                    }
-                    
-                    
-                }
-                
-            }
-            
-        }
-        
-    }
+//    func getProfileIcon() {
+//        
+//        guard let user = Auth.auth().currentUser else {return}
+//        let userID = user.uid
+//        
+//        let db = Firestore.firestore()
+//        
+//        let collectionRef = db.collection(Strings.collectionName).whereField("UID", isEqualTo: userID)
+//        collectionRef.getDocuments { [self] (snapshotResult, error) in
+//            
+//            if error != nil {
+//                print("There has been an error!")
+//            } else {
+//                if let profilePic = snapshotResult?.documents.first {
+//                    if let profilePicLocation = profilePic["profilePic"] as? String {
+//                     
+//                        if let imageURL = URL(string: profilePicLocation) {
+//                            
+//                            do {
+//                                print("Hello")
+//                                let imageData = try Data(contentsOf: imageURL)
+//                                profileIcon.image = UIImage(data: imageData)
+//                                profileIcon.layer.cornerRadius = profileIcon.frame.size.width / 2
+//                                profileIcon.clipsToBounds = true
+//                                profileIcon.contentMode = .scaleAspectFill
+//                            } catch {
+//                                print("There has been an error")
+//                            }
+//                            
+//                            
+//                            
+//                            
+//                            
+//                         
+//                               
+//                            
+//                        }
+//                        
+//                            
+//                        
+//                        
+//                        
+//                    }
+//                    
+//                    
+//                }
+//                
+//            }
+//            
+//        }
+//        
+//    }
     
     
 }
