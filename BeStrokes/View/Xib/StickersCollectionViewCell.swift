@@ -25,12 +25,12 @@ class StickersCollectionViewCell: UICollectionViewCell {
         stickersLabel.textAlignment = .left
         stickersLabel.numberOfLines = 0
         stickersLabel.lineBreakMode = .byWordWrapping
-        stickersLabel.font = UIFont(name: "Futura-Bold", size: 15)
+        stickersLabel.font = UIFont(name: "Futura-Bold", size: 18)
         stickersLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
         stickersOptionButtonLabel.setTitle("...", for: .normal)
         stickersOptionButtonLabel.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-        stickersOptionButtonLabel.titleLabel?.font = UIFont(name: "Futura", size: 30)
+        stickersOptionButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 25)
 
         stickersImageView.image = UIImage(named: "Lion")
         stickersImageView.contentMode = .scaleAspectFit

@@ -29,7 +29,7 @@
                                 <rect key="frame" x="0.0" y="35.5" width="140" height="104.5"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8IT-FA-T4d">
-                                <rect key="frame" x="100" y="0.0" width="30" height="20"/>
+                                <rect key="frame" x="100" y="5" width="30" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="4XO-ex-5YN"/>
                                     <constraint firstAttribute="height" constant="20" id="HvT-jO-S7s"/>
@@ -45,7 +45,7 @@
                             <constraint firstItem="Js9-S4-QNQ" firstAttribute="top" secondItem="YKi-pj-vbz" secondAttribute="bottom" constant="5" id="E9S-uO-gCZ"/>
                             <constraint firstAttribute="height" constant="140" id="Hoi-hj-v6J"/>
                             <constraint firstAttribute="width" constant="140" id="JPM-9P-A1M"/>
-                            <constraint firstItem="8IT-FA-T4d" firstAttribute="top" secondItem="ygQ-zI-xqz" secondAttribute="top" id="aVN-tO-JJA"/>
+                            <constraint firstItem="8IT-FA-T4d" firstAttribute="top" secondItem="ygQ-zI-xqz" secondAttribute="top" constant="5" id="aVN-tO-JJA"/>
                             <constraint firstItem="YKi-pj-vbz" firstAttribute="leading" secondItem="ygQ-zI-xqz" secondAttribute="leading" constant="20" id="fuz-6O-CpZ"/>
                             <constraint firstAttribute="trailing" secondItem="Js9-S4-QNQ" secondAttribute="trailing" id="nyh-Bk-vH3"/>
                             <constraint firstItem="8IT-FA-T4d" firstAttribute="leading" secondItem="YKi-pj-vbz" secondAttribute="trailing" id="orq-WZ-fnj"/>
