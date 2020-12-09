@@ -64,10 +64,10 @@
             </constraints>
             <size key="customSize" width="140" height="140"/>
             <connections>
-                <outlet property="stickersContentView" destination="ygQ-zI-xqz" id="9bb-jC-08n"/>
-                <outlet property="stickersImageView" destination="Js9-S4-QNQ" id="ptP-GK-k6F"/>
-                <outlet property="stickersLabel" destination="YKi-pj-vbz" id="Ml9-PD-Ew9"/>
-                <outlet property="stickersOptionButtonLabel" destination="8IT-FA-T4d" id="Wj0-HR-6gY"/>
+                <outlet property="stickerContentView" destination="ygQ-zI-xqz" id="9bb-jC-08n"/>
+                <outlet property="stickerImageView" destination="Js9-S4-QNQ" id="ptP-GK-k6F"/>
+                <outlet property="stickerLabel" destination="YKi-pj-vbz" id="Ml9-PD-Ew9"/>
+                <outlet property="stickerOptionButtonLabel" destination="8IT-FA-T4d" id="Wj0-HR-6gY"/>
             </connections>
             <point key="canvasLocation" x="-100.00000000000001" y="99.776785714285708"/>
         </collectionViewCell>

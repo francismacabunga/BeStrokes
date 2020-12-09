@@ -9,24 +9,24 @@ import UIKit
 
 class StickersCategoryCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var stickersCategoryContentView: UIView!
-    @IBOutlet weak var stickersCategoryLabel: UILabel!
+    @IBOutlet weak var stickerCategoryContentView: UIView!
+    @IBOutlet weak var stickerCategoryLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        stickersCategoryContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        stickersCategoryContentView.layer.cornerRadius = stickersCategoryContentView.bounds.height / 2
+        stickerCategoryContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        stickerCategoryContentView.layer.cornerRadius = stickerCategoryContentView.bounds.height / 2
         
-        stickersCategoryLabel.text = "Label"
-        stickersCategoryLabel.font = UIFont(name: "Futura-Bold", size: 13)
-        stickersCategoryLabel.adjustsFontSizeToFitWidth = true
-        stickersCategoryLabel.numberOfLines = 1
-        stickersCategoryLabel.minimumScaleFactor = 0.9
-        stickersCategoryLabel.textAlignment = .center
+        stickerCategoryLabel.text = "Label"
+        stickerCategoryLabel.font = UIFont(name: "Futura-Bold", size: 13)
+        stickerCategoryLabel.adjustsFontSizeToFitWidth = true
+        stickerCategoryLabel.numberOfLines = 1
+        stickerCategoryLabel.minimumScaleFactor = 0.9
+        stickerCategoryLabel.textAlignment = .center
        
         
-        stickersCategoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        stickerCategoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
     }
     

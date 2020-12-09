@@ -33,6 +33,10 @@ class CaptureViewController: UIViewController, ARSCNViewDelegate, UINavigationCo
         registerGestureRecognizers()
         //sceneView.autoenablesDefaultLighting = true
         //sceneView.debugOptions = [SCNDebugOptions.showFeaturePoints]
+        
+
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

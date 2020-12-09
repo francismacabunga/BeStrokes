@@ -9,31 +9,31 @@ import UIKit
 
 class StickersCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var stickersContentView: UIView!
-    @IBOutlet weak var stickersLabel: UILabel!
-    @IBOutlet weak var stickersOptionButtonLabel: UIButton!
-    @IBOutlet weak var stickersImageView: UIImageView!
+    @IBOutlet weak var stickerContentView: UIView!
+    @IBOutlet weak var stickerLabel: UILabel!
+    @IBOutlet weak var stickerOptionButtonLabel: UIButton!
+    @IBOutlet weak var stickerImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        stickersContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        stickersContentView.layer.cornerRadius = 30
-        stickersContentView.clipsToBounds = true
+        stickerContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        stickerContentView.layer.cornerRadius = 30
+        stickerContentView.clipsToBounds = true
 
-        stickersLabel.text = "Lion"
-        stickersLabel.textAlignment = .left
-        stickersLabel.numberOfLines = 0
-        stickersLabel.lineBreakMode = .byWordWrapping
-        stickersLabel.font = UIFont(name: "Futura-Bold", size: 18)
-        stickersLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        stickerLabel.text = "Lion"
+        stickerLabel.textAlignment = .left
+        stickerLabel.numberOfLines = 0
+        stickerLabel.lineBreakMode = .byWordWrapping
+        stickerLabel.font = UIFont(name: "Futura-Bold", size: 18)
+        stickerLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
-        stickersOptionButtonLabel.setTitle("...", for: .normal)
-        stickersOptionButtonLabel.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-        stickersOptionButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 25)
+        stickerOptionButtonLabel.setTitle("...", for: .normal)
+        stickerOptionButtonLabel.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        stickerOptionButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 25)
 
-        stickersImageView.image = UIImage(named: "Lion")
-        stickersImageView.contentMode = .scaleAspectFit
+        stickerImageView.image = UIImage(named: "Lion")
+        stickerImageView.contentMode = .scaleAspectFit
         
     }
     

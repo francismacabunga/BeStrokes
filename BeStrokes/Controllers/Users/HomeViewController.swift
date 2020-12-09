@@ -16,7 +16,7 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var featuredHeading: UILabel!
-    @IBOutlet weak var stickersHeading: UILabel!
+    @IBOutlet weak var stickerHeading: UILabel!
     @IBOutlet weak var featuredCollectionView: UICollectionView!
     
     
@@ -62,16 +62,16 @@ class HomeViewController: UIViewController {
         
         
         view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        featuredView.backgroundColor = UIColor.clear
-        stickersView.backgroundColor = UIColor.clear
+        featuredView.backgroundColor = .clear
+        stickersView.backgroundColor = .clear
         
         featuredHeading.text = "Featured"
         featuredHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         featuredHeading.font = UIFont(name: "Futura-Bold", size: 35)
         
-        stickersHeading.text = "Stickers"
-        stickersHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        stickersHeading.font = UIFont(name: "Futura-Bold", size: 35)
+        stickerHeading.text = "Stickers"
+        stickerHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        stickerHeading.font = UIFont(name: "Futura-Bold", size: 35)
         
         
         featuredCollectionView.backgroundColor = UIColor.clear
@@ -92,10 +92,7 @@ class HomeViewController: UIViewController {
         
         
         
-        tabBarController?.tabBar.barTintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        tabBarController?.tabBar.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        
-        
+
 
         
         
