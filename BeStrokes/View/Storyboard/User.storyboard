@@ -136,7 +136,7 @@
                                                 <rect key="frame" x="0.0" y="300" width="428" height="500"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCR-bf-HKB">
-                                                        <rect key="frame" x="40" y="0.0" width="41.333333333333343" height="20.333333333333332"/>
+                                                        <rect key="frame" x="30.000000000000004" y="0.0" width="41.333333333333343" height="20.333333333333332"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -149,7 +149,7 @@
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="hCR-bf-HKB" firstAttribute="top" secondItem="v6D-GD-rbb" secondAttribute="top" id="B4Z-JX-54R"/>
-                                                    <constraint firstItem="hCR-bf-HKB" firstAttribute="leading" secondItem="v6D-GD-rbb" secondAttribute="leading" constant="40" id="G0P-z6-9iX"/>
+                                                    <constraint firstItem="hCR-bf-HKB" firstAttribute="leading" secondItem="v6D-GD-rbb" secondAttribute="leading" constant="30" id="G0P-z6-9iX"/>
                                                     <constraint firstAttribute="trailing" secondItem="96w-nb-Ard" secondAttribute="trailing" constant="5" id="HBQ-0Z-4N3"/>
                                                     <constraint firstItem="96w-nb-Ard" firstAttribute="leading" secondItem="v6D-GD-rbb" secondAttribute="leading" constant="5" id="JNT-0c-aW2"/>
                                                     <constraint firstAttribute="bottom" secondItem="96w-nb-Ard" secondAttribute="bottom" id="Rb7-k4-KD0"/>
