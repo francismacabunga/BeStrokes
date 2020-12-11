@@ -15,10 +15,21 @@ class StickersCategoryCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        designElements()
+        
+    }
+    
+    
+    func setData(with data: String) {
+        stickerCategoryLabel.text = data
+    }
+    
+    func designElements() {
+        
         stickerCategoryContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         stickerCategoryContentView.layer.cornerRadius = stickerCategoryContentView.bounds.height / 2
         
-        stickerCategoryLabel.text = "Label"
+        
         stickerCategoryLabel.font = UIFont(name: "Futura-Bold", size: 13)
         stickerCategoryLabel.adjustsFontSizeToFitWidth = true
         stickerCategoryLabel.numberOfLines = 1

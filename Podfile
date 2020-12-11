@@ -12,5 +12,6 @@ pod 'Firebase/Storage'
 pod 'IQKeyboardManagerSwift'
 pod 'CropViewController'
 pod 'MSPeekCollectionViewDelegateImplementation'
+pod 'SkeletonView'
 
 end

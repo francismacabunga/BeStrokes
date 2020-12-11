@@ -9,6 +9,23 @@ import UIKit
 import FirebaseAuth
 import Firebase
 import MSPeekCollectionViewDelegateImplementation
+import SkeletonView
+
+struct CollectionViewData {
+    var name: String
+    var image: Data
+}
+
+struct FeaturedData {
+    var name: String
+    var image: Data
+}
+
+struct StickerData {
+    var name: String
+    var image: Data
+    var tag: String?
+}
 
 class HomeViewController: UIViewController {
     
@@ -17,26 +34,24 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var featuredHeading: UILabel!
     @IBOutlet weak var stickerHeading: UILabel!
+    
     @IBOutlet weak var featuredCollectionView: UICollectionView!
-    
-    
     @IBOutlet weak var stickersCategoryCollectionView: UICollectionView!
     @IBOutlet weak var stickersCollectionView: UICollectionView!
-    
     
     @IBOutlet weak var featuredView: UIView!
     @IBOutlet weak var stickersView: UIView!
     
-
     
     //MARK: - Private Constants/Variables
     
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
-    private let sampleArray = ["Francis", "Norman", "Creed", "Luther", "Apple", "Samsung"]
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
-    private var stickerDictionary: [String: Any] = [:]
-    private var stickerArray = [Data?]()
+    
+    private var featuredData = [FeaturedData]()
+    private var stickerCategory = ["All", "Animals", "Food", "Objects", "Colored", "Travel"]
+    private var sticker: [StickerData]?
     
     
     //MARK: - View Controller Life Cycle
@@ -49,7 +64,39 @@ class HomeViewController: UIViewController {
         setDelegate()
         navigationController?.setNavigationBarHidden(true, animated: true)
         
+        
+        
+       
+        
+        getCollectionViewData(category: "featured") { [self] (results) in
+            for result in results {
+                featuredData.append(FeaturedData(name: result.name, image: result.image))
+            }
+            featuredCollectionView.reloadData()
+        }
+        
+        
+        
+        getCollectionViewData(category: "all") { [self] (results) in
+            sticker = [StickerData]()
+            
+            for result in results {
+                sticker?.append(StickerData(name: result.name, image: result.image))
+            }
+            
+            
+
+            print(results)
+            stickersCollectionView.reloadData()
+        }
+        
+        
+        
+        
+        
     }
+    
+    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -82,7 +129,7 @@ class HomeViewController: UIViewController {
         stickersCategoryCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
         stickersCategoryCollectionView.showsHorizontalScrollIndicator = false
         
-
+        
         
         
         stickersCollectionView.backgroundColor = UIColor.clear
@@ -92,8 +139,8 @@ class HomeViewController: UIViewController {
         
         
         
-
-
+        
+        
         
         
         
@@ -151,24 +198,24 @@ class HomeViewController: UIViewController {
                 } else {
                     if let documents = result?.documents.first {
                         let profilePicture = documents["profilePic"] as! String
-                     
+                        
                         if let profilePictureURL = URL(string: profilePicture) {
                             
-//                            let convertURLtoData = URLSession.shared.dataTask(with: profilePictureURL) { (data, response, error) in
-//
-//                                if error != nil {
-//                                    // Show error
-//                                } else {
-//
-//                                    guard let data = data else {return}
-//
-//                                    DispatchQueue.main.async {
-//                                        profilePictureImageView.image = UIImage(data: data)
-//                                    }
-//
-//                                }
-//
-//                            }
+                            //                            let convertURLtoData = URLSession.shared.dataTask(with: profilePictureURL) { (data, response, error) in
+                            //
+                            //                                if error != nil {
+                            //                                    // Show error
+                            //                                } else {
+                            //
+                            //                                    guard let data = data else {return}
+                            //
+                            //                                    DispatchQueue.main.async {
+                            //                                        profilePictureImageView.image = UIImage(data: data)
+                            //                                    }
+                            //
+                            //                                }
+                            //
+                            //                            }
                             
                             if let imageData = convertURLtoData(using: profilePictureURL) {
                                 profilePictureImageView.image = UIImage(data: imageData)
@@ -185,18 +232,25 @@ class HomeViewController: UIViewController {
         }
     }
     
+    
+    
+    
+    
+    
+    
+    
     func convertURLtoData(using URL: URL) -> Data? {
         
-//        if let imageURL = URL(string: link) {
-            do {
-
-                let imageData = try Data(contentsOf: URL)
-                return imageData
-
-            } catch {
-
-            }
-//        }
+        //        if let imageURL = URL(string: link) {
+        do {
+            
+            let imageData = try Data(contentsOf: URL)
+            return imageData
+            
+        } catch {
+            
+        }
+        //        }
         return nil
         
         
@@ -204,45 +258,178 @@ class HomeViewController: UIViewController {
         
         
         
-        return Data()
     }
     
+    
+    
+    
+    
+//    func getFeaturedData(completed: @escaping ([FeaturedData]) -> Void) {
+//        if user != nil {
+//            var featuredDataArray = [FeaturedData]()
+//            let collectionReference = db.collection("stickers").whereField("tag", isEqualTo: "featured")
+//            collectionReference.getDocuments { [self] (snapshot, error) in
+//                if error != nil {
+//                    // Show error
+//                } else {
+//                    guard let result = snapshot?.documents else {return}
+//                    for everyResult in result {
+//                        let name = everyResult["name"] as! String
+//                        let imageString = everyResult["image"] as! String
+//                        if let imageURL =  URL(string: imageString) {
+//                            if let data = changeImageURLtoData(with: imageURL) {
+//                                featuredDataArray.append(FeaturedData(name: name, image: data))
+//                            }
+//                        }
+//                    }
+//                }
+//                completed(featuredDataArray)
+//            }
+//        }
+//    }
+    
+    
+    func getCollectionViewData(category: String, completed: @escaping ([CollectionViewData]) -> Void) {
+        if user != nil {
+            var featuredDataArray = [CollectionViewData]()
+            
+            var collectionReference: Query?
+            
+            if category == "featured" {
+                collectionReference = db.collection("stickers").whereField("tag", isEqualTo: "featured")
+            }
+            
+            if category == "all" {
+                collectionReference = db.collection("stickers")
+            }
+            
+            collectionReference!.getDocuments { [self] (snapshot, error) in
+                if error != nil {
+                    // Show error
+                } else {
+                    guard let result = snapshot?.documents else {return}
+                    for everyResult in result {
+                        let name = everyResult["name"] as! String
+                        let imageString = everyResult["image"] as! String
+                        if let imageURL =  URL(string: imageString) {
+                            if let data = changeImageURLtoData(with: imageURL) {
+                                featuredDataArray.append(CollectionViewData(name: name, image: data))
+                                
+                            }
+                        }
+                    }
+                }
+                completed(featuredDataArray)
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    func changeImageURLtoData(with imageURL: URL) -> Data? {
+        
+        do {
+            let data = try Data(contentsOf: imageURL)
+            return data
+        } catch {
+            // Show error
+        }
+        return nil
+    }
+    
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 extension HomeViewController: UICollectionViewDelegate {
     
 }
 
-extension HomeViewController: UICollectionViewDataSource {
+extension HomeViewController: SkeletonCollectionViewDataSource {
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "FeaturedCollectionViewCell"
+    }
+    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 50
+        
+        if collectionView == featuredCollectionView {
+            return featuredData.count
+        }
+        
+        if collectionView == stickersCategoryCollectionView {
+            return stickerCategory.count
+        }
+        
+        if collectionView == stickersCollectionView {
+            return sticker?.count ?? 6
+        }
+        
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if collectionView == featuredCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath) as! FeaturedCollectionViewCell
+            cell.setData(with: featuredData[indexPath.row])
             return cell
         }
         
         if collectionView == stickersCategoryCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCategoryCollectionViewCell", for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCategoryCollectionViewCell", for: indexPath) as! StickersCategoryCollectionViewCell
+            cell.setData(with: stickerCategory[indexPath.row])
             return cell
         }
-
+        
         if collectionView == stickersCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCollectionViewCell", for: indexPath)
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCollectionViewCell", for: indexPath) as! StickersCollectionViewCell
+            
+            if sticker != nil {
+                cell.hideLoadingSkeleton()
+                cell.setData(with: sticker![indexPath.row])
+                return cell
+            }
+            
+            cell.showLoadingSkeleton()
             return cell
         }
-        
         return UICollectionViewCell()
-        
     }
     
 }
@@ -256,7 +443,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+        
         if collectionView == stickersCategoryCollectionView {
             let stickersCategoryCollectionViewLayout = stickersCategoryCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             stickersCategoryCollectionViewLayout.sectionInset.left = 25
@@ -271,9 +458,9 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: 140, height: 140)
         }
         
-
+        
         return CGSize()
-
+        
     }
     
     

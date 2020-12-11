@@ -10,7 +10,8 @@ import Firebase
 
 class ProfileViewController: UIViewController {
     
-    @IBOutlet weak var savedStickersTableView: UITableView!
+    @IBOutlet weak var profileView: UIView!
+    @IBOutlet weak var savedStickersView: UIView!
     
     
     
@@ -27,12 +28,11 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var profileEmailHeading: UILabel!
     
     @IBOutlet weak var savedStickersHeading: UILabel!
+    @IBOutlet weak var savedStickersTableView: UITableView!
     
     
     
     
-    @IBOutlet weak var profileView: UIView!
-    @IBOutlet weak var savedStickersView: UIView!
     
     
     
