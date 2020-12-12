@@ -31,6 +31,9 @@ class HomeViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var featuredView: UIView!
+    @IBOutlet weak var stickersView: UIView!
+    
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var featuredHeading: UILabel!
     @IBOutlet weak var stickerHeading: UILabel!
@@ -38,9 +41,6 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var featuredCollectionView: UICollectionView!
     @IBOutlet weak var stickersCategoryCollectionView: UICollectionView!
     @IBOutlet weak var stickersCollectionView: UICollectionView!
-    
-    @IBOutlet weak var featuredView: UIView!
-    @IBOutlet weak var stickersView: UIView!
     
     
     //MARK: - Private Constants/Variables
@@ -60,43 +60,13 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         designElements()
-        setCollectionView()
-        setDelegate()
-        navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        
-        
-       
-        
-        getCollectionViewData(category: "featured") { [self] (results) in
-            for result in results {
-                featuredData.append(FeaturedData(name: result.name, image: result.image))
-            }
-            featuredCollectionView.reloadData()
-        }
-        
-        
-        
-        getCollectionViewData(category: "all") { [self] (results) in
-            sticker = [StickerData]()
-            
-            for result in results {
-                sticker?.append(StickerData(name: result.name, image: result.image))
-            }
-            
-            
-
-            print(results)
-            stickersCollectionView.reloadData()
-        }
-        
-        
-        
-        
+        //        setCollectionView()
+        //        getCollectionViewData()
         
     }
     
     
+    //MARK: - Design Elements
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -104,13 +74,14 @@ class HomeViewController: UIViewController {
     
     func designElements() {
         
-        getProfilePicture()
-        setProfilePicture()
-        
+        navigationController?.setNavigationBarHidden(true, animated: true)
         
         view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         featuredView.backgroundColor = .clear
         stickersView.backgroundColor = .clear
+        
+        designProfilePictureImageView()
+        getProfilePicture()
         
         featuredHeading.text = "Featured"
         featuredHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
@@ -120,7 +91,6 @@ class HomeViewController: UIViewController {
         stickerHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         stickerHeading.font = UIFont(name: "Futura-Bold", size: 35)
         
-        
         featuredCollectionView.backgroundColor = UIColor.clear
         featuredCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
         featuredCollectionView.showsHorizontalScrollIndicator = false
@@ -129,29 +99,66 @@ class HomeViewController: UIViewController {
         stickersCategoryCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
         stickersCategoryCollectionView.showsHorizontalScrollIndicator = false
         
-        
-        
-        
         stickersCollectionView.backgroundColor = UIColor.clear
         stickersCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
         stickersCollectionView.showsHorizontalScrollIndicator = false
         
-        
-        
-        
-        
-        
-        
-        
-        
     }
+    
+    func designProfilePictureImageView() {
+        profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
+        profilePictureImageView.clipsToBounds = true
+        profilePictureImageView.contentMode = .scaleAspectFill
+        DispatchQueue.main.async { [self] in
+            profilePictureImageView.isSkeletonable = true
+            profilePictureImageView.skeletonCornerRadius = Float(profilePictureImageView.frame.size.width / 2)
+            profilePictureImageView.showAnimatedSkeleton()
+        }
+    }
+    
+    func getProfilePicture() {
+        if user != nil {
+            let UID = user?.uid
+            let collectionReference = db.collection("users").whereField("UID", isEqualTo: UID!)
+            collectionReference.getDocuments { [self] (result, error) in
+                if error != nil {
+                } else {
+                    if let documents = result?.documents.first {
+                        let imageString = documents["profilePic"] as! String
+                        downloadData(using: imageString) { (imageData) in
+                            DispatchQueue.main.async {
+                                profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.25))
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                profilePictureImageView.image = UIImage(data: imageData)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    //MARK: - Collection View Process
     
     func setCollectionView() {
         
+        setDelegate()
         registerNib()
+        
         viewPeekingBehavior = MSCollectionViewPeekingBehavior()
         setViewPeekingBehavior(using: viewPeekingBehavior)
         
+    }
+    
+    func setDelegate() {
+        featuredCollectionView.delegate = self
+        stickersCategoryCollectionView.delegate = self
+        stickersCollectionView.delegate = self
+        featuredCollectionView.dataSource = self
+        stickersCategoryCollectionView.dataSource = self
+        stickersCollectionView.dataSource = self
     }
     
     func registerNib() {
@@ -168,155 +175,48 @@ class HomeViewController: UIViewController {
         
     }
     
-    func setDelegate() {
-        featuredCollectionView.delegate = self
-        stickersCategoryCollectionView.delegate = self
-        stickersCollectionView.delegate = self
-        featuredCollectionView.dataSource = self
-        stickersCategoryCollectionView.dataSource = self
-        stickersCollectionView.dataSource = self
-    }
-    
-    
-    //MARK: - Setting Profile Picture Process
-    
-    func setProfilePicture() {
-        profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
-        profilePictureImageView.clipsToBounds = true
-        profilePictureImageView.contentMode = .scaleAspectFill
+    func getCollectionViewData() {
         
-    }
-    
-    func getProfilePicture() {
-        
-        if user != nil {
-            let UID = user?.uid
-            let collectionReference = db.collection("users").whereField("UID", isEqualTo: UID)
-            collectionReference.getDocuments { [self] (result, error) in
-                if error != nil {
-                    
-                } else {
-                    if let documents = result?.documents.first {
-                        let profilePicture = documents["profilePic"] as! String
-                        
-                        if let profilePictureURL = URL(string: profilePicture) {
-                            
-                            //                            let convertURLtoData = URLSession.shared.dataTask(with: profilePictureURL) { (data, response, error) in
-                            //
-                            //                                if error != nil {
-                            //                                    // Show error
-                            //                                } else {
-                            //
-                            //                                    guard let data = data else {return}
-                            //
-                            //                                    DispatchQueue.main.async {
-                            //                                        profilePictureImageView.image = UIImage(data: data)
-                            //                                    }
-                            //
-                            //                                }
-                            //
-                            //                            }
-                            
-                            if let imageData = convertURLtoData(using: profilePictureURL) {
-                                profilePictureImageView.image = UIImage(data: imageData)
-                            }
-                            
-                            
-                        }
-                        
-                        
-                        
-                    }
-                }
+        getCollectionViewData(category: "featured") { [self] (results) in
+            for result in results {
+                featuredData.append(FeaturedData(name: result.name, image: result.image))
             }
+            featuredCollectionView.reloadData()
+        }
+        
+        getCollectionViewData(category: "stickers") { [self] (results) in
+            sticker = [StickerData]()
+            for result in results {
+                sticker?.append(StickerData(name: result.name, image: result.image))
+            }
+            stickersCollectionView.reloadData()
         }
     }
     
     
     
-    
-    
-    
-    
-    
-    func convertURLtoData(using URL: URL) -> Data? {
-        
-        //        if let imageURL = URL(string: link) {
-        do {
-            
-            let imageData = try Data(contentsOf: URL)
-            return imageData
-            
-        } catch {
-            
-        }
-        //        }
-        return nil
-        
-        
-        
-        
-        
-        
-    }
-    
-    
-    
-    
-    
-//    func getFeaturedData(completed: @escaping ([FeaturedData]) -> Void) {
-//        if user != nil {
-//            var featuredDataArray = [FeaturedData]()
-//            let collectionReference = db.collection("stickers").whereField("tag", isEqualTo: "featured")
-//            collectionReference.getDocuments { [self] (snapshot, error) in
-//                if error != nil {
-//                    // Show error
-//                } else {
-//                    guard let result = snapshot?.documents else {return}
-//                    for everyResult in result {
-//                        let name = everyResult["name"] as! String
-//                        let imageString = everyResult["image"] as! String
-//                        if let imageURL =  URL(string: imageString) {
-//                            if let data = changeImageURLtoData(with: imageURL) {
-//                                featuredDataArray.append(FeaturedData(name: name, image: data))
-//                            }
-//                        }
-//                    }
-//                }
-//                completed(featuredDataArray)
-//            }
-//        }
-//    }
     
     
     func getCollectionViewData(category: String, completed: @escaping ([CollectionViewData]) -> Void) {
         if user != nil {
             var featuredDataArray = [CollectionViewData]()
-            
             var collectionReference: Query?
-            
             if category == "featured" {
                 collectionReference = db.collection("stickers").whereField("tag", isEqualTo: "featured")
             }
-            
-            if category == "all" {
+            if category == "stickers" {
                 collectionReference = db.collection("stickers")
             }
-            
             collectionReference!.getDocuments { [self] (snapshot, error) in
                 if error != nil {
-                    // Show error
                 } else {
                     guard let result = snapshot?.documents else {return}
                     for everyResult in result {
                         let name = everyResult["name"] as! String
                         let imageString = everyResult["image"] as! String
-                        if let imageURL =  URL(string: imageString) {
-                            if let data = changeImageURLtoData(with: imageURL) {
-                                featuredDataArray.append(CollectionViewData(name: name, image: data))
-                                
-                            }
-                        }
+                        
+                        
+                        
                     }
                 }
                 completed(featuredDataArray)
@@ -325,61 +225,34 @@ class HomeViewController: UIViewController {
     }
     
     
+    //MARK: - Networking
     
-    
-    
-    
-    
-    func changeImageURLtoData(with imageURL: URL) -> Data? {
-        
-        do {
-            let data = try Data(contentsOf: imageURL)
-            return data
-        } catch {
-            // Show error
+    func downloadData(using dataString: String, completed: @escaping (Data) -> Void) {
+        if let url = URL(string: dataString) {
+            let session = URLSession(configuration: .default)
+            let task = session.dataTask(with: url) { (data, response, error) in
+                if error != nil {
+                    // Show error
+                } else {
+                    if let result = data {
+                        completed(result)
+                    }
+                }
+            }
+            task.resume()
         }
-        return nil
     }
     
-    
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-extension HomeViewController: UICollectionViewDelegate {
-    
-}
+//MARK: - Collection View Data Source
 
 extension HomeViewController: SkeletonCollectionViewDataSource {
     
     func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
         return "FeaturedCollectionViewCell"
     }
-    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -411,6 +284,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         }
         
         if collectionView == stickersCategoryCollectionView {
+            
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCategoryCollectionViewCell", for: indexPath) as! StickersCategoryCollectionViewCell
             cell.setData(with: stickerCategory[indexPath.row])
             return cell
@@ -434,6 +308,9 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     
 }
 
+
+//MARK: - Collection View Design Update
+
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -450,20 +327,12 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: 100, height: 30)
         }
         
-        
         if collectionView == stickersCollectionView {
-            
             let stickersCollectionViewLayout = stickersCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             stickersCollectionViewLayout.sectionInset.left = 25
             return CGSize(width: 140, height: 140)
         }
-        
-        
         return CGSize()
-        
     }
-    
-    
-    
     
 }
