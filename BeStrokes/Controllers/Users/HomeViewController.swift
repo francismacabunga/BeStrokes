@@ -13,7 +13,7 @@ import SkeletonView
 
 struct CollectionViewData {
     var name: String
-    var image: Data
+    var image: String
 }
 
 struct FeaturedData {
@@ -25,6 +25,10 @@ struct StickerData {
     var name: String
     var image: Data
     var tag: String?
+}
+
+struct Sample {
+    var data: Data
 }
 
 class HomeViewController: UIViewController {
@@ -49,9 +53,10 @@ class HomeViewController: UIViewController {
     private let db = Firestore.firestore()
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     
-    private var featuredData = [FeaturedData]()
+    var collectionViewDataArray = [CollectionViewData]()
+    private var featuredData: [FeaturedData]?
     private var stickerCategory = ["All", "Animals", "Food", "Objects", "Colored", "Travel"]
-    private var sticker: [StickerData]?
+    private var stickerData: [StickerData]?
     
     
     //MARK: - View Controller Life Cycle
@@ -60,8 +65,8 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         designElements()
-        //        setCollectionView()
-        //        getCollectionViewData()
+        setCollectionView()
+        setCollectionViewData()
         
     }
     
@@ -108,7 +113,7 @@ class HomeViewController: UIViewController {
     func designProfilePictureImageView() {
         profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
         profilePictureImageView.clipsToBounds = true
-        profilePictureImageView.contentMode = .scaleAspectFill
+        profilePictureImageView.contentMode = .scaleAspectFit
         DispatchQueue.main.async { [self] in
             profilePictureImageView.isSkeletonable = true
             profilePictureImageView.skeletonCornerRadius = Float(profilePictureImageView.frame.size.width / 2)
@@ -125,12 +130,14 @@ class HomeViewController: UIViewController {
                 } else {
                     if let documents = result?.documents.first {
                         let imageString = documents["profilePic"] as! String
-                        downloadData(using: imageString) { (imageData) in
+                        downloadAndConvertToData(using: imageString) { (imageData) in
                             DispatchQueue.main.async {
-                                profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.25))
+                                profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
                             }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                                
                                 profilePictureImageView.image = UIImage(data: imageData)
+                                
                             }
                         }
                     }
@@ -175,51 +182,87 @@ class HomeViewController: UIViewController {
         
     }
     
-    func getCollectionViewData() {
+    
+    
+    func setCollectionViewData() {
         
         getCollectionViewData(category: "featured") { [self] (results) in
+            featuredData = [FeaturedData]()
+
             for result in results {
-                featuredData.append(FeaturedData(name: result.name, image: result.image))
+                let name = result.name
+                let imageLink = result.image
+                if let imageData = convertURLToData(using: imageLink) {
+                    featuredData?.append(FeaturedData(name: name, image: imageData))
+                }
             }
-            featuredCollectionView.reloadData()
+            DispatchQueue.main.async {
+
+                featuredCollectionView.reloadData()
+            }
         }
         
-        getCollectionViewData(category: "stickers") { [self] (results) in
-            sticker = [StickerData]()
-            for result in results {
-                sticker?.append(StickerData(name: result.name, image: result.image))
-            }
-            stickersCollectionView.reloadData()
+//        getCollectionViewData(category: "stickers") { [self] (results) in
+//
+//
+//            for result in results {
+//                let name = result.name
+//                let imageLink = result.image
+//                if let imageData = convertURLToData(using: imageLink) {
+//                    stickerData?.append(StickerData(name: name, image: imageData))
+//                }
+//            }
+//            DispatchQueue.main.async {
+//                print("Sticker Data: \(stickerData?.count)")
+//                stickersCollectionView.reloadData()
+//            }
+//        }
+    }
+    
+    
+    func convertURLToData(using link: String) -> Data? {
+        guard let imageURL = URL(string: link) else {return nil}
+        
+        do {
+            let imageData = try Data(contentsOf: imageURL)
+            return imageData
+        } catch {
+            // Show error
         }
+        return Data()
     }
     
     
     
     
     
+    
     func getCollectionViewData(category: String, completed: @escaping ([CollectionViewData]) -> Void) {
+        
         if user != nil {
-            var featuredDataArray = [CollectionViewData]()
             var collectionReference: Query?
+            
             if category == "featured" {
                 collectionReference = db.collection("stickers").whereField("tag", isEqualTo: "featured")
             }
             if category == "stickers" {
                 collectionReference = db.collection("stickers")
             }
+            
             collectionReference!.getDocuments { [self] (snapshot, error) in
                 if error != nil {
                 } else {
-                    guard let result = snapshot?.documents else {return}
-                    for everyResult in result {
-                        let name = everyResult["name"] as! String
-                        let imageString = everyResult["image"] as! String
+                    guard let results = snapshot?.documents else {return}
+                    
+                    for result in results {
+                        let name = result["name"] as! String
+                        let image = result["image"] as! String
                         
-                        
-                        
+                        collectionViewDataArray.append(CollectionViewData(name: name, image: image))
                     }
+                    print("From down here: \(collectionViewDataArray.count)")
+                    completed(collectionViewDataArray)
                 }
-                completed(featuredDataArray)
             }
         }
     }
@@ -227,9 +270,10 @@ class HomeViewController: UIViewController {
     
     //MARK: - Networking
     
-    func downloadData(using dataString: String, completed: @escaping (Data) -> Void) {
+    func downloadAndConvertToData(using dataString: String, completed: @escaping (Data) -> Void) {
         if let url = URL(string: dataString) {
             let session = URLSession(configuration: .default)
+            let sample = session.dataTask(with: url)
             let task = session.dataTask(with: url) { (data, response, error) in
                 if error != nil {
                     // Show error
@@ -251,7 +295,14 @@ class HomeViewController: UIViewController {
 extension HomeViewController: SkeletonCollectionViewDataSource {
     
     func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return "FeaturedCollectionViewCell"
+        
+        if skeletonView == featuredCollectionView {
+            return "FeaturedCollectionViewCell"
+        }
+        if skeletonView == stickersCollectionView {
+            return "StickersCollectionViewCell"
+        }
+        return ReusableCellIdentifier()
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -261,17 +312,14 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionView == featuredCollectionView {
-            return featuredData.count
+            return featuredData?.count ?? 2
         }
-        
         if collectionView == stickersCategoryCollectionView {
             return stickerCategory.count
         }
-        
         if collectionView == stickersCollectionView {
-            return sticker?.count ?? 6
+            return stickerData?.count ?? 6
         }
-        
         return 0
     }
     
@@ -279,7 +327,11 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         
         if collectionView == featuredCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath) as! FeaturedCollectionViewCell
-            cell.setData(with: featuredData[indexPath.row])
+            
+            if featuredData != nil {
+                cell.setData(with: featuredData![indexPath.row])
+                return cell
+            }
             return cell
         }
         
@@ -293,14 +345,10 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if collectionView == stickersCollectionView {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCollectionViewCell", for: indexPath) as! StickersCollectionViewCell
-            
-            if sticker != nil {
-                cell.hideLoadingSkeleton()
-                cell.setData(with: sticker![indexPath.row])
+            if stickerData != nil {
+                cell.setData(with: stickerData![indexPath.row])
                 return cell
             }
-            
-            cell.showLoadingSkeleton()
             return cell
         }
         return UICollectionViewCell()

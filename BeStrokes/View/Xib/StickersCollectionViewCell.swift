@@ -15,26 +15,13 @@ class StickersCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var stickerOptionButtonLabel: UIButton!
     @IBOutlet weak var stickerImageView: UIImageView!
     
-    func setData(with data: StickerData) {
-        stickerLabel.text = data.name
-        stickerImageView.image = UIImage(data: data.image)
-    }
-    
-    func showLoadingSkeleton() {
-        stickerContentView.isSkeletonable = true
-        stickerContentView.showAnimatedSkeleton()
-    }
-    
-    func hideLoadingSkeleton() {
-        stickerContentView.hideSkeleton()
-    }
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        
-        
+        showLoadingSkeletonView()
+    }
+    
+    func designElements() {
         stickerContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         stickerContentView.layer.cornerRadius = 30
         stickerContentView.clipsToBounds = true
@@ -48,8 +35,42 @@ class StickersCollectionViewCell: UICollectionViewCell {
         stickerOptionButtonLabel.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
         stickerOptionButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 20)
         stickerImageView.contentMode = .scaleAspectFit
+    }
+    
+    func showLoadingSkeletonView() {
+        DispatchQueue.main.async { [self] in
+            stickerContentView.isSkeletonable = true
+            stickerContentView.skeletonCornerRadius = 40
+            stickerContentView.showAnimatedSkeleton()
+        }
+    }
+    
+    func setData(with data: StickerData) {
+        
+        DispatchQueue.main.async { [self] in
+            stickerContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.1))
+        }
+        
+        DispatchQueue.main.async() { [self] in
+    
+         
+                designElements()
+            
+            
+            
+            stickerLabel.text = data.name
+            stickerImageView.image = UIImage(data: data.image)
+        }
+        
         
     }
+    
+    
+    
+    
+    
+    
+    
     
     @IBAction func stickersOptionButton(_ sender: UIButton) {
         

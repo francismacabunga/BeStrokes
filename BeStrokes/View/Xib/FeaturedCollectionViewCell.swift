@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class FeaturedCollectionViewCell: UICollectionViewCell {
     
@@ -15,26 +16,70 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var featuredTryMeButtonLabel: UIButton!
     @IBOutlet weak var featuredImageView: UIImageView!
     
-  
     var heartButtonValue: String?
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        designElements()
-        
-        featuredContentView.showSkeleton()
-        
+        showLoadingSkeletonView()
         
     }
     
-    func setData(with data: FeaturedData) {
+    func designElements() {
         
-        featuredLabel.text = data.name
-        featuredImageView.image = UIImage(data: data.image)
+        heartButtonValue = "heart"
+        
+        featuredContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        featuredContentView.layer.cornerRadius = 40
+        featuredContentView.clipsToBounds = true
+        
+        featuredLabel.numberOfLines = 0
+        featuredLabel.lineBreakMode = .byWordWrapping
+        featuredLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        featuredLabel.font = UIFont(name: "Futura-Bold", size: 25)
+        
+        featuredHeartButtonLabel.setTitle("", for: .normal)
+        featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: heartButtonValue!), for: .normal)
+        featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        
+        featuredTryMeButtonLabel.setTitle("Try me", for: .normal)
+        featuredTryMeButtonLabel.layer.cornerRadius = featuredTryMeButtonLabel.bounds.height / 2
+        featuredTryMeButtonLabel.clipsToBounds = true
+        featuredTryMeButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 15)
+        featuredTryMeButtonLabel.setTitleColor(#colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), for: .normal)
+        featuredTryMeButtonLabel.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        
+        featuredImageView.contentMode = .scaleAspectFit
         
     }
+    
+    func showLoadingSkeletonView() {
+        DispatchQueue.main.async { [self] in
+            featuredContentView.isSkeletonable = true
+            featuredContentView.skeletonCornerRadius = 40
+            featuredContentView.showAnimatedSkeleton()
+        }
+    }
+    
+    func setData(with data: FeaturedData) {
+        DispatchQueue.main.async { [self] in
+            featuredContentView.hideSkeleton(reloadDataAfter: false, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [self] in
+            
+        
+                designElements()
+          
+            featuredLabel.text = data.name
+            featuredImageView.image = UIImage(data: data.image)
+            
+            
+            
+        }
+    }
+    
+    
+    
     
     @IBAction func featuredHeartButton(_ sender: UIButton) {
         
@@ -54,7 +99,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     }
     
     
-  
+    
     @IBAction func featuredTryMeButton(_ sender: UIButton) {
         
         print("Try me is selected")
@@ -62,52 +107,9 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     
     
-    func designElements() {
-        featuredContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        featuredContentView.layer.cornerRadius = 40
-        featuredContentView.clipsToBounds = true
-        
-        
-        
-        
-        
-        featuredLabel.numberOfLines = 0
-        featuredLabel.lineBreakMode = .byWordWrapping
-        featuredLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        featuredLabel.font = UIFont(name: "Futura-Bold", size: 25)
-        
-        
-        featuredHeartButtonLabel.setTitle("", for: .normal)
-//        featuredHeartButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 35)
-        
-        heartButtonValue = "heart"
-        
-        featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: heartButtonValue!), for: .normal)
-        featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-//        featuredHeartButtonLabel.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-        
-        
-        
-        featuredTryMeButtonLabel.setTitle("Try me", for: .normal)
-        featuredTryMeButtonLabel.layer.cornerRadius = featuredTryMeButtonLabel.bounds.height / 2
-        featuredTryMeButtonLabel.clipsToBounds = true
-        featuredTryMeButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 15)
-        featuredTryMeButtonLabel.setTitleColor(#colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), for: .normal)
-        featuredTryMeButtonLabel.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        
-        
-           
-        
-        featuredImageView.contentMode = .scaleAspectFit
-        
-        
-//        featuredHeartButton.setBackgroundImage(UIImage(systemName: "heart"), for: .normal)
-//        featuredHeartButton.setTitle("", for: .normal)
-//        featuredHeartButton.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
     
-        
-        
-    }
+    
+    
     
     
 }
