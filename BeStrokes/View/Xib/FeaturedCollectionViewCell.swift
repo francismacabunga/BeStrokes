@@ -62,19 +62,19 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     }
     
     func setData(with data: FeaturedData) {
+        
         DispatchQueue.main.async { [self] in
             featuredContentView.hideSkeleton(reloadDataAfter: false, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [self] in
-            
         
-                designElements()
-          
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [self] in
+            designElements()
             featuredLabel.text = data.name
-            featuredImageView.image = UIImage(data: data.image)
-            
-            
-            
+            downloadAndConvertToData(using: data.image) { (imageData) in
+                DispatchQueue.main.async {
+                    featuredImageView.image = UIImage(data: imageData)
+                }
+            }
         }
     }
     
@@ -84,9 +84,11 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     @IBAction func featuredHeartButton(_ sender: UIButton) {
         
         if heartButtonValue == "heart" {
-            heartButtonValue = "heart.fill"
             
+            heartButtonValue = "heart.fill"
             featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: heartButtonValue!), for: .normal)
+            print(featuredLabel.text)
+            
         } else {
             heartButtonValue = "heart"
             
@@ -109,7 +111,23 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     
     
-    
+    func downloadAndConvertToData(using dataString: String, completed: @escaping (Data) -> Void) {
+        
+        if let url = URL(string: dataString) {
+            let session = URLSession(configuration: .default)
+            let sample = session.dataTask(with: url)
+            let task = session.dataTask(with: url) { (data, response, error) in
+                if error != nil {
+                    // Show error
+                } else {
+                    if let result = data {
+                        completed(result)
+                    }
+                }
+            }
+            task.resume()
+        }
+    }
     
     
 }

@@ -18,12 +18,12 @@ struct CollectionViewData {
 
 struct FeaturedData {
     var name: String
-    var image: Data
+    var image: String
 }
 
 struct StickerData {
     var name: String
-    var image: Data
+    var image: String
     var tag: String?
 }
 
@@ -54,10 +54,10 @@ class HomeViewController: UIViewController {
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     
     var collectionViewDataArray = [CollectionViewData]()
+    
     private var featuredData: [FeaturedData]?
     private var stickerCategory = ["All", "Animals", "Food", "Objects", "Colored", "Travel"]
     private var stickerData: [StickerData]?
-    
     
     //MARK: - View Controller Life Cycle
     
@@ -66,8 +66,8 @@ class HomeViewController: UIViewController {
         
         designElements()
         setCollectionView()
-        setCollectionViewData()
-        
+        getFeaturedCollectionViewData()
+        getStickersCollectionViewData()
     }
     
     
@@ -184,110 +184,127 @@ class HomeViewController: UIViewController {
     
     
     
-    func setCollectionViewData() {
-        
-        getCollectionViewData(category: "featured") { [self] (results) in
-            featuredData = [FeaturedData]()
-
-            for result in results {
-                let name = result.name
-                let imageLink = result.image
-                if let imageData = convertURLToData(using: imageLink) {
-                    featuredData?.append(FeaturedData(name: name, image: imageData))
-                }
-            }
-            DispatchQueue.main.async {
-                
-                featuredCollectionView.reloadData()
-            }
-        }
-        
-//        getCollectionViewData(category: "stickers") { [self] (results) in
-//
-//
-//            for result in results {
-//                let name = result.name
-//                let imageLink = result.image
-//                if let imageData = convertURLToData(using: imageLink) {
-//                    stickerData?.append(StickerData(name: name, image: imageData))
-//                }
-//            }
-//            DispatchQueue.main.async {
-//                print("Sticker Data: \(stickerData?.count)")
-//                stickersCollectionView.reloadData()
-//            }
-//        }
-    }
-    
-    
-    func convertURLToData(using link: String) -> Data? {
-        guard let imageURL = URL(string: link) else {return nil}
-        
-        do {
-            let imageData = try Data(contentsOf: imageURL)
-            return imageData
-        } catch {
-            // Show error
-        }
-        return Data()
-    }
     
     
     
     
-    
-    
-    func getCollectionViewData(category: String, completed: @escaping ([CollectionViewData]) -> Void) {
+    func getFeaturedCollectionViewData() {
         
         if user != nil {
-            var collectionReference: Query?
-            
-            if category == "featured" {
-                collectionReference = db.collection("stickers").whereField("tag", isEqualTo: "featured")
-            }
-            if category == "stickers" {
-                collectionReference = db.collection("stickers")
-            }
-            
-            collectionReference!.getDocuments { [self] (snapshot, error) in
+            featuredData = [FeaturedData]()
+            let collectionReference = db.collection("stickers").whereField("tag", isEqualTo: "featured")
+            collectionReference.getDocuments { [self] (snapshot, error) in
                 if error != nil {
                 } else {
                     guard let results = snapshot?.documents else {return}
                     
                     for result in results {
                         let name = result["name"] as! String
-                        let image = result["image"] as! String
-                        
-                        collectionViewDataArray.append(CollectionViewData(name: name, image: image))
+                        let imageLink = result["image"] as! String
+                        featuredData?.append((FeaturedData(name: name, image: imageLink)))
                     }
-                    print("From down here: \(collectionViewDataArray.count)")
-                    completed(collectionViewDataArray)
+                    
+                    DispatchQueue.main.async {
+                        featuredCollectionView.reloadData()
+                    }
                 }
             }
         }
     }
     
     
-    //MARK: - Networking
-    
-    func downloadAndConvertToData(using dataString: String, completed: @escaping (Data) -> Void) {
-        if let url = URL(string: dataString) {
-            let session = URLSession(configuration: .default)
-            let sample = session.dataTask(with: url)
-            let task = session.dataTask(with: url) { (data, response, error) in
+    func getStickersCollectionViewData() {
+        
+        if user != nil {
+            stickerData = [StickerData]()
+            let collectionReference = db.collection("stickers")
+            collectionReference.getDocuments { [self] (snapshot, error) in
                 if error != nil {
-                    // Show error
                 } else {
-                    if let result = data {
-                        completed(result)
+                    guard let results = snapshot?.documents else {return}
+                    
+                    for result in results {
+                        let name = result["name"] as! String
+                        let imageLink = result["image"] as! String
+                        stickerData?.append((StickerData(name: name, image: imageLink)))
+                    }
+                    
+                    DispatchQueue.main.async {
+                        stickersCollectionView.reloadData()
                     }
                 }
             }
-            task.resume()
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //    func getCollectionViewData(category: String, completed: @escaping ([CollectionViewData]) -> Void) {
+    //
+    //
+    //        if user != nil {
+    //            var collectionReference: Query?
+    //
+    //            if category == "featured" {
+    //                collectionReference = db.collection("stickers").whereField("tag", isEqualTo: "featured")
+    //            } else category == "stickers" {
+    //                collectionReference = db.collection("stickers")
+    //            }
+    //
+    //            collectionReference!.getDocuments { [self] (snapshot, error) in
+    //                if error != nil {
+    //                } else {
+    //                    guard let results = snapshot?.documents else {return}
+    //
+    //                    for result in results {
+    //                        let name = result["name"] as! String
+    //                        let imageLink = result["image"] as! String
+    //                        collectionViewDataArray.append((CollectionViewData(name: name, image: imageLink)))
+    //                    }
+    //                    print(collectionViewDataArray.count)
+    //                    completed(collectionViewDataArray)
+    //                }
+    //            }
+    //        }
+    //    }
+    
+    
     
 }
+
+
+//MARK: - Networking
+
+func downloadAndConvertToData(using dataString: String, completed: @escaping (Data) -> Void) {
+    
+    if let url = URL(string: dataString) {
+        let session = URLSession(configuration: .default)
+        let sample = session.dataTask(with: url)
+        let task = session.dataTask(with: url) { (data, response, error) in
+            if error != nil {
+                // Show error
+            } else {
+                if let result = data {
+                    completed(result)
+                }
+            }
+        }
+        task.resume()
+    }
+}
+
+
 
 
 //MARK: - Collection View Data Source
@@ -328,7 +345,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if collectionView == featuredCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath) as! FeaturedCollectionViewCell
             
-            if featuredData != nil {
+            if featuredData!.count > 0 {
                 cell.setData(with: featuredData![indexPath.row])
                 return cell
             }

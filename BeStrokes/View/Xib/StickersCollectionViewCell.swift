@@ -52,14 +52,22 @@ class StickersCollectionViewCell: UICollectionViewCell {
         }
         
         DispatchQueue.main.async() { [self] in
-    
-         
-                designElements()
             
             
+            designElements()
             
             stickerLabel.text = data.name
-            stickerImageView.image = UIImage(data: data.image)
+            
+            downloadAndConvertToData(using: data.image) { (imageData) in
+                
+                DispatchQueue.main.async {
+                    stickerImageView.image = UIImage(data: imageData)
+                }
+                
+                
+            }
+            
+         
         }
         
         
@@ -74,6 +82,26 @@ class StickersCollectionViewCell: UICollectionViewCell {
     
     @IBAction func stickersOptionButton(_ sender: UIButton) {
         
+    }
+    
+    
+    
+    func downloadAndConvertToData(using dataString: String, completed: @escaping (Data) -> Void) {
+        
+        if let url = URL(string: dataString) {
+            let session = URLSession(configuration: .default)
+            let sample = session.dataTask(with: url)
+            let task = session.dataTask(with: url) { (data, response, error) in
+                if error != nil {
+                    // Show error
+                } else {
+                    if let result = data {
+                        completed(result)
+                    }
+                }
+            }
+            task.resume()
+        }
     }
     
 }
