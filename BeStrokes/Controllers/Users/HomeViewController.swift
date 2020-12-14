@@ -197,7 +197,7 @@ class HomeViewController: UIViewController {
                 }
             }
             DispatchQueue.main.async {
-
+                
                 featuredCollectionView.reloadData()
             }
         }
