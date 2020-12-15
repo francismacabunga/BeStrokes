@@ -46,7 +46,7 @@
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XIP-zB-JB0">
-                                <rect key="frame" x="130" y="46.5" width="184" height="233.5"/>
+                                <rect key="frame" x="130" y="46.5" width="184" height="228.5"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E9N-0X-pmf">
                                 <rect key="frame" x="30" y="20" width="240" height="21"/>
@@ -58,7 +58,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="8I6-Sa-EzO" secondAttribute="bottom" constant="20" id="1NG-Se-ScV"/>
-                            <constraint firstAttribute="bottom" secondItem="XIP-zB-JB0" secondAttribute="bottom" id="2zj-VK-YuP"/>
+                            <constraint firstAttribute="bottom" secondItem="XIP-zB-JB0" secondAttribute="bottom" constant="5" id="2zj-VK-YuP"/>
                             <constraint firstItem="XIP-zB-JB0" firstAttribute="top" secondItem="6cq-SR-yyl" secondAttribute="bottom" id="H3t-fv-5Ik"/>
                             <constraint firstItem="E9N-0X-pmf" firstAttribute="leading" secondItem="hmF-Fx-H3d" secondAttribute="leading" constant="30" id="PMZ-uU-dgf"/>
                             <constraint firstItem="6cq-SR-yyl" firstAttribute="leading" secondItem="E9N-0X-pmf" secondAttribute="trailing" id="QvJ-wE-bri"/>

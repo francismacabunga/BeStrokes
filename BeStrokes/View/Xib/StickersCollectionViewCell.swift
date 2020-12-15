@@ -47,28 +47,27 @@ class StickersCollectionViewCell: UICollectionViewCell {
     
     func setData(with data: StickerData) {
         
-        DispatchQueue.main.async { [self] in
-            stickerContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.1))
-        }
         
-        DispatchQueue.main.async() { [self] in
+        stickerContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.1))
+        
+        
+        
+        
+        designElements()
+        
+        stickerLabel.text = data.name
+        
+        downloadAndConvertToData(using: data.image) { (imageData) in
             
-            
-            designElements()
-            
-            stickerLabel.text = data.name
-            
-            downloadAndConvertToData(using: data.image) { (imageData) in
-                
-                DispatchQueue.main.async {
-                    stickerImageView.image = UIImage(data: imageData)
-                }
-                
-                
+            DispatchQueue.main.async { [self] in
+                stickerImageView.image = UIImage(data: imageData)
             }
             
-         
+            
         }
+        
+        
+        
         
         
     }
