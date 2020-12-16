@@ -17,11 +17,14 @@ struct CollectionViewData {
 }
 
 struct FeaturedData {
+    var documentID: String
     var name: String
     var image: String
+    var tag: String?
 }
 
 struct StickerData {
+    var documentID: String
     var name: String
     var image: String
     var tag: String?
@@ -65,7 +68,6 @@ class HomeViewController: UIViewController {
         designElements()
         setCollectionView()
         getCollectionViewData()
-        
     }
     
     
@@ -202,9 +204,10 @@ class HomeViewController: UIViewController {
                     guard let results = snapshot?.documents else {return}
                     featuredData = [FeaturedData]()
                     for result in results {
+                        let documentID = result["documentID"] as! String
                         let name = result["name"] as! String
                         let imageLink = result["image"] as! String
-                        featuredData?.append((FeaturedData(name: name, image: imageLink)))
+                        featuredData?.append((FeaturedData(documentID: documentID, name: name, image: imageLink)))
                     }
                     DispatchQueue.main.async { [self] in
                         featuredCollectionView.reloadData()
@@ -228,9 +231,10 @@ class HomeViewController: UIViewController {
                     guard let results = snapshot?.documents else {return}
                     stickerData = [StickerData]()
                     for result in results {
+                        let documentID = result["documentID"] as! String
                         let name = result["name"] as! String
                         let imageLink = result["image"] as! String
-                        stickerData?.append((StickerData(name: name, image: imageLink)))
+                        stickerData?.append((StickerData(documentID: documentID, name: name, image: imageLink)))
                     }
                     
                     DispatchQueue.main.async {
