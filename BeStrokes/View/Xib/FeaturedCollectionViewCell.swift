@@ -245,12 +245,8 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     func setFeaturedLabelAndImage(with name: String, _ imageURL: URL) {
         
         featuredLabel.text = name
-//        passedImageString = imageURL
-        
-        
-        
+
         if let imageCached = cache.object(forKey: imageURL as NSURL) as? UIImage {
-            print("Hey")
             featuredImageView.image = imageCached
             return
         }
@@ -272,7 +268,6 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
             if error != nil {
                 // Show error
             }
-            print("Networking")
             guard let result = data else {return}
             let image = UIImage(data: result)!
             cache.setObject(image, forKey: imageURL as NSURL)

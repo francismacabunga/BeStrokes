@@ -65,7 +65,6 @@ class StickersCollectionViewCell: UICollectionViewCell {
 
         
         if let cachedImageData = cache.object(forKey: imageURL as NSURL) {
-            print("hi")
             stickerImageView.image = cachedImageData
             return
         }
@@ -86,8 +85,6 @@ class StickersCollectionViewCell: UICollectionViewCell {
             if error != nil {
                 // Show error
             } else {
-                print("Networking starting!")
-                
                 if let result = data {
                     let image = UIImage(data: result)!
                     cache.setObject(image, forKey: imageURL as NSURL)

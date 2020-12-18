@@ -187,7 +187,7 @@ class HomeViewController: UIViewController {
     func getCollectionViewData() {
         
         getFeaturedCollectionViewData()
-        getStickersCollectionViewData()
+        getStickersCollectionViewData(category: nil)
         
     }
     
@@ -221,11 +221,19 @@ class HomeViewController: UIViewController {
     }
     
     
-    func getStickersCollectionViewData() {
+    func getStickersCollectionViewData(category: String?) {
         
         if user != nil {
             
-            let collectionReference = db.collection("stickers")
+            let collectionReference: Query
+            
+            if category == nil || category == "All" {
+                collectionReference = db.collection("stickers")
+            } else {
+                collectionReference = db.collection("stickers").whereField("category", isEqualTo: category)
+            }
+            
+            
             collectionReference.getDocuments { [self] (snapshot, error) in
                 if error != nil {
                 } else {
@@ -286,7 +294,32 @@ func downloadAndConvertToData(using dataString: String, completed: @escaping (Da
     }
 }
 
+var categorySelected: String?
 
+extension HomeViewController: UICollectionViewDelegate {
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == stickersCategoryCollectionView {
+            categorySelected = stickerCategory[indexPath.row]
+        
+            
+            getStickersCollectionViewData(category: categorySelected)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        
+        if collectionView == stickersCategoryCollectionView {
+            categorySelected = stickerCategory[1]
+        
+            print("yo")
+            return true
+        }
+        
+        return false
+    }
+}
 
 
 //MARK: - Collection View Data Source
@@ -386,5 +419,8 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         }
         return CGSize()
     }
+    
+    
+  
     
 }
