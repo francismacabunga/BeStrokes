@@ -19,14 +19,14 @@ struct CollectionViewData {
 struct FeaturedData {
     var documentID: String
     var name: String
-    var image: String
+    var image: URL
     var tag: String?
 }
 
 struct StickerData {
     var documentID: String
     var name: String
-    var image: String
+    var image: URL
     var tag: String?
 }
 
@@ -107,7 +107,7 @@ class HomeViewController: UIViewController {
         stickersCollectionView.backgroundColor = UIColor.clear
         stickersCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
         stickersCollectionView.showsHorizontalScrollIndicator = false
-        
+                
     }
     
     func designProfilePictureImageView() {
@@ -197,6 +197,7 @@ class HomeViewController: UIViewController {
     func getFeaturedCollectionViewData() {
         
         if user != nil {
+            let tag = "Featured"
             let collectionReference = db.collection("stickers")
             collectionReference.getDocuments { [self] (snapshot, error) in
                 if error != nil {
@@ -206,7 +207,7 @@ class HomeViewController: UIViewController {
                     for result in results {
                         let documentID = result["documentID"] as! String
                         let name = result["name"] as! String
-                        let imageLink = result["image"] as! String
+                        let imageLink = URL(string: result["image"] as! String)!
                         featuredData?.append((FeaturedData(documentID: documentID, name: name, image: imageLink)))
                     }
                     DispatchQueue.main.async { [self] in
@@ -233,7 +234,7 @@ class HomeViewController: UIViewController {
                     for result in results {
                         let documentID = result["documentID"] as! String
                         let name = result["name"] as! String
-                        let imageLink = result["image"] as! String
+                        let imageLink = URL(string: result["image"] as! String)!
                         stickerData?.append((StickerData(documentID: documentID, name: name, image: imageLink)))
                     }
                     
@@ -365,8 +366,9 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        viewPeekingBehavior.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
-        
+        if scrollView.frame.height == 280 {
+            viewPeekingBehavior.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

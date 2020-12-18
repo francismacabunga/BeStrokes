@@ -29,7 +29,6 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         showLoadingSkeletonView()
-        //        designElements()
         
     }
     
@@ -71,31 +70,11 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         featuredContentView.hideSkeleton(reloadDataAfter: false, transition: SkeletonTransitionStyle.crossDissolve(0.1))
     }
     
-    func setData(with data: FeaturedData) {
-        
-        featuredStickerDocumentID = data.documentID
-        let featuredStickerName = data.name
-        let featuredStickerImage = data.image
-        
-        hideLoadingSkeletonView()
-        designElements()
-        setHeartButtonValuef()
-        setFeaturedLabelAndImage(with: featuredStickerName, featuredStickerImage)
-        
-    }
     
     
     
-    func setFeaturedLabelAndImage(with name: String, _ imageString: String) {
-        
-        featuredLabel.text = name
-        downloadAndConvertToData(using: imageString) { (imageData) in
-            DispatchQueue.main.async { [self] in
-                featuredImageView.image = UIImage(data: imageData)
-            }
-        }
-        
-    }
+    
+    
     
     
     
@@ -114,23 +93,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     
     
-    func downloadAndConvertToData(using dataString: String, completed: @escaping (Data) -> Void) {
-        
-        if let url = URL(string: dataString) {
-            let session = URLSession(configuration: .default)
-            let sample = session.dataTask(with: url)
-            let task = session.dataTask(with: url) { (data, response, error) in
-                if error != nil {
-                    // Show error
-                } else {
-                    if let result = data {
-                        completed(result)
-                    }
-                }
-            }
-            task.resume()
-        }
-    }
+    
     
     
     
@@ -215,10 +178,9 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
             if user != nil {
                 let UID = user?.uid
                 let email = user?.email
-                if documentID != nil {
-                    let collectionReference = db.collection("stickers").document(documentID).collection("likedBy").addDocument(data: ["UID" : UID, "email":email, "firstName":firstName]).documentID
-                    sample = collectionReference
-                }
+                
+                let collectionReference = db.collection("stickers").document(documentID).collection("likedBy").addDocument(data: ["UID" : UID, "email":email, "firstName":firstName]).documentID
+                sample = collectionReference
                 
             }
         }
@@ -263,5 +225,67 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     }
     
     
+    func setData(with data: FeaturedData) {
+        
+        featuredStickerDocumentID = data.documentID
+        let featuredStickerName = data.name
+        let featuredStickerImage = data.image
+        
+        hideLoadingSkeletonView()
+        designElements()
+        setHeartButtonValuef()
+        setFeaturedLabelAndImage(with: featuredStickerName, featuredStickerImage)
+        
+    }
+    
+    let cache = NSCache<NSURL, UIImage>()
+    var passedImageString: URL?
+    var sessionTask: URLSessionDataTask!
+    
+    func setFeaturedLabelAndImage(with name: String, _ imageURL: URL) {
+        
+        featuredLabel.text = name
+//        passedImageString = imageURL
+        
+        
+        
+        if let imageCached = cache.object(forKey: imageURL as NSURL) as? UIImage {
+            print("Hey")
+            featuredImageView.image = imageCached
+            return
+        }
+        
+        fetchImageData(using: imageURL)
+        
+    }
+    
+    
+    
+    func fetchImageData(using imageURL: URL) {
+        featuredImageView.image = nil
+        
+        if let sessionTask = sessionTask {
+            sessionTask.cancel()
+        }
+        
+        sessionTask = URLSession.shared.dataTask(with: imageURL) { [self] (data, response, error) in
+            if error != nil {
+                // Show error
+            }
+            print("Networking")
+            guard let result = data else {return}
+            let image = UIImage(data: result)!
+            cache.setObject(image, forKey: imageURL as NSURL)
+            DispatchQueue.main.async { [self] in
+                featuredImageView.image = image
+            }
+        }
+        sessionTask.resume()
+    }
     
 }
+
+
+
+
+

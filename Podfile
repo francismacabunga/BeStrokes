@@ -13,6 +13,5 @@ target 'BeStrokes' do
    pod 'CropViewController'
    pod 'MSPeekCollectionViewDelegateImplementation'
    pod 'SkeletonView'
-   pod 'Alamofire', '~> 5.2'
    
 end

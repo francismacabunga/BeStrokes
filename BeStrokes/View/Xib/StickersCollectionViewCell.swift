@@ -28,7 +28,7 @@ class StickersCollectionViewCell: UICollectionViewCell {
         stickerLabel.textAlignment = .left
         stickerLabel.numberOfLines = 1
         stickerLabel.adjustsFontSizeToFitWidth = true
-        stickerLabel.minimumScaleFactor = 0.9
+        stickerLabel.minimumScaleFactor = 0.8
         stickerLabel.font = UIFont(name: "Futura-Bold", size: 15)
         stickerLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         stickerOptionButtonLabel.setTitle("...", for: .normal)
@@ -47,35 +47,65 @@ class StickersCollectionViewCell: UICollectionViewCell {
     
     func setData(with data: StickerData) {
         
+        let stickerLabel = data.name
+        let stickerImage = data.image
         
-        stickerContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.1))
-        
-        
-        
-        
+        hideLoadingSkeletonView()
         designElements()
+        setStikcerLabelAndImage(with: stickerLabel, stickerImage)
         
-        stickerLabel.text = data.name
+    }
+    
+    let cache = NSCache<NSURL, UIImage>()
+    var sessionTask: URLSessionDataTask!
+    
+    func setStikcerLabelAndImage(with name: String, _ imageURL: URL) {
         
-        downloadAndConvertToData(using: data.image) { (imageData) in
-            
-            DispatchQueue.main.async { [self] in
-                stickerImageView.image = UIImage(data: imageData)
-            }
-            
-            
+        stickerLabel.text = name
+
+        
+        if let cachedImageData = cache.object(forKey: imageURL as NSURL) {
+            print("hi")
+            stickerImageView.image = cachedImageData
+            return
         }
         
+        fetchImageData(using: imageURL)
         
+    }
+    
+    
+    func fetchImageData(using imageURL: URL) {
+        stickerImageView.image = nil
         
+        if let sessionTask = sessionTask {
+            sessionTask.cancel()
+        }
         
-        
+        sessionTask = URLSession.shared.dataTask(with: imageURL) { [self] (data, response, error) in
+            if error != nil {
+                // Show error
+            } else {
+                print("Networking starting!")
+                
+                if let result = data {
+                    let image = UIImage(data: result)!
+                    cache.setObject(image, forKey: imageURL as NSURL)
+                    DispatchQueue.main.async { [self] in
+                        stickerImageView.image = image
+                    }
+                }
+            }
+        }
+        sessionTask.resume()
     }
     
     
     
     
-    
+    func hideLoadingSkeletonView() {
+        stickerContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.1))
+    }
     
     
     
