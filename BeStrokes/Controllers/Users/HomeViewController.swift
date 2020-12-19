@@ -34,6 +34,11 @@ struct Sample {
     var data: Data
 }
 
+struct StickerCategory {
+    var category: String
+    var isCategorySelected: Bool?
+}
+
 class HomeViewController: UIViewController {
     
     //MARK: - IBOutlets
@@ -57,8 +62,18 @@ class HomeViewController: UIViewController {
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     
     private var featuredData: [FeaturedData]?
-    private var stickerCategory = ["All", "Animals", "Food", "Objects", "Colored", "Travel"]
+    private var stickerCategory = [
+        StickerCategory(category: "All", isCategorySelected: nil),
+        StickerCategory(category: "Animals", isCategorySelected: nil),
+        StickerCategory(category: "Food", isCategorySelected: nil),
+        StickerCategory(category: "Objects", isCategorySelected: nil),
+        StickerCategory(category: "Colored", isCategorySelected: nil),
+        StickerCategory(category: "Travel", isCategorySelected: nil)]
+    //private var stickerCategory = ["All", "Animals", "Food", "Objects", "Colored", "Travel"]
     private var stickerData: [StickerData]?
+    
+    private var stickerCategoryCollectionViewCell = StickersCategoryCollectionViewCell()
+    private var stickerCategoryValue: Bool?
     
     //MARK: - View Controller Life Cycle
     
@@ -68,6 +83,7 @@ class HomeViewController: UIViewController {
         designElements()
         setCollectionView()
         getCollectionViewData()
+        
     }
     
     
@@ -107,7 +123,7 @@ class HomeViewController: UIViewController {
         stickersCollectionView.backgroundColor = UIColor.clear
         stickersCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
         stickersCollectionView.showsHorizontalScrollIndicator = false
-                
+        
     }
     
     func designProfilePictureImageView() {
@@ -198,7 +214,7 @@ class HomeViewController: UIViewController {
         
         if user != nil {
             let tag = "Featured"
-            let collectionReference = db.collection("stickers")
+            let collectionReference = db.collection("stickers").whereField("tag", isEqualTo: tag)
             collectionReference.getDocuments { [self] (snapshot, error) in
                 if error != nil {
                 } else {
@@ -232,7 +248,6 @@ class HomeViewController: UIViewController {
             } else {
                 collectionReference = db.collection("stickers").whereField("category", isEqualTo: category)
             }
-            
             
             collectionReference.getDocuments { [self] (snapshot, error) in
                 if error != nil {
@@ -296,29 +311,46 @@ func downloadAndConvertToData(using dataString: String, completed: @escaping (Da
 
 var categorySelected: String?
 
+
 extension HomeViewController: UICollectionViewDelegate {
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == stickersCategoryCollectionView {
-            categorySelected = stickerCategory[indexPath.row]
         
+        if collectionView == stickersCategoryCollectionView {
+            categorySelected = stickerCategory[indexPath.row].category
+            stickerCategory[indexPath.row].isCategorySelected = true
             
+            if let cell = collectionView.cellForItem(at: indexPath) as? StickersCategoryCollectionViewCell {
+                cell.setStickerCategoryValue(true)
+            }
+            print(stickerCategory)
+            
+           
+            
+            stickerData = nil
+            DispatchQueue.main.async { [self] in
+                stickersCollectionView.reloadData()
+            }
             getStickersCollectionViewData(category: categorySelected)
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if collectionView == stickersCategoryCollectionView {
-            categorySelected = stickerCategory[1]
-        
-            print("yo")
-            return true
+            
+            stickerCategory[indexPath.row].isCategorySelected = false
+            if let cell = collectionView.cellForItem(at: indexPath) as? StickersCategoryCollectionViewCell {
+                cell.setStickerCategoryValue(false)
+            }
+            
         }
-        
-        return false
     }
+    
+    
+    
+    
+    
 }
 
 
@@ -361,8 +393,9 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath) as! FeaturedCollectionViewCell
             
             if featuredData != nil {
-                DispatchQueue.main.async { [self] in
+                DispatchQueue.main.async() { [self] in
                     cell.setData(with: featuredData![indexPath.row])
+                    
                 }
                 return cell
             }
@@ -372,7 +405,9 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if collectionView == stickersCategoryCollectionView {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCategoryCollectionViewCell", for: indexPath) as! StickersCategoryCollectionViewCell
-            cell.setData(with: stickerCategory[indexPath.row])
+            cell.setData(with: stickerCategory[indexPath.row].category)
+            cell.setStickerCategoryValue(stickerCategory[indexPath.row].isCategorySelected)
+            
             return cell
         }
         
@@ -421,6 +456,6 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     }
     
     
-  
+    
     
 }

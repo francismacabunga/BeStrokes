@@ -7,13 +7,19 @@
 
 import UIKit
 import SkeletonView
+import Kingfisher
 
 class StickersCollectionViewCell: UICollectionViewCell {
+    
+    //MARK: - IBOutlets
     
     @IBOutlet weak var stickerContentView: UIView!
     @IBOutlet weak var stickerLabel: UILabel!
     @IBOutlet weak var stickerOptionButtonLabel: UIButton!
     @IBOutlet weak var stickerImageView: UIImageView!
+    
+    
+    //MARK: - NIB Functions
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,6 +37,7 @@ class StickersCollectionViewCell: UICollectionViewCell {
         stickerLabel.minimumScaleFactor = 0.8
         stickerLabel.font = UIFont(name: "Futura-Bold", size: 15)
         stickerLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        stickerOptionButtonLabel.isHidden = false
         stickerOptionButtonLabel.setTitle("...", for: .normal)
         stickerOptionButtonLabel.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
         stickerOptionButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 20)
@@ -50,54 +57,31 @@ class StickersCollectionViewCell: UICollectionViewCell {
         let stickerLabel = data.name
         let stickerImage = data.image
         
-        hideLoadingSkeletonView()
-        designElements()
-        setStikcerLabelAndImage(with: stickerLabel, stickerImage)
+//        DispatchQueue.main.async() { [self] in
+            hideLoadingSkeletonView()
+            designElements()
+            setStikcerLabelAndImage(with: stickerLabel, stickerImage)
+//        }
+        
+        
         
     }
     
-    let cache = NSCache<NSURL, UIImage>()
-    var sessionTask: URLSessionDataTask!
+    let cache = NSCache<AnyObject,AnyObject>()
+    
     
     func setStikcerLabelAndImage(with name: String, _ imageURL: URL) {
         
         stickerLabel.text = name
-
+        stickerImageView.kf.setImage(with: imageURL.absoluteURL)
         
-        if let cachedImageData = cache.object(forKey: imageURL as NSURL) {
-            stickerImageView.image = cachedImageData
-            return
-        }
+     
         
-        fetchImageData(using: imageURL)
+        
         
     }
     
-    
-    func fetchImageData(using imageURL: URL) {
-        stickerImageView.image = nil
-        
-        if let sessionTask = sessionTask {
-            sessionTask.cancel()
-        }
-        
-        sessionTask = URLSession.shared.dataTask(with: imageURL) { [self] (data, response, error) in
-            if error != nil {
-                // Show error
-            } else {
-                if let result = data {
-                    let image = UIImage(data: result)!
-                    cache.setObject(image, forKey: imageURL as NSURL)
-                    DispatchQueue.main.async { [self] in
-                        stickerImageView.image = image
-                    }
-                }
-            }
-        }
-        sessionTask.resume()
-    }
-    
-    
+   
     
     
     func hideLoadingSkeletonView() {
@@ -110,24 +94,13 @@ class StickersCollectionViewCell: UICollectionViewCell {
         
     }
     
-    
-    
-    func downloadAndConvertToData(using dataString: String, completed: @escaping (Data) -> Void) {
+    override func prepareForReuse() {
+        super.prepareForReuse()
         
-        if let url = URL(string: dataString) {
-            let session = URLSession(configuration: .default)
-            let sample = session.dataTask(with: url)
-            let task = session.dataTask(with: url) { (data, response, error) in
-                if error != nil {
-                    // Show error
-                } else {
-                    if let result = data {
-                        completed(result)
-                    }
-                }
-            }
-            task.resume()
-        }
+        stickerLabel.text = nil
+        stickerImageView.image = nil
+        stickerOptionButtonLabel.isHidden = true
+        
     }
     
 }

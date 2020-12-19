@@ -13,5 +13,6 @@ target 'BeStrokes' do
    pod 'CropViewController'
    pod 'MSPeekCollectionViewDelegateImplementation'
    pod 'SkeletonView'
+   pod 'Kingfisher', '~> 5.0'
    
 end

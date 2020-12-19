@@ -8,6 +8,7 @@
 import UIKit
 import SkeletonView
 import Firebase
+import Kingfisher
 
 class FeaturedCollectionViewCell: UICollectionViewCell {
     
@@ -238,45 +239,18 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         
     }
     
-    let cache = NSCache<NSURL, UIImage>()
-    var passedImageString: URL?
-    var sessionTask: URLSessionDataTask!
+  
     
     func setFeaturedLabelAndImage(with name: String, _ imageURL: URL) {
         
         featuredLabel.text = name
-
-        if let imageCached = cache.object(forKey: imageURL as NSURL) as? UIImage {
-            featuredImageView.image = imageCached
-            return
-        }
-        
-        fetchImageData(using: imageURL)
+        featuredImageView.kf.setImage(with: imageURL.absoluteURL)
         
     }
     
     
     
-    func fetchImageData(using imageURL: URL) {
-        featuredImageView.image = nil
-        
-        if let sessionTask = sessionTask {
-            sessionTask.cancel()
-        }
-        
-        sessionTask = URLSession.shared.dataTask(with: imageURL) { [self] (data, response, error) in
-            if error != nil {
-                // Show error
-            }
-            guard let result = data else {return}
-            let image = UIImage(data: result)!
-            cache.setObject(image, forKey: imageURL as NSURL)
-            DispatchQueue.main.async { [self] in
-                featuredImageView.image = image
-            }
-        }
-        sessionTask.resume()
-    }
+    
     
 }
 
