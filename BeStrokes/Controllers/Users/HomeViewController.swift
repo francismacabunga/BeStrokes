@@ -39,7 +39,20 @@ struct StickerCategory {
     var isCategorySelected: Bool?
 }
 
-class HomeViewController: UIViewController {
+
+
+class HomeViewController: UIViewController  {
+    
+    
+ 
+    
+
+    
+    
+  
+    
+    
+    
     
     //MARK: - IBOutlets
     
@@ -75,11 +88,14 @@ class HomeViewController: UIViewController {
     private var stickerCategoryCollectionViewCell = StickersCategoryCollectionViewCell()
     private var stickerCategoryValue: Bool?
     
+    
+    
     //MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+      
         designElements()
         setCollectionView()
         getCollectionViewData()
@@ -237,6 +253,8 @@ class HomeViewController: UIViewController {
     }
     
     
+    
+    
     func getStickersCollectionViewData(category: String?) {
         
         if user != nil {
@@ -323,10 +341,11 @@ extension HomeViewController: UICollectionViewDelegate {
             
             if let cell = collectionView.cellForItem(at: indexPath) as? StickersCategoryCollectionViewCell {
                 cell.setStickerCategoryValue(true)
+                
             }
-            print(stickerCategory)
             
-           
+            
+            
             
             stickerData = nil
             DispatchQueue.main.async { [self] in
@@ -334,6 +353,20 @@ extension HomeViewController: UICollectionViewDelegate {
             }
             getStickersCollectionViewData(category: categorySelected)
         }
+        
+        
+        
+        //
+        //        if collectionView == stickersCollectionView {
+        //
+        //            if let cell = collectionView.cellForItem(at: indexPath) as? StickersCollectionViewCell {
+        //                if let button = cell.stickerOptionButtonLabel as? UIButton {
+        //                    button.addTarget(self, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
+        //                }
+        //            }
+        //
+        //        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -417,6 +450,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             if stickerData != nil {
                 DispatchQueue.main.async { [self] in
                     cell.setData(with: stickerData![indexPath.row])
+                    cell.stickerDelegate = self
                 }
                 return cell
             }
@@ -457,5 +491,17 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     
     
     
+    
+}
+
+
+extension HomeViewController: StickersCollectViewCellDelegate {
+    
+    func transitionToStickerOptionView(value: UIViewController) {
+        
+        
+        value.modalPresentationStyle = .automatic
+        present(value, animated: true)
+    }
     
 }

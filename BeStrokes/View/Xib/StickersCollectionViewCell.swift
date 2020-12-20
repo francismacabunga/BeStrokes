@@ -9,6 +9,11 @@ import UIKit
 import SkeletonView
 import Kingfisher
 
+protocol StickersCollectViewCellDelegate {
+    func transitionToStickerOptionView(value: UIViewController)
+}
+
+
 class StickersCollectionViewCell: UICollectionViewCell {
     
     //MARK: - IBOutlets
@@ -17,6 +22,8 @@ class StickersCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var stickerLabel: UILabel!
     @IBOutlet weak var stickerOptionButtonLabel: UIButton!
     @IBOutlet weak var stickerImageView: UIImageView!
+    
+    var stickerDelegate: StickersCollectViewCellDelegate?
     
     
     //MARK: - NIB Functions
@@ -57,11 +64,11 @@ class StickersCollectionViewCell: UICollectionViewCell {
         let stickerLabel = data.name
         let stickerImage = data.image
         
-//        DispatchQueue.main.async() { [self] in
-            hideLoadingSkeletonView()
-            designElements()
-            setStikcerLabelAndImage(with: stickerLabel, stickerImage)
-//        }
+        //        DispatchQueue.main.async() { [self] in
+        hideLoadingSkeletonView()
+        designElements()
+        setStikcerLabelAndImage(with: stickerLabel, stickerImage)
+        //        }
         
         
         
@@ -75,13 +82,13 @@ class StickersCollectionViewCell: UICollectionViewCell {
         stickerLabel.text = name
         stickerImageView.kf.setImage(with: imageURL.absoluteURL)
         
-     
+        
         
         
         
     }
     
-   
+    
     
     
     func hideLoadingSkeletonView() {
@@ -92,7 +99,18 @@ class StickersCollectionViewCell: UICollectionViewCell {
     
     @IBAction func stickersOptionButton(_ sender: UIButton) {
         
+        let sample = "hello u!"
+        
+        
+        let destinationVC = StickerOptionViewController()
+
+
+        stickerDelegate?.transitionToStickerOptionView(value: destinationVC)
+        
     }
+    
+    
+    
     
     override func prepareForReuse() {
         super.prepareForReuse()
