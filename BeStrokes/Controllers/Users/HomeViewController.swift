@@ -499,9 +499,13 @@ extension HomeViewController: StickersCollectViewCellDelegate {
     
     func transitionToStickerOptionView(value: UIViewController) {
         
+    
         
-        value.modalPresentationStyle = .automatic
+        value.modalPresentationStyle = .overFullScreen
+        
         present(value, animated: true)
+    
+        
     }
     
 }

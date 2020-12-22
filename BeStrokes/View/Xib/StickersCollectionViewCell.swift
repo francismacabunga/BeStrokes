@@ -103,6 +103,7 @@ class StickersCollectionViewCell: UICollectionViewCell {
         
         
         let destinationVC = StickerOptionViewController()
+        
 
 
         stickerDelegate?.transitionToStickerOptionView(value: destinationVC)

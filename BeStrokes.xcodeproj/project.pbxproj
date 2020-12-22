@@ -26,6 +26,8 @@
 		2F599F5A258FA2E500B02D80 /* StickerOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F599F58258FA2E500B02D80 /* StickerOptionViewController.swift */; };
 		2F599F5B258FA2E500B02D80 /* StickerOptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F599F59258FA2E500B02D80 /* StickerOptionViewController.xib */; };
 		2F8F950D2565C59A00ECDF83 /* SignUpViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */; };
+		2F97FEC42591181700A5A856 /* StickerOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F97FEC22591181700A5A856 /* StickerOptionTableViewCell.swift */; };
+		2F97FEC52591181700A5A856 /* StickerOptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F97FEC32591181700A5A856 /* StickerOptionTableViewCell.xib */; };
 		2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1ABE42552ED8C0076A8FD /* Strings.swift */; };
 		2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */; };
 		2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */; };
@@ -63,6 +65,8 @@
 		2F599F58258FA2E500B02D80 /* StickerOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerOptionViewController.swift; sourceTree = "<group>"; };
 		2F599F59258FA2E500B02D80 /* StickerOptionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickerOptionViewController.xib; sourceTree = "<group>"; };
 		2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewControllerContainer.swift; sourceTree = "<group>"; };
+		2F97FEC22591181700A5A856 /* StickerOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerOptionTableViewCell.swift; sourceTree = "<group>"; };
+		2F97FEC32591181700A5A856 /* StickerOptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickerOptionTableViewCell.xib; sourceTree = "<group>"; };
 		2FB1ABE42552ED8C0076A8FD /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerContainer.swift; sourceTree = "<group>"; };
 		2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +131,8 @@
 				2FD6E4D9257AC99900B49E41 /* StickersCollectionViewCell.xib */,
 				2F3E24C1258157C9004C7241 /* SavedStickersTableViewCell.swift */,
 				2F3E24C2258157C9004C7241 /* SavedStickersTableViewCell.xib */,
+				2F97FEC22591181700A5A856 /* StickerOptionTableViewCell.swift */,
+				2F97FEC32591181700A5A856 /* StickerOptionTableViewCell.xib */,
 			);
 			path = Xib;
 			sourceTree = "<group>";
@@ -299,6 +305,7 @@
 				2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */,
 				2F402CA6256806DD00666028 /* User.storyboard in Resources */,
 				2FD6E4DB257AC99900B49E41 /* StickersCollectionViewCell.xib in Resources */,
+				2F97FEC52591181700A5A856 /* StickerOptionTableViewCell.xib in Resources */,
 				2FD6E4D3257AC96100B49E41 /* FeaturedCollectionViewCell.xib in Resources */,
 				2F3E24C4258157C9004C7241 /* SavedStickersTableViewCell.xib in Resources */,
 				2F599F5B258FA2E500B02D80 /* StickerOptionViewController.xib in Resources */,
@@ -370,6 +377,7 @@
 				2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */,
 				2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */,
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
+				2F97FEC42591181700A5A856 /* StickerOptionTableViewCell.swift in Sources */,
 				2F393A0F255AEAEA006CDBDE /* LandingPageViewController.swift in Sources */,
 				2F4CE06E257E63F9001C3768 /* StickersViewController.swift in Sources */,
 				2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */,

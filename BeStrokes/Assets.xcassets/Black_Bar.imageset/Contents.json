@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "PinClipart.com_tree-trunk-clipart_1030.png",
+      "filename" : "Black_Bar.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Black_Bar@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Black_Bar@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

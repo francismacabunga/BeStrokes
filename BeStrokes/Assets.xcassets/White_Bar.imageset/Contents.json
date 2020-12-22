@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "White_Bar.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "White_Bar@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Bar.png",
+      "filename" : "White_Bar@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

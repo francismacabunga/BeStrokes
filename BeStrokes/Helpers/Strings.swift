@@ -59,7 +59,7 @@ struct Strings {
     
     
     
-    static let Bar = "Bar.png"
+    static let Bar = "Black_Bar.png"
     
     
     
@@ -80,7 +80,7 @@ struct Strings {
     static let profilePictureStorageReference = "profile-pictures"
     static let firstName = "firstName"
     static let lastName = "lastName"
-    static let UID = "UID"
+    static let UID = "userID"
     static let profilePicture = "profilePic"
     
     static let firebaseStorageReference = "gs://bestrokes-f5c28.appspot.com/"
