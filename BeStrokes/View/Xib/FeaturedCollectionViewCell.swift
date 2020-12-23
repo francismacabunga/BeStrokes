@@ -82,269 +82,9 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         
     }
     
-    var sampleCheck: Bool?
+    var isHeartButtonTapped: Bool?
     
     
-    func setData(with data: FeaturedData) {
-        
-        featuredStickerDocumentID = data.documentID
-        let featuredStickerName = data.name
-        let featuredStickerImage = data.image
-        
-        hideLoadingSkeletonView()
-        designElements()
-        setFeaturedLabelAndImage(with: featuredStickerName, featuredStickerImage)
-        
-        
-        
-        checkHeartButtonValue { [self] (result) in
-            if result {
-
-                setHeartButttonDesign(using: "heart.fill")
-                sampleCheck = true
-
-            } else {
-
-
-                setHeartButttonDesign(using: "heart")
-                sampleCheck = false
-
-            }
-        }
-        
-        
-//        setDefaultHeartButtonValue(using: "heart")
-        
-        
-    }
-    
-    func setDefaultHeartButtonValue(using value: String) {
-        featuredHeartButtonLabel.setTitle("", for: .normal)
-        featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
-        featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    }
-    
-    func setHeartButttonDesign(using value: String) {
-        featuredHeartButtonLabel.setTitle("", for: .normal)
-        featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
-        featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    }
-    
-    
-    
-    //MARK: - Heart Button Logic
-    
-    //    func checkHeartButtonValue(completion: @escaping (Bool) -> Void) {
-    //        let UID = user?.uid
-    //
-    //        if user != nil {
-    //
-    //            let collectionReference = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").whereField("UID", isEqualTo: UID)
-    //            collectionReference.getDocuments { [self] (snapshot, error) in
-    //                if error != nil {
-    //                    // Show error
-    //                    return
-    //                }
-    //                guard let result = snapshot?.documents.first else {
-    //                    print(featuredStickerDocumentID)
-    //                    completion(false)
-    //                    return
-    //                }
-    //                completion(true)
-    //            }
-    //        }
-    //    }
-    
-    
-    //    func setHeartButtonValue(with value: Bool) {
-    //        if value {
-    //            featuredHeartButtonLabel.setTitle("", for: .normal)
-    //            featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: "heart.fill"), for: .normal)
-    //            featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    //        } else {
-    //            featuredHeartButtonLabel.setTitle("", for: .normal)
-    //            featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: "heart"), for: .normal)
-    //            featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    //        }
-    //    }
-    
-    
-    
-    
-    
-    
-    
-    func setHeartButtonValue() {
-        getSignedInUserData { [self] (result) in
-            var userData = result
-            let userLikedDocument = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").document()
-            userData["documentID"] = userLikedDocument.documentID
-            userLikedDocument.setData(userData)
-            setHeartButttonDesign(using: "heart.fill")
-        }
-    }
-    
-    func checkHeartButtonValue(completed: @escaping (Bool)->Void) {
-        if user != nil {
-            let userID = user?.uid as! String
-            
-            let databaseReference = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: userID).getDocuments { (snapshot, error) in
-                if error != nil {
-                    
-                }
-                
-                guard let result = snapshot?.documents.first else {
-                    completed(false)
-                    return
-                    
-                }
-                completed(true)
-                
-            }
-        }
-    }
-    
-    @IBAction func featuredHeartButton(_ sender: UIButton) {
-        
-        guard let isWorking = sampleCheck else {return}
-        
-//        if isWorking == false {
-//            setHeartButtonValue()
-//        }
-        
-        if isWorking == true {
-            
-            setHeartButttonDesign(using: "heart")
-            removeData()
-        }
-        
-    
-//        if !sampleCheck! {
-//            setHeartButtonValue()
-//        } else {
-//            setHeartButttonDesign(using: "heart")
-//            removeData()
-//        }
-        
-        
-    }
-    
-    
-    func removeData() {
-        if user != nil {
-            let userID = user?.uid as! String
-            let databaseReference = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: userID).getDocuments { [self] (snapshot, error) in
-                if error != nil {
-                    
-                }
-                
-                guard let result = snapshot?.documents.first else {return}
-                print(result)
-                let userDocumentID = result["documentID"] as! String
-                
-                let dataDeletion = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").document(userDocumentID).delete()
-           
-                
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //        getUserDocumentID()
-    
-    //        checkHeartButtonValue { [self] (heartValue) in
-    //            if heartValue {
-    //                print("Liked na!")
-    //                remove(on: featuredStickerDocumentID!)
-    //            } else {
-    //                print("Di pa liked!")
-    //                print("Document ng di pa liked: \(featuredStickerDocumentID)")
-    //
-    //            }
-    //        }
-    
-    
-    // Heart button logic
-    //        if heartButtonValue == "heart" {
-    //            heartButtonValue = "heart.fill"
-    //            featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: heartButtonValue!), for: .normal)
-    //
-    //            getStickerDocumentID { [self] (featuredStickerDocumentID) in
-    //                setHeartButtonValue(on: featuredStickerDocumentID)
-    //            }
-    //        } else {
-    //            heartButtonValue = "heart"
-    //            print("hello world!")
-    //            featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: heartButtonValue!), for: .normal)
-    //
-    //            getStickerDocumentID { [self] (documentID) in
-    //                remove(on: documentID)
-    //            }
-    //        }
-    
-    
-    //    func getStickerDocumentID() {
-    //        if user != nil {
-    //            let name = featuredLabel.text
-    //            let collectionReference = db.collection("stickers").whereField("documentID", isEqualTo: featuredStickerDocumentID).getDocuments { (snapshot, error) in
-    //                if error != nil {
-    //                    // Show error
-    //                    return
-    //                } else {
-    //                    guard let result = snapshot?.documents.first else {return}
-    //                    print(result.documentID)
-    ////                    completed(result.documentID)
-    //                }
-    //            }
-    //        }
-    //    }
-    
-    
-    //    func getUserDocumentID() {
-    ////        checkMyName { [self] (firstName) in
-    //            let UID = user?.uid
-    ////            print(firstName)
-    //            let collectionRefence = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").whereField("UID", isEqualTo: UID).getDocuments { (snapshot, error) in
-    //                if error != nil {
-    //                    // Show error
-    //                    return
-    //                }
-    //                guard let result = snapshot?.documents.first else {
-    //                    print("Walang user na nag like")
-    //                    return
-    //                }
-    //                print("Meron ng user na nag liked!")
-    //                print("Ito yung nag liked: \(result.documentID)")
-    //            }
-    ////        }
-    //    }
-    
-    
-    //    func setHeartButtonValue(on documentID: String, completed: @escaping (String)->Void) {
-    //        checkMyName { [self] (firstName) in
-    //            if user != nil {
-    //                let UID = user?.uid
-    //                let email = user?.email
-    //                let collectionReference = db.collection("stickers").document(documentID).collection("likedBy").addDocument(data: ["UID" : UID, "email":email, "firstName":firstName]).documentID
-    //                sample = collectionReference
-    //            }
-    //        }
-    //    }
-    //
-    //    func remove(on documentID: String) {
-    //        if user != nil {
-    //            let UID = user?.uid
-    //            let collectionReference = db.collection("stickers").document(documentID).collection("likedBy").document(sample).delete()
-    //        }
-    //    }
-    //
     func getSignedInUserData(completed: @escaping ([String:String])-> Void) {
         
         if user != nil {
@@ -359,6 +99,110 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
                     let firstName = result["firstName"] as! String
                     completed(["userID": userID, "firstName": firstName, "email": userEmail])
                 }
+            }
+        }
+    }
+    
+    func setData(with data: FeaturedData) {
+        
+        featuredStickerDocumentID = data.documentID
+        let featuredStickerName = data.name
+        let featuredStickerImage = data.image
+        
+        hideLoadingSkeletonView()
+        designElements()
+        setFeaturedLabelAndImage(with: featuredStickerName, featuredStickerImage)
+        
+        
+        
+        
+        checkHeartButtonValue { [self] (result) in
+            if result {
+                setHeartButttonDesign(using: "heart.fill")
+                isHeartButtonTapped = true
+            } else {
+                setHeartButttonDesign(using: "heart")
+                isHeartButtonTapped = false
+            }
+        }
+        
+        
+        
+    }
+    
+    override func prepareForReuse() {
+        featuredHeartButtonLabel.setBackgroundImage(nil, for: .normal)
+    }
+    
+    
+    
+    
+    
+    
+    //MARK: - Heart Button Logic
+    
+    @IBAction func featuredHeartButton(_ sender: UIButton) {
+        
+        if !isHeartButtonTapped! {
+            setHeartButtonValue()
+            print("Not clicked")
+        } else {
+            removeData()
+            print("Clicked")
+        }
+        
+    }
+    
+    func setHeartButtonValue() {
+        getSignedInUserData { [self] (result) in
+            var userData = result
+            let userLikedDocument = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").document()
+            userData["documentID"] = userLikedDocument.documentID
+            userLikedDocument.setData(userData)
+            setHeartButttonDesign(using: "heart.fill")
+        }
+    }
+    
+    func removeData() {
+        if user != nil {
+            let userID = user?.uid as! String
+            let databaseReference = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: userID).getDocuments { [self] (snapshot, error) in
+                if error != nil {
+                    // Show error
+                }
+                guard let result = snapshot?.documents.first else {return}
+                let userDocumentID = result["documentID"] as! String
+                let dataDeletion = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").document(userDocumentID).delete()
+                setHeartButttonDesign(using: "heart")
+            }
+        }
+    }
+    
+    func setHeartButttonDesign(using value: String) {
+        featuredHeartButtonLabel.setTitle("", for: .normal)
+        featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
+        featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+    }
+    
+    func checkHeartButtonValue(completed: @escaping (Bool) -> Void) {
+        if user != nil {
+            let signedInUserID = user?.uid as! String
+            let databaseReference = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
+                if error != nil {
+                    // Show error
+                }
+                if let documents = snapshot?.documents {
+                    for document in documents {
+                        let userID = document["userID"] as! String
+                        if userID == signedInUserID {
+                            print("May kapareho!")
+                            completed(true)
+                            return
+                        }
+                    }
+                }
+                print("Wala")
+                completed(false)
             }
         }
     }
