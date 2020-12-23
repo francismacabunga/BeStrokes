@@ -156,24 +156,34 @@ class HomeViewController: UIViewController  {
     func getProfilePicture() {
         if user != nil {
             
-            let UID = user?.uid
-            let collectionReference = db.collection("users").whereField("UID", isEqualTo: UID!)
+            let userID = user?.uid
+            let collectionReference = db.collection("users").whereField("userID", isEqualTo: userID!)
             
+            print("hello")
             collectionReference.getDocuments { [self] (result, error) in
                 if error != nil {
                     // Show error
                 } else {
                     guard let documents = result?.documents.first else {return}
-                    let imageString = documents["profilePic"] as! String
+//                    let imageString = URL(string:  documents["profilePic"] as! String)
+                    let imageURL = URL(string: documents["profilePic"] as! String)
+                        
+                       
                     
-                    downloadAndConvertToData(using: imageString) { (imageData) in
-                        
-                        DispatchQueue.main.async {
-                            profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-                            profilePictureImageView.image = UIImage(data: imageData)
-                        }
-                        
+                    
+                    DispatchQueue.main.async {
+                        profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                        profilePictureImageView.kf.setImage(with: imageURL)
                     }
+                    
+//                    downloadAndConvertToData(using: imageString) { (imageData) in
+//
+//                        DispatchQueue.main.async {
+//                            profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+//                            profilePictureImageView.image = UIImage(data: imageData)
+//                        }
+//
+//                    }
                 }
             }
         }

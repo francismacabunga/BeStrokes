@@ -124,7 +124,7 @@ class SignUpViewController: UIViewController {
         guard let user = Auth.auth().currentUser else {return}
         let userID = user.uid
         let db = Firestore.firestore()
-        var dictionary = [Strings.firstName: firstName, Strings.lastName: lastName, Strings.UID: userID, Strings.profilePicture: ""]
+        var dictionary = [Strings.firstName: firstName, Strings.lastName: lastName, Strings.UID: userID]
         
         // We are setting the selected image in a guarded constant
         guard let imageSelected = chosenImage else {return}

@@ -10,12 +10,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StickerOptionViewController" customModule="BeStrokes" customModuleProvider="target">
             <connections>
-                <outlet property="bottomTransparentView" destination="zCN-E5-5HK" id="mUl-Wf-VG8"/>
-                <outlet property="contentView" destination="1nk-fv-foC" id="Txc-vi-mhj"/>
-                <outlet property="contentViewStack" destination="Xb9-BL-wM0" id="UhP-Nf-PP5"/>
-                <outlet property="navigationBar" destination="6yG-fG-UNG" id="nKe-Mv-WSt"/>
-                <outlet property="tableView" destination="ePJ-60-uAq" id="b3Y-bU-ZcH"/>
-                <outlet property="transparentView" destination="BiH-S9-5FB" id="jIg-OP-lMV"/>
+                <outlet property="backgroundStackContentView" destination="cQQ-Dr-bbI" id="E6o-6R-A1a"/>
+                <outlet property="contentView" destination="Wat-mf-D9h" id="QKY-aV-Zvf"/>
+                <outlet property="lowerBackgroundContentView" destination="8qZ-TJ-UI9" id="Hcp-Rd-ZhX"/>
+                <outlet property="navigationBar" destination="5kt-5M-y89" id="dLW-X0-pk0"/>
+                <outlet property="tableView" destination="Tal-9x-hay" id="Zt8-gR-cm8"/>
+                <outlet property="transparentView" destination="YYZ-Nn-BjL" id="O4v-9J-ebr"/>
+                <outlet property="upperBackgroundContentView" destination="63Y-Tq-clc" id="dNb-Cw-uuT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -24,57 +25,68 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Xb9-BL-wM0">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YYZ-Nn-BjL">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="612"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="cQQ-Dr-bbI">
+                    <rect key="frame" x="0.0" y="612" width="375" height="200"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BiH-S9-5FB">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="608"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nk-fv-foC">
-                            <rect key="frame" x="0.0" y="608" width="375" height="170"/>
-                            <subviews>
-                                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6yG-fG-UNG">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                    <items>
-                                        <navigationItem title="Title" id="DOA-No-8YU"/>
-                                    </items>
-                                </navigationBar>
-                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ePJ-60-uAq">
-                                    <rect key="frame" x="0.0" y="44" width="375" height="126"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                </tableView>
-                            </subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="63Y-Tq-clc">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="ePJ-60-uAq" secondAttribute="bottom" id="07c-Wm-sXs"/>
-                                <constraint firstItem="6yG-fG-UNG" firstAttribute="top" secondItem="1nk-fv-foC" secondAttribute="top" id="32J-bA-0L5"/>
-                                <constraint firstItem="ePJ-60-uAq" firstAttribute="top" secondItem="6yG-fG-UNG" secondAttribute="bottom" id="5yw-WZ-Q51"/>
-                                <constraint firstAttribute="trailing" secondItem="ePJ-60-uAq" secondAttribute="trailing" id="AID-ah-Zs7"/>
-                                <constraint firstAttribute="height" constant="170" id="XaW-hy-vgJ"/>
-                                <constraint firstItem="ePJ-60-uAq" firstAttribute="leading" secondItem="1nk-fv-foC" secondAttribute="leading" id="gLA-zI-0a4"/>
-                                <constraint firstItem="6yG-fG-UNG" firstAttribute="leading" secondItem="1nk-fv-foC" secondAttribute="leading" id="gbj-0R-4Fs"/>
-                                <constraint firstAttribute="trailing" secondItem="6yG-fG-UNG" secondAttribute="trailing" id="zZ9-ZB-THl"/>
+                                <constraint firstAttribute="height" constant="100" id="wfR-Xj-RKc"/>
                             </constraints>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8qZ-TJ-UI9">
+                            <rect key="frame" x="0.0" y="100" width="375" height="100"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        </view>
                     </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="200" id="Ht2-4D-bsm"/>
+                    </constraints>
                 </stackView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zCN-E5-5HK">
-                    <rect key="frame" x="0.0" y="778" width="375" height="34"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wat-mf-D9h">
+                    <rect key="frame" x="0.0" y="612" width="375" height="200"/>
+                    <subviews>
+                        <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5kt-5M-y89">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <items>
+                                <navigationItem title="Title" id="Fkr-sD-9AK"/>
+                            </items>
+                        </navigationBar>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Tal-9x-hay">
+                            <rect key="frame" x="0.0" y="44" width="375" height="130"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="130" id="tlo-34-nmH"/>
+                            </constraints>
+                        </tableView>
+                    </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="200" id="1ba-V7-cbr"/>
+                        <constraint firstItem="5kt-5M-y89" firstAttribute="top" secondItem="Wat-mf-D9h" secondAttribute="top" id="RrZ-LI-6o3"/>
+                        <constraint firstItem="5kt-5M-y89" firstAttribute="leading" secondItem="Wat-mf-D9h" secondAttribute="leading" id="ame-1I-Dge"/>
+                        <constraint firstItem="Tal-9x-hay" firstAttribute="leading" secondItem="Wat-mf-D9h" secondAttribute="leading" id="iHl-r1-7sC"/>
+                        <constraint firstAttribute="trailing" secondItem="5kt-5M-y89" secondAttribute="trailing" id="vZk-Or-4ds"/>
+                        <constraint firstAttribute="trailing" secondItem="Tal-9x-hay" secondAttribute="trailing" id="wvj-DM-JU4"/>
+                        <constraint firstItem="Tal-9x-hay" firstAttribute="top" secondItem="5kt-5M-y89" secondAttribute="bottom" id="zPq-6k-gn6"/>
+                    </constraints>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="zCN-E5-5HK" firstAttribute="top" secondItem="Xb9-BL-wM0" secondAttribute="bottom" id="B3O-jW-2FL"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Xb9-BL-wM0" secondAttribute="bottom" id="BCa-WN-TQd"/>
-                <constraint firstItem="zCN-E5-5HK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="DCc-1Y-tCf"/>
-                <constraint firstItem="Xb9-BL-wM0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="ILZ-at-l02"/>
-                <constraint firstAttribute="bottom" secondItem="zCN-E5-5HK" secondAttribute="bottom" id="SvL-Ha-l2P"/>
-                <constraint firstAttribute="trailing" secondItem="Xb9-BL-wM0" secondAttribute="trailing" id="aA5-wY-BWJ"/>
-                <constraint firstItem="Xb9-BL-wM0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="aTw-ik-OOk"/>
-                <constraint firstAttribute="trailing" secondItem="zCN-E5-5HK" secondAttribute="trailing" id="iKb-XP-aXT"/>
+                <constraint firstAttribute="bottom" secondItem="cQQ-Dr-bbI" secondAttribute="bottom" id="BXy-Ss-oVK"/>
+                <constraint firstAttribute="bottom" secondItem="Wat-mf-D9h" secondAttribute="bottom" id="FM9-4Z-tHc"/>
+                <constraint firstItem="cQQ-Dr-bbI" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="GDP-KV-EF1"/>
+                <constraint firstItem="cQQ-Dr-bbI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="R9o-Uz-thP"/>
+                <constraint firstItem="Wat-mf-D9h" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Xwm-Sm-p4m"/>
+                <constraint firstItem="Wat-mf-D9h" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Y6R-NU-GJ0"/>
             </constraints>
             <point key="canvasLocation" x="-138.40000000000001" y="230.54187192118226"/>
         </view>

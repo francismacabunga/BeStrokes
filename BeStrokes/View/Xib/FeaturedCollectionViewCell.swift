@@ -36,6 +36,10 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         
     }
     
+    override func prepareForReuse() {
+        featuredHeartButtonLabel.setBackgroundImage(nil, for: .normal)
+    }
+    
     func designElements() {
         
         featuredContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
@@ -113,9 +117,6 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         designElements()
         setFeaturedLabelAndImage(with: featuredStickerName, featuredStickerImage)
         
-        
-        
-        
         checkHeartButtonValue { [self] (result) in
             if result {
                 setHeartButttonDesign(using: "heart.fill")
@@ -126,17 +127,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
             }
         }
         
-        
-        
     }
-    
-    override func prepareForReuse() {
-        featuredHeartButtonLabel.setBackgroundImage(nil, for: .normal)
-    }
-    
-    
-    
-    
     
     
     //MARK: - Heart Button Logic
@@ -145,10 +136,8 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         
         if !isHeartButtonTapped! {
             setHeartButtonValue()
-            print("Not clicked")
         } else {
             removeData()
-            print("Clicked")
         }
         
     }
@@ -195,19 +184,21 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
                     for document in documents {
                         let userID = document["userID"] as! String
                         if userID == signedInUserID {
-                            print("May kapareho!")
                             completed(true)
                             return
                         }
                     }
                 }
-                print("Wala")
                 completed(false)
             }
         }
     }
     
 }
+
+
+
+
 
 
 

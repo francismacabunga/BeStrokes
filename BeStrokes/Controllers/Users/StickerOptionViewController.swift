@@ -14,12 +14,16 @@ struct StickerOptionContent {
 
 class StickerOptionViewController: UIViewController {
     
-    @IBOutlet weak var contentViewStack: UIStackView!
+    @IBOutlet weak var backgroundStackContentView: UIStackView!
     @IBOutlet weak var transparentView: UIView!
     @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var upperBackgroundContentView: UIView!
+    @IBOutlet weak var lowerBackgroundContentView: UIView!
     @IBOutlet weak var navigationBar: UINavigationBar!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var bottomTransparentView: UIView!
+    
+    
+  
     
     var stickerOptionContent = [
         StickerOptionContent(symbolName: "heart", label: "Heart it"),
@@ -32,11 +36,12 @@ class StickerOptionViewController: UIViewController {
         
         designElements()
         addGestureRecognizers()
+        
         tableView.dataSource = self
         tableView.register(UINib(nibName: "StickerOptionTableViewCell", bundle: nil), forCellReuseIdentifier: "StickerOptionTableViewCell")
-
         tableView.rowHeight = 50
         tableView.separatorStyle = .singleLine
+        
         
     }
     
@@ -54,11 +59,25 @@ class StickerOptionViewController: UIViewController {
     
     func designElements() {
         view.backgroundColor = .clear
-        contentViewStack.backgroundColor = .clear
-        transparentView.backgroundColor = .clear
-        bottomTransparentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        backgroundStackContentView.backgroundColor = .clear
+        
+        upperBackgroundContentView.backgroundColor = .black
+        upperBackgroundContentView.alpha = 0.4
+        lowerBackgroundContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        
         contentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        tableView.backgroundColor = .clear
+        contentView.layer.cornerRadius = 15
+        contentView.clipsToBounds = true
+        
+        
+        
+        transparentView.backgroundColor = .clear
+        
+        
+        
+        
+        
+        
         
         let image = UIImage(named: "White_Bar")
         let imageView = UIImageView()
@@ -67,17 +86,30 @@ class StickerOptionViewController: UIViewController {
         navigationBar.topItem?.titleView = imageView
         navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         navigationBar.isTranslucent = true
+        tableView.backgroundColor = .clear
+        
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     func addGestureRecognizers() {
-        
         let tapToDismiss = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
         transparentView.addGestureRecognizer(tapToDismiss)
         
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(swipeGestureHandler))
         swipeDown.direction = .down
         navigationBar.addGestureRecognizer(swipeDown)
-        
     }
     
     @objc func tapGestureHandler() {
@@ -89,6 +121,19 @@ class StickerOptionViewController: UIViewController {
     }
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 extension StickerOptionViewController: UITableViewDataSource {
     

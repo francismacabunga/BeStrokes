@@ -77,7 +77,7 @@ struct Strings {
     
     
     static let collectionName = "users"
-    static let profilePictureStorageReference = "profile-pictures"
+    static let profilePictureStorageReference = "profilePictures"
     static let firstName = "firstName"
     static let lastName = "lastName"
     static let UID = "userID"
