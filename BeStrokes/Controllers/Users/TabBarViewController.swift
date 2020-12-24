@@ -23,7 +23,7 @@ class TabBarViewController: UITabBarController {
             items[0].image = UIImage(systemName: "house.fill")
             items[1].title = "Capture"
             items[1].image = UIImage(systemName: "camera.fill")
-            items[2].title = "Profile"
+            items[2].title = "Account"
             items[2].image = UIImage(systemName: "person.crop.circle.fill")
             
         }

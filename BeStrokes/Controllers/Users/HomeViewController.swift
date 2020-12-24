@@ -44,12 +44,12 @@ struct StickerCategory {
 class HomeViewController: UIViewController  {
     
     
- 
-    
-
     
     
-  
+    
+    
+    
+    
     
     
     
@@ -95,11 +95,11 @@ class HomeViewController: UIViewController  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-      
+        
         designElements()
         setCollectionView()
         getCollectionViewData()
-        
+        sampleStep()
     }
     
     
@@ -159,16 +159,16 @@ class HomeViewController: UIViewController  {
             let userID = user?.uid
             let collectionReference = db.collection("users").whereField("userID", isEqualTo: userID!)
             
-            print("hello")
+           
             collectionReference.getDocuments { [self] (result, error) in
                 if error != nil {
                     // Show error
                 } else {
                     guard let documents = result?.documents.first else {return}
-//                    let imageString = URL(string:  documents["profilePic"] as! String)
+                    //                    let imageString = URL(string:  documents["profilePic"] as! String)
                     let imageURL = URL(string: documents["profilePic"] as! String)
-                        
-                       
+                    
+                    
                     
                     
                     DispatchQueue.main.async {
@@ -176,19 +176,32 @@ class HomeViewController: UIViewController  {
                         profilePictureImageView.kf.setImage(with: imageURL)
                     }
                     
-//                    downloadAndConvertToData(using: imageString) { (imageData) in
-//
-//                        DispatchQueue.main.async {
-//                            profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-//                            profilePictureImageView.image = UIImage(data: imageData)
-//                        }
-//
-//                    }
+                    //                    downloadAndConvertToData(using: imageString) { (imageData) in
+                    //
+                    //                        DispatchQueue.main.async {
+                    //                            profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                    //                            profilePictureImageView.image = UIImage(data: imageData)
+                    //                        }
+                    //
+                    //                    }
                 }
             }
         }
     }
     
+    func sampleStep() {
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
+        profilePictureImageView.addGestureRecognizer(tapGesture)
+        profilePictureImageView.isUserInteractionEnabled = true
+        
+    }
+    
+    @objc func tapGestureHandler() {
+        let profileVC = ProfileViewController()
+        profileVC.modalPresentationStyle = .automatic
+        present(profileVC, animated: true)
+    }
     
     //MARK: - Collection View Process
     
@@ -509,12 +522,12 @@ extension HomeViewController: StickersCollectViewCellDelegate {
     
     func transitionToStickerOptionView(value: UIViewController) {
         
-    
+        
         
         value.modalPresentationStyle = .overFullScreen
         
         present(value, animated: true)
-    
+        
         
     }
     

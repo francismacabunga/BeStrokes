@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-class ProfileViewController: UIViewController {
+class AccountViewController: UIViewController {
     
     @IBOutlet weak var profileView: UIView!
     @IBOutlet weak var savedStickersView: UIView!
@@ -191,7 +191,7 @@ class ProfileViewController: UIViewController {
 
 
 
-extension ProfileViewController: UITableViewDataSource {
+extension AccountViewController: UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

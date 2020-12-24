@@ -86,6 +86,7 @@ class StickerOptionViewController: UIViewController {
         navigationBar.topItem?.titleView = imageView
         navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         navigationBar.isTranslucent = true
+        
         tableView.backgroundColor = .clear
         
     }

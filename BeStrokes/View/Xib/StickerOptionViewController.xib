@@ -25,9 +25,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YYZ-Nn-BjL">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YYZ-Nn-BjL">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="612"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="cQQ-Dr-bbI">
@@ -84,9 +83,13 @@
                 <constraint firstAttribute="bottom" secondItem="cQQ-Dr-bbI" secondAttribute="bottom" id="BXy-Ss-oVK"/>
                 <constraint firstAttribute="bottom" secondItem="Wat-mf-D9h" secondAttribute="bottom" id="FM9-4Z-tHc"/>
                 <constraint firstItem="cQQ-Dr-bbI" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="GDP-KV-EF1"/>
+                <constraint firstItem="YYZ-Nn-BjL" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="JJH-Kr-B72"/>
+                <constraint firstItem="YYZ-Nn-BjL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="P6K-g6-hpx"/>
                 <constraint firstItem="cQQ-Dr-bbI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="R9o-Uz-thP"/>
                 <constraint firstItem="Wat-mf-D9h" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Xwm-Sm-p4m"/>
                 <constraint firstItem="Wat-mf-D9h" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Y6R-NU-GJ0"/>
+                <constraint firstItem="cQQ-Dr-bbI" firstAttribute="top" secondItem="YYZ-Nn-BjL" secondAttribute="bottom" id="jed-1a-hwH"/>
+                <constraint firstItem="YYZ-Nn-BjL" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="nxT-Na-bYd"/>
             </constraints>
             <point key="canvasLocation" x="-138.40000000000001" y="230.54187192118226"/>
         </view>
