@@ -26,7 +26,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var profileTrademarkLabel2: UILabel!
     
     @IBOutlet weak var profileTableView: UITableView!
-
+    
     let settingsContent = ["Notifications", "Light Appearance", "Logout"]
     
     
@@ -82,7 +82,7 @@ class ProfileViewController: UIViewController {
         
         
         
-      
+        
         
         designNavigationBar()
         designProfilePictureImageView()
@@ -179,38 +179,44 @@ extension ProfileViewController: UITableViewDelegate {
         let selectedCell = settingsContent[indexPath.row]
         let cell = tableView.cellForRow(at: indexPath) as! ProfileTableViewCell
         if selectedCell == "Logout" {
-         
             
-            let user = Auth.auth().currentUser
             
-            if user != nil {
+            let alert = UIAlertController(title: "Are you sure?", message: "", preferredStyle: .alert)
+            let yesAction = UIAlertAction(title: "Yes", style: .default) { [self] (action) in
                 
-                
-                do {
-                    let signOutUser = try Auth.auth().signOut()
-                    
-                    print("Success!")
-                    
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let destinationVC = storyboard.instantiateViewController(identifier: "LandingViewController") as! LandingViewController
-                    view.window?.rootViewController = destinationVC
-                    view.window?.makeKeyAndVisible()
-                    
-                } catch {
-                    
+                let user = Auth.auth().currentUser
+                if user != nil {
+                    do {
+                        let signOutUser = try Auth.auth().signOut()
+                        print("Success!")
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let destinationVC = storyboard.instantiateViewController(identifier: "LandingViewController") as! LandingViewController
+                        view.window?.rootViewController = destinationVC
+                        view.window?.makeKeyAndVisible()
+                    } catch {
+                        // Show error
+                    }
                 }
-                
-                
-                
-                
             }
+            let noAction = UIAlertAction(title: "No", style: .cancel)
             
-           
+            alert.addAction(noAction)
+            alert.addAction(yesAction)
             
             
-           
+            
+            present(alert, animated: true)
+            
+            
+            
+            
+            
+            
+            
+            
+            
         }
-       
+        
     }
     
 }
