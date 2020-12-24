@@ -78,7 +78,7 @@
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qio-Nm-Lgh">
-                    <rect key="frame" x="0.0" y="231" width="375" height="150"/>
+                    <rect key="frame" x="0.0" y="221" width="375" height="150"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="150" id="TXk-8f-4OI"/>
@@ -96,7 +96,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Qio-Nm-Lgh" secondAttribute="trailing" id="Bb1-ZW-PW0"/>
                 <constraint firstItem="riN-5T-rIL" firstAttribute="top" secondItem="Fby-JL-OE7" secondAttribute="bottom" constant="30" id="CNn-hw-duP"/>
                 <constraint firstItem="Fby-JL-OE7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="GEi-VH-cvL"/>
-                <constraint firstItem="Qio-Nm-Lgh" firstAttribute="top" secondItem="lLh-AC-Mj6" secondAttribute="bottom" constant="20" id="KrF-LD-qnh"/>
+                <constraint firstItem="Qio-Nm-Lgh" firstAttribute="top" secondItem="lLh-AC-Mj6" secondAttribute="bottom" constant="10" id="KrF-LD-qnh"/>
                 <constraint firstItem="VBg-m5-rpI" firstAttribute="top" secondItem="Fby-JL-OE7" secondAttribute="bottom" constant="10" id="Mdr-GH-RzN"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="to8-gM-Qwf" secondAttribute="trailing" id="QO0-4t-qcX"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="riN-5T-rIL" secondAttribute="trailing" constant="10" id="QgT-yY-Vm0"/>

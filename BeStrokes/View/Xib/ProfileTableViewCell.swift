@@ -19,6 +19,8 @@ class ProfileTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         contentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        settingLabel.font = UIFont(name: "Futura", size: 15)
+        settingLabel.textColor = .black
         
     }
 
