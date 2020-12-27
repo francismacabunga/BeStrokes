@@ -159,7 +159,7 @@ class HomeViewController: UIViewController  {
             let userID = user?.uid
             let collectionReference = db.collection("users").whereField("userID", isEqualTo: userID!)
             
-           
+            
             collectionReference.getDocuments { [self] (result, error) in
                 if error != nil {
                     // Show error
@@ -353,24 +353,34 @@ func downloadAndConvertToData(using dataString: String, completed: @escaping (Da
 var categorySelected: String?
 
 
+
+
+
+
+
+
+
+
+
+
+
+//MARK: - Collection View Delegate Protocols
+
 extension HomeViewController: UICollectionViewDelegate {
-    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView == stickersCategoryCollectionView {
+            
             categorySelected = stickerCategory[indexPath.row].category
             stickerCategory[indexPath.row].isCategorySelected = true
             
             if let cell = collectionView.cellForItem(at: indexPath) as? StickersCategoryCollectionViewCell {
                 cell.setStickerCategoryValue(true)
-                
             }
             
-            
-            
-            
             stickerData = nil
+            
             DispatchQueue.main.async { [self] in
                 stickersCollectionView.reloadData()
             }
@@ -379,38 +389,122 @@ extension HomeViewController: UICollectionViewDelegate {
         
         
         
-        //
-        //        if collectionView == stickersCollectionView {
-        //
-        //            if let cell = collectionView.cellForItem(at: indexPath) as? StickersCollectionViewCell {
-        //                if let button = cell.stickerOptionButtonLabel as? UIButton {
-        //                    button.addTarget(self, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
-        //                }
-        //            }
-        //
-        //        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        if collectionView == stickersCollectionView {
+            
+            if stickerData != nil {
+                let selectedSticker = stickerData![indexPath.row].name
+                print(selectedSticker)
+                
+                let stickerDetailsVC = StickerDetailsViewController()
+                present(stickerDetailsVC, animated: true)
+                
+            }
+        
+
+            
+            
+            
+        }
         
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
         if collectionView == stickersCategoryCollectionView {
             
             stickerCategory[indexPath.row].isCategorySelected = false
+        
             if let cell = collectionView.cellForItem(at: indexPath) as? StickersCategoryCollectionViewCell {
                 cell.setStickerCategoryValue(false)
             }
-            
         }
     }
-    
-    
-    
-    
-    
+
 }
 
 
-//MARK: - Collection View Data Source
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//MARK: - Collection View
 
 extension HomeViewController: SkeletonCollectionViewDataSource {
     
@@ -473,7 +567,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             if stickerData != nil {
                 DispatchQueue.main.async { [self] in
                     cell.setData(with: stickerData![indexPath.row])
-                    cell.stickerDelegate = self
+            
                 }
                 return cell
             }
@@ -518,17 +612,3 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 }
 
 
-extension HomeViewController: StickersCollectViewCellDelegate {
-    
-    func transitionToStickerOptionView(value: UIViewController) {
-        
-        
-        
-        value.modalPresentationStyle = .overFullScreen
-        
-        present(value, animated: true)
-        
-        
-    }
-    
-}

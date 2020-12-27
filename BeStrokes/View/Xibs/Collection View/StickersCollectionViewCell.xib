@@ -20,7 +20,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YKi-pj-vbz">
-                                <rect key="frame" x="15" y="10" width="80" height="20.5"/>
+                                <rect key="frame" x="15" y="10" width="120" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -28,19 +28,6 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Js9-S4-QNQ">
                                 <rect key="frame" x="5" y="35.5" width="130" height="99.5"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8IT-FA-T4d">
-                                <rect key="frame" x="100" y="5" width="30" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="4XO-ex-5YN"/>
-                                    <constraint firstAttribute="height" constant="20" id="HvT-jO-S7s"/>
-                                </constraints>
-                                <state key="normal" title="Button">
-                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="stickersOptionButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="gl5-UZ-F2a"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -50,11 +37,9 @@
                             <constraint firstItem="Js9-S4-QNQ" firstAttribute="top" secondItem="YKi-pj-vbz" secondAttribute="bottom" constant="5" id="E9S-uO-gCZ"/>
                             <constraint firstAttribute="height" constant="140" id="Hoi-hj-v6J"/>
                             <constraint firstAttribute="width" constant="140" id="JPM-9P-A1M"/>
-                            <constraint firstItem="8IT-FA-T4d" firstAttribute="top" secondItem="ygQ-zI-xqz" secondAttribute="top" constant="5" id="aVN-tO-JJA"/>
+                            <constraint firstAttribute="trailing" secondItem="YKi-pj-vbz" secondAttribute="trailing" constant="5" id="QQY-cI-Wm6"/>
                             <constraint firstItem="YKi-pj-vbz" firstAttribute="leading" secondItem="ygQ-zI-xqz" secondAttribute="leading" constant="15" id="fuz-6O-CpZ"/>
                             <constraint firstAttribute="trailing" secondItem="Js9-S4-QNQ" secondAttribute="trailing" constant="5" id="nyh-Bk-vH3"/>
-                            <constraint firstItem="8IT-FA-T4d" firstAttribute="leading" secondItem="YKi-pj-vbz" secondAttribute="trailing" constant="5" id="orq-WZ-fnj"/>
-                            <constraint firstAttribute="trailing" secondItem="8IT-FA-T4d" secondAttribute="trailing" constant="10" id="xPK-Fs-W0n"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -72,7 +57,6 @@
                 <outlet property="stickerContentView" destination="ygQ-zI-xqz" id="9bb-jC-08n"/>
                 <outlet property="stickerImageView" destination="Js9-S4-QNQ" id="ptP-GK-k6F"/>
                 <outlet property="stickerLabel" destination="YKi-pj-vbz" id="Ml9-PD-Ew9"/>
-                <outlet property="stickerOptionButtonLabel" destination="8IT-FA-T4d" id="Wj0-HR-6gY"/>
             </connections>
             <point key="canvasLocation" x="-100.00000000000001" y="99.776785714285708"/>
         </collectionViewCell>

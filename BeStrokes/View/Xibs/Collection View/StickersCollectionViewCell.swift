@@ -9,9 +9,6 @@ import UIKit
 import SkeletonView
 import Kingfisher
 
-protocol StickersCollectViewCellDelegate {
-    func transitionToStickerOptionView(value: UIViewController)
-}
 
 
 class StickersCollectionViewCell: UICollectionViewCell {
@@ -20,10 +17,9 @@ class StickersCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var stickerContentView: UIView!
     @IBOutlet weak var stickerLabel: UILabel!
-    @IBOutlet weak var stickerOptionButtonLabel: UIButton!
     @IBOutlet weak var stickerImageView: UIImageView!
     
-    var stickerDelegate: StickersCollectViewCellDelegate?
+   
     
     
     //MARK: - NIB Functions
@@ -44,10 +40,6 @@ class StickersCollectionViewCell: UICollectionViewCell {
         stickerLabel.minimumScaleFactor = 0.8
         stickerLabel.font = UIFont(name: "Futura-Bold", size: 15)
         stickerLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        stickerOptionButtonLabel.isHidden = false
-        stickerOptionButtonLabel.setTitle("...", for: .normal)
-        stickerOptionButtonLabel.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-        stickerOptionButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 20)
         stickerImageView.contentMode = .scaleAspectFit
     }
     
@@ -97,18 +89,7 @@ class StickersCollectionViewCell: UICollectionViewCell {
     
     
     
-    @IBAction func stickersOptionButton(_ sender: UIButton) {
-        
-        let sample = "hello u!"
-        
-        
-        let destinationVC = StickerOptionViewController()
-        
-
-
-        stickerDelegate?.transitionToStickerOptionView(value: destinationVC)
-        
-    }
+    
     
     
     
@@ -118,7 +99,7 @@ class StickersCollectionViewCell: UICollectionViewCell {
         
         stickerLabel.text = nil
         stickerImageView.image = nil
-        stickerOptionButtonLabel.isHidden = true
+        
         
     }
     

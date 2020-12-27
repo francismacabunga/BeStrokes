@@ -53,6 +53,7 @@ class StickersCategoryCollectionViewCell: UICollectionViewCell {
         
         if stickerCategoryValue {
             stickerCategoryContentView.backgroundColor = .yellow
+           
         } else {
             stickerCategoryContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         }
@@ -69,10 +70,10 @@ class StickersCategoryCollectionViewCell: UICollectionViewCell {
     
     
     
-        override func prepareForReuse() {
-            super.prepareForReuse()
-
-            stickerCategoryContentView.isHidden = true
-        }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        stickerCategoryContentView.isHidden = true
+    }
     
 }
