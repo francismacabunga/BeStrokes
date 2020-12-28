@@ -45,6 +45,7 @@ class LandingViewController: UIViewController, LandingPageViewControllerDelegate
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let embeddedController = segue.destination as? LandingPageViewController {
+            // This is done because the UIView is embedded to the LandingPageViewController, this enables you to get access of the properties LandingPageViewController page has
             landingPageViewController = embeddedController
         }
         

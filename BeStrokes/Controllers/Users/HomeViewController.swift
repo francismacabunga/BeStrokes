@@ -40,6 +40,10 @@ struct StickerCategory {
 }
 
 
+protocol HomeViewControllerDelegate {
+    func getHeartButtonValue(with: String)
+}
+
 
 class HomeViewController: UIViewController  {
     
@@ -88,7 +92,9 @@ class HomeViewController: UIViewController  {
     private var stickerCategoryCollectionViewCell = StickersCategoryCollectionViewCell()
     private var stickerCategoryValue: Bool?
     
-    
+    var isHeartButtonTapped: Bool?
+    var stickerDocumentID: String?
+    var homeVCDelegate: HomeViewControllerDelegate?
     
     //MARK: - View Controller Life Cycle
     
@@ -99,7 +105,9 @@ class HomeViewController: UIViewController  {
         designElements()
         setCollectionView()
         getCollectionViewData()
-        sampleStep()
+        registerGestures()
+        
+        
     }
     
     
@@ -189,11 +197,16 @@ class HomeViewController: UIViewController  {
         }
     }
     
-    func sampleStep() {
+    func registerGestures() {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
         profilePictureImageView.addGestureRecognizer(tapGesture)
         profilePictureImageView.isUserInteractionEnabled = true
+        
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapGestureHandler))
+        doubleTapGesture.numberOfTapsRequired = 2
+        stickersCollectionView.addGestureRecognizer(doubleTapGesture)
+        
         
     }
     
@@ -308,6 +321,12 @@ class HomeViewController: UIViewController  {
                 }
             }
         }
+        
+        
+        
+        
+        
+        
     }
     
     
@@ -317,9 +336,102 @@ class HomeViewController: UIViewController  {
     
     
     
+    @objc func doubleTapGestureHandler(doubleTap: UITapGestureRecognizer) {
+        
+        let doubleTapLocation = doubleTap.location(in: stickersCollectionView)
+        guard let cellIndexPath = stickersCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
+        
+        if stickerData != nil {
+            stickerDocumentID = stickerData![cellIndexPath.row].documentID
+            
+            
+            checkHeartButtonValue { [self] (result) in
+                if result {
+                    
+                    print("Up: \(result)")
+                    
+                    removeData()
+                    
+                    
+                    
+                } else {
+                    print("Down: \(result)")
+                    setHeartButtonValue()
+                    
+                    
+                }
+            }
+            
+        }
+        
+    }
+    
+    func setHeartButtonValue() {
+        getSignedInUserData { [self] (result) in
+            var userData = result
+            let userLikedDocument = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").document()
+            userData["documentID"] = userLikedDocument.documentID
+            userLikedDocument.setData(userData)
+            homeVCDelegate?.getHeartButtonValue(with: "heart.fill")
+        }
+    }
+    
+    func removeData() {
+        if user != nil {
+            let userID = user?.uid as! String
+            let databaseReference = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: userID).getDocuments { [self] (snapshot, error) in
+                if error != nil {
+                    // Show error
+                }
+                guard let result = snapshot?.documents.first else {return}
+                let userDocumentID = result["documentID"] as! String
+                let dataDeletion = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").document(userDocumentID).delete()
+//                homeVCDelegate?.getHeartButtonValue(with: "heart")
+            }
+        }
+    }
+    
+    
+    func getSignedInUserData(completed: @escaping ([String:String])-> Void) {
+        
+        if user != nil {
+            let userID = user?.uid as! String
+            let userEmail = user?.email as! String
+            let collectionReference = db.collection("users").whereField("userID", isEqualTo: userID).getDocuments { (snapshot, error) in
+                if error != nil {
+                    // Show error
+                } else {
+                    guard let result = snapshot?.documents.first else {return}
+                    let uid = result["userID"] as! String
+                    let firstName = result["firstName"] as! String
+                    completed(["userID": userID, "firstName": firstName, "email": userEmail])
+                }
+            }
+        }
+    }
     
     
     
+    func checkHeartButtonValue(completed: @escaping (Bool) -> Void) {
+        if user != nil {
+            let signedInUserID = user?.uid as! String
+            let databaseReference = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
+                if error != nil {
+                    // Show error
+                }
+                if let documents = snapshot?.documents {
+                    for document in documents {
+                        let userID = document["userID"] as! String
+                        if userID == signedInUserID {
+                            completed(true)
+                            return
+                        }
+                    }
+                }
+                completed(false)
+            }
+        }
+    }
     
     
     
@@ -359,13 +471,6 @@ var categorySelected: String?
 
 
 
-
-
-
-
-
-//MARK: - Collection View Delegate Protocols
-
 extension HomeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -387,100 +492,26 @@ extension HomeViewController: UICollectionViewDelegate {
             getStickersCollectionViewData(category: categorySelected)
         }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         if collectionView == stickersCollectionView {
             
-            if stickerData != nil {
-                let selectedSticker = stickerData![indexPath.row].name
-                print(selectedSticker)
-                
-                let stickerDetailsVC = StickerDetailsViewController()
-                present(stickerDetailsVC, animated: true)
-                
-            }
-        
-
             
             
             
         }
-        
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
         if collectionView == stickersCategoryCollectionView {
             
             stickerCategory[indexPath.row].isCategorySelected = false
-        
+            
             if let cell = collectionView.cellForItem(at: indexPath) as? StickersCategoryCollectionViewCell {
                 cell.setStickerCategoryValue(false)
             }
         }
     }
-
+    
 }
 
 
@@ -494,17 +525,6 @@ extension HomeViewController: UICollectionViewDelegate {
 
 
 
-
-
-
-
-
-
-
-
-
-
-//MARK: - Collection View
 
 extension HomeViewController: SkeletonCollectionViewDataSource {
     
@@ -558,6 +578,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             cell.setData(with: stickerCategory[indexPath.row].category)
             cell.setStickerCategoryValue(stickerCategory[indexPath.row].isCategorySelected)
             
+            
             return cell
         }
         
@@ -567,7 +588,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             if stickerData != nil {
                 DispatchQueue.main.async { [self] in
                     cell.setData(with: stickerData![indexPath.row])
-            
+                    
                 }
                 return cell
             }
@@ -579,7 +600,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
 }
 
 
-//MARK: - Collection View Design Update
+
 
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     
