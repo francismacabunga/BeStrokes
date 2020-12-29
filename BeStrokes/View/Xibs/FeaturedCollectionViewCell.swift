@@ -21,13 +21,25 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var featuredImageView: UIImageView!
     
     
-    //MARK: - Variables and Constants
+    //MARK: - Constants / Variables
     
     lazy var sample = String()
     var heartButtonValue: String?
     var featuredStickerDocumentID: String?
     let user = Auth.auth().currentUser
     let db = Firestore.firestore()
+    var isHeartButtonTapped: Bool?
+    
+    var stickerViewModel: StickerViewModel! {
+        didSet {
+            featuredLabel.text = stickerViewModel.name
+            featuredImageView.kf.setImage(with: stickerViewModel.image)
+            featuredStickerDocumentID = stickerViewModel.stickerID
+        }
+    }
+    
+    
+    //MARK: - NIB Functions
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,6 +51,9 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         featuredHeartButtonLabel.setBackgroundImage(nil, for: .normal)
     }
+    
+    
+    //MARK: - Design Elements
     
     func designElements() {
         
@@ -62,6 +77,17 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         
     }
     
+    func setHeartButttonDesign(using value: String) {
+        featuredHeartButtonLabel.setTitle("", for: .normal)
+        featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
+        featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+    }
+    
+    func setFeaturedLabelAndImage(with name: String, _ imageURL: URL) {
+        featuredLabel.text = name
+        featuredImageView.kf.setImage(with: imageURL.absoluteURL)
+    }
+    
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             featuredContentView.isSkeletonable = true
@@ -74,48 +100,18 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         featuredContentView.hideSkeleton(reloadDataAfter: false, transition: SkeletonTransitionStyle.crossDissolve(0.1))
     }
     
-    @IBAction func featuredTryMeButton(_ sender: UIButton) {
-        
-    }
     
+    //MARK: - Fetch Data
     
-    func setFeaturedLabelAndImage(with name: String, _ imageURL: URL) {
+    func setData() {
         
-        featuredLabel.text = name
-        featuredImageView.kf.setImage(with: imageURL.absoluteURL)
-        
-    }
-    
-    var isHeartButtonTapped: Bool?
-    
-    
-    func getSignedInUserData(completed: @escaping ([String:String])-> Void) {
-        
-        if user != nil {
-            let userID = user?.uid as! String
-            let userEmail = user?.email as! String
-            let collectionReference = db.collection("users").whereField("userID", isEqualTo: userID).getDocuments { (snapshot, error) in
-                if error != nil {
-                    // Show error
-                } else {
-                    guard let result = snapshot?.documents.first else {return}
-                    let uid = result["userID"] as! String
-                    let firstName = result["firstName"] as! String
-                    completed(["userID": userID, "firstName": firstName, "email": userEmail])
-                }
-            }
-        }
-    }
-    
-    func setData(with data: FeaturedData) {
-        
-        featuredStickerDocumentID = data.documentID
-        let featuredStickerName = data.name
-        let featuredStickerImage = data.image
-        
-        hideLoadingSkeletonView()
-        designElements()
-        setFeaturedLabelAndImage(with: featuredStickerName, featuredStickerImage)
+//        featuredStickerDocumentID = data.documentID
+//        let featuredStickerName = data.name
+//        let featuredStickerImage = data.image
+//        
+//        hideLoadingSkeletonView()
+//        designElements()
+//        setFeaturedLabelAndImage(with: featuredStickerName, featuredStickerImage)
         
         checkHeartButtonValue { [self] (result) in
             if result {
@@ -126,7 +122,6 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
                 isHeartButtonTapped = false
             }
         }
-        
     }
     
     
@@ -140,6 +135,27 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
             removeData()
         }
         
+    }
+    
+    func checkHeartButtonValue(completed: @escaping (Bool) -> Void) {
+        if user != nil {
+            let signedInUserID = user?.uid as! String
+            let databaseReference = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
+                if error != nil {
+                    // Show error
+                }
+                if let documents = snapshot?.documents {
+                    for document in documents {
+                        let userID = document["userID"] as! String
+                        if userID == signedInUserID {
+                            completed(true)
+                            return
+                        }
+                    }
+                }
+                completed(false)
+            }
+        }
     }
     
     func setHeartButtonValue() {
@@ -167,31 +183,29 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func setHeartButttonDesign(using value: String) {
-        featuredHeartButtonLabel.setTitle("", for: .normal)
-        featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
-        featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    }
-    
-    func checkHeartButtonValue(completed: @escaping (Bool) -> Void) {
+    func getSignedInUserData(completed: @escaping ([String:String])-> Void) {
+        
         if user != nil {
-            let signedInUserID = user?.uid as! String
-            let databaseReference = db.collection("stickers").document(featuredStickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
+            let userID = user?.uid as! String
+            let userEmail = user?.email as! String
+            let collectionReference = db.collection("users").whereField("userID", isEqualTo: userID).getDocuments { (snapshot, error) in
                 if error != nil {
                     // Show error
+                } else {
+                    guard let result = snapshot?.documents.first else {return}
+                    let uid = result["userID"] as! String
+                    let firstName = result["firstName"] as! String
+                    completed(["userID": userID, "firstName": firstName, "email": userEmail])
                 }
-                if let documents = snapshot?.documents {
-                    for document in documents {
-                        let userID = document["userID"] as! String
-                        if userID == signedInUserID {
-                            completed(true)
-                            return
-                        }
-                    }
-                }
-                completed(false)
             }
         }
+    }
+    
+    
+    //MARK: - Try Me Button Logic
+    
+    @IBAction func featuredTryMeButton(_ sender: UIButton) {
+        
     }
     
 }

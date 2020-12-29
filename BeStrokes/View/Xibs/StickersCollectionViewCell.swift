@@ -10,7 +10,7 @@ import SkeletonView
 import Kingfisher
 import Firebase
 
-class StickersCollectionViewCell: UICollectionViewCell, HomeViewControllerDelegate {
+class StickersCollectionViewCell: UICollectionViewCell {
     
     func getHeartButtonValue(with: String) {
         print(with)
@@ -35,7 +35,6 @@ class StickersCollectionViewCell: UICollectionViewCell, HomeViewControllerDelega
         super.awakeFromNib()
         
         showLoadingSkeletonView()
-        connection.homeVCDelegate = self
     }
     
     override func prepareForReuse() {
