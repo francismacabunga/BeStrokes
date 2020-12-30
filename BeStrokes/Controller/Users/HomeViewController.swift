@@ -19,18 +19,6 @@ struct CollectionViewData {
     var image: String
 }
 
-struct StickerData {
-    var documentID: String
-    var name: String
-    var image: URL
-    var tag: String?
-}
-
-//struct StickerCategory {
-//    var category: String
-//    var isCategorySelected: Bool?
-//}
-
 class HomeViewController: UIViewController  {
     
     //MARK: - IBOutlets
@@ -40,9 +28,10 @@ class HomeViewController: UIViewController  {
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var featuredHeading: UILabel!
     @IBOutlet weak var stickerHeading: UILabel!
+    
     @IBOutlet weak var featuredCollectionView: UICollectionView!
-    @IBOutlet weak var stickersCategoryCollectionView: UICollectionView!
-    @IBOutlet weak var stickersCollectionView: UICollectionView!
+    @IBOutlet weak var stickerCategoryCollectionView: UICollectionView!
+    @IBOutlet weak var stickerCollectionView: UICollectionView!
     
     
     //MARK: - Constants / Variables
@@ -52,14 +41,8 @@ class HomeViewController: UIViewController  {
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     
     private var stickerViewModel: [StickerViewModel]?
+    private var stickerCategoryViewModel: [StickerCategoryViewModel]?
     
-    //    private var stickerCategory = [
-    //        StickerCategory(category: "All", isCategorySelected: nil),
-    //        StickerCategory(category: "Animals", isCategorySelected: nil),
-    //        StickerCategory(category: "Food", isCategorySelected: nil),
-    //        StickerCategory(category: "Objects", isCategorySelected: nil),
-    //        StickerCategory(category: "Colored", isCategorySelected: nil),
-    //        StickerCategory(category: "Travel", isCategorySelected: nil)]
     
     //    private var stickerData: [StickerData]?
     //    private var stickerCategoryCollectionViewCell = StickersCategoryCollectionViewCell()
@@ -67,7 +50,7 @@ class HomeViewController: UIViewController  {
     var isHeartButtonTapped: Bool?
     var stickerDocumentID: String?
     //    var homeVCDelegate: HomeViewControllerDelegate?
-    //    var categorySelected: String?
+    var stickerCategorySelected: String?
     
     
     //MARK: - View Controller Life Cycle
@@ -77,7 +60,9 @@ class HomeViewController: UIViewController  {
         
         designElements()
         setCollectionView()
-        getCollectionViewData()
+        getCollectionViewData(on: "Featured")
+        setStickerCategoryCollectionViewData()
+        getCollectionViewData(category: "All")
         registerGestures()
         
     }
@@ -112,13 +97,13 @@ class HomeViewController: UIViewController  {
         featuredCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
         featuredCollectionView.showsHorizontalScrollIndicator = false
         
-        //        stickersCategoryCollectionView.backgroundColor = UIColor.clear
-        //        stickersCategoryCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
-        //        stickersCategoryCollectionView.showsHorizontalScrollIndicator = false
-        //
-        //        stickersCollectionView.backgroundColor = UIColor.clear
-        //        stickersCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
-        //        stickersCollectionView.showsHorizontalScrollIndicator = false
+        stickerCategoryCollectionView.backgroundColor = UIColor.clear
+        stickerCategoryCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
+        stickerCategoryCollectionView.showsHorizontalScrollIndicator = false
+        
+        stickerCollectionView.backgroundColor = UIColor.clear
+        stickerCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
+        stickerCollectionView.showsHorizontalScrollIndicator = false
         
     }
     
@@ -172,9 +157,9 @@ class HomeViewController: UIViewController  {
         profilePictureImageView.addGestureRecognizer(tapGesture)
         profilePictureImageView.isUserInteractionEnabled = true
         
-        //        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapGestureHandler))
-        //        doubleTapGesture.numberOfTapsRequired = 2
-        //        stickersCollectionView.addGestureRecognizer(doubleTapGesture)
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapGestureHandler))
+        doubleTapGesture.numberOfTapsRequired = 2
+        stickerCollectionView.addGestureRecognizer(doubleTapGesture)
         
     }
     
@@ -184,22 +169,22 @@ class HomeViewController: UIViewController  {
         present(profileVC, animated: true)
     }
     
-    //    @objc func doubleTapGestureHandler(doubleTap: UITapGestureRecognizer) {
-    //
-    //        let doubleTapLocation = doubleTap.location(in: stickersCollectionView)
-    //        guard let cellIndexPath = stickersCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
-    //
-    //        if stickerData != nil {
-    //            stickerDocumentID = stickerData![cellIndexPath.row].documentID
-    //            checkHeartButtonValue { [self] (result) in
-    //                if result {
-    //                    removeData()
-    //                } else {
-    //                    setHeartButtonValue()
-    //                }
-    //            }
-    //        }
-    //    }
+    @objc func doubleTapGestureHandler(doubleTap: UITapGestureRecognizer) {
+        
+        let doubleTapLocation = doubleTap.location(in: stickerCollectionView)
+        guard let cellIndexPath = stickerCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
+        
+        if stickerViewModel != nil {
+            stickerDocumentID = stickerViewModel![cellIndexPath.row].stickerDocumentID
+            //            checkHeartButtonValue { [self] (result) in
+            //                if result {
+            //                    removeData()
+            //                } else {
+            //                    setHeartButtonValue()
+            //                }
+            //            }
+        }
+    }
     
     
     //MARK: - Collection View Process
@@ -216,156 +201,156 @@ class HomeViewController: UIViewController  {
     
     func setDelegate() {
         featuredCollectionView.delegate = self
-        //        stickersCategoryCollectionView.delegate = self
-        //        stickersCollectionView.delegate = self
+        stickerCategoryCollectionView.delegate = self
+        stickerCollectionView.delegate = self
         featuredCollectionView.dataSource = self
-        //        stickersCategoryCollectionView.dataSource = self
-        //        stickersCollectionView.dataSource = self
+        stickerCategoryCollectionView.dataSource = self
+        stickerCollectionView.dataSource = self
     }
     
     func registerNib() {
         featuredCollectionView.register(UINib(nibName: "FeaturedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "FeaturedCollectionViewCell")
-        //        stickersCategoryCollectionView.register(UINib(nibName: "StickersCategoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickersCategoryCollectionViewCell")
-        //        stickersCollectionView.register(UINib(nibName: "StickersCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickersCollectionViewCell")
+        stickerCategoryCollectionView.register(UINib(nibName: "StickerCategoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickerCategoryCollectionViewCell")
+        stickerCollectionView.register(UINib(nibName: "StickerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickerCollectionViewCell")
     }
     
-    func getCollectionViewData() {
+    
+    
+    
+    func getCollectionViewData(on stickerTag: String? = nil, category: String? = nil) {
         
-        getFeaturedCollectionViewData()
-        //        getStickersCollectionViewData(category: nil)
+        var firebaseQuery: Query
+        
+        if stickerTag == "Featured" {
+            print("Hey")
+            firebaseQuery = db.collection("stickers").whereField("tag", isEqualTo: stickerTag!)
+            fetchData(with: firebaseQuery, collectionView: featuredCollectionView)
+            return
+        } else if category == nil || category == "All" {
+            print("Hello")
+            firebaseQuery = db.collection("stickers")
+            fetchData(with: firebaseQuery, collectionView: stickerCollectionView)
+            return
+        } else if category != nil {
+            print("Ugh")
+            firebaseQuery = db.collection("stickers").whereField("category", isEqualTo: category!)
+            fetchData(with: firebaseQuery, collectionView: stickerCollectionView)
+            return
+        }
         
     }
     
-    func getFeaturedCollectionViewData() {
+    func fetchData(with query: Query, collectionView: UICollectionView) {
         
-        if user != nil {
+        var stickerArray = [Sticker]()
+        query.getDocuments { [self] (snapshot, error) in
+            if error != nil {
+                // Show error
+            }
+            guard let results = snapshot?.documents else {return}
+            for result in results {
+                let stickerDocumentID = result["documentID"] as! String
+                let stickerName = result["name"] as! String
+                let stickerImageURL = URL(string: result["image"] as! String)!
+                let stickerTag = result["tag"] as! String
+                stickerArray.append(Sticker(stickerDocumentID: stickerDocumentID, name: stickerName, image: stickerImageURL, tag: stickerTag))
+            }
             
-            let tag = "Featured"
-            var sticker = [Sticker]()
-            let collectionReference = db.collection("stickers").whereField("tag", isEqualTo: tag)
             
-            collectionReference.getDocuments { [self] (snapshot, error) in
-                
-                if error != nil {
-                } else {
-                    
-                    guard let results = snapshot?.documents else {return}
-                    
-                    for result in results {
-                        let stickerDocumentID = result["documentID"] as! String
-                        let name = result["name"] as! String
-                        let imageLink = URL(string: result["image"] as! String)!
-                        let tag = result["tag"] as! String
-                        
-                        sticker.append(Sticker(stickerDocumentID: stickerDocumentID, name: name, image: imageLink, tag: tag))
-                    }
-                    
-                    stickerViewModel = sticker.map({return StickerViewModel(sticker: $0)})
-                    
-                    DispatchQueue.main.async { [self] in
-                        featuredCollectionView.reloadData()
-                    }
-                }
+            
+          
+            
+          
+            
+            
+
+            stickerViewModel = stickerArray.map({return StickerViewModel(sticker: $0)})
+            
+            DispatchQueue.main.async {
+                collectionView.reloadData()
             }
         }
+        
     }
     
-    //    func getStickersCollectionViewData(category: String?) {
-    //
-    //        if user != nil {
-    //
-    //            let collectionReference: Query
-    //
-    //            if category == nil || category == "All" {
-    //                collectionReference = db.collection("stickers")
-    //            } else {
-    //                collectionReference = db.collection("stickers").whereField("category", isEqualTo: category)
-    //            }
-    //
-    //            collectionReference.getDocuments { [self] (snapshot, error) in
-    //                if error != nil {
-    //                } else {
-    //                    guard let results = snapshot?.documents else {return}
-    //                    stickerData = [StickerData]()
-    //                    for result in results {
-    //                        let documentID = result["documentID"] as! String
-    //                        let name = result["name"] as! String
-    //                        let imageLink = URL(string: result["image"] as! String)!
-    //                        stickerData?.append((StickerData(documentID: documentID, name: name, image: imageLink)))
-    //                    }
-    //
-    //                    DispatchQueue.main.async {
-    //                        stickersCollectionView.reloadData()
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
+    
+    func setStickerCategoryCollectionViewData() {
+        let category = [StickerCategory(category: "All", isCategorySelected: nil),
+                        StickerCategory(category: "Animals", isCategorySelected: nil),
+                        StickerCategory(category: "Food", isCategorySelected: nil),
+                        StickerCategory(category: "Objects", isCategorySelected: nil),
+                        StickerCategory(category: "Colored", isCategorySelected: nil),
+                        StickerCategory(category: "Travel", isCategorySelected: nil)]
+        
+        stickerCategoryViewModel = category.map({return StickerCategoryViewModel(stickerCategory: $0)})
+    }
+    
+    
     
     
     //MARK: - Heart Button Logic
     
-    func checkHeartButtonValue(completed: @escaping (Bool) -> Void) {
-        if user != nil {
-            let signedInUserID = user?.uid as! String
-            let databaseReference = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
-                if error != nil {
-                    // Show error
-                }
-                if let documents = snapshot?.documents {
-                    for document in documents {
-                        let userID = document["userID"] as! String
-                        if userID == signedInUserID {
-                            completed(true)
-                            return
-                        }
-                    }
-                }
-                completed(false)
-            }
-        }
-    }
-    
-    func setHeartButtonValue() {
-        getSignedInUserData { [self] (result) in
-            var userData = result
-            let userLikedDocument = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").document()
-            userData["documentID"] = userLikedDocument.documentID
-            userLikedDocument.setData(userData)
-        }
-    }
-    
-    func removeData() {
-        if user != nil {
-            let userID = user?.uid as! String
-            let databaseReference = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: userID).getDocuments { [self] (snapshot, error) in
-                if error != nil {
-                    // Show error
-                }
-                guard let result = snapshot?.documents.first else {return}
-                let userDocumentID = result["documentID"] as! String
-                let dataDeletion = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").document(userDocumentID).delete()
-            }
-        }
-    }
-    
-    func getSignedInUserData(completed: @escaping ([String:String])-> Void) {
-        
-        if user != nil {
-            let userID = user?.uid as! String
-            let userEmail = user?.email as! String
-            let collectionReference = db.collection("users").whereField("userID", isEqualTo: userID).getDocuments { (snapshot, error) in
-                if error != nil {
-                    // Show error
-                } else {
-                    guard let result = snapshot?.documents.first else {return}
-                    let uid = result["userID"] as! String
-                    let firstName = result["firstName"] as! String
-                    completed(["userID": userID, "firstName": firstName, "email": userEmail])
-                }
-            }
-        }
-    }
+    //    func checkHeartButtonValue(completed: @escaping (Bool) -> Void) {
+    //        if user != nil {
+    //            let signedInUserID = user?.uid as! String
+    //            let databaseReference = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
+    //                if error != nil {
+    //                    // Show error
+    //                }
+    //                if let documents = snapshot?.documents {
+    //                    for document in documents {
+    //                        let userID = document["userID"] as! String
+    //                        if userID == signedInUserID {
+    //                            completed(true)
+    //                            return
+    //                        }
+    //                    }
+    //                }
+    //                completed(false)
+    //            }
+    //        }
+    //    }
+    //
+    //    func setHeartButtonValue() {
+    //        getSignedInUserData { [self] (result) in
+    //            var userData = result
+    //            let userLikedDocument = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").document()
+    //            userData["documentID"] = userLikedDocument.documentID
+    //            userLikedDocument.setData(userData)
+    //        }
+    //    }
+    //
+    //    func removeData() {
+    //        if user != nil {
+    //            let userID = user?.uid as! String
+    //            let databaseReference = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: userID).getDocuments { [self] (snapshot, error) in
+    //                if error != nil {
+    //                    // Show error
+    //                }
+    //                guard let result = snapshot?.documents.first else {return}
+    //                let userDocumentID = result["documentID"] as! String
+    //                let dataDeletion = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").document(userDocumentID).delete()
+    //            }
+    //        }
+    //    }
+    //
+    //    func getSignedInUserData(completed: @escaping ([String:String])-> Void) {
+    //
+    //        if user != nil {
+    //            let userID = user?.uid as! String
+    //            let userEmail = user?.email as! String
+    //            let collectionReference = db.collection("users").whereField("userID", isEqualTo: userID).getDocuments { (snapshot, error) in
+    //                if error != nil {
+    //                    // Show error
+    //                } else {
+    //                    guard let result = snapshot?.documents.first else {return}
+    //                    let uid = result["userID"] as! String
+    //                    let firstName = result["firstName"] as! String
+    //                    completed(["userID": userID, "firstName": firstName, "email": userEmail])
+    //                }
+    //            }
+    //        }
+    //    }
     
 }
 
@@ -374,40 +359,50 @@ class HomeViewController: UIViewController  {
 
 extension HomeViewController: UICollectionViewDelegate {
     
-    //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    //
-    //        if collectionView == stickersCategoryCollectionView {
-    //
-    //            categorySelected = stickerCategory[indexPath.row].category
-    //            stickerCategory[indexPath.row].isCategorySelected = true
-    //
-    //            if let cell = collectionView.cellForItem(at: indexPath) as? StickersCategoryCollectionViewCell {
-    //                cell.setStickerCategoryValue(true)
-    //            }
-    //
-    //            stickerData = nil
-    //
-    //            DispatchQueue.main.async { [self] in
-    //                stickersCollectionView.reloadData()
-    //            }
-    //            getStickersCollectionViewData(category: categorySelected)
-    //        }
-    //
-    //        if collectionView == stickersCollectionView {
-    //
-    //        }
-    //    }
-    //
-    //    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-    //
-    //        if collectionView == stickersCategoryCollectionView {
-    //
-    //            stickerCategory[indexPath.row].isCategorySelected = false
-    //            if let cell = collectionView.cellForItem(at: indexPath) as? StickersCategoryCollectionViewCell {
-    //                cell.setStickerCategoryValue(false)
-    //            }
-    //        }
-    //    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if collectionView == stickerCategoryCollectionView {
+            
+            
+            if stickerCategoryViewModel != nil {
+                
+                stickerCategorySelected = stickerCategoryViewModel![indexPath.row].category
+                stickerCategoryViewModel![indexPath.row].isCategorySelected = true
+                
+                if let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell {
+                    cell.getStickerCategoryStatus(using: stickerCategoryViewModel![indexPath.row])
+                }
+                
+                stickerCategoryViewModel = nil
+                DispatchQueue.main.async { [self] in
+                    stickerCollectionView.reloadData()
+                }
+                getCollectionViewData(category: stickerCategorySelected)
+                
+                
+            }
+            
+            
+            
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
+        if collectionView == stickerCategoryCollectionView {
+            
+            if stickerCategoryViewModel != nil {
+                stickerCategoryViewModel![indexPath.row].isCategorySelected = false
+                if let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell {
+                    cell.getStickerCategoryStatus(using: stickerCategoryViewModel![indexPath.row])
+                }
+            }
+            
+            
+            
+            
+        }
+    }
     
 }
 
@@ -421,9 +416,9 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if skeletonView == featuredCollectionView {
             return "FeaturedCollectionViewCell"
         }
-        //        if skeletonView == stickersCollectionView {
-        //            return "StickersCollectionViewCell"
-        //        }
+        if skeletonView == stickerCollectionView {
+            return "StickerCollectionViewCell"
+        }
         return ReusableCellIdentifier()
     }
     
@@ -436,12 +431,12 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if collectionView == featuredCollectionView {
             return stickerViewModel?.count ?? 2
         }
-        //        if collectionView == stickersCategoryCollectionView {
-        //            return stickerCategory.count
-        //        }
-        //        if collectionView == stickersCollectionView {
-        //            return stickerData?.count ?? 6
-        //        }
+        if collectionView == stickerCategoryCollectionView {
+            return stickerCategoryViewModel?.count ?? 4
+        }
+        if collectionView == stickerCollectionView {
+            return stickerViewModel?.count ?? 6
+        }
         return 0
     }
     
@@ -452,35 +447,47 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             
             if stickerViewModel != nil {
                 
+             
+                
+                
+                
                 DispatchQueue.main.async() { [self] in
                     cell.stickerViewModel = stickerViewModel![indexPath.row]
                     cell.prepareFeatureCollectionViewCell()
                 }
+                
+                
+                
                 return cell
             }
             return cell
         }
         
-        //        if collectionView == stickersCategoryCollectionView {
-        //
-        //            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCategoryCollectionViewCell", for: indexPath) as! StickersCategoryCollectionViewCell
-        //            cell.setData(with: stickerCategory[indexPath.row].category)
-        //            cell.setStickerCategoryValue(stickerCategory[indexPath.row].isCategorySelected)
-        //            return cell
-        //        }
-        //
-        //        if collectionView == stickersCollectionView {
-        //
-        //            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickersCollectionViewCell", for: indexPath) as! StickersCollectionViewCell
-        //            if stickerData != nil {
-        //                DispatchQueue.main.async { [self] in
-        //                    cell.setData(with: stickerData![indexPath.row])
-        //
-        //                }
-        //                return cell
-        //            }
-        //            return cell
-        //        }
+        if collectionView == stickerCategoryCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickerCategoryCollectionViewCell", for: indexPath) as! StickerCategoryCollectionViewCell
+            if stickerCategoryViewModel != nil {
+                
+                cell.stickerCategoryViewModel = stickerCategoryViewModel![indexPath.row]
+                cell.putDesignOnElements()
+                return cell
+            }
+            
+            return cell
+            
+        }
+        
+        if collectionView == stickerCollectionView {
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickerCollectionViewCell", for: indexPath) as! StickerCollectionViewCell
+            if stickerViewModel != nil {
+                DispatchQueue.main.async { [self] in
+                    cell.stickerViewModel = stickerViewModel![indexPath.row]
+                    cell.setData()
+                }
+                return cell
+            }
+            return cell
+        }
         return UICollectionViewCell()
     }
     
@@ -499,17 +506,17 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        //        if collectionView == stickersCategoryCollectionView {
-        //            let stickersCategoryCollectionViewLayout = stickersCategoryCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        //            stickersCategoryCollectionViewLayout.sectionInset.left = 25
-        //            return CGSize(width: 100, height: 30)
-        //        }
-        //
-        //        if collectionView == stickersCollectionView {
-        //            let stickersCollectionViewLayout = stickersCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        //            stickersCollectionViewLayout.sectionInset.left = 25
-        //            return CGSize(width: 140, height: 140)
-        //        }
+        if collectionView == stickerCategoryCollectionView {
+            let stickerCategoryCollectionViewLayout = stickerCategoryCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+            stickerCategoryCollectionViewLayout.sectionInset.left = 25
+            return CGSize(width: 100, height: 30)
+        }
+        
+        if collectionView == stickerCollectionView {
+            let stickersCollectionViewLayout = stickerCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+            stickersCollectionViewLayout.sectionInset.left = 25
+            return CGSize(width: 140, height: 140)
+        }
         return CGSize()
     }
     

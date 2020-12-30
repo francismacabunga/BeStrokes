@@ -9,5 +9,5 @@ import Foundation
 
 struct StickerCategory {
     let category: String
-    let isCategorySelected: String
+    var isCategorySelected: Bool?
 }

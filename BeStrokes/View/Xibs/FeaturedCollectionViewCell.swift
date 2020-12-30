@@ -42,7 +42,6 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         showLoadingSkeletonView()
-        
     }
     
     override func prepareForReuse() {
@@ -105,7 +104,6 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
                 isHeartButtonTapped = false
             }
         }
-        
     }
     
     

@@ -10,11 +10,8 @@ import SkeletonView
 import Kingfisher
 import Firebase
 
-class StickersCollectionViewCell: UICollectionViewCell {
+class StickerCollectionViewCell: UICollectionViewCell {
     
-    func getHeartButtonValue(with: String) {
-        print(with)
-    }
     
     
     //MARK: - IBOutlets
@@ -28,6 +25,18 @@ class StickersCollectionViewCell: UICollectionViewCell {
     let user = Auth.auth().currentUser
     let db = Firestore.firestore()
     let connection = HomeViewController()
+    
+    var stickerViewModel: StickerViewModel! {
+        didSet {
+            
+            stickerLabel.text = stickerViewModel.name
+            stickerImageView.kf.setImage(with: stickerViewModel.image.absoluteURL)
+            
+//            featuredStickerDocumentID = stickerViewModel.stickerDocumentID
+//            featuredLabel.text = stickerViewModel.name
+//            featuredImageView.kf.setImage(with: stickerViewModel.image.absoluteURL)
+        }
+    }
     
     //MARK: - NIB Functions
     
@@ -77,44 +86,44 @@ class StickersCollectionViewCell: UICollectionViewCell {
     
     var stickerDocumentID: String?
     
-    func setData(with data: StickerData) {
-        
-        let stickerLabel = data.name
-        let stickerImage = data.image
-        stickerDocumentID = data.documentID
-        
-        
-        hideLoadingSkeletonView()
-        designElements()
-        setStikcerLabelAndImage(with: stickerLabel, stickerImage)
-        
-        checkHeartButtonValue { [self] (result) in
-            if result {
-                setHeartButttonDesign(using: "heart.fill")
-                isHeartButtonTapped = true
-            } else {
-                setHeartButttonDesign(using: "heart")
-                isHeartButtonTapped = false
-            }
+        func setData() {
+    
+//            let stickerLabel = data.name
+//            let stickerImage = data.image
+//            stickerDocumentID = data.documentID
+    
+    
+            hideLoadingSkeletonView()
+            designElements()
+//            setStikcerLabelAndImage(with: stickerLabel, stickerImage)
+    
+//            checkHeartButtonValue { [self] (result) in
+//                if result {
+//                    setHeartButttonDesign(using: "heart.fill")
+//                    isHeartButtonTapped = true
+//                } else {
+//                    setHeartButttonDesign(using: "heart")
+//                    isHeartButtonTapped = false
+//                }
+//            }
+    
+    
         }
-        
-        
-    }
     
     
     
     
-    func setStikcerLabelAndImage(with name: String, _ imageURL: URL) {
-        
-        stickerLabel.text = name
-        stickerImageView.kf.setImage(with: imageURL.absoluteURL)
-        
-        
-        
-        
-        
-    }
-    
+//    func setStikcerLabelAndImage(with name: String, _ imageURL: URL) {
+//
+//        stickerLabel.text = name
+//        stickerImageView.kf.setImage(with: imageURL.absoluteURL)
+//
+//
+//
+//
+//
+//    }
+//
     
     
     

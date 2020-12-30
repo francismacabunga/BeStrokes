@@ -26,6 +26,7 @@
 		2F4CE06E257E63F9001C3768 /* StickersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4CE06D257E63F9001C3768 /* StickersViewController.swift */; };
 		2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */; };
 		2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */; };
+		2F7950D0259CC62F005B2A27 /* StickerCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7950CF259CC62F005B2A27 /* StickerCategoryViewModel.swift */; };
 		2F88A016259B1FBC00AAC82D /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A015259B1FBC00AAC82D /* Sticker.swift */; };
 		2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A018259B239700AAC82D /* StickerViewModel.swift */; };
 		2F8F950D2565C59A00ECDF83 /* SignUpViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */; };
@@ -34,10 +35,10 @@
 		2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */; };
 		2FD6E4D2257AC96100B49E41 /* FeaturedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */; };
 		2FD6E4D3257AC96100B49E41 /* FeaturedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */; };
-		2FD6E4DA257AC99900B49E41 /* StickersCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D8257AC99900B49E41 /* StickersCollectionViewCell.swift */; };
-		2FD6E4DB257AC99900B49E41 /* StickersCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D9257AC99900B49E41 /* StickersCollectionViewCell.xib */; };
-		2FD6E4E0257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4DE257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.swift */; };
-		2FD6E4E1257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4DF257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.xib */; };
+		2FD6E4DA257AC99900B49E41 /* StickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D8257AC99900B49E41 /* StickerCollectionViewCell.swift */; };
+		2FD6E4DB257AC99900B49E41 /* StickerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D9257AC99900B49E41 /* StickerCollectionViewCell.xib */; };
+		2FD6E4E0257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4DE257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift */; };
+		2FD6E4E1257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4DF257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib */; };
 		2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE99CF725183D3F002AFFDC /* AppDelegate.swift */; };
 		2FE99CFA25183D3F002AFFDC /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99CF925183D3F002AFFDC /* art.scnassets */; };
 		2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */; };
@@ -70,6 +71,7 @@
 		2F402CA5256806DD00666028 /* User.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
 		2F4CE06D257E63F9001C3768 /* StickersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersViewController.swift; sourceTree = "<group>"; };
 		2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewControllerContainer.swift; sourceTree = "<group>"; };
+		2F7950CF259CC62F005B2A27 /* StickerCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryViewModel.swift; sourceTree = "<group>"; };
 		2F88A015259B1FBC00AAC82D /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
 		2F88A018259B239700AAC82D /* StickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewModel.swift; sourceTree = "<group>"; };
 		2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewControllerContainer.swift; sourceTree = "<group>"; };
@@ -78,10 +80,10 @@
 		2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedViewController.swift; sourceTree = "<group>"; };
 		2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedCollectionViewCell.swift; sourceTree = "<group>"; };
 		2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeaturedCollectionViewCell.xib; sourceTree = "<group>"; };
-		2FD6E4D8257AC99900B49E41 /* StickersCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersCollectionViewCell.swift; sourceTree = "<group>"; };
-		2FD6E4D9257AC99900B49E41 /* StickersCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickersCollectionViewCell.xib; sourceTree = "<group>"; };
-		2FD6E4DE257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
-		2FD6E4DF257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickersCategoryCollectionViewCell.xib; sourceTree = "<group>"; };
+		2FD6E4D8257AC99900B49E41 /* StickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCollectionViewCell.swift; sourceTree = "<group>"; };
+		2FD6E4D9257AC99900B49E41 /* StickerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickerCollectionViewCell.xib; sourceTree = "<group>"; };
+		2FD6E4DE257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		2FD6E4DF257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickerCategoryCollectionViewCell.xib; sourceTree = "<group>"; };
 		2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2FE99CF425183D3F002AFFDC /* BeStrokes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeStrokes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE99CF725183D3F002AFFDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -135,10 +137,10 @@
 			children = (
 				2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */,
 				2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */,
-				2FD6E4DE257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.swift */,
-				2FD6E4DF257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.xib */,
-				2FD6E4D8257AC99900B49E41 /* StickersCollectionViewCell.swift */,
-				2FD6E4D9257AC99900B49E41 /* StickersCollectionViewCell.xib */,
+				2FD6E4DE257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift */,
+				2FD6E4DF257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib */,
+				2FD6E4D8257AC99900B49E41 /* StickerCollectionViewCell.swift */,
+				2FD6E4D9257AC99900B49E41 /* StickerCollectionViewCell.xib */,
 				2FEB84002598B0E200E1112C /* SavedStickersTableViewCell.swift */,
 				2FEB84012598B0E200E1112C /* SavedStickersTableViewCell.xib */,
 				2FEB84082598B90E00E1112C /* StickerDetailsViewController.swift */,
@@ -164,6 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				2F88A018259B239700AAC82D /* StickerViewModel.swift */,
+				2F7950CF259CC62F005B2A27 /* StickerCategoryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -335,10 +338,10 @@
 				2F3141582594EFC900D47E3F /* ProfileTableViewCell.xib in Resources */,
 				2F31415225947F2800D47E3F /* ProfileViewController.xib in Resources */,
 				2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */,
-				2FD6E4E1257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.xib in Resources */,
+				2FD6E4E1257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib in Resources */,
 				2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */,
 				2F402CA6256806DD00666028 /* User.storyboard in Resources */,
-				2FD6E4DB257AC99900B49E41 /* StickersCollectionViewCell.xib in Resources */,
+				2FD6E4DB257AC99900B49E41 /* StickerCollectionViewCell.xib in Resources */,
 				2FEB840B2598B90E00E1112C /* StickerDetailsViewController.xib in Resources */,
 				2FD6E4D3257AC96100B49E41 /* FeaturedCollectionViewCell.xib in Resources */,
 			);
@@ -399,8 +402,8 @@
 				2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */,
 				2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */,
 				2F88A016259B1FBC00AAC82D /* Sticker.swift in Sources */,
-				2FD6E4DA257AC99900B49E41 /* StickersCollectionViewCell.swift in Sources */,
-				2FD6E4E0257AC9BE00B49E41 /* StickersCategoryCollectionViewCell.swift in Sources */,
+				2FD6E4DA257AC99900B49E41 /* StickerCollectionViewCell.swift in Sources */,
+				2FD6E4E0257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift in Sources */,
 				2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */,
 				2FEB84042598B0E200E1112C /* SavedStickersTableViewCell.swift in Sources */,
 				2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */,
@@ -420,6 +423,7 @@
 				2F31415125947F2800D47E3F /* ProfileViewController.swift in Sources */,
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
 				2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */,
+				2F7950D0259CC62F005B2A27 /* StickerCategoryViewModel.swift in Sources */,
 				2F1D266D259C5725003ABDCF /* StickerCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

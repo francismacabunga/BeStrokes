@@ -18,6 +18,7 @@ struct StickerViewModel {
     let user = Auth.auth().currentUser
     let db = Firestore.firestore()
     
+    
     init(sticker: Sticker) {
         self.stickerDocumentID = sticker.stickerDocumentID
         self.name = sticker.name
@@ -58,16 +59,15 @@ struct StickerViewModel {
     }
     
     func removeUserData() {
-        if user != nil {
-            let userID = user!.uid
-            db.collection("stickers").document(stickerDocumentID).collection("heartBy").whereField("userID", isEqualTo: userID).getDocuments { [self] (snapshot, error) in
-                if error != nil {
-                    // Show error
-                }
-                guard let result = snapshot?.documents.first else {return}
-                let userDocumentID = result["documentID"] as! String
-                db.collection("stickers").document(stickerDocumentID).collection("heartBy").document(userDocumentID).delete()
+        guard let signedInUser = user else {return}
+        let userID = signedInUser.uid
+        db.collection("stickers").document(stickerDocumentID).collection("heartBy").whereField("userID", isEqualTo: userID).getDocuments { [self] (snapshot, error) in
+            if error != nil {
+                // Show error
             }
+            guard let result = snapshot?.documents.first else {return}
+            let userDocumentID = result["documentID"] as! String
+            db.collection("stickers").document(stickerDocumentID).collection("heartBy").document(userDocumentID).delete()
         }
     }
     
