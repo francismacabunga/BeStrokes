@@ -9,7 +9,7 @@ import Foundation
 
 struct Sticker {
     
-    let stickerID: String
+    let stickerDocumentID: String
     let name: String
     let image: URL
     let tag: String?

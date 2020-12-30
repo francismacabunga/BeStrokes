@@ -13,6 +13,7 @@
 		2F11255E2551A083004A02B1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F11255D2551A083004A02B1 /* HomeViewController.swift */; };
 		2F1125622551A097004A02B1 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1125612551A097004A02B1 /* AccountViewController.swift */; };
 		2F1125662551AE59004A02B1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1125652551AE59004A02B1 /* GoogleService-Info.plist */; };
+		2F1D266D259C5725003ABDCF /* StickerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1D266C259C5725003ABDCF /* StickerCategory.swift */; };
 		2F31415125947F2800D47E3F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F31414F25947F2800D47E3F /* ProfileViewController.swift */; };
 		2F31415225947F2800D47E3F /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F31415025947F2800D47E3F /* ProfileViewController.xib */; };
 		2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */; };
@@ -57,6 +58,7 @@
 		2F11255D2551A083004A02B1 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		2F1125612551A097004A02B1 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		2F1125652551AE59004A02B1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2F1D266C259C5725003ABDCF /* StickerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategory.swift; sourceTree = "<group>"; };
 		2F31414F25947F2800D47E3F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2F31415025947F2800D47E3F /* ProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
 		2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				2F88A015259B1FBC00AAC82D /* Sticker.swift */,
+				2F1D266C259C5725003ABDCF /* StickerCategory.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 				2F31415125947F2800D47E3F /* ProfileViewController.swift in Sources */,
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
 				2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */,
+				2F1D266D259C5725003ABDCF /* StickerCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
