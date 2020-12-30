@@ -91,9 +91,6 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         featuredContentView.hideSkeleton(reloadDataAfter: false, transition: SkeletonTransitionStyle.crossDissolve(0.1))
     }
     
-    
-    //MARK: - Fetch Data
-    
     func prepareFeatureCollectionViewCell() {
         
         hideLoadingSkeletonView()
@@ -110,6 +107,9 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         }
         
     }
+    
+    
+    //MARK: - Buttons
     
     @IBAction func featuredHeartButton(_ sender: UIButton) {
         
