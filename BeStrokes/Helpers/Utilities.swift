@@ -10,8 +10,18 @@ import UIKit
 import Firebase
 
 struct Utilities {
+
+    
+    
+    let user = Auth.auth().currentUser
+    let db = Firestore.firestore()
+
+    
+   
     
     //MARK: - Text Fields Designs
+    
+    
     
     static func putDesignOn(textField: UITextField, placeholder: String) {
         
@@ -248,7 +258,19 @@ struct Utilities {
     
     
     
-
+    
+    
+    
+   
+   
+    
+    
+    
+    
+    
+    
+    
+    
     
     
 }

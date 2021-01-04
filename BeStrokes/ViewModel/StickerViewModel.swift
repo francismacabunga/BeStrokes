@@ -8,30 +8,54 @@
 import Foundation
 import Firebase
 
+struct FeaturedStickerViewModel {
+    
+    let stickerDocumentID: String
+    let name: String
+    let image: URL
+    let tag: String?
+    var isStickerLiked: Bool?
+    
+    let user = Auth.auth().currentUser
+    let db = Firestore.firestore()
+    
+    init(featuredSticker: Sticker) {
+        self.stickerDocumentID = featuredSticker.stickerDocumentID
+        self.name = featuredSticker.name
+        self.image = featuredSticker.image
+        self.tag = featuredSticker.tag
+        self.isStickerLiked = featuredSticker.isStickerLiked
+    }
+    
+}
+
 struct StickerViewModel {
     
     let stickerDocumentID: String
     let name: String
     let image: URL
     let tag: String?
-    
-    let user = Auth.auth().currentUser
-    let db = Firestore.firestore()
-    
+    var isStickerLiked: Bool?
     
     init(sticker: Sticker) {
         self.stickerDocumentID = sticker.stickerDocumentID
         self.name = sticker.name
         self.image = sticker.image
         self.tag = sticker.tag
+        self.isStickerLiked = sticker.isStickerLiked
     }
     
-    //MARK: - Heart Button Logic
+}
+
+struct HeartButtonLogic {
     
-    func isStickerLiked(completed: @escaping (Bool)->Void) {
+    let user = Auth.auth().currentUser
+    let db = Firestore.firestore()
+    
+    func checkIfStickerLiked(using stickerDocumentID: String, completed: @escaping (Bool)->Void) {
         guard let signedInUser = user else {return}
         let signedInUserID = signedInUser.uid
-        db.collection("stickers").document(stickerDocumentID).collection("heartBy").whereField("userID", isEqualTo: signedInUserID).addSnapshotListener { [self] (snapshot, error) in
+        let listener =  db.collection("stickers").document(stickerDocumentID).collection("heartBy").whereField("userID", isEqualTo: signedInUserID).addSnapshotListener { [self] (snapshot, error) in
             if error != nil {
                 // Show error
             }
@@ -49,16 +73,16 @@ struct StickerViewModel {
         }
     }
     
-    func saveUserData()  {
+    func saveUserData(using stickerDocumentID: String)  {
         getSignedInUserData { [self] (result) in
             var userData = result
-            let userLikedDocument = db.collection("stickers").document(stickerDocumentID).collection("heartBy").document()
-            userData["documentID"] = userLikedDocument.documentID
-            userLikedDocument.setData(userData)
+            let query = db.collection("stickers").document(stickerDocumentID).collection("heartBy").document()
+            userData["documentID"] = query.documentID
+            query.setData(userData)
         }
     }
     
-    func removeUserData() {
+    func removeUserData(using stickerDocumentID: String) {
         guard let signedInUser = user else {return}
         let userID = signedInUser.uid
         db.collection("stickers").document(stickerDocumentID).collection("heartBy").whereField("userID", isEqualTo: userID).getDocuments { [self] (snapshot, error) in
@@ -87,3 +111,7 @@ struct StickerViewModel {
     }
     
 }
+
+
+
+

@@ -10,6 +10,10 @@ import SkeletonView
 import Firebase
 import Kingfisher
 
+protocol FeaturedCollectionViewCellDelegate {
+    func isHeartButtonTapped(value: Bool)
+}
+
 class FeaturedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - IBOutlets
@@ -25,15 +29,20 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
-    private var featuredStickerDocumentID: String?
+    
+    var heartButtonLogic = HeartButtonLogic()
     private var isHeartButtonTapped: Bool?
-    var stickerViewModel: StickerViewModel! {
+    var stickerDocumentID: String?
+    var featuredCollectionViewCellDelegate: FeaturedCollectionViewCellDelegate?
+    
+    var featuredStickerViewModel: FeaturedStickerViewModel! {
         didSet {
-            featuredStickerDocumentID = stickerViewModel.stickerDocumentID
-            featuredLabel.text = stickerViewModel.name
-            featuredImageView.kf.setImage(with: stickerViewModel.image.absoluteURL)
+            stickerDocumentID = featuredStickerViewModel.stickerDocumentID
+            featuredLabel.text = featuredStickerViewModel.name
+            featuredImageView.kf.setImage(with: featuredStickerViewModel.image.absoluteURL)
         }
     }
+    var stickerViewModel: StickerViewModel?
     
     
     //MARK: - NIB Functions
@@ -95,13 +104,15 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         hideLoadingSkeletonView()
         putDesignOnElements()
         
-        stickerViewModel.isStickerLiked { [self] (result) in
-            if result {
-                setHeartButtonValue(using: "heart.fill")
-                isHeartButtonTapped = true
-            } else {
-                setHeartButtonValue(using: "heart")
-                isHeartButtonTapped = false
+        if stickerDocumentID != nil {
+            heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID!) { [self] (result) in
+                if result {
+                    setHeartButtonValue(using: "heart.fill")
+                    isHeartButtonTapped = true
+                } else {
+                    setHeartButtonValue(using: "heart")
+                    isHeartButtonTapped = false
+                }
             }
         }
     }
@@ -111,13 +122,17 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     @IBAction func featuredHeartButton(_ sender: UIButton) {
         
+        guard let stickerDocumentID = stickerDocumentID else {return}
+        
         if !isHeartButtonTapped! {
-            stickerViewModel.saveUserData()
-            setHeartButtonValue(using: "heart.fill")
+            heartButtonLogic.saveUserData(using: stickerDocumentID)
+            featuredCollectionViewCellDelegate?.isHeartButtonTapped(value: true)
         } else {
-            stickerViewModel.removeUserData()
-            setHeartButtonValue(using: "heart")
+            heartButtonLogic.removeUserData(using: stickerDocumentID)
+            featuredCollectionViewCellDelegate?.isHeartButtonTapped(value: false)
         }
+        
+        
     }
     
     @IBAction func featuredTryMeButton(_ sender: UIButton) {

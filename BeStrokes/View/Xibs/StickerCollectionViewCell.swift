@@ -12,8 +12,6 @@ import Firebase
 
 class StickerCollectionViewCell: UICollectionViewCell {
     
-    
-    
     //MARK: - IBOutlets
     
     @IBOutlet weak var stickerContentView: UIView!
@@ -21,27 +19,46 @@ class StickerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var stickerImageView: UIImageView!
     @IBOutlet weak var stickerHeartButtonLabel: UIButton!
     
-    var isHeartButtonTapped: Bool?
+    
+    //MARK: - Constants / Variables
+    
     let user = Auth.auth().currentUser
     let db = Firestore.firestore()
-    let connection = HomeViewController()
+    
+    var heartButtonLogic = HeartButtonLogic()
+    var isHeartButtonTapped: Bool?
+    var stickerDocumentID: String?
+    var connection: FeaturedCollectionViewCell?
     
     var stickerViewModel: StickerViewModel! {
         didSet {
             
-            stickerLabel.text = stickerViewModel.name
+            
+            
+            hideLoadingSkeletonView()
+            putDesignOnElements()
+            
+            stickerDocumentID = stickerViewModel.stickerDocumentID
             stickerImageView.kf.setImage(with: stickerViewModel.image.absoluteURL)
             
-//            featuredStickerDocumentID = stickerViewModel.stickerDocumentID
-//            featuredLabel.text = stickerViewModel.name
-//            featuredImageView.kf.setImage(with: stickerViewModel.image.absoluteURL)
+            showHeartButtonValue(using: stickerDocumentID!)
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [self] in
+                stickerLabel.text = stickerViewModel.name
+            }
+            
+            
         }
     }
+    
     
     //MARK: - NIB Functions
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        
         
         showLoadingSkeletonView()
     }
@@ -49,23 +66,26 @@ class StickerCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        stickerLabel.text = nil
-        stickerImageView.image = nil
+        
+        
+        stickerContentView.isHidden = true
+        stickerLabel.isHidden = true
+        stickerHeartButtonLabel.setBackgroundImage(nil, for: .normal)
+        stickerImageView.isHidden = true
+        
     }
     
     
+    //MARK: - Design Elements
     
-    func designElements() {
+    func putDesignOnElements() {
         
-        stickerHeartButtonLabel.setTitle("", for: .normal)
-        stickerHeartButtonLabel.setBackgroundImage(UIImage(systemName: "heart"), for: .normal)
-        stickerHeartButtonLabel.tintColor = .black
-        
-        
+        stickerContentView.isHidden = false
         stickerContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         stickerContentView.layer.cornerRadius = 30
         stickerContentView.clipsToBounds = true
         
+        stickerLabel.isHidden = false
         stickerLabel.textAlignment = .left
         stickerLabel.numberOfLines = 1
         stickerLabel.adjustsFontSizeToFitWidth = true
@@ -73,7 +93,27 @@ class StickerCollectionViewCell: UICollectionViewCell {
         stickerLabel.font = UIFont(name: "Futura-Bold", size: 15)
         stickerLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
+        stickerHeartButtonLabel.isHidden = false
+        stickerHeartButtonLabel.setBackgroundImage(nil, for: .normal)
+        //        stickerHeartButtonLabel.setTitle("", for: .normal)
+        //        stickerHeartButtonLabel.setBackgroundImage(UIImage(systemName: "heart"), for: .normal)
+        //        stickerHeartButtonLabel.tintColor = .black
+        
+        stickerImageView.isHidden = false
         stickerImageView.contentMode = .scaleAspectFit
+    }
+    
+    func setHeartButtonValue(using value: String) {
+        
+        
+        
+        stickerHeartButtonLabel.setTitle("", for: .normal)
+        stickerHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
+        stickerHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        
+        
+        
+        
     }
     
     func showLoadingSkeletonView() {
@@ -84,146 +124,77 @@ class StickerCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    var stickerDocumentID: String?
-    
-        func setData() {
-    
-//            let stickerLabel = data.name
-//            let stickerImage = data.image
-//            stickerDocumentID = data.documentID
-    
-    
-            hideLoadingSkeletonView()
-            designElements()
-//            setStikcerLabelAndImage(with: stickerLabel, stickerImage)
-    
-//            checkHeartButtonValue { [self] (result) in
-//                if result {
-//                    setHeartButttonDesign(using: "heart.fill")
-//                    isHeartButtonTapped = true
-//                } else {
-//                    setHeartButttonDesign(using: "heart")
-//                    isHeartButtonTapped = false
-//                }
-//            }
-    
-    
-        }
-    
-    
-    
-    
-//    func setStikcerLabelAndImage(with name: String, _ imageURL: URL) {
-//
-//        stickerLabel.text = name
-//        stickerImageView.kf.setImage(with: imageURL.absoluteURL)
-//
-//
-//
-//
-//
-//    }
-//
-    
-    
-    
     func hideLoadingSkeletonView() {
         stickerContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.1))
     }
     
+    func prepareStickerCollectionViewCell() {
+        
+        //        hideLoadingSkeletonView()
+        //        putDesignOnElements()
+        //        showHeartButtonValue(using: stickerDocumentID!)
+        
+        
+        
+        
+        
+    }
     
     
     
+    func ifTrue() {
+        setHeartButtonValue(using: "heart")
+    }
+    
+    func ifFalse() {
+        setHeartButtonValue(using: "heart.fill")
+    }
     
     
+    func showHeartButtonValue(using stickerDocumentID: String) {
+        if stickerDocumentID != nil {
+            heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
+                if result {
+                    print(stickerDocumentID)
+                    setHeartButtonValue(using: "heart.fill")
+                    //                    isHeartButtonTapped = true
+                } else {
+                    
+                    setHeartButtonValue(using: "heart")
+                    //                    isHeartButtonTapped = false
+                }
+            }
+        }
+    }
     
     
-    
-    
-    
+    //MARK: - Buttons
     
     @IBAction func stickerHeartButton(_ sender: UIButton) {
         
-        if !isHeartButtonTapped! {
-            setHeartButtonValue()
-        } else {
-            removeData()
-        }
+        guard let tappedSticker = stickerDocumentID else {return}
+        print("Tapped sticker: \(tappedSticker)")
+        //
+        //
+        //        if !isHeartButtonTapped! {
+        //            //            heartButtonLogic.saveUserData(using: stickerDocumentID)
+        //            print("Not clicked")
+        //            print(stickerDocumentID)
+        //
+        //        } else {
+        //            //            heartButtonLogic.removeUserData(using: stickerDocumentID)
+        //            print("Clicked")
+        //            print(stickerDocumentID)
+        //        }
+        
+        
+        
         
     }
     
     
     
-    func setHeartButtonValue() {
-        getSignedInUserData { [self] (result) in
-            var userData = result
-            let userLikedDocument = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").document()
-            userData["documentID"] = userLikedDocument.documentID
-            userLikedDocument.setData(userData)
-            setHeartButttonDesign(using: "heart.fill")
-        }
-    }
     
-    func removeData() {
-        if user != nil {
-            let userID = user?.uid as! String
-            let databaseReference = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: userID).getDocuments { [self] (snapshot, error) in
-                if error != nil {
-                    // Show error
-                }
-                guard let result = snapshot?.documents.first else {return}
-                let userDocumentID = result["documentID"] as! String
-                let dataDeletion = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").document(userDocumentID).delete()
-                setHeartButttonDesign(using: "heart")
-            }
-        }
-    }
-    
-    func setHeartButttonDesign(using value: String) {
-        stickerHeartButtonLabel.setTitle("", for: .normal)
-        stickerHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
-        stickerHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    }
-    
-    func checkHeartButtonValue(completed: @escaping (Bool) -> Void) {
-        if user != nil {
-            let signedInUserID = user?.uid as! String
-            let databaseReference = db.collection("stickers").document(stickerDocumentID!).collection("likedBy").whereField("userID", isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
-                if error != nil {
-                    // Show error
-                }
-                if let documents = snapshot?.documents {
-                    for document in documents {
-                        let userID = document["userID"] as! String
-                        if userID == signedInUserID {
-                            completed(true)
-                            return
-                        }
-                    }
-                }
-                completed(false)
-            }
-        }
-    }
-    
-    
-    func getSignedInUserData(completed: @escaping ([String:String])-> Void) {
-        
-        if user != nil {
-            let userID = user?.uid as! String
-            let userEmail = user?.email as! String
-            let collectionReference = db.collection("users").whereField("userID", isEqualTo: userID).getDocuments { (snapshot, error) in
-                if error != nil {
-                    // Show error
-                } else {
-                    guard let result = snapshot?.documents.first else {return}
-                    let uid = result["userID"] as! String
-                    let firstName = result["firstName"] as! String
-                    completed(["userID": userID, "firstName": firstName, "email": userEmail])
-                }
-            }
-        }
-    }
     
     
 }
