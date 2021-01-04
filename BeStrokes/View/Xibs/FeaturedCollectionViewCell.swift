@@ -29,7 +29,6 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     private var heartButtonLogic = HeartButtonLogic()
     private var isHeartButtonTapped: Bool?
     private var stickerDocumentID: String?
-    //    var featuredCollectionViewCellDelegate: FeaturedCollectionViewCellDelegate?
     
     var featuredStickerViewModel: FeaturedStickerViewModel! {
         didSet {
@@ -73,6 +72,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         featuredTryMeButtonLabel.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
         featuredImageView.contentMode = .scaleAspectFit
+        
     }
     
     func showLoadingSkeletonView() {
@@ -84,7 +84,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     }
     
     func hideLoadingSkeletonView() {
-        featuredContentView.hideSkeleton(reloadDataAfter: false, transition: SkeletonTransitionStyle.crossDissolve(0.1))
+        featuredContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
     func setHeartButtonValue(using value: String) {
