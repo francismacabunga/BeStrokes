@@ -10,13 +10,17 @@ import SkeletonView
 import Firebase
 import Kingfisher
 
+protocol FeaturedCollectionViewCellDelegate {
+    func isFeaturedHeartButtonTapped(_ value: Bool)
+}
+
 class FeaturedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - IBOutlets
     
     @IBOutlet weak var featuredContentView: UIView!
     @IBOutlet weak var featuredLabel: UILabel!
-    @IBOutlet weak var featuredHeartButtonLabel: UIButton!
+    @IBOutlet weak var featuredHeartButtonImageView: UIImageView!
     @IBOutlet weak var featuredTryMeButtonLabel: UIButton!
     @IBOutlet weak var featuredImageView: UIImageView!
     
@@ -26,9 +30,10 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
+    var featuredCollectionViewCellDelegate: FeaturedCollectionViewCellDelegate?
     private var heartButtonLogic = HeartButtonLogic()
-    private var isHeartButtonTapped: Bool?
     private var stickerDocumentID: String?
+    private var heartButtonTapped: Bool?
     
     var featuredStickerViewModel: FeaturedStickerViewModel! {
         didSet {
@@ -43,11 +48,14 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         showLoadingSkeletonView()
+        registerGestures()
+        
     }
     
     override func prepareForReuse() {
-        featuredHeartButtonLabel.setBackgroundImage(nil, for: .normal)
+        featuredHeartButtonImageView.image = nil
     }
     
     
@@ -88,47 +96,51 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     }
     
     func setHeartButtonValue(using value: String) {
-        featuredHeartButtonLabel.setTitle("", for: .normal)
-        featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
-        featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        featuredHeartButtonImageView.image = UIImage(systemName: value)
+        featuredHeartButtonImageView.tintColor = .black
     }
     
     func prepareFeatureCollectionViewCell() {
         hideLoadingSkeletonView()
         setDesignOnElements()
-        
-        if stickerDocumentID != nil {
-            showHeartButtonValue(using: stickerDocumentID!)
-        }
-        
+        showHeartButtonValue(using: stickerDocumentID!)
     }
     
     func showHeartButtonValue(using stickerDocumentID: String) {
         heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
             if result {
                 setHeartButtonValue(using: "heart.fill")
-                isHeartButtonTapped = true
+                featuredCollectionViewCellDelegate?.isFeaturedHeartButtonTapped(true)
+                heartButtonTapped = true
             } else {
                 setHeartButtonValue(using: "heart")
-                isHeartButtonTapped = false
+                featuredCollectionViewCellDelegate?.isFeaturedHeartButtonTapped(false)
+                heartButtonTapped = false
             }
         }
     }
     
     
-    //MARK: - Buttons
+    //MARK: - UIGestureHandlers
     
-    @IBAction func featuredHeartButton(_ sender: UIButton) {
+    func registerGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
+        featuredHeartButtonImageView.addGestureRecognizer(tapGesture)
+        featuredHeartButtonImageView.isUserInteractionEnabled = true
+    }
+    
+    @objc func tapGestureHandler() {
         
-        guard let stickerDocumentID = stickerDocumentID else {return}
-        
-        if !isHeartButtonTapped! {
-            heartButtonLogic.saveUserData(using: stickerDocumentID)
+        if heartButtonTapped! {
+            heartButtonLogic.removeUserData(using: stickerDocumentID!)
         } else {
-            heartButtonLogic.removeUserData(using: stickerDocumentID)
+            heartButtonLogic.saveUserData(using: stickerDocumentID!)
         }
         
     }
+    
+    
+    //MARK: - Buttons
     
     @IBAction func featuredTryMeButton(_ sender: UIButton) {
         

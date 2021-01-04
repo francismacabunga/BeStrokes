@@ -10,13 +10,17 @@ import SkeletonView
 import Kingfisher
 import Firebase
 
+protocol StickerCollectionViewCellDelegate {
+    func isStickerHeartButtonTapped(_ value: Bool)
+}
+
 class StickerCollectionViewCell: UICollectionViewCell {
     
     //MARK: - IBOutlets
     
     @IBOutlet weak var stickerContentView: UIView!
     @IBOutlet weak var stickerLabel: UILabel!
-    @IBOutlet weak var stickerHeartButtonLabel: UIButton!
+    @IBOutlet weak var stickerHeartButtonImageView: UIImageView!
     @IBOutlet weak var stickerImageView: UIImageView!
     
     
@@ -25,9 +29,10 @@ class StickerCollectionViewCell: UICollectionViewCell {
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
+    var stickerCollectionViewCellDelegate: StickerCollectionViewCellDelegate?
     private var heartButtonLogic = HeartButtonLogic()
-    private var isHeartButtonTapped: Bool?
     private var stickerDocumentID: String?
+    private var heartButtonTapped: Bool?
     
     var stickerViewModel: StickerViewModel! {
         didSet {
@@ -44,18 +49,19 @@ class StickerCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         showLoadingSkeletonView()
+        registerGestures()
         
     }
     
     override func prepareForReuse() {
-        stickerHeartButtonLabel.setBackgroundImage(nil, for: .normal)
+        stickerHeartButtonImageView.image = nil
     }
     
     
     //MARK: - Design Elements
     
     func setDesignOnElements() {
-
+        
         stickerContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         stickerContentView.layer.cornerRadius = 30
         stickerContentView.clipsToBounds = true
@@ -84,44 +90,45 @@ class StickerCollectionViewCell: UICollectionViewCell {
     }
     
     func setHeartButtonValue(using value: String) {
-        stickerHeartButtonLabel.setTitle("", for: .normal)
-        stickerHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
-        stickerHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        stickerHeartButtonImageView.image = UIImage(systemName: value)
+        stickerHeartButtonImageView.tintColor = .black
     }
     
     func prepareStickerCollectionViewCell() {
         hideLoadingSkeletonView()
         setDesignOnElements()
-        
-        if stickerDocumentID != nil {
-            showHeartButtonValue(using: stickerDocumentID!)
-        }
-        
+        showHeartButtonValue(using: stickerDocumentID!)
     }
     
     func showHeartButtonValue(using stickerDocumentID: String) {
         heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
             if result {
                 setHeartButtonValue(using: "heart.fill")
-                isHeartButtonTapped = true
+                stickerCollectionViewCellDelegate?.isStickerHeartButtonTapped(true)
+                heartButtonTapped = true
             } else {
                 setHeartButtonValue(using: "heart")
-                isHeartButtonTapped = false
+                stickerCollectionViewCellDelegate?.isStickerHeartButtonTapped(false)
+                heartButtonTapped = false
             }
         }
     }
     
     
-    //MARK: - Buttons
+    //MARK: - UIGestureHandlers
     
-    @IBAction func stickerHeartButton(_ sender: UIButton) {
+    func registerGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
+        stickerHeartButtonImageView.addGestureRecognizer(tapGesture)
+        stickerHeartButtonImageView.isUserInteractionEnabled = true
+    }
+    
+    @objc func tapGestureHandler() {
         
-        guard let stickerDocumentID = stickerDocumentID else {return}
-        
-        if !isHeartButtonTapped! {
-            heartButtonLogic.saveUserData(using: stickerDocumentID)
+        if heartButtonTapped! {
+            heartButtonLogic.removeUserData(using: stickerDocumentID!)
         } else {
-            heartButtonLogic.removeUserData(using: stickerDocumentID)
+            heartButtonLogic.saveUserData(using: stickerDocumentID!)
         }
         
     }

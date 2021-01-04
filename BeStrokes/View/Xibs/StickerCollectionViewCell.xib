@@ -19,40 +19,37 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygQ-zI-xqz">
                         <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YKi-pj-vbz">
-                                <rect key="frame" x="15" y="10" width="87" height="18"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Js9-S4-QNQ">
+                                <rect key="frame" x="5" y="35" width="130" height="100"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BS5-gP-jmS">
+                                <rect key="frame" x="110" y="10" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="D3z-sM-QgG"/>
+                                    <constraint firstAttribute="height" constant="20" id="QIh-ci-88P"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qbl-Li-P68">
+                                <rect key="frame" x="15" y="5" width="90" height="25"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Js9-S4-QNQ">
-                                <rect key="frame" x="5" y="33" width="130" height="102"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VB5-9N-29i">
-                                <rect key="frame" x="107" y="10" width="23" height="18"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="18" id="I4Q-R1-BxY"/>
-                                    <constraint firstAttribute="width" constant="23" id="KEX-0p-Peu"/>
-                                </constraints>
-                                <connections>
-                                    <action selector="stickerHeartButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="WZc-QG-pwh"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="BS5-gP-jmS" secondAttribute="trailing" constant="10" id="4J3-8c-mHE"/>
+                            <constraint firstItem="Js9-S4-QNQ" firstAttribute="top" secondItem="qbl-Li-P68" secondAttribute="bottom" constant="5" id="6xD-8C-ALo"/>
                             <constraint firstItem="Js9-S4-QNQ" firstAttribute="leading" secondItem="ygQ-zI-xqz" secondAttribute="leading" constant="5" id="Ap8-vi-rhr"/>
-                            <constraint firstAttribute="trailing" secondItem="VB5-9N-29i" secondAttribute="trailing" constant="10" id="B8c-yD-0eq"/>
                             <constraint firstAttribute="bottom" secondItem="Js9-S4-QNQ" secondAttribute="bottom" constant="5" id="CA4-Ia-GYc"/>
-                            <constraint firstItem="YKi-pj-vbz" firstAttribute="top" secondItem="ygQ-zI-xqz" secondAttribute="top" constant="10" id="DCf-Eu-fLr"/>
-                            <constraint firstItem="Js9-S4-QNQ" firstAttribute="top" secondItem="YKi-pj-vbz" secondAttribute="bottom" constant="5" id="E9S-uO-gCZ"/>
                             <constraint firstAttribute="height" constant="140" id="Hoi-hj-v6J"/>
                             <constraint firstAttribute="width" constant="140" id="JPM-9P-A1M"/>
-                            <constraint firstItem="Js9-S4-QNQ" firstAttribute="top" secondItem="VB5-9N-29i" secondAttribute="bottom" constant="5" id="X0i-dA-h4p"/>
-                            <constraint firstItem="VB5-9N-29i" firstAttribute="top" secondItem="ygQ-zI-xqz" secondAttribute="top" constant="10" id="bXF-nf-swK"/>
-                            <constraint firstItem="YKi-pj-vbz" firstAttribute="leading" secondItem="ygQ-zI-xqz" secondAttribute="leading" constant="15" id="fuz-6O-CpZ"/>
-                            <constraint firstItem="VB5-9N-29i" firstAttribute="leading" secondItem="YKi-pj-vbz" secondAttribute="trailing" constant="5" id="ikO-1G-wVU"/>
+                            <constraint firstItem="Js9-S4-QNQ" firstAttribute="top" secondItem="BS5-gP-jmS" secondAttribute="bottom" constant="5" id="Rvv-xF-pYq"/>
+                            <constraint firstItem="qbl-Li-P68" firstAttribute="leading" secondItem="ygQ-zI-xqz" secondAttribute="leading" constant="15" id="UHM-yU-iLS"/>
+                            <constraint firstItem="BS5-gP-jmS" firstAttribute="leading" secondItem="qbl-Li-P68" secondAttribute="trailing" constant="5" id="YPp-xn-JTY"/>
+                            <constraint firstItem="BS5-gP-jmS" firstAttribute="top" secondItem="ygQ-zI-xqz" secondAttribute="top" constant="10" id="bp4-nF-KMR"/>
                             <constraint firstAttribute="trailing" secondItem="Js9-S4-QNQ" secondAttribute="trailing" constant="5" id="nyh-Bk-vH3"/>
+                            <constraint firstItem="qbl-Li-P68" firstAttribute="top" secondItem="ygQ-zI-xqz" secondAttribute="top" constant="5" id="p1w-qd-QtY"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -68,9 +65,9 @@
             <size key="customSize" width="140" height="140"/>
             <connections>
                 <outlet property="stickerContentView" destination="ygQ-zI-xqz" id="9bb-jC-08n"/>
-                <outlet property="stickerHeartButtonLabel" destination="VB5-9N-29i" id="ypV-a9-jho"/>
+                <outlet property="stickerHeartButtonImageView" destination="BS5-gP-jmS" id="jWY-hA-TlZ"/>
                 <outlet property="stickerImageView" destination="Js9-S4-QNQ" id="ptP-GK-k6F"/>
-                <outlet property="stickerLabel" destination="YKi-pj-vbz" id="Ml9-PD-Ew9"/>
+                <outlet property="stickerLabel" destination="qbl-Li-P68" id="eGM-KW-SRA"/>
             </connections>
             <point key="canvasLocation" x="-100.00000000000001" y="99.776785714285708"/>
         </collectionViewCell>

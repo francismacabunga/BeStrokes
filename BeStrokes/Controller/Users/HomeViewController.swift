@@ -39,7 +39,8 @@ class HomeViewController: UIViewController {
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private var heartButtonLogic = HeartButtonLogic()
     private var stickerCategorySelected: String?
-    private var heartButtonTapped: Bool?
+    var featuredHeartButtonTapped: Bool?
+    var stickerHeartButtonTapped: Bool?
     
     
     //MARK: - View Controller Life Cycle
@@ -148,9 +149,13 @@ class HomeViewController: UIViewController {
         profilePictureImageView.addGestureRecognizer(tapGesture)
         profilePictureImageView.isUserInteractionEnabled = true
         
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapGestureHandler))
-        doubleTapGesture.numberOfTapsRequired = 2
-        featuredCollectionView.addGestureRecognizer(doubleTapGesture)
+        let featuredDoubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(featuredDoubleTapGestureHandler))
+        featuredDoubleTapGesture.numberOfTapsRequired = 2
+        featuredCollectionView.addGestureRecognizer(featuredDoubleTapGesture)
+        
+        let stickerDoubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(stickerDoubleTapGestureHandler))
+        stickerDoubleTapGesture.numberOfTapsRequired = 2
+        stickerCollectionView.addGestureRecognizer(stickerDoubleTapGesture)
         
     }
     
@@ -160,13 +165,38 @@ class HomeViewController: UIViewController {
         present(profileVC, animated: true)
     }
     
-    @objc func doubleTapGestureHandler(doubleTap: UITapGestureRecognizer) {
+    @objc func featuredDoubleTapGestureHandler(doubleTap: UITapGestureRecognizer) {
         
         let doubleTapLocation = doubleTap.location(in: featuredCollectionView)
         guard let cellIndexPath = featuredCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
-        
         if featuredStickerViewModel != nil {
             let stickerDocumentID = featuredStickerViewModel![cellIndexPath.row].stickerDocumentID
+            print(stickerDocumentID)
+            if featuredHeartButtonTapped != nil {
+                if featuredHeartButtonTapped! {
+                    heartButtonLogic.removeUserData(using: stickerDocumentID)
+                } else {
+                    heartButtonLogic.saveUserData(using: stickerDocumentID)
+                }
+            }
+        }
+        
+    }
+    
+    @objc func stickerDoubleTapGestureHandler(doubleTap: UITapGestureRecognizer) {
+        
+        let doubleTapLocation = doubleTap.location(in: stickerCollectionView)
+        guard let cellIndexPath = stickerCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
+        if stickerViewModel != nil {
+            let stickerDocumentID = stickerViewModel![cellIndexPath.row].stickerDocumentID
+            print(stickerDocumentID)
+            if stickerHeartButtonTapped != nil {
+                if stickerHeartButtonTapped! {
+                    heartButtonLogic.removeUserData(using: stickerDocumentID)
+                } else {
+                    heartButtonLogic.saveUserData(using: stickerDocumentID)
+                }
+            }
         }
         
     }
@@ -347,6 +377,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
                 DispatchQueue.main.async() { [self] in
                     cell.featuredStickerViewModel = featuredStickerViewModel![indexPath.row]
                     cell.prepareFeatureCollectionViewCell()
+                    cell.featuredCollectionViewCellDelegate = self
                 }
                 return cell
             }
@@ -369,6 +400,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
                 DispatchQueue.main.async { [self] in
                     cell.stickerViewModel = stickerViewModel![indexPath.row]
                     cell.prepareStickerCollectionViewCell()
+                    cell.stickerCollectionViewCellDelegate = self
                 }
                 return cell
             }
@@ -415,3 +447,16 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 }
 
 
+//MARK: - Protocols
+
+extension HomeViewController: FeaturedCollectionViewCellDelegate, StickerCollectionViewCellDelegate {
+    
+    func isFeaturedHeartButtonTapped(_ value: Bool) {
+        featuredHeartButtonTapped = value
+    }
+    
+    func isStickerHeartButtonTapped(_ value: Bool) {
+        stickerHeartButtonTapped = value
+    }
+    
+}
