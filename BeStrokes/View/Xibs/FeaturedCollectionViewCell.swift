@@ -10,10 +10,6 @@ import SkeletonView
 import Firebase
 import Kingfisher
 
-protocol FeaturedCollectionViewCellDelegate {
-    func isHeartButtonTapped(value: Bool)
-}
-
 class FeaturedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - IBOutlets
@@ -30,10 +26,10 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
-    var heartButtonLogic = HeartButtonLogic()
+    private var heartButtonLogic = HeartButtonLogic()
     private var isHeartButtonTapped: Bool?
-    var stickerDocumentID: String?
-    var featuredCollectionViewCellDelegate: FeaturedCollectionViewCellDelegate?
+    private var stickerDocumentID: String?
+    //    var featuredCollectionViewCellDelegate: FeaturedCollectionViewCellDelegate?
     
     var featuredStickerViewModel: FeaturedStickerViewModel! {
         didSet {
@@ -42,14 +38,12 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
             featuredImageView.kf.setImage(with: featuredStickerViewModel.image.absoluteURL)
         }
     }
-    var stickerViewModel: StickerViewModel?
     
     
     //MARK: - NIB Functions
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         showLoadingSkeletonView()
     }
     
@@ -60,7 +54,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Design Elements
     
-    func putDesignOnElements() {
+    func setDesignOnElements() {
         
         featuredContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         featuredContentView.layer.cornerRadius = 40
@@ -81,12 +75,6 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         featuredImageView.contentMode = .scaleAspectFit
     }
     
-    func setHeartButtonValue(using value: String) {
-        featuredHeartButtonLabel.setTitle("", for: .normal)
-        featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
-        featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    }
-    
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             featuredContentView.isSkeletonable = true
@@ -99,20 +87,30 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         featuredContentView.hideSkeleton(reloadDataAfter: false, transition: SkeletonTransitionStyle.crossDissolve(0.1))
     }
     
+    func setHeartButtonValue(using value: String) {
+        featuredHeartButtonLabel.setTitle("", for: .normal)
+        featuredHeartButtonLabel.setBackgroundImage(UIImage(systemName: value), for: .normal)
+        featuredHeartButtonLabel.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+    }
+    
     func prepareFeatureCollectionViewCell() {
-        
         hideLoadingSkeletonView()
-        putDesignOnElements()
+        setDesignOnElements()
         
         if stickerDocumentID != nil {
-            heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID!) { [self] (result) in
-                if result {
-                    setHeartButtonValue(using: "heart.fill")
-                    isHeartButtonTapped = true
-                } else {
-                    setHeartButtonValue(using: "heart")
-                    isHeartButtonTapped = false
-                }
+            showHeartButtonValue(using: stickerDocumentID!)
+        }
+        
+    }
+    
+    func showHeartButtonValue(using stickerDocumentID: String) {
+        heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
+            if result {
+                setHeartButtonValue(using: "heart.fill")
+                isHeartButtonTapped = true
+            } else {
+                setHeartButtonValue(using: "heart")
+                isHeartButtonTapped = false
             }
         }
     }
@@ -126,12 +124,9 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         
         if !isHeartButtonTapped! {
             heartButtonLogic.saveUserData(using: stickerDocumentID)
-            featuredCollectionViewCellDelegate?.isHeartButtonTapped(value: true)
         } else {
             heartButtonLogic.removeUserData(using: stickerDocumentID)
-            featuredCollectionViewCellDelegate?.isHeartButtonTapped(value: false)
         }
-        
         
     }
     

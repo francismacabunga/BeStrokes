@@ -49,8 +49,8 @@ struct StickerViewModel {
 
 struct HeartButtonLogic {
     
-    let user = Auth.auth().currentUser
-    let db = Firestore.firestore()
+    private let user = Auth.auth().currentUser
+    private let db = Firestore.firestore()
     
     func checkIfStickerLiked(using stickerDocumentID: String, completed: @escaping (Bool)->Void) {
         guard let signedInUser = user else {return}

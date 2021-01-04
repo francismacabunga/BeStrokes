@@ -29,6 +29,7 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
                     stickerCategoryContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
                 }
             }
+            
         }
     }
     
@@ -41,13 +42,15 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
         stickerCategoryContentView.isHidden = true
+        
     }
     
     
     //MARK: - Design Elements
     
-    func putDesignOnElements() {
+    func setDesignOnElements() {
         
         stickerCategoryContentView.isHidden = false
         stickerCategoryContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
@@ -59,6 +62,7 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
         stickerCategoryLabel.minimumScaleFactor = 0.9
         stickerCategoryLabel.textAlignment = .center
         stickerCategoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        
     }
     
 }

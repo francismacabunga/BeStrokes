@@ -11,12 +11,11 @@ import Firebase
 import MSPeekCollectionViewDelegateImplementation
 import SkeletonView
 
-class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
-    
-    
+class HomeViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var contentStack: UIStackView!
     @IBOutlet weak var featuredView: UIView!
     @IBOutlet weak var stickersView: UIView!
     @IBOutlet weak var profilePictureImageView: UIImageView!
@@ -32,38 +31,15 @@ class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
     
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
-    private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
     private var stickerViewModel: [StickerViewModel]?
     
-    var stickerCategorySelected: String?
-    var heartButtonLogic = HeartButtonLogic()
-    var heartButtonTapped: Bool?
-    
-    func isHeartButtonTapped(value: Bool) {
-        
-        
-        
-        heartButtonTapped = value
-        stickerCollectionView.reloadData()
-        
-        print("From home: \(heartButtonTapped)")
-        
-        //        stickerCollectionView.reloadData()
-        
-        
-        
-        //        if heartButtonTapped != nil {
-        //            if heartButtonTapped! {
-        //
-        //            } else {
-        //
-        //            }
-        //        }
-        
-    }
+    private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
+    private var heartButtonLogic = HeartButtonLogic()
+    private var stickerCategorySelected: String?
+    private var heartButtonTapped: Bool?
     
     
     //MARK: - View Controller Life Cycle
@@ -71,12 +47,12 @@ class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        designElements()
-        setCollectionView()
-        getCollectionViewData(on: "Featured")
-        setStickerCategoryCollectionViewData()
-        getCollectionViewData(category: "All")
+        setDesignElements()
         registerGestures()
+        registerCollectionView()
+        getCollectionViewData(on: "Featured")
+        getStickerCategoryCollectionViewData()
+        getCollectionViewData(category: "All")
         
     }
     
@@ -87,15 +63,15 @@ class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
         return .lightContent
     }
     
-    func designElements() {
-        
+    func setDesignElements() {
         navigationController?.setNavigationBarHidden(true, animated: true)
         
         view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        contentStack.backgroundColor = .clear
         featuredView.backgroundColor = .clear
         stickersView.backgroundColor = .clear
         
-        designProfilePictureImageView()
+        setDesignProfilePictureImageView()
         getProfilePicture()
         
         featuredHeading.text = "Featured"
@@ -117,21 +93,23 @@ class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
         stickerCollectionView.backgroundColor = UIColor.clear
         stickerCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
         stickerCollectionView.showsHorizontalScrollIndicator = false
-        
     }
     
-    func designProfilePictureImageView() {
+    func setDesignProfilePictureImageView() {
         profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
         profilePictureImageView.clipsToBounds = true
         profilePictureImageView.contentMode = .scaleAspectFit
+        
         DispatchQueue.main.async { [self] in
             profilePictureImageView.isSkeletonable = true
             profilePictureImageView.skeletonCornerRadius = Float(profilePictureImageView.frame.size.width / 2)
             profilePictureImageView.showAnimatedSkeleton()
         }
+        
     }
     
     func getProfilePicture() {
+        
         if user != nil {
             
             let userID = user?.uid
@@ -148,17 +126,17 @@ class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
                         profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
                         profilePictureImageView.kf.setImage(with: imageURL)
                     }
+                    
                 }
             }
         }
+        
     }
     
     func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
-        
         featuredCollectionView.configureForPeekingBehavior(behavior: behavior)
         behavior.cellPeekWidth = 10
         behavior.cellSpacing = 10
-        
     }
     
     
@@ -187,31 +165,8 @@ class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
         let doubleTapLocation = doubleTap.location(in: featuredCollectionView)
         guard let cellIndexPath = featuredCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
         
-        
-        
         if featuredStickerViewModel != nil {
             let stickerDocumentID = featuredStickerViewModel![cellIndexPath.row].stickerDocumentID
-            //            print(stickerDocumentID)
-            
-            
-            
-            for sticker in stickerViewModel! {
-                if sticker.stickerDocumentID == stickerDocumentID {
-                    //                    sticker.isStickerLiked = true
-                    //                    print(sticker)
-                }
-            }
-            
-            
-            
-            
-            //                heartButtonLogic.isStickerLiked(stickerDocumentID: stickerDocumentID) { (result) in
-            //                    if result {
-            //                        print("Up")
-            //                    } else {
-            //                        print("Down")
-            //                    }
-            //                }
         }
         
     }
@@ -219,7 +174,7 @@ class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
     
     //MARK: - Collection View Process
     
-    func setCollectionView() {
+    func registerCollectionView() {
         
         setDelegate()
         registerNib()
@@ -243,9 +198,6 @@ class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
         stickerCategoryCollectionView.register(UINib(nibName: "StickerCategoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickerCategoryCollectionViewCell")
         stickerCollectionView.register(UINib(nibName: "StickerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickerCollectionViewCell")
     }
-    
-    
-    
     
     func getCollectionViewData(on stickerTag: String? = nil, category: String? = nil) {
         
@@ -293,22 +245,20 @@ class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
                 DispatchQueue.main.async {
                     collectionView.reloadData()
                 }
+                
             } else {
                 stickerViewModel = stickerArray.map({return StickerViewModel(sticker: $0)})
                 
                 DispatchQueue.main.async {
                     collectionView.reloadData()
                 }
+                
             }
-            
-            
-            
         }
-        
     }
     
-    
-    func setStickerCategoryCollectionViewData() {
+    func getStickerCategoryCollectionViewData() {
+        
         let category = [StickerCategory(category: "All", isCategorySelected: nil),
                         StickerCategory(category: "Animals", isCategorySelected: nil),
                         StickerCategory(category: "Food", isCategorySelected: nil),
@@ -317,10 +267,8 @@ class HomeViewController: UIViewController, FeaturedCollectionViewCellDelegate {
                         StickerCategory(category: "Travel", isCategorySelected: nil)]
         
         stickerCategoryViewModel = category.map({return StickerCategoryViewModel(stickerCategory: $0)})
+        
     }
-    
-    
-    
     
 }
 
@@ -332,7 +280,6 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView == stickerCategoryCollectionView {
-            
             stickerCategorySelected = stickerCategoryViewModel[indexPath.row].category
             stickerCategoryViewModel[indexPath.row].isCategorySelected = true
             
@@ -357,7 +304,7 @@ extension HomeViewController: UICollectionViewDelegate {
 }
 
 
-//MARK: - Collection View Data Source
+//MARK: - Collection View Datasource
 
 extension HomeViewController: SkeletonCollectionViewDataSource {
     
@@ -400,7 +347,6 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
                 DispatchQueue.main.async() { [self] in
                     cell.featuredStickerViewModel = featuredStickerViewModel![indexPath.row]
                     cell.prepareFeatureCollectionViewCell()
-                    cell.featuredCollectionViewCellDelegate = self
                 }
                 return cell
             }
@@ -410,8 +356,8 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if collectionView == stickerCategoryCollectionView {
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickerCategoryCollectionViewCell", for: indexPath) as? StickerCategoryCollectionViewCell {
                 DispatchQueue.main.async { [self] in
-                    cell.putDesignOnElements()
                     cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
+                    cell.setDesignOnElements()
                 }
                 return cell
             }
@@ -422,6 +368,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             if stickerViewModel != nil {
                 DispatchQueue.main.async { [self] in
                     cell.stickerViewModel = stickerViewModel![indexPath.row]
+                    cell.prepareStickerCollectionViewCell()
                 }
                 return cell
             }
@@ -432,7 +379,6 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         
     }
     
-    
 }
 
 
@@ -441,9 +387,11 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
         if scrollView.frame.height == 280 {
             viewPeekingBehavior.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
         }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -459,7 +407,9 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
             stickersCollectionViewLayout.sectionInset.left = 25
             return CGSize(width: 140, height: 140)
         }
+        
         return CGSize()
+        
     }
     
 }
