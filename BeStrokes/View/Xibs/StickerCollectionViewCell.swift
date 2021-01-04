@@ -48,10 +48,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        super.prepareForReuse()
-        
         stickerHeartButtonLabel.setBackgroundImage(nil, for: .normal)
-        
     }
     
     
@@ -75,7 +72,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             stickerContentView.isSkeletonable = true
-            stickerContentView.skeletonCornerRadius = 40
+            stickerContentView.skeletonCornerRadius = 30
             stickerContentView.showAnimatedSkeleton()
         }
     }
