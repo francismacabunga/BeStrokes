@@ -28,6 +28,8 @@
 		2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */; };
 		2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */; };
 		2F58B0E125A47CE0009EFDE5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0E025A47CE0009EFDE5 /* User.swift */; };
+		2F58B0EA25A4B2D6009EFDE5 /* StickerOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0E825A4B2D6009EFDE5 /* StickerOptionViewController.swift */; };
+		2F58B0EB25A4B2D6009EFDE5 /* StickerOptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F58B0E925A4B2D6009EFDE5 /* StickerOptionViewController.xib */; };
 		2F7950D0259CC62F005B2A27 /* StickerCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7950CF259CC62F005B2A27 /* StickerCategoryViewModel.swift */; };
 		2F88A016259B1FBC00AAC82D /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A015259B1FBC00AAC82D /* Sticker.swift */; };
 		2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A018259B239700AAC82D /* StickerViewModel.swift */; };
@@ -48,8 +50,6 @@
 		2FE99D0425183D40002AFFDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99D0225183D40002AFFDC /* LaunchScreen.storyboard */; };
 		2FEB84042598B0E200E1112C /* SavedStickersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEB84002598B0E200E1112C /* SavedStickersTableViewCell.swift */; };
 		2FEB84052598B0E200E1112C /* SavedStickersTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FEB84012598B0E200E1112C /* SavedStickersTableViewCell.xib */; };
-		2FEB840A2598B90E00E1112C /* StickerDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEB84082598B90E00E1112C /* StickerDetailsViewController.swift */; };
-		2FEB840B2598B90E00E1112C /* StickerDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FEB84092598B90E00E1112C /* StickerDetailsViewController.xib */; };
 		2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF328302580FEF4001E6E1E /* TabBarViewController.swift */; };
 		C701D0654D7D370E8996BA27 /* Pods_BeStrokes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497871CF40741AC493C61604 /* Pods_BeStrokes.framework */; };
 /* End PBXBuildFile section */
@@ -75,6 +75,8 @@
 		2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewControllerContainer.swift; sourceTree = "<group>"; };
 		2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		2F58B0E025A47CE0009EFDE5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		2F58B0E825A4B2D6009EFDE5 /* StickerOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerOptionViewController.swift; sourceTree = "<group>"; };
+		2F58B0E925A4B2D6009EFDE5 /* StickerOptionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickerOptionViewController.xib; sourceTree = "<group>"; };
 		2F7950CF259CC62F005B2A27 /* StickerCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryViewModel.swift; sourceTree = "<group>"; };
 		2F88A015259B1FBC00AAC82D /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
 		2F88A018259B239700AAC82D /* StickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewModel.swift; sourceTree = "<group>"; };
@@ -98,8 +100,6 @@
 		2FE99D0525183D40002AFFDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FEB84002598B0E200E1112C /* SavedStickersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedStickersTableViewCell.swift; sourceTree = "<group>"; };
 		2FEB84012598B0E200E1112C /* SavedStickersTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SavedStickersTableViewCell.xib; sourceTree = "<group>"; };
-		2FEB84082598B90E00E1112C /* StickerDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerDetailsViewController.swift; sourceTree = "<group>"; };
-		2FEB84092598B90E00E1112C /* StickerDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickerDetailsViewController.xib; sourceTree = "<group>"; };
 		2FF328302580FEF4001E6E1E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		497871CF40741AC493C61604 /* Pods_BeStrokes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BeStrokes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		648C2547C4CAA81B7FA7CD60 /* Pods-BeStrokes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeStrokes.release.xcconfig"; path = "Target Support Files/Pods-BeStrokes/Pods-BeStrokes.release.xcconfig"; sourceTree = "<group>"; };
@@ -139,22 +139,30 @@
 		2F23FCA82578462500E69933 /* Xibs */ = {
 			isa = PBXGroup;
 			children = (
-				2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */,
-				2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */,
-				2FD6E4DE257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift */,
-				2FD6E4DF257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib */,
-				2FD6E4D8257AC99900B49E41 /* StickerCollectionViewCell.swift */,
-				2FD6E4D9257AC99900B49E41 /* StickerCollectionViewCell.xib */,
+				2F58B0E625A4B255009EFDE5 /* Home Collection Views */,
+				2F58B0E825A4B2D6009EFDE5 /* StickerOptionViewController.swift */,
+				2F58B0E925A4B2D6009EFDE5 /* StickerOptionViewController.xib */,
 				2FEB84002598B0E200E1112C /* SavedStickersTableViewCell.swift */,
 				2FEB84012598B0E200E1112C /* SavedStickersTableViewCell.xib */,
-				2FEB84082598B90E00E1112C /* StickerDetailsViewController.swift */,
-				2FEB84092598B90E00E1112C /* StickerDetailsViewController.xib */,
 				2F31414F25947F2800D47E3F /* ProfileViewController.swift */,
 				2F31415025947F2800D47E3F /* ProfileViewController.xib */,
 				2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */,
 				2F3141562594EFC900D47E3F /* ProfileTableViewCell.xib */,
 			);
 			path = Xibs;
+			sourceTree = "<group>";
+		};
+		2F58B0E625A4B255009EFDE5 /* Home Collection Views */ = {
+			isa = PBXGroup;
+			children = (
+				2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */,
+				2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */,
+				2FD6E4DE257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift */,
+				2FD6E4DF257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib */,
+				2FD6E4D8257AC99900B49E41 /* StickerCollectionViewCell.swift */,
+				2FD6E4D9257AC99900B49E41 /* StickerCollectionViewCell.xib */,
+			);
+			path = "Home Collection Views";
 			sourceTree = "<group>";
 		};
 		2F88A013259B1A6300AAC82D /* Model */ = {
@@ -346,9 +354,9 @@
 				2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */,
 				2FD6E4E1257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib in Resources */,
 				2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */,
+				2F58B0EB25A4B2D6009EFDE5 /* StickerOptionViewController.xib in Resources */,
 				2F402CA6256806DD00666028 /* User.storyboard in Resources */,
 				2FD6E4DB257AC99900B49E41 /* StickerCollectionViewCell.xib in Resources */,
-				2FEB840B2598B90E00E1112C /* StickerDetailsViewController.xib in Resources */,
 				2FD6E4D3257AC96100B49E41 /* FeaturedCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -426,9 +434,9 @@
 				2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */,
 				2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */,
 				2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */,
-				2FEB840A2598B90E00E1112C /* StickerDetailsViewController.swift in Sources */,
 				2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */,
 				2F31415125947F2800D47E3F /* ProfileViewController.swift in Sources */,
+				2F58B0EA25A4B2D6009EFDE5 /* StickerOptionViewController.swift in Sources */,
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
 				2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */,
 				2F7950D0259CC62F005B2A27 /* StickerCategoryViewModel.swift in Sources */,

@@ -10,10 +10,6 @@ import SkeletonView
 import Firebase
 import Kingfisher
 
-protocol FeaturedCollectionViewCellDelegate {
-    func isFeaturedHeartButtonTapped(value: Bool)
-}
-
 class FeaturedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - IBOutlets
@@ -30,7 +26,6 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
-    var featuredCollectionViewCellDelegate: FeaturedCollectionViewCellDelegate?
     private var heartButtonLogic = HeartButtonLogic()
     private var stickerDocumentID: String?
     private var heartButtonTapped: Bool?
@@ -110,11 +105,9 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
             if result {
                 setHeartButtonValue(using: "heart.fill")
-                featuredCollectionViewCellDelegate?.isFeaturedHeartButtonTapped(value: true)
                 heartButtonTapped = true
             } else {
                 setHeartButtonValue(using: "heart")
-                featuredCollectionViewCellDelegate?.isFeaturedHeartButtonTapped(value: false)
                 heartButtonTapped = false
             }
         }

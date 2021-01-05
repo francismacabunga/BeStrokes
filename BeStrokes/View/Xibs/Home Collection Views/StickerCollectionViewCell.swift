@@ -11,7 +11,7 @@ import Kingfisher
 import Firebase
 
 protocol StickerCollectionViewCellDelegate {
-    func isStickerHeartButtonTapped(value: Bool)
+    func getVC(of viewController: UIViewController)
 }
 
 class StickerCollectionViewCell: UICollectionViewCell {
@@ -98,9 +98,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     func prepareStickerCollectionViewCell() {
         hideLoadingSkeletonView()
         setDesignOnElements()
-        
     }
-    
     
     
     //MARK: - UIGestureHandlers
@@ -112,9 +110,8 @@ class StickerCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func tapGestureHandler() {
-        
-       
-        
+        let stickerOptionVC = StickerOptionViewController()
+        stickerCollectionViewCellDelegate?.getVC(of: stickerOptionVC)
     }
     
 }

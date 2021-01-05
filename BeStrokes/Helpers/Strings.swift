@@ -57,7 +57,7 @@ struct Strings {
     
     
     
-    static let Bar = "Black_Bar.png"
+   
     
     
     
@@ -120,5 +120,10 @@ struct Strings {
     static let allStickers = "All"
     static let featuredStickers = "Featured"
     
+    
+    // Image Strings
+    
+    static let whiteBar = "Black_Bar"
+    static let blackBar = "White_Bar"
     
 }

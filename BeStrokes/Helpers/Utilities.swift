@@ -174,7 +174,7 @@ struct Utilities {
     
     static func putDesignOn(navigationBar: UINavigationBar) {
         
-        let image = UIImage(named: Strings.Bar)
+        let image = UIImage(named: Strings.blackBar)
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
@@ -275,12 +275,37 @@ struct Utilities {
     
     
     static func setDesignOn(_ label: UILabel, label labelValue: String) {
+        
         label.text = labelValue
         label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         label.font = UIFont(name: Strings.defaultFontBold, size: 35)
+        
     }
     
     
+    
+    static func setLightAppearance(on navigationBar: UINavigationBar) {
+        
+        let image = UIImage(named: Strings.whiteBar)
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = image
+        navigationBar.topItem?.titleView = imageView
+        navigationBar.barTintColor = #colorLiteral(red: 0.7843137255, green: 0.7882352941, blue: 0.8039215686, alpha: 1)
+        
+    }
+    
+    
+    static func setDarkAppearance(on navigationBar: UINavigationBar) {
+        
+        let image = UIImage(named: Strings.blackBar)
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = image
+        navigationBar.topItem?.titleView = imageView
+        navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        
+    }
     
     
     

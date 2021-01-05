@@ -140,10 +140,6 @@ class HomeViewController: UIViewController {
         featuredDoubleTapGesture.numberOfTapsRequired = 2
         featuredCollectionView.addGestureRecognizer(featuredDoubleTapGesture)
         
-        let stickerDoubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(stickerDoubleTapGestureHandler))
-        stickerDoubleTapGesture.numberOfTapsRequired = 2
-        stickerCollectionView.addGestureRecognizer(stickerDoubleTapGesture)
-        
     }
     
     @objc func tapGestureHandler() {
@@ -160,23 +156,6 @@ class HomeViewController: UIViewController {
             let stickerDocumentID = featuredStickerViewModel![cellIndexPath.row].stickerDocumentID
             if featuredHeartButtonTapped != nil {
                 if featuredHeartButtonTapped! {
-                    heartButtonLogic.removeUserData(using: stickerDocumentID)
-                } else {
-                    heartButtonLogic.saveUserData(using: stickerDocumentID)
-                }
-            }
-        }
-        
-    }
-    
-    @objc func stickerDoubleTapGestureHandler(doubleTap: UITapGestureRecognizer) {
-        
-        let doubleTapLocation = doubleTap.location(in: stickerCollectionView)
-        guard let cellIndexPath = stickerCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
-        if stickerViewModel != nil {
-            let stickerDocumentID = stickerViewModel![cellIndexPath.row].stickerDocumentID
-            if stickerHeartButtonTapped != nil {
-                if stickerHeartButtonTapped! {
                     heartButtonLogic.removeUserData(using: stickerDocumentID)
                 } else {
                     heartButtonLogic.saveUserData(using: stickerDocumentID)
@@ -260,6 +239,7 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView == stickerCategoryCollectionView {
+            
             stickerCategorySelected = stickerCategoryViewModel[indexPath.row].category
             stickerCategoryViewModel[indexPath.row].isCategorySelected = true
             
@@ -277,6 +257,13 @@ extension HomeViewController: UICollectionViewDelegate {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
                 getStickerCollectionViewData(onCategory: stickerCategorySelected!)
             }
+            
+        }
+        
+        if collectionView == stickerCollectionView {
+            
+            let stickerOptionVC = StickerOptionViewController()
+            present(stickerOptionVC, animated: true)
             
         }
     }
@@ -337,7 +324,6 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
                 DispatchQueue.main.async() { [self] in
                     cell.featuredStickerViewModel = featuredStickerViewModel![indexPath.row]
                     cell.prepareFeatureCollectionViewCell()
-                    cell.featuredCollectionViewCellDelegate = self
                 }
                 return cell
             }
@@ -407,16 +393,11 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 }
 
 
-//MARK: - Protocols
-
-extension HomeViewController: FeaturedCollectionViewCellDelegate, StickerCollectionViewCellDelegate {
+extension HomeViewController: StickerCollectionViewCellDelegate {
     
-    func isFeaturedHeartButtonTapped(value: Bool) {
-        featuredHeartButtonTapped = value
-    }
-    
-    func isStickerHeartButtonTapped(value: Bool) {
-        stickerHeartButtonTapped = value
+    func getVC(of viewController: UIViewController) {
+        let stickerOptionVC = viewController
+        present(stickerOptionVC, animated: true)
     }
     
 }

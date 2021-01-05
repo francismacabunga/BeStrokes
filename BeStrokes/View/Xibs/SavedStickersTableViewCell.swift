@@ -8,7 +8,7 @@
 import UIKit
 
 class SavedStickersTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var stickerView: UIView!
     @IBOutlet weak var stickerHeading: UILabel!
     @IBOutlet weak var stickerOptionButtonLabel: UIButton!
@@ -50,13 +50,13 @@ class SavedStickersTableViewCell: UITableViewCell {
         stickerTryMeButtonLabel.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         stickerTryMeButtonLabel.layer.cornerRadius = stickerTryMeButtonLabel.bounds.height / 2
         
-       
+        
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-       
+        
+        
     }
     
 }
