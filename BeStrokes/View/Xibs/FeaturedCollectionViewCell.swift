@@ -11,7 +11,7 @@ import Firebase
 import Kingfisher
 
 protocol FeaturedCollectionViewCellDelegate {
-    func isFeaturedHeartButtonTapped(_ value: Bool)
+    func isFeaturedHeartButtonTapped(value: Bool)
 }
 
 class FeaturedCollectionViewCell: UICollectionViewCell {
@@ -110,11 +110,11 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
         heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
             if result {
                 setHeartButtonValue(using: "heart.fill")
-                featuredCollectionViewCellDelegate?.isFeaturedHeartButtonTapped(true)
+                featuredCollectionViewCellDelegate?.isFeaturedHeartButtonTapped(value: true)
                 heartButtonTapped = true
             } else {
                 setHeartButtonValue(using: "heart")
-                featuredCollectionViewCellDelegate?.isFeaturedHeartButtonTapped(false)
+                featuredCollectionViewCellDelegate?.isFeaturedHeartButtonTapped(value: false)
                 heartButtonTapped = false
             }
         }

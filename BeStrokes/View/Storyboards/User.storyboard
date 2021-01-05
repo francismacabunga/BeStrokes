@@ -270,6 +270,9 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E3G-yt-gwx">
                                                 <rect key="frame" x="0.0" y="395" width="414" height="390.5"/>
                                                 <subviews>
+                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="VHb-4Z-BVj">
+                                                        <rect key="frame" x="197" y="185.5" width="20" height="20"/>
+                                                    </activityIndicatorView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g26-w3-yqs">
                                                         <rect key="frame" x="30" y="0.0" width="41.5" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -327,6 +330,8 @@
                                                 <constraints>
                                                     <constraint firstItem="g26-w3-yqs" firstAttribute="leading" secondItem="E3G-yt-gwx" secondAttribute="leading" constant="30" id="3VH-8Q-k23"/>
                                                     <constraint firstItem="g26-w3-yqs" firstAttribute="top" secondItem="E3G-yt-gwx" secondAttribute="top" id="6AZ-dT-JRE"/>
+                                                    <constraint firstItem="VHb-4Z-BVj" firstAttribute="centerX" secondItem="E3G-yt-gwx" secondAttribute="centerX" id="FfS-aM-3Aa"/>
+                                                    <constraint firstItem="VHb-4Z-BVj" firstAttribute="centerY" secondItem="E3G-yt-gwx" secondAttribute="centerY" id="Fqh-Qn-dXR"/>
                                                     <constraint firstAttribute="trailing" secondItem="I8i-Cc-ZFw" secondAttribute="trailing" id="ITw-1L-Obc"/>
                                                     <constraint firstAttribute="bottom" secondItem="I8i-Cc-ZFw" secondAttribute="bottom" constant="10" id="SjZ-Ck-d7q"/>
                                                     <constraint firstAttribute="trailing" secondItem="g7G-wp-Ekk" secondAttribute="trailing" id="WhY-FI-uOJ"/>
@@ -366,6 +371,7 @@
                         <outlet property="featuredCollectionView" destination="2oO-Sl-FZP" id="oIx-aH-gKK"/>
                         <outlet property="featuredHeading" destination="qzl-3Y-UCr" id="QXb-Yc-NJX"/>
                         <outlet property="featuredView" destination="nNl-Ph-CBy" id="I3J-v9-Z86"/>
+                        <outlet property="loadingIndicator" destination="VHb-4Z-BVj" id="SdZ-xJ-99J"/>
                         <outlet property="profilePictureImageView" destination="c89-1x-2Eq" id="oYV-qi-nIk"/>
                         <outlet property="stickerCategoryCollectionView" destination="g7G-wp-Ekk" id="Akk-fQ-fdq"/>
                         <outlet property="stickerCollectionView" destination="I8i-Cc-ZFw" id="pOO-dZ-FRu"/>

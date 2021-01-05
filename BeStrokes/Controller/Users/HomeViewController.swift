@@ -24,6 +24,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var featuredCollectionView: UICollectionView!
     @IBOutlet weak var stickerCategoryCollectionView: UICollectionView!
     @IBOutlet weak var stickerCollectionView: UICollectionView!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     
     //MARK: - Constants / Variables
@@ -90,6 +91,11 @@ class HomeViewController: UIViewController {
         stickerCollectionView.backgroundColor = UIColor.clear
         stickerCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
         stickerCollectionView.showsHorizontalScrollIndicator = false
+        
+        loadingIndicator.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        loadingIndicator.startAnimating()
+        loadingIndicator.style = .large
+        loadingIndicator.isHidden = true
     }
     
     func setDesignProfilePictureImageView() {
@@ -152,7 +158,6 @@ class HomeViewController: UIViewController {
         guard let cellIndexPath = featuredCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
         if featuredStickerViewModel != nil {
             let stickerDocumentID = featuredStickerViewModel![cellIndexPath.row].stickerDocumentID
-            print(stickerDocumentID)
             if featuredHeartButtonTapped != nil {
                 if featuredHeartButtonTapped! {
                     heartButtonLogic.removeUserData(using: stickerDocumentID)
@@ -170,7 +175,6 @@ class HomeViewController: UIViewController {
         guard let cellIndexPath = stickerCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
         if stickerViewModel != nil {
             let stickerDocumentID = stickerViewModel![cellIndexPath.row].stickerDocumentID
-            print(stickerDocumentID)
             if stickerHeartButtonTapped != nil {
                 if stickerHeartButtonTapped! {
                     heartButtonLogic.removeUserData(using: stickerDocumentID)
@@ -233,9 +237,16 @@ class HomeViewController: UIViewController {
     func getStickerCollectionViewData(onCategory stickerCategory: String) {
         fetchStickerData.onCollectionViewData(category: stickerCategory) { [self] (result) in
             stickerViewModel = result.map({return StickerViewModel(sticker: $0)})
+            
             DispatchQueue.main.async { [self] in
                 stickerCollectionView.reloadData()
             }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                loadingIndicator.isHidden = true
+                stickerCollectionView.isHidden = false
+            }
+            
         }
     }
     
@@ -256,7 +267,16 @@ extension HomeViewController: UICollectionViewDelegate {
                 cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
             }
             
-            getStickerCollectionViewData(onCategory: stickerCategorySelected!)
+            stickerCollectionView.isHidden = true
+            loadingIndicator.isHidden = false
+            
+            DispatchQueue.main.async { [self] in
+                stickerCollectionView.reloadData()
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+                getStickerCollectionViewData(onCategory: stickerCategorySelected!)
+            }
             
         }
     }
@@ -391,11 +411,11 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 
 extension HomeViewController: FeaturedCollectionViewCellDelegate, StickerCollectionViewCellDelegate {
     
-    func isFeaturedHeartButtonTapped(_ value: Bool) {
+    func isFeaturedHeartButtonTapped(value: Bool) {
         featuredHeartButtonTapped = value
     }
     
-    func isStickerHeartButtonTapped(_ value: Bool) {
+    func isStickerHeartButtonTapped(value: Bool) {
         stickerHeartButtonTapped = value
     }
     

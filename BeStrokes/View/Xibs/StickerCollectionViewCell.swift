@@ -11,7 +11,7 @@ import Kingfisher
 import Firebase
 
 protocol StickerCollectionViewCellDelegate {
-    func isStickerHeartButtonTapped(_ value: Bool)
+    func isStickerHeartButtonTapped(value: Bool)
 }
 
 class StickerCollectionViewCell: UICollectionViewCell {
@@ -20,7 +20,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var stickerContentView: UIView!
     @IBOutlet weak var stickerLabel: UILabel!
-    @IBOutlet weak var stickerHeartButtonImageView: UIImageView!
+    @IBOutlet weak var stickerOption: UIImageView!
     @IBOutlet weak var stickerImageView: UIImageView!
     
     
@@ -54,7 +54,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        stickerHeartButtonImageView.image = nil
+        stickerOption.image = nil
     }
     
     
@@ -73,6 +73,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
         stickerLabel.minimumScaleFactor = 0.8
         stickerLabel.textAlignment = .left
         
+        stickerOption.image = UIImage(named: "Dots")
         stickerImageView.contentMode = .scaleAspectFit
         
     }
@@ -90,46 +91,29 @@ class StickerCollectionViewCell: UICollectionViewCell {
     }
     
     func setHeartButtonValue(using value: String) {
-        stickerHeartButtonImageView.image = UIImage(systemName: value)
-        stickerHeartButtonImageView.tintColor = .black
+        stickerOption.image = UIImage(systemName: value)
+        stickerOption.tintColor = .black
     }
     
     func prepareStickerCollectionViewCell() {
         hideLoadingSkeletonView()
         setDesignOnElements()
-        showHeartButtonValue(using: stickerDocumentID!)
+        
     }
     
-    func showHeartButtonValue(using stickerDocumentID: String) {
-        heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
-            if result {
-                setHeartButtonValue(using: "heart.fill")
-                stickerCollectionViewCellDelegate?.isStickerHeartButtonTapped(true)
-                heartButtonTapped = true
-            } else {
-                setHeartButtonValue(using: "heart")
-                stickerCollectionViewCellDelegate?.isStickerHeartButtonTapped(false)
-                heartButtonTapped = false
-            }
-        }
-    }
     
     
     //MARK: - UIGestureHandlers
     
     func registerGestures() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
-        stickerHeartButtonImageView.addGestureRecognizer(tapGesture)
-        stickerHeartButtonImageView.isUserInteractionEnabled = true
+        stickerOption.addGestureRecognizer(tapGesture)
+        stickerOption.isUserInteractionEnabled = true
     }
     
     @objc func tapGestureHandler() {
         
-        if heartButtonTapped! {
-            heartButtonLogic.removeUserData(using: stickerDocumentID!)
-        } else {
-            heartButtonLogic.saveUserData(using: stickerDocumentID!)
-        }
+       
         
     }
     
