@@ -12,7 +12,6 @@ struct StickerCategoryViewModel {
     
     let category: String
     var isCategorySelected: Bool?
-    var sampleString: String!
     
     init(stickerCategory: StickerCategory) {
         self.category = stickerCategory.category
@@ -21,3 +20,16 @@ struct StickerCategoryViewModel {
     
 }
 
+struct FetchStickerCategoryData {
+    
+    func getCategoryData()->[StickerCategory] {
+        let stickerCategory = [StickerCategory(category: "All", isCategorySelected: nil),
+                               StickerCategory(category: "Animals", isCategorySelected: nil),
+                               StickerCategory(category: "Food", isCategorySelected: nil),
+                               StickerCategory(category: "Objects", isCategorySelected: nil),
+                               StickerCategory(category: "Colored", isCategorySelected: nil),
+                               StickerCategory(category: "Travel", isCategorySelected: nil)]
+        return stickerCategory
+    }
+    
+}

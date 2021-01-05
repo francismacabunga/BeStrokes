@@ -21,7 +21,6 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var featuredHeading: UILabel!
     @IBOutlet weak var stickerHeading: UILabel!
-    
     @IBOutlet weak var featuredCollectionView: UICollectionView!
     @IBOutlet weak var stickerCategoryCollectionView: UICollectionView!
     @IBOutlet weak var stickerCollectionView: UICollectionView!
@@ -37,7 +36,11 @@ class HomeViewController: UIViewController {
     private var stickerViewModel: [StickerViewModel]?
     
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
+    private var fetchUserData = FetchUserData()
+    private var fetchStickerData = FetchStickerData()
+    private var fetchStickerCategoryData = FetchStickerCategoryData()
     private var heartButtonLogic = HeartButtonLogic()
+    
     private var stickerCategorySelected: String?
     var featuredHeartButtonTapped: Bool?
     var stickerHeartButtonTapped: Bool?
@@ -51,9 +54,7 @@ class HomeViewController: UIViewController {
         setDesignElements()
         registerGestures()
         registerCollectionView()
-        getCollectionViewData(on: "Featured")
-        getStickerCategoryCollectionViewData()
-        getCollectionViewData(category: "All")
+        setCollectionViewData()
         
     }
     
@@ -75,13 +76,8 @@ class HomeViewController: UIViewController {
         setDesignProfilePictureImageView()
         getProfilePicture()
         
-        featuredHeading.text = "Featured"
-        featuredHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        featuredHeading.font = UIFont(name: "Futura-Bold", size: 35)
-        
-        stickerHeading.text = "Stickers"
-        stickerHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        stickerHeading.font = UIFont(name: "Futura-Bold", size: 35)
+        Utilities.setDesignOn(featuredHeading, label: Strings.featuredHeadingText)
+        Utilities.setDesignOn(stickerHeading, label: Strings.stickerHeadingText)
         
         featuredCollectionView.backgroundColor = UIColor.clear
         featuredCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
@@ -110,28 +106,13 @@ class HomeViewController: UIViewController {
     }
     
     func getProfilePicture() {
-        
-        if user != nil {
-            
-            let userID = user?.uid
-            let collectionReference = db.collection("users").whereField("userID", isEqualTo: userID!)
-            
-            collectionReference.getDocuments { [self] (result, error) in
-                if error != nil {
-                    // Show error
-                } else {
-                    guard let documents = result?.documents.first else {return}
-                    let imageURL = URL(string: documents["profilePic"] as! String)
-                    
-                    DispatchQueue.main.async {
-                        profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-                        profilePictureImageView.kf.setImage(with: imageURL)
-                    }
-                    
-                }
+        fetchUserData.getProfilePicture { (result) in
+            let profilePicImageURL = result
+            DispatchQueue.main.async { [self] in
+                profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                profilePictureImageView.kf.setImage(with: profilePicImageURL)
             }
         }
-        
     }
     
     func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
@@ -224,80 +205,38 @@ class HomeViewController: UIViewController {
     }
     
     func registerNib() {
-        featuredCollectionView.register(UINib(nibName: "FeaturedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "FeaturedCollectionViewCell")
-        stickerCategoryCollectionView.register(UINib(nibName: "StickerCategoryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickerCategoryCollectionViewCell")
-        stickerCollectionView.register(UINib(nibName: "StickerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StickerCollectionViewCell")
+        featuredCollectionView.register(UINib(nibName: Strings.featuredStickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.featuredStickerCell)
+        stickerCategoryCollectionView.register(UINib(nibName: Strings.stickerCategoryCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCategoryCell)
+        stickerCollectionView.register(UINib(nibName: Strings.stickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCell)
     }
     
-    func getCollectionViewData(on stickerTag: String? = nil, category: String? = nil) {
-        
-        var firebaseQuery: Query
-        
-        if stickerTag == "Featured" {
-            featuredStickerViewModel = nil
-            firebaseQuery = db.collection("stickers").whereField("tag", isEqualTo: stickerTag!)
-            fetchData(with: firebaseQuery, collectionView: featuredCollectionView)
-            return
-        } else if category == nil || category == "All" {
-            stickerViewModel = nil
-            firebaseQuery = db.collection("stickers")
-            fetchData(with: firebaseQuery, collectionView: stickerCollectionView)
-            return
-        } else if category != nil {
-            stickerViewModel = nil
-            firebaseQuery = db.collection("stickers").whereField("category", isEqualTo: category!)
-            fetchData(with: firebaseQuery, collectionView: stickerCollectionView)
-            return
-        }
-        
+    func setCollectionViewData() {
+        getFeaturedCollectionViewData()
+        getStickerCategoryCollectionViewData()
+        getStickerCollectionViewData(onCategory: Strings.allStickers)
     }
     
-    func fetchData(with query: Query, collectionView: UICollectionView) {
-        
-        var stickerArray = [Sticker]()
-        
-        query.getDocuments { [self] (snapshot, error) in
-            if error != nil {
-                // Show error
-            }
-            guard let results = snapshot?.documents else {return}
-            for result in results {
-                let stickerDocumentID = result["documentID"] as! String
-                let stickerName = result["name"] as! String
-                let stickerImageURL = URL(string: result["image"] as! String)!
-                let stickerTag = result["tag"] as! String
-                stickerArray.append(Sticker(stickerDocumentID: stickerDocumentID, name: stickerName, image: stickerImageURL, tag: stickerTag))
-            }
-            
-            if collectionView == featuredCollectionView {
-                featuredStickerViewModel = stickerArray.map({return FeaturedStickerViewModel(featuredSticker: $0)})
-                
-                DispatchQueue.main.async {
-                    collectionView.reloadData()
-                }
-                
-            } else {
-                stickerViewModel = stickerArray.map({return StickerViewModel(sticker: $0)})
-                
-                DispatchQueue.main.async {
-                    collectionView.reloadData()
-                }
-                
+    func getFeaturedCollectionViewData() {
+        fetchStickerData.onCollectionViewData(withTag: Strings.featuredStickers) { [self] (result) in
+            featuredStickerViewModel = result.map({return FeaturedStickerViewModel(featuredSticker: $0)})
+            DispatchQueue.main.async {
+                featuredCollectionView.reloadData()
             }
         }
     }
     
     func getStickerCategoryCollectionViewData() {
-        
-        let category = [StickerCategory(category: "All", isCategorySelected: nil),
-                        StickerCategory(category: "Animals", isCategorySelected: nil),
-                        StickerCategory(category: "Food", isCategorySelected: nil),
-                        StickerCategory(category: "Objects", isCategorySelected: nil),
-                        StickerCategory(category: "Colored", isCategorySelected: nil),
-                        StickerCategory(category: "Travel", isCategorySelected: nil)]
-        
-        stickerCategoryViewModel = category.map({return StickerCategoryViewModel(stickerCategory: $0)})
-        
+        let stickerCategory = fetchStickerCategoryData.getCategoryData()
+        stickerCategoryViewModel = stickerCategory.map({return StickerCategoryViewModel(stickerCategory: $0)})
+    }
+    
+    func getStickerCollectionViewData(onCategory stickerCategory: String) {
+        fetchStickerData.onCollectionViewData(category: stickerCategory) { [self] (result) in
+            stickerViewModel = result.map({return StickerViewModel(sticker: $0)})
+            DispatchQueue.main.async { [self] in
+                stickerCollectionView.reloadData()
+            }
+        }
     }
     
 }
@@ -317,7 +256,8 @@ extension HomeViewController: UICollectionViewDelegate {
                 cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
             }
             
-            getCollectionViewData(category: stickerCategorySelected)
+            getStickerCollectionViewData(onCategory: stickerCategorySelected!)
+            
         }
     }
     
@@ -341,10 +281,10 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
         
         if skeletonView == featuredCollectionView {
-            return "FeaturedCollectionViewCell"
+            return Strings.featuredStickerCell
         }
         if skeletonView == stickerCollectionView {
-            return "StickerCollectionViewCell"
+            return Strings.stickerCell
         }
         return ReusableCellIdentifier()
         
@@ -372,7 +312,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if collectionView == featuredCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedCollectionViewCell", for: indexPath) as! FeaturedCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedCollectionViewCell
             if featuredStickerViewModel != nil {
                 DispatchQueue.main.async() { [self] in
                     cell.featuredStickerViewModel = featuredStickerViewModel![indexPath.row]
@@ -385,7 +325,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         }
         
         if collectionView == stickerCategoryCollectionView {
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickerCategoryCollectionViewCell", for: indexPath) as? StickerCategoryCollectionViewCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCategoryCell, for: indexPath) as? StickerCategoryCollectionViewCell {
                 DispatchQueue.main.async { [self] in
                     cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
                     cell.setDesignOnElements()
@@ -395,7 +335,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         }
         
         if collectionView == stickerCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickerCollectionViewCell", for: indexPath) as! StickerCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCell, for: indexPath) as! StickerCollectionViewCell
             if stickerViewModel != nil {
                 DispatchQueue.main.async { [self] in
                     cell.stickerViewModel = stickerViewModel![indexPath.row]

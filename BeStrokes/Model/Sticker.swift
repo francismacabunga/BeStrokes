@@ -13,6 +13,5 @@ struct Sticker {
     let name: String
     let image: URL
     let tag: String?
-    var isStickerLiked: Bool?
     
 }

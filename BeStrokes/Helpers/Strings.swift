@@ -52,9 +52,7 @@ struct Strings {
     
     
     
-    static let defaultFont = "Futura"
-    static let defaultFontBold = "Futura-Bold"
-    static let defaultFontMedium = "Futura-Medium"
+    
     
     
     
@@ -90,11 +88,37 @@ struct Strings {
     
     
     
+    //MARK: - MVVM
     
     
     
     
+    // Heading Text Value
     
+    static let featuredHeadingText = "Featured"
+    static let stickerHeadingText = "Stickers"
+    
+    
+    
+    // Font Names
+    
+    static let defaultFont = "Futura"
+    static let defaultFontBold = "Futura-Bold"
+    static let defaultFontMedium = "Futura-Medium"
+    
+    
+    
+    // NIB Names
+    
+    static let featuredStickerCell = "FeaturedCollectionViewCell"
+    static let stickerCategoryCell = "StickerCategoryCollectionViewCell"
+    static let stickerCell = "StickerCollectionViewCell"
+    
+    
+    // Sticker Kind Names
+    
+    static let allStickers = "All"
+    static let featuredStickers = "Featured"
     
     
 }

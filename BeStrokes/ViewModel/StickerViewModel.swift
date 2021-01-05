@@ -14,17 +14,12 @@ struct FeaturedStickerViewModel {
     let name: String
     let image: URL
     let tag: String?
-    var isStickerLiked: Bool?
-    
-    let user = Auth.auth().currentUser
-    let db = Firestore.firestore()
     
     init(featuredSticker: Sticker) {
         self.stickerDocumentID = featuredSticker.stickerDocumentID
         self.name = featuredSticker.name
         self.image = featuredSticker.image
         self.tag = featuredSticker.tag
-        self.isStickerLiked = featuredSticker.isStickerLiked
     }
     
 }
@@ -35,14 +30,12 @@ struct StickerViewModel {
     let name: String
     let image: URL
     let tag: String?
-    var isStickerLiked: Bool?
     
     init(sticker: Sticker) {
         self.stickerDocumentID = sticker.stickerDocumentID
         self.name = sticker.name
         self.image = sticker.image
         self.tag = sticker.tag
-        self.isStickerLiked = sticker.isStickerLiked
     }
     
 }
@@ -55,7 +48,7 @@ struct HeartButtonLogic {
     func checkIfStickerLiked(using stickerDocumentID: String, completed: @escaping (Bool)->Void) {
         guard let signedInUser = user else {return}
         let signedInUserID = signedInUser.uid
-        let listener =  db.collection("stickers").document(stickerDocumentID).collection("heartBy").whereField("userID", isEqualTo: signedInUserID).addSnapshotListener { [self] (snapshot, error) in
+        db.collection("stickers").document(stickerDocumentID).collection("heartBy").whereField("userID", isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
             if error != nil {
                 // Show error
             }
@@ -95,7 +88,7 @@ struct HeartButtonLogic {
         }
     }
     
-    func getSignedInUserData(completion: @escaping ([String:String])-> Void) {
+    func getSignedInUserData(completion: @escaping ([String:String])->Void) {
         guard let signedInUser = user else {return}
         let userID = signedInUser.uid
         let userEmail = signedInUser.email!
@@ -112,6 +105,46 @@ struct HeartButtonLogic {
     
 }
 
-
-
+struct FetchStickerData {
+    
+    private let db = Firestore.firestore()
+    
+    func onCollectionViewData(withTag stickerTag: String? = nil, category: String? = nil, completed: @escaping([Sticker])->Void) {
+        
+        var firebaseQuery: Query
+        
+        if stickerTag == "Featured" {
+            firebaseQuery = db.collection("stickers").whereField("tag", isEqualTo: stickerTag!)
+            fetchFirebaseData(query: firebaseQuery) { (result) in
+                completed(result)
+                return
+            }
+        } else if category == nil || category == "All" {
+            firebaseQuery = db.collection("stickers")
+            fetchFirebaseData(query: firebaseQuery) { (result) in
+                completed(result)
+                return
+            }
+        } else if category != nil {
+            firebaseQuery = db.collection("stickers").whereField("category", isEqualTo: category!)
+            fetchFirebaseData(query: firebaseQuery) { (result) in
+                completed(result)
+                return
+            }
+        }
+        
+    }
+    
+    func fetchFirebaseData(query: Query, completed: @escaping([Sticker])->Void) {
+        query.getDocuments { (snapshot, error) in
+            if error != nil {
+                // Show error
+            }
+            guard let results = snapshot?.documents else {return}
+            let stickerData = results.map({return Sticker(stickerDocumentID: $0["documentID"] as! String, name: $0["name"] as! String, image: URL(string: $0["image"] as! String)!, tag: $0["tag"] as? String)})
+            completed(stickerData)
+        }
+    }
+    
+}
 

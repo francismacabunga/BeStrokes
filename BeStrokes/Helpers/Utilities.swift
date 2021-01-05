@@ -10,14 +10,14 @@ import UIKit
 import Firebase
 
 struct Utilities {
-
+    
     
     
     let user = Auth.auth().currentUser
     let db = Firestore.firestore()
-
     
-   
+    
+    
     
     //MARK: - Text Fields Designs
     
@@ -261,10 +261,24 @@ struct Utilities {
     
     
     
-   
-   
+    //MARK: - MVVM
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    static func setDesignOn(_ label: UILabel, label labelValue: String) {
+        label.text = labelValue
+        label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        label.font = UIFont(name: Strings.defaultFontBold, size: 35)
+    }
     
     
     

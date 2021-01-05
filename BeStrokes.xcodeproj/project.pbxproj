@@ -26,6 +26,8 @@
 		2F4CE06E257E63F9001C3768 /* StickersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4CE06D257E63F9001C3768 /* StickersViewController.swift */; };
 		2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */; };
 		2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */; };
+		2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */; };
+		2F58B0E125A47CE0009EFDE5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0E025A47CE0009EFDE5 /* User.swift */; };
 		2F7950D0259CC62F005B2A27 /* StickerCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7950CF259CC62F005B2A27 /* StickerCategoryViewModel.swift */; };
 		2F88A016259B1FBC00AAC82D /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A015259B1FBC00AAC82D /* Sticker.swift */; };
 		2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A018259B239700AAC82D /* StickerViewModel.swift */; };
@@ -71,6 +73,8 @@
 		2F402CA5256806DD00666028 /* User.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
 		2F4CE06D257E63F9001C3768 /* StickersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersViewController.swift; sourceTree = "<group>"; };
 		2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewControllerContainer.swift; sourceTree = "<group>"; };
+		2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		2F58B0E025A47CE0009EFDE5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2F7950CF259CC62F005B2A27 /* StickerCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryViewModel.swift; sourceTree = "<group>"; };
 		2F88A015259B1FBC00AAC82D /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
 		2F88A018259B239700AAC82D /* StickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewModel.swift; sourceTree = "<group>"; };
@@ -156,6 +160,7 @@
 		2F88A013259B1A6300AAC82D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2F58B0E025A47CE0009EFDE5 /* User.swift */,
 				2F88A015259B1FBC00AAC82D /* Sticker.swift */,
 				2F1D266C259C5725003ABDCF /* StickerCategory.swift */,
 			);
@@ -165,6 +170,7 @@
 		2F88A014259B1DE100AAC82D /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */,
 				2F88A018259B239700AAC82D /* StickerViewModel.swift */,
 				2F7950CF259CC62F005B2A27 /* StickerCategoryViewModel.swift */,
 			);
@@ -400,6 +406,7 @@
 				2F11255B2551A03E004A02B1 /* ForgotPasswordViewController.swift in Sources */,
 				2F393A13255AEB57006CDBDE /* LandingViewController.swift in Sources */,
 				2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */,
+				2F58B0E125A47CE0009EFDE5 /* User.swift in Sources */,
 				2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */,
 				2F88A016259B1FBC00AAC82D /* Sticker.swift in Sources */,
 				2FD6E4DA257AC99900B49E41 /* StickerCollectionViewCell.swift in Sources */,
@@ -409,6 +416,7 @@
 				2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */,
 				2FD6E4D2257AC96100B49E41 /* FeaturedCollectionViewCell.swift in Sources */,
 				2F11255E2551A083004A02B1 /* HomeViewController.swift in Sources */,
+				2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */,
 				2F8F950D2565C59A00ECDF83 /* SignUpViewControllerContainer.swift in Sources */,
 				2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */,
 				2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */,
