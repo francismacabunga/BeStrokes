@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Firebase
+import Kingfisher
 
 struct Utilities {
     
@@ -273,43 +274,172 @@ struct Utilities {
     
     
     
-    
-    static func setDesignOn(_ label: UILabel, label labelValue: String) {
+    // Use for text
+    static func setDesignOn(_ label: UILabel, label labelValue: String? = nil, font: String, fontSize: CGFloat, fontColor: UIColor, textAlignment: NSTextAlignment? = .none, numberofLines: Int, lineBreakMode: NSLineBreakMode? = .none, canResize: Bool? = nil, minimumScaleFactor: CGFloat? = nil, isCircular: Bool? = nil, backgroundColor: UIColor? = nil) {
         
-        label.text = labelValue
-        label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        label.font = UIFont(name: Strings.defaultFontBold, size: 35)
+        if labelValue != nil {
+            label.text = labelValue
+        }
+        
+        label.textColor = fontColor
+        label.font = UIFont(name: font, size: fontSize)
+        label.numberOfLines = numberofLines
+        
+        if textAlignment != nil {
+            label.textAlignment = textAlignment!
+        }
+        
+        if lineBreakMode != nil {
+            label.lineBreakMode = lineBreakMode!
+        }
+        
+        if canResize != nil {
+            label.adjustsFontSizeToFitWidth = canResize!
+        }
+        
+        if minimumScaleFactor != nil {
+            label.minimumScaleFactor = minimumScaleFactor!
+        }
+        
+        if isCircular != nil {
+            label.layer.cornerRadius = label.bounds.height / 2
+            label.clipsToBounds = true
+            label.backgroundColor = backgroundColor
+        }
         
     }
     
-    
-    
-    static func setLightAppearance(on navigationBar: UINavigationBar) {
+    // Use for images
+    static func setDesignOn(imageView: UIImageView, image: UIImage? = nil, tintColor: UIColor? = nil, isCircular: Bool? = nil, isCircularSkeleton: Bool? = nil) {
         
-        let image = UIImage(named: Strings.whiteBar)
+        if image != nil {
+            imageView.image = image
+        }
+        
+        if tintColor != nil {
+            imageView.tintColor = tintColor
+        }
+        
+        if isCircular != nil {
+            imageView.layer.cornerRadius = imageView.frame.size.height / 2
+            imageView.clipsToBounds = true
+            imageView.contentMode = .scaleAspectFit
+        }
+        
+        if isCircularSkeleton != nil {
+            imageView.skeletonCornerRadius = Float(imageView.frame.size.height / 2)
+        }
+        imageView.contentMode = .scaleAspectFit
+        
+    }
+    
+    // Use for navbar
+    static func setDesignOn(navigationBar: UINavigationBar, isDarkMode: Bool) {
+        
         let imageView = UIImageView()
+        var image = UIImage()
+        
+        if isDarkMode {
+            image = UIImage(named: Strings.blackBar)!
+            navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        } else {
+            image = UIImage(named: Strings.whiteBar)!
+            navigationBar.barTintColor = #colorLiteral(red: 0.7843137255, green: 0.7882352941, blue: 0.8039215686, alpha: 1)
+        }
+        
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
         navigationBar.topItem?.titleView = imageView
-        navigationBar.barTintColor = #colorLiteral(red: 0.7843137255, green: 0.7882352941, blue: 0.8039215686, alpha: 1)
+    }
+    
+    // Use for collection view
+    static func setDesignOn(collectionView: UICollectionView, isTransparent: Bool, isHorizontalDirection: Bool, showIndicator: Bool) {
+        
+        if isTransparent {
+            collectionView.backgroundColor = .clear
+        }
+        
+        if isHorizontalDirection {
+            collectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
+        } else {
+            collectionView.configureForPeekingDelegate(scrollDirection: .vertical)
+        }
+        
+        if showIndicator {
+            if isHorizontalDirection {
+                collectionView.showsHorizontalScrollIndicator = true
+            }
+        } else {
+            if !isHorizontalDirection {
+                collectionView.showsVerticalScrollIndicator = false
+            }
+        }
         
     }
     
+    // Use for loading indicator
+    static func setDesignOn(activityIndicatorView: UIActivityIndicatorView, size: UIActivityIndicatorView.Style, color: UIColor) {
+        activityIndicatorView.color = color
+        activityIndicatorView.style = size
+    }
     
-    static func setDarkAppearance(on navigationBar: UINavigationBar) {
+    // Use for view
+    static func setDesignOn(view: UIView, color: UIColor? = nil, isCircular: Bool? = nil, amountOfCurve: CGFloat? = nil, isCircularSkeleton: Bool? = nil, circularSkeletonCurve: Float? = nil) {
         
-        let image = UIImage(named: Strings.blackBar)
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = image
-        navigationBar.topItem?.titleView = imageView
-        navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        if color != nil {
+            view.backgroundColor = color
+        }
+        
+        if isCircular != nil {
+            view.layer.cornerRadius = view.frame.size.height / 2
+            view.clipsToBounds = true
+        }
+        
+        if amountOfCurve != nil {
+            view.layer.cornerRadius = amountOfCurve!
+            view.clipsToBounds = true
+        }
+        
+        if isCircularSkeleton != nil {
+            view.skeletonCornerRadius = circularSkeletonCurve!
+        }
         
     }
     
+    // Use for stack
+    static func setDesignOn(stackView: UIStackView, color: UIColor) {
+        stackView.backgroundColor = color
+    }
+    
+    
+    
+    // Use for buttons
+    static func setDesignOn(button: UIButton, title: String, font: String, size: CGFloat, titleColor: UIColor, backgroundColor: UIColor? = nil, isCircular: Bool? = nil) {
+        
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font = UIFont(name: font, size: size)
+        button.setTitleColor(titleColor, for: .normal)
+        
+        var color = UIColor()
+        
+        if backgroundColor != nil {
+            color = backgroundColor!
+        }
+        
+        if isCircular != nil {
+            button.layer.cornerRadius = button.bounds.height / 2
+            button.clipsToBounds = true
+            button.backgroundColor = color
+        }
+        
+        button.backgroundColor = color
+        
+    }
     
     
     
     
     
 }
+
+

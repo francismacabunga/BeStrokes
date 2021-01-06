@@ -49,7 +49,6 @@ class StickerCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         showLoadingSkeletonView()
-        registerGestures()
         
     }
     
@@ -61,27 +60,16 @@ class StickerCollectionViewCell: UICollectionViewCell {
     //MARK: - Design Elements
     
     func setDesignOnElements() {
-        
-        stickerContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        stickerContentView.layer.cornerRadius = 30
-        stickerContentView.clipsToBounds = true
-        
-        stickerLabel.numberOfLines = 1
-        stickerLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        stickerLabel.font = UIFont(name: "Futura-Bold", size: 15)
-        stickerLabel.adjustsFontSizeToFitWidth = true
-        stickerLabel.minimumScaleFactor = 0.8
-        stickerLabel.textAlignment = .left
-        
-        stickerOption.image = UIImage(named: "Dots")
-        stickerImageView.contentMode = .scaleAspectFit
-        
+        Utilities.setDesignOn(view: stickerContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), amountOfCurve: 30)
+        Utilities.setDesignOn(stickerLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(imageView: stickerOption, image: UIImage(named: Strings.optionImage))
+        Utilities.setDesignOn(imageView: stickerImageView)
     }
     
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             stickerContentView.isSkeletonable = true
-            stickerContentView.skeletonCornerRadius = 30
+            Utilities.setDesignOn(view: stickerContentView, isCircularSkeleton: true, circularSkeletonCurve: 30)
             stickerContentView.showAnimatedSkeleton()
         }
     }
@@ -90,28 +78,9 @@ class StickerCollectionViewCell: UICollectionViewCell {
         stickerContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
-    func setHeartButtonValue(using value: String) {
-        stickerOption.image = UIImage(systemName: value)
-        stickerOption.tintColor = .black
-    }
-    
     func prepareStickerCollectionViewCell() {
         hideLoadingSkeletonView()
         setDesignOnElements()
-    }
-    
-    
-    //MARK: - UIGestureHandlers
-    
-    func registerGestures() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
-        stickerOption.addGestureRecognizer(tapGesture)
-        stickerOption.isUserInteractionEnabled = true
-    }
-    
-    @objc func tapGestureHandler() {
-        let stickerOptionVC = StickerOptionViewController()
-        stickerCollectionViewCellDelegate?.getVC(of: stickerOptionVC)
     }
     
 }

@@ -32,8 +32,7 @@ struct Strings {
     
     //MARK: - Storyboard
     
-    static let mainStoryboard = "Main"
-    static let userStoryboard = "User"
+    
     static let loginStoryboardID = "LoginViewController"
     static let landingStoryboardID = "LandingViewController"
     static let landingNavigationStoryboardID = "LandingNavigationController"
@@ -113,6 +112,7 @@ struct Strings {
     static let featuredStickerCell = "FeaturedCollectionViewCell"
     static let stickerCategoryCell = "StickerCategoryCollectionViewCell"
     static let stickerCell = "StickerCollectionViewCell"
+    static let stickerOption = "StickerOptionViewController"
     
     
     // Sticker Kind Names
@@ -125,5 +125,21 @@ struct Strings {
     
     static let whiteBar = "Black_Bar"
     static let blackBar = "White_Bar"
+    static let optionImage = "Dots"
+    
+    // Storyboard
+    
+    static let mainStoryboard = "Main"
+    static let userStoryboard = "User"
+    
+    // Button
+    
+    static let tryMeButton = "Try me"
+    static let unheartSticker = "heart"
+    static let heartSticker = "heart.fill"
+    
+    // Sticker
+    
+    static let noStickerTag = "none"
     
 }

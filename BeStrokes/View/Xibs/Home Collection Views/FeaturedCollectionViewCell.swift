@@ -58,41 +58,23 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     func setDesignOnElements() {
         
-        featuredContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        featuredContentView.layer.cornerRadius = 40
-        featuredContentView.clipsToBounds = true
-        
-        featuredLabel.numberOfLines = 0
-        featuredLabel.lineBreakMode = .byWordWrapping
-        featuredLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        featuredLabel.font = UIFont(name: "Futura-Bold", size: 25)
-        
-        featuredTryMeButtonLabel.setTitle("Try me", for: .normal)
-        featuredTryMeButtonLabel.layer.cornerRadius = featuredTryMeButtonLabel.bounds.height / 2
-        featuredTryMeButtonLabel.clipsToBounds = true
-        featuredTryMeButtonLabel.titleLabel?.font = UIFont(name: "Futura-Bold", size: 15)
-        featuredTryMeButtonLabel.setTitleColor(#colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), for: .normal)
-        featuredTryMeButtonLabel.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        
-        featuredImageView.contentMode = .scaleAspectFit
+        Utilities.setDesignOn(view: featuredContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, amountOfCurve: 40)
+        Utilities.setDesignOn(featuredLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, lineBreakMode: .byWordWrapping, canResize: false)
+        Utilities.setDesignOn(button: featuredTryMeButtonLabel, title: Strings.tryMeButton, font: Strings.defaultFontBold, size: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(imageView: featuredImageView)
         
     }
     
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             featuredContentView.isSkeletonable = true
-            featuredContentView.skeletonCornerRadius = 40
+            Utilities.setDesignOn(view: featuredContentView, isCircularSkeleton: true, circularSkeletonCurve: 40)
             featuredContentView.showAnimatedSkeleton()
         }
     }
     
     func hideLoadingSkeletonView() {
         featuredContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-    }
-    
-    func setHeartButtonValue(using value: String) {
-        featuredHeartButtonImageView.image = UIImage(systemName: value)
-        featuredHeartButtonImageView.tintColor = .black
     }
     
     func prepareFeatureCollectionViewCell() {
@@ -104,10 +86,10 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     func showHeartButtonValue(using stickerDocumentID: String) {
         heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
             if result {
-                setHeartButtonValue(using: "heart.fill")
+                Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.heartSticker), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
                 heartButtonTapped = true
             } else {
-                setHeartButtonValue(using: "heart")
+                Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.unheartSticker), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
                 heartButtonTapped = false
             }
         }
@@ -123,13 +105,11 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func tapGestureHandler() {
-        
         if heartButtonTapped! {
             heartButtonLogic.removeUserData(using: stickerDocumentID!)
         } else {
             heartButtonLogic.saveUserData(using: stickerDocumentID!)
         }
-        
     }
     
     

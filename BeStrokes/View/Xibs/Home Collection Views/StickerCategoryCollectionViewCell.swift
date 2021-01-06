@@ -16,17 +16,17 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     
     
     //MARK: - Constants / Variables
+    
     var stickerCategoryViewModel: StickerCategoryViewModel! {
         didSet {
-            let categoryName = stickerCategoryViewModel.category
             let isCatagorySelected = stickerCategoryViewModel.isCategorySelected
-            stickerCategoryLabel.text = categoryName
+            stickerCategoryLabel.text = stickerCategoryViewModel.category
             
             if isCatagorySelected != nil {
                 if isCatagorySelected! {
-                    stickerCategoryContentView.backgroundColor = .yellow
+                    Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9538965821, green: 0.9584284425, blue: 0, alpha: 1))
                 } else {
-                    stickerCategoryContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+                    Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
                 }
             }
             
@@ -53,15 +53,8 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     func setDesignOnElements() {
         
         stickerCategoryContentView.isHidden = false
-        stickerCategoryContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        stickerCategoryContentView.layer.cornerRadius = stickerCategoryContentView.bounds.height / 2
-        
-        stickerCategoryLabel.font = UIFont(name: "Futura-Bold", size: 13)
-        stickerCategoryLabel.adjustsFontSizeToFitWidth = true
-        stickerCategoryLabel.numberOfLines = 1
-        stickerCategoryLabel.minimumScaleFactor = 0.9
-        stickerCategoryLabel.textAlignment = .center
-        stickerCategoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(stickerCategoryLabel, font: Strings.defaultFontBold, fontSize: 13, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.9)
         
     }
     

@@ -10,132 +10,107 @@ import Kingfisher
 
 class StickerOptionViewController: UIViewController {
     
-    @IBOutlet weak var stickerNavigationBar: UINavigationBar!
+    //MARK: - IBOutlets
     
+    @IBOutlet weak var stickerNavigationBar: UINavigationBar!
     @IBOutlet weak var stackContentView: UIStackView!
     @IBOutlet weak var upperView: UIView!
     @IBOutlet weak var middleView: UIView!
     @IBOutlet weak var bottomView: UIView!
-    
     @IBOutlet weak var stickerImageView: UIImageView!
     @IBOutlet weak var stickerHeartButtonImageView: UIImageView!
     @IBOutlet weak var tryMeButton: UIButton!
-    
     @IBOutlet weak var stickerName: UILabel!
     @IBOutlet weak var stickerCategory: UILabel!
     @IBOutlet weak var stickerTag: UILabel!
     @IBOutlet weak var stickerDescription: UILabel!
     
+    
+    //MARK: - Constants / Variables
+    
     var stickerViewModel: StickerViewModel!
     private var heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
     
+    
+    //MARK: - View Controller Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setDesignElements()
+        setDesignOnElements()
         registerGestures()
+        setStickerData()
         
     }
     
-    func setDesignElements() {
+    func setDesignOnElements() {
         
-        view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        stackContentView.backgroundColor = .clear
-        upperView.backgroundColor = .clear
-        middleView.backgroundColor = .clear
-        bottomView.backgroundColor = .clear
+        Utilities.setDesignOn(view: view, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(stackView: stackContentView, color: .clear)
+        Utilities.setDesignOn(view: upperView, color: .clear)
+        Utilities.setDesignOn(view: middleView, color: .clear)
+        Utilities.setDesignOn(view: bottomView, color: .clear)
         
-        Utilities.setDarkAppearance(on: stickerNavigationBar)
+        Utilities.setDesignOn(navigationBar: stickerNavigationBar, isDarkMode: true)
         
-        stickerImageView.kf.setImage(with: stickerViewModel.image)
-        stickerImageView.contentMode = .scaleAspectFit
+        Utilities.setDesignOn(imageView: stickerImageView, image: UIImage(systemName: Strings.unheartSticker))
         
-        stickerName.text = stickerViewModel.name
+        Utilities.setDesignOn(stickerName, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(stickerCategory, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(stickerTag, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(stickerDescription, font: Strings.defaultFont, fontSize: 17, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 0, lineBreakMode: .byWordWrapping)
         
-        stickerName.text = stickerViewModel.name
-        stickerName.font = UIFont(name: "Futura-Bold", size: 35)
-        stickerName.textColor = .black
+        Utilities.setDesignOn(button: tryMeButton, title: Strings.tryMeButton, font: Strings.defaultFontBold, size: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         
-        stickerCategory.text = stickerViewModel.category
-        stickerCategory.font = UIFont(name: "Futura-Bold", size: 15)
-        stickerCategory.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        stickerCategory.textAlignment = .center
-        stickerCategory.backgroundColor = .black
-        stickerCategory.layer.cornerRadius = stickerCategory.bounds.height / 2
-        stickerCategory.clipsToBounds = true
-        
-        
-        if stickerViewModel.tag != "none" {
-            stickerTag.text = stickerViewModel.tag
-            stickerTag.font = UIFont(name: "Futura-Bold", size: 15)
-            stickerTag.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            stickerTag.textAlignment = .center
-            stickerTag.backgroundColor = .black
-            stickerTag.layer.cornerRadius = stickerCategory.bounds.height / 2
-            stickerTag.clipsToBounds = true
-        } else {
-            stickerTag.isHidden = true
-        }
-        
-        stickerDescription.text = stickerViewModel.description
-        stickerDescription.numberOfLines = 0
-        stickerDescription.font = UIFont(name: "Futura", size: 17)
-        stickerDescription.adjustsFontSizeToFitWidth = true
-        stickerDescription.minimumScaleFactor = 1
-        stickerDescription.textColor = .black
-        
-        checkHeartButtonValue()
-        
-//        stickerHeartButtonImageView.image = UIImage(systemName: "heart")
-//        stickerHeartButtonImageView.tintColor = .black
-        
-        tryMeButton.setTitle("Try me", for: .normal)
-        tryMeButton.titleLabel?.font = UIFont(name: "Futura-Bold", size: 20)
-        tryMeButton.titleLabel?.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        tryMeButton.backgroundColor = .black
-        tryMeButton.layer.cornerRadius = tryMeButton.bounds.height / 2
-        tryMeButton.clipsToBounds = true
-        
-    }
-    
-    func setHeartButtonValue(using value: String) {
-        stickerHeartButtonImageView.image = UIImage(systemName: value)
-        stickerHeartButtonImageView.tintColor = .black
     }
     
     func checkHeartButtonValue() {
+        
         heartButtonLogic.checkIfStickerLiked(using: stickerViewModel.stickerDocumentID) { [self] (result) in
             if result {
-                setHeartButtonValue(using: "heart.fill")
+                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.heartSticker), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
                 heartButtonTapped = true
             } else {
-                setHeartButtonValue(using: "heart")
+                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.unheartSticker), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
                 heartButtonTapped = false
-             
             }
         }
         
     }
     
-    
-    func registerGestures() {
+    func setStickerData() {
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
-        stickerHeartButtonImageView.isUserInteractionEnabled = true
-        stickerHeartButtonImageView.addGestureRecognizer(tapGesture)
+        stickerImageView.kf.setImage(with: stickerViewModel.image)
+        stickerName.text = stickerViewModel.name
+        checkHeartButtonValue()
+        stickerCategory.text = stickerViewModel.category
+        
+        if stickerViewModel.tag != Strings.noStickerTag {
+            stickerTag.text = stickerViewModel.tag
+        } else {
+            stickerTag.isHidden = true
+        }
+        
+        stickerDescription.text = stickerViewModel.description
         
     }
     
     
+    //MARK: - UIGestureHandlers
+    
+    func registerGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
+        stickerHeartButtonImageView.isUserInteractionEnabled = true
+        stickerHeartButtonImageView.addGestureRecognizer(tapGesture)
+    }
+    
     @objc func tapGestureHandler(tap: UITapGestureRecognizer) {
-        
         if heartButtonTapped! {
             heartButtonLogic.removeUserData(using: stickerViewModel.stickerDocumentID)
         } else {
             heartButtonLogic.saveUserData(using: stickerViewModel.stickerDocumentID)
         }
-        
     }
     
 }

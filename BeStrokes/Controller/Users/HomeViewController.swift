@@ -43,8 +43,7 @@ class HomeViewController: UIViewController {
     private var heartButtonLogic = HeartButtonLogic()
     
     private var stickerCategorySelected: String?
-    var featuredHeartButtonTapped: Bool?
-    var stickerHeartButtonTapped: Bool?
+    private var featuredHeartButtonTapped: Bool?
     
     
     //MARK: - View Controller Life Cycle
@@ -55,6 +54,7 @@ class HomeViewController: UIViewController {
         setDesignElements()
         registerGestures()
         registerCollectionView()
+        setProfilePicture()
         setCollectionViewData()
         
     }
@@ -69,49 +69,32 @@ class HomeViewController: UIViewController {
     func setDesignElements() {
         navigationController?.setNavigationBarHidden(true, animated: true)
         
-        view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        contentStack.backgroundColor = .clear
-        featuredView.backgroundColor = .clear
-        stickersView.backgroundColor = .clear
+        Utilities.setDesignOn(view: view, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(view: featuredView, color: .clear)
+        Utilities.setDesignOn(view: stickersView, color: .clear)
+        Utilities.setDesignOn(stackView: contentStack, color: .clear)
         
-        setDesignProfilePictureImageView()
-        getProfilePicture()
-        
-        Utilities.setDesignOn(featuredHeading, label: Strings.featuredHeadingText)
-        Utilities.setDesignOn(stickerHeading, label: Strings.stickerHeadingText)
-        
-        featuredCollectionView.backgroundColor = UIColor.clear
-        featuredCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
-        featuredCollectionView.showsHorizontalScrollIndicator = false
-        
-        stickerCategoryCollectionView.backgroundColor = UIColor.clear
-        stickerCategoryCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
-        stickerCategoryCollectionView.showsHorizontalScrollIndicator = false
-        
-        stickerCollectionView.backgroundColor = UIColor.clear
-        stickerCollectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
-        stickerCollectionView.showsHorizontalScrollIndicator = false
-        
-        loadingIndicator.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        loadingIndicator.startAnimating()
-        loadingIndicator.style = .large
-        loadingIndicator.isHidden = true
-    }
-    
-    func setDesignProfilePictureImageView() {
-        profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.size.width / 2
-        profilePictureImageView.clipsToBounds = true
-        profilePictureImageView.contentMode = .scaleAspectFit
+        Utilities.setDesignOn(imageView: profilePictureImageView, isCircular: true)
         
         DispatchQueue.main.async { [self] in
             profilePictureImageView.isSkeletonable = true
-            profilePictureImageView.skeletonCornerRadius = Float(profilePictureImageView.frame.size.width / 2)
+            Utilities.setDesignOn(imageView: profilePictureImageView, isCircularSkeleton: true)
             profilePictureImageView.showAnimatedSkeleton()
         }
         
+        Utilities.setDesignOn(featuredHeading, label: Strings.featuredHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
+        Utilities.setDesignOn(stickerHeading, label: Strings.stickerHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
+        
+        Utilities.setDesignOn(collectionView: featuredCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
+        Utilities.setDesignOn(collectionView: stickerCategoryCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
+        Utilities.setDesignOn(collectionView: stickerCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
+        
+        Utilities.setDesignOn(activityIndicatorView: loadingIndicator, size: .medium, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        loadingIndicator.startAnimating()
+        loadingIndicator.isHidden = true
     }
     
-    func getProfilePicture() {
+    func setProfilePicture() {
         fetchUserData.getProfilePicture { (result) in
             let profilePicImageURL = result
             DispatchQueue.main.async { [self] in
@@ -261,20 +244,12 @@ extension HomeViewController: UICollectionViewDelegate {
         }
         
         if collectionView == stickerCollectionView {
-            
             if stickerViewModel != nil {
-                
-              
-                    let storyboard = UIStoryboard(name: "User", bundle: nil)
-                    let stickerOptionVC = storyboard.instantiateViewController(identifier: "StickerOptionViewController") as! StickerOptionViewController
-                    stickerOptionVC.stickerViewModel = stickerViewModel![indexPath.row]
-                    present(stickerOptionVC, animated: true)
-             
-                
-                
-                
+                let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+                let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOption) as! StickerOptionViewController
+                stickerOptionVC.stickerViewModel = stickerViewModel![indexPath.row]
+                present(stickerOptionVC, animated: true)
             }
-            
         }
         
     }
@@ -287,6 +262,7 @@ extension HomeViewController: UICollectionViewDelegate {
                 cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
             }
         }
+        
     }
     
 }
@@ -357,7 +333,6 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
                 DispatchQueue.main.async { [self] in
                     cell.stickerViewModel = stickerViewModel![indexPath.row]
                     cell.prepareStickerCollectionViewCell()
-                    cell.stickerCollectionViewCellDelegate = self
                 }
                 return cell
             }
@@ -399,16 +374,6 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         
         return CGSize()
         
-    }
-    
-}
-
-
-extension HomeViewController: StickerCollectionViewCellDelegate {
-    
-    func getVC(of viewController: UIViewController) {
-        let stickerOptionVC = viewController
-        present(stickerOptionVC, animated: true)
     }
     
 }
