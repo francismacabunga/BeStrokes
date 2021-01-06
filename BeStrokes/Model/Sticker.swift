@@ -12,6 +12,8 @@ struct Sticker {
     let stickerDocumentID: String
     let name: String
     let image: URL
-    let tag: String?
+    let description: String
+    let category: String
+    let tag: String
     
 }

@@ -6,10 +6,10 @@
 //
 
 import UIKit
-import FirebaseAuth
 import Firebase
 import MSPeekCollectionViewDelegateImplementation
 import SkeletonView
+import Kingfisher
 
 class HomeViewController: UIViewController {
     
@@ -262,10 +262,21 @@ extension HomeViewController: UICollectionViewDelegate {
         
         if collectionView == stickerCollectionView {
             
-            let stickerOptionVC = StickerOptionViewController()
-            present(stickerOptionVC, animated: true)
+            if stickerViewModel != nil {
+                
+              
+                    let storyboard = UIStoryboard(name: "User", bundle: nil)
+                    let stickerOptionVC = storyboard.instantiateViewController(identifier: "StickerOptionViewController") as! StickerOptionViewController
+                    stickerOptionVC.stickerViewModel = stickerViewModel![indexPath.row]
+                    present(stickerOptionVC, animated: true)
+             
+                
+                
+                
+            }
             
         }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
