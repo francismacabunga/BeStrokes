@@ -25,7 +25,7 @@ class ProfileViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private var profileSettingsViewModel: ProfileSettingsViewModel!
+    private var profileSettingsViewModel: [ProfileSettingsViewModel]!
     private let fetchProfileData = FetchProfileData()
     private let user = User()
     
@@ -94,13 +94,13 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return profileSettingsViewModel!.profileSettings.count
+        return profileSettingsViewModel.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: Strings.profileTableViewCell) as? ProfileTableViewCell {
-            cell.profileViewModel = profileSettingsViewModel!.profileSettings[indexPath.item]
+            cell.profileViewModel = profileSettingsViewModel[indexPath.item]
             return cell
         }
         
@@ -117,12 +117,21 @@ extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let clickedCell = profileSettingsViewModel.profileSettings[indexPath.item]
+        
+//        let sample = profileSettingsViewModel[indexPath.item]
+        let sample = profileSettingsViewModel[indexPath.item].profileSettings
+        
+       
+        
+        for i in sample {
+            let clickedCell = i.settingLabel
+        
+        
         if clickedCell == Strings.profileSettingsLogout {
             let alert = UIAlertController(title: Strings.logoutAlertTitle, message: nil, preferredStyle: .alert)
             let noAction = UIAlertAction(title: Strings.logoutNoAction, style: .cancel)
             let yesAction = UIAlertAction(title: Strings.logoutYesAction, style: .default) { [self] (action) in
-                
+
                 let signoutUser = user.signOutUser()
                 if signoutUser! {
                     let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
@@ -132,12 +141,16 @@ extension ProfileViewController: UITableViewDelegate {
                 } else {
                     // Show error
                 }
-                
+
             }
             alert.addAction(yesAction)
             alert.addAction(noAction)
             present(alert, animated: true)
         }
+        
+        
+        }
+        
         
     }
     

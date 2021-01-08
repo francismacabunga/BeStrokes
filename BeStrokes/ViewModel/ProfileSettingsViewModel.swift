@@ -9,7 +9,7 @@ import Foundation
 
 struct ProfileSettingsViewModel {
     
-    let profileSettings: [String]
+    let profileSettings: [SettingsData]
     
     init(_ settings: ProfileSettingsModel) {
         self.profileSettings = settings.profileSettings
@@ -19,8 +19,11 @@ struct ProfileSettingsViewModel {
 
 struct FetchProfileData {
     
-    func settings() -> ProfileSettingsViewModel {
-        let profileSettingsViewModel = ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [Strings.profileSettingsNotifications, Strings.profileSettingsDarkAppearance, Strings.profileSettingsLogout]))
+    func settings()->[ProfileSettingsViewModel]  {
+        let profileSettingsViewModel = [
+            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: "flag.fill", settingLabel: Strings.profileSettingsNotifications)])),
+            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: "text.magnifyingglass", settingLabel: Strings.profileSettingsDarkAppearance)])),
+            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: "flag.slash.circle", settingLabel: Strings.profileSettingsLogout)]))]
         return profileSettingsViewModel
     }
     

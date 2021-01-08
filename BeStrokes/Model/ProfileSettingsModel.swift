@@ -8,7 +8,10 @@
 import Foundation
 
 struct ProfileSettingsModel {
-    
-    let profileSettings: [String]
-    
+    let profileSettings: [SettingsData]
+}
+
+struct SettingsData {
+    let settingIcon: String
+    let settingLabel: String
 }
