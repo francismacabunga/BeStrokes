@@ -17,7 +17,7 @@ struct FeaturedStickerViewModel {
     let category: String
     let tag: String
     
-    init(featuredSticker: Sticker) {
+    init(_ featuredSticker: Sticker) {
         self.stickerDocumentID = featuredSticker.stickerDocumentID
         self.name = featuredSticker.name
         self.image = featuredSticker.image
@@ -37,7 +37,7 @@ struct StickerViewModel {
     let category: String
     let tag: String
     
-    init(sticker: Sticker) {
+    init(_ sticker: Sticker) {
         self.stickerDocumentID = sticker.stickerDocumentID
         self.name = sticker.name
         self.image = sticker.image
@@ -117,30 +117,31 @@ struct FetchStickerData {
     
     private let db = Firestore.firestore()
     
-    func onCollectionViewData(withTag stickerTag: String? = nil, category: String? = nil, completed: @escaping([Sticker])->Void) {
-        
+    func forFeaturedCollectionView(completed: @escaping([FeaturedStickerViewModel])->Void) {
+        let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: Strings.featuredStickers)
+        fetchFirebaseData(query: firebaseQuery) { (result) in
+            let featuredStickerViewModel = result.map({return FeaturedStickerViewModel($0)})
+            completed(featuredStickerViewModel)
+        }
+    }
+    
+    func forStickerCollectionView(category: String, completed: @escaping([StickerViewModel])->Void) {
         var firebaseQuery: Query
-        
-        if stickerTag == Strings.featuredStickers {
-            firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: stickerTag!)
-            fetchFirebaseData(query: firebaseQuery) { (result) in
-                completed(result)
-                return
-            }
-        } else if category == nil || category == Strings.allStickers {
+        if category == Strings.allStickers {
             firebaseQuery = db.collection(Strings.stickerCollection)
             fetchFirebaseData(query: firebaseQuery) { (result) in
-                completed(result)
+                let stickerViewModel = result.map({return StickerViewModel($0)})
+                completed(stickerViewModel)
                 return
             }
-        } else if category != nil {
-            firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerCategoryField, isEqualTo: category!)
+        } else {
+            firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerCategoryField, isEqualTo: category)
             fetchFirebaseData(query: firebaseQuery) { (result) in
-                completed(result)
+                let stickerViewModel = result.map({return StickerViewModel($0)})
+                completed(stickerViewModel)
                 return
             }
         }
-        
     }
     
     func fetchFirebaseData(query: Query, completed: @escaping([Sticker])->Void) {

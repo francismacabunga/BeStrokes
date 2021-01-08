@@ -12,6 +12,7 @@ struct User {
     let userID: String
     let firstName: String
     let lastName: String
+    let email: String
     let profilePic: URL
     
 }

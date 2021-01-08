@@ -13,23 +13,23 @@ class StickerOptionViewController: UIViewController {
     //MARK: - IBOutlets
     
     @IBOutlet weak var stickerNavigationBar: UINavigationBar!
-    @IBOutlet weak var stackContentView: UIStackView!
-    @IBOutlet weak var upperView: UIView!
-    @IBOutlet weak var middleView: UIView!
-    @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var stickerStackContentView: UIStackView!
+    @IBOutlet weak var stickerUpperView: UIView!
+    @IBOutlet weak var stickerMiddleView: UIView!
+    @IBOutlet weak var stickerBottomView: UIView!
     @IBOutlet weak var stickerImageView: UIImageView!
     @IBOutlet weak var stickerHeartButtonImageView: UIImageView!
-    @IBOutlet weak var tryMeButton: UIButton!
-    @IBOutlet weak var stickerName: UILabel!
-    @IBOutlet weak var stickerCategory: UILabel!
-    @IBOutlet weak var stickerTag: UILabel!
-    @IBOutlet weak var stickerDescription: UILabel!
+    @IBOutlet weak var stickerTryMeButton: UIButton!
+    @IBOutlet weak var stickerNameLabel: UILabel!
+    @IBOutlet weak var stickerCategoryLabel: UILabel!
+    @IBOutlet weak var stickerTagLabel: UILabel!
+    @IBOutlet weak var stickerDescriptionLabel: UILabel!
     
     
     //MARK: - Constants / Variables
     
     var stickerViewModel: StickerViewModel!
-    private var heartButtonLogic = HeartButtonLogic()
+    private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
     
     
@@ -38,35 +38,37 @@ class StickerOptionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setDesignOnElements()
+        setDesignElements()
         registerGestures()
         setStickerData()
         
     }
     
-    func setDesignOnElements() {
+    
+    //MARK: - Design Elements
+    
+    func setDesignElements() {
         
         Utilities.setDesignOn(view: view, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(stackView: stackContentView, color: .clear)
-        Utilities.setDesignOn(view: upperView, color: .clear)
-        Utilities.setDesignOn(view: middleView, color: .clear)
-        Utilities.setDesignOn(view: bottomView, color: .clear)
+        Utilities.setDesignOn(stackView: stickerStackContentView, color: .clear)
+        Utilities.setDesignOn(view: stickerUpperView, color: .clear)
+        Utilities.setDesignOn(view: stickerMiddleView, color: .clear)
+        Utilities.setDesignOn(view: stickerBottomView, color: .clear)
         
         Utilities.setDesignOn(navigationBar: stickerNavigationBar, isDarkMode: true)
         
         Utilities.setDesignOn(imageView: stickerImageView, image: UIImage(systemName: Strings.unheartSticker))
         
-        Utilities.setDesignOn(stickerName, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
-        Utilities.setDesignOn(stickerCategory, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(stickerTag, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(stickerDescription, font: Strings.defaultFont, fontSize: 17, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 0, lineBreakMode: .byWordWrapping)
+        Utilities.setDesignOn(stickerNameLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(stickerCategoryLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(stickerTagLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(stickerDescriptionLabel, font: Strings.defaultFont, fontSize: 17, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 0, lineBreakMode: .byWordWrapping)
         
-        Utilities.setDesignOn(button: tryMeButton, title: Strings.tryMeButton, font: Strings.defaultFontBold, size: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(button: stickerTryMeButton, title: Strings.tryMeButton, font: Strings.defaultFontBold, size: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         
     }
     
-    func checkHeartButtonValue() {
-        
+    func getHeartButtonValue() {
         heartButtonLogic.checkIfStickerLiked(using: stickerViewModel.stickerDocumentID) { [self] (result) in
             if result {
                 Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.heartSticker), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
@@ -76,24 +78,21 @@ class StickerOptionViewController: UIViewController {
                 heartButtonTapped = false
             }
         }
-        
     }
     
     func setStickerData() {
-        
         stickerImageView.kf.setImage(with: stickerViewModel.image)
-        stickerName.text = stickerViewModel.name
-        checkHeartButtonValue()
-        stickerCategory.text = stickerViewModel.category
+        stickerNameLabel.text = stickerViewModel.name
+        getHeartButtonValue()
+        stickerCategoryLabel.text = stickerViewModel.category
         
         if stickerViewModel.tag != Strings.noStickerTag {
-            stickerTag.text = stickerViewModel.tag
+            stickerTagLabel.text = stickerViewModel.tag
         } else {
-            stickerTag.isHidden = true
+            stickerTagLabel.isHidden = true
         }
         
-        stickerDescription.text = stickerViewModel.description
-        
+        stickerDescriptionLabel.text = stickerViewModel.description
     }
     
     

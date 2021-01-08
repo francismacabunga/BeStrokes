@@ -26,7 +26,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
-    private var heartButtonLogic = HeartButtonLogic()
+    private let heartButtonLogic = HeartButtonLogic()
     private var stickerDocumentID: String?
     private var heartButtonTapped: Bool?
     
@@ -56,7 +56,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Design Elements
     
-    func setDesignOnElements() {
+    func setDesignElements() {
         
         Utilities.setDesignOn(view: featuredContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, amountOfCurve: 40)
         Utilities.setDesignOn(featuredLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, lineBreakMode: .byWordWrapping, canResize: false)
@@ -79,11 +79,11 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     func prepareFeatureCollectionViewCell() {
         hideLoadingSkeletonView()
-        setDesignOnElements()
-        showHeartButtonValue(using: stickerDocumentID!)
+        setDesignElements()
+        getHeartButtonValue(using: stickerDocumentID!)
     }
     
-    func showHeartButtonValue(using stickerDocumentID: String) {
+    func getHeartButtonValue(using stickerDocumentID: String) {
         heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
             if result {
                 Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.heartSticker), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))

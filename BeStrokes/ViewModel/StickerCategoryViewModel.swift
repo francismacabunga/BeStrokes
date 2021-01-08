@@ -14,7 +14,7 @@ struct StickerCategoryViewModel {
     var isCategorySelected: Bool?
     var selectedOnStart: Bool?
     
-    init(stickerCategory: StickerCategory) {
+    init(_ stickerCategory: StickerCategory) {
         self.category = stickerCategory.category
         self.isCategorySelected = stickerCategory.isCategorySelected
         self.selectedOnStart = stickerCategory.selectedOnStart
@@ -22,16 +22,16 @@ struct StickerCategoryViewModel {
     
 }
 
-struct FetchStickerCategoryData {
+struct FetchCategoryData {
     
-    func getCategoryData()->[StickerCategory] {
-        let stickerCategory = [StickerCategory(category: Strings.allStickers, isCategorySelected: nil, selectedOnStart: true),
-                               StickerCategory(category: Strings.animalStickers, isCategorySelected: nil),
-                               StickerCategory(category: Strings.foodStickers, isCategorySelected: nil),
-                               StickerCategory(category: Strings.objectStickers, isCategorySelected: nil),
-                               StickerCategory(category: Strings.coloredStickers, isCategorySelected: nil),
-                               StickerCategory(category: Strings.travelStickers, isCategorySelected: nil)]
-        return stickerCategory
+    func stickerCategory()->[StickerCategoryViewModel] {
+        let stickerCategoryViewModel = [StickerCategoryViewModel(StickerCategory(category: Strings.allStickers, isCategorySelected: nil, selectedOnStart: true)),
+                               StickerCategoryViewModel(StickerCategory(category: Strings.animalStickers, isCategorySelected: nil, selectedOnStart: nil)),
+                               StickerCategoryViewModel(StickerCategory(category: Strings.foodStickers, isCategorySelected: nil, selectedOnStart: nil)),
+                               StickerCategoryViewModel(StickerCategory(category: Strings.objectStickers, isCategorySelected: nil, selectedOnStart: nil)),
+                               StickerCategoryViewModel(StickerCategory(category: Strings.coloredStickers, isCategorySelected: nil, selectedOnStart: nil)),
+                               StickerCategoryViewModel(StickerCategory(category: Strings.travelStickers, isCategorySelected: nil, selectedOnStart: nil)),]
+        return stickerCategoryViewModel
     }
     
 }

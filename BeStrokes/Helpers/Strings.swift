@@ -111,8 +111,9 @@ struct Strings {
     
     static let featuredStickerCell = "FeaturedCollectionViewCell"
     static let stickerCategoryCell = "StickerCategoryCollectionViewCell"
+    static let profileTableViewCell = "ProfileTableViewCell"
     static let stickerCell = "StickerCollectionViewCell"
-    static let stickerOption = "StickerOptionViewController"
+    static let stickerOptionCell = "StickerOptionViewController"
     
     
    
@@ -158,6 +159,13 @@ struct Strings {
     static let stickerCategoryField = "category"
     static let stickerTagField = "tag"
     
+    
+    
+    static let profileSettingsNotifications = "Notifications"
+    static let profileSettingsDarkAppearance = "Dark Appearance"
+    static let profileSettingsLogout = "Logout"
+    
+    
 
     
     // Stickers
@@ -171,5 +179,15 @@ struct Strings {
     
     static let featuredStickers = "Featured"
     static let noStickerTag = "none"
+    
+    
+    
+    // View Controllers
+    
+    static let profileVC = "ProfileViewController"
+    
+
+    
+   
     
 }

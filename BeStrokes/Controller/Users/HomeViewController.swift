@@ -15,16 +15,16 @@ class HomeViewController: UIViewController {
     
     //MARK: - IBOutlets
     
-    @IBOutlet weak var contentStack: UIStackView!
-    @IBOutlet weak var featuredView: UIView!
-    @IBOutlet weak var stickersView: UIView!
-    @IBOutlet weak var profilePictureImageView: UIImageView!
-    @IBOutlet weak var featuredHeading: UILabel!
-    @IBOutlet weak var stickerHeading: UILabel!
-    @IBOutlet weak var featuredCollectionView: UICollectionView!
-    @IBOutlet weak var stickerCategoryCollectionView: UICollectionView!
-    @IBOutlet weak var stickerCollectionView: UICollectionView!
-    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var homeContentStackView: UIStackView!
+    @IBOutlet weak var homeFeaturedView: UIView!
+    @IBOutlet weak var homeStickerView: UIView!
+    @IBOutlet weak var homeProfilePictureImageView: UIImageView!
+    @IBOutlet weak var homeFeaturedHeadingLabel: UILabel!
+    @IBOutlet weak var homeStickerHeadingLabel: UILabel!
+    @IBOutlet weak var homeFeaturedCollectionView: UICollectionView!
+    @IBOutlet weak var homeStickerCategoryCollectionView: UICollectionView!
+    @IBOutlet weak var homeStickerCollectionView: UICollectionView!
+    @IBOutlet weak var homeLoadingIndicatorView: UIActivityIndicatorView!
     
     
     //MARK: - Constants / Variables
@@ -37,10 +37,10 @@ class HomeViewController: UIViewController {
     private var stickerViewModel: [StickerViewModel]?
     
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
-    private var fetchUserData = FetchUserData()
-    private var fetchStickerData = FetchStickerData()
-    private var fetchStickerCategoryData = FetchStickerCategoryData()
-    private var heartButtonLogic = HeartButtonLogic()
+    private let fetchUserData = FetchUserData()
+    private let fetchStickerData = FetchStickerData()
+    private let fetchCategoryData = FetchCategoryData()
+    private let heartButtonLogic = HeartButtonLogic()
     
     private var stickerCategorySelected: String?
     private var featuredHeartButtonTapped: Bool?
@@ -61,7 +61,7 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         let selectedIndexPath = IndexPath(item: 0, section: 0)
-        stickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .left)
+        homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .right)
     }
     
     
@@ -75,42 +75,42 @@ class HomeViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         
         Utilities.setDesignOn(view: view, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(view: featuredView, color: .clear)
-        Utilities.setDesignOn(view: stickersView, color: .clear)
-        Utilities.setDesignOn(stackView: contentStack, color: .clear)
+        Utilities.setDesignOn(view: homeFeaturedView, color: .clear)
+        Utilities.setDesignOn(view: homeStickerView, color: .clear)
+        Utilities.setDesignOn(stackView: homeContentStackView, color: .clear)
         
-        Utilities.setDesignOn(imageView: profilePictureImageView, isCircular: true)
+        Utilities.setDesignOn(imageView: homeProfilePictureImageView, isCircular: true)
         
         DispatchQueue.main.async { [self] in
-            profilePictureImageView.isSkeletonable = true
-            Utilities.setDesignOn(imageView: profilePictureImageView, isCircularSkeleton: true)
-            profilePictureImageView.showAnimatedSkeleton()
+            homeProfilePictureImageView.isSkeletonable = true
+            Utilities.setDesignOn(imageView: homeProfilePictureImageView, isCircularSkeleton: true)
+            homeProfilePictureImageView.showAnimatedSkeleton()
         }
         
-        Utilities.setDesignOn(featuredHeading, label: Strings.featuredHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
-        Utilities.setDesignOn(stickerHeading, label: Strings.stickerHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
+        Utilities.setDesignOn(homeFeaturedHeadingLabel, label: Strings.featuredHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
+        Utilities.setDesignOn(homeStickerHeadingLabel, label: Strings.stickerHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
         
-        Utilities.setDesignOn(collectionView: featuredCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
-        Utilities.setDesignOn(collectionView: stickerCategoryCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
-        Utilities.setDesignOn(collectionView: stickerCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
+        Utilities.setDesignOn(collectionView: homeFeaturedCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
+        Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
+        Utilities.setDesignOn(collectionView: homeStickerCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
         
-        Utilities.setDesignOn(activityIndicatorView: loadingIndicator, size: .medium, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        loadingIndicator.startAnimating()
-        loadingIndicator.isHidden = true
+        Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        homeLoadingIndicatorView.startAnimating()
+        homeLoadingIndicatorView.isHidden = true
     }
     
     func setProfilePicture() {
-        fetchUserData.getProfilePicture { (result) in
-            let profilePicImageURL = result
+        fetchUserData.signedInUser { (result) in
+            let profilePicImageURL = result.profilePic
             DispatchQueue.main.async { [self] in
-                profilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-                profilePictureImageView.kf.setImage(with: profilePicImageURL)
+                homeProfilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                homeProfilePictureImageView.kf.setImage(with: profilePicImageURL)
             }
         }
     }
     
     func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
-        featuredCollectionView.configureForPeekingBehavior(behavior: behavior)
+        homeFeaturedCollectionView.configureForPeekingBehavior(behavior: behavior)
         behavior.cellPeekWidth = 10
         behavior.cellSpacing = 10
     }
@@ -121,25 +121,26 @@ class HomeViewController: UIViewController {
     func registerGestures() {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
-        profilePictureImageView.addGestureRecognizer(tapGesture)
-        profilePictureImageView.isUserInteractionEnabled = true
+        homeProfilePictureImageView.addGestureRecognizer(tapGesture)
+        homeProfilePictureImageView.isUserInteractionEnabled = true
         
         let featuredDoubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(featuredDoubleTapGestureHandler))
         featuredDoubleTapGesture.numberOfTapsRequired = 2
-        featuredCollectionView.addGestureRecognizer(featuredDoubleTapGesture)
+        homeFeaturedCollectionView.addGestureRecognizer(featuredDoubleTapGesture)
         
     }
     
     @objc func tapGestureHandler() {
-        let profileVC = ProfileViewController()
-        profileVC.modalPresentationStyle = .automatic
+        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+        let profileVC = storyboard.instantiateViewController(identifier: Strings.profileVC) as! ProfileViewController
         present(profileVC, animated: true)
+        
     }
     
     @objc func featuredDoubleTapGestureHandler(doubleTap: UITapGestureRecognizer) {
         
-        let doubleTapLocation = doubleTap.location(in: featuredCollectionView)
-        guard let cellIndexPath = featuredCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
+        let doubleTapLocation = doubleTap.location(in: homeFeaturedCollectionView)
+        guard let cellIndexPath = homeFeaturedCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
         if featuredStickerViewModel != nil {
             let stickerDocumentID = featuredStickerViewModel![cellIndexPath.row].stickerDocumentID
             if featuredHeartButtonTapped != nil {
@@ -158,7 +159,7 @@ class HomeViewController: UIViewController {
     
     func registerCollectionView() {
         
-        setDelegate()
+        setDataSourceAndDelegate()
         registerNib()
         
         viewPeekingBehavior = MSCollectionViewPeekingBehavior()
@@ -166,19 +167,20 @@ class HomeViewController: UIViewController {
         
     }
     
-    func setDelegate() {
-        featuredCollectionView.delegate = self
-        stickerCategoryCollectionView.delegate = self
-        stickerCollectionView.delegate = self
-        featuredCollectionView.dataSource = self
-        stickerCategoryCollectionView.dataSource = self
-        stickerCollectionView.dataSource = self
+    func setDataSourceAndDelegate() {
+        homeFeaturedCollectionView.dataSource = self
+        homeStickerCategoryCollectionView.dataSource = self
+        homeStickerCollectionView.dataSource = self
+        
+        homeFeaturedCollectionView.delegate = self
+        homeStickerCategoryCollectionView.delegate = self
+        homeStickerCollectionView.delegate = self
     }
     
     func registerNib() {
-        featuredCollectionView.register(UINib(nibName: Strings.featuredStickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.featuredStickerCell)
-        stickerCategoryCollectionView.register(UINib(nibName: Strings.stickerCategoryCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCategoryCell)
-        stickerCollectionView.register(UINib(nibName: Strings.stickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCell)
+        homeFeaturedCollectionView.register(UINib(nibName: Strings.featuredStickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.featuredStickerCell)
+        homeStickerCategoryCollectionView.register(UINib(nibName: Strings.stickerCategoryCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCategoryCell)
+        homeStickerCollectionView.register(UINib(nibName: Strings.stickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCell)
     }
     
     func setCollectionViewData() {
@@ -188,31 +190,30 @@ class HomeViewController: UIViewController {
     }
     
     func getFeaturedCollectionViewData() {
-        fetchStickerData.onCollectionViewData(withTag: Strings.featuredStickers) { [self] (result) in
-            featuredStickerViewModel = result.map({return FeaturedStickerViewModel(featuredSticker: $0)})
+        fetchStickerData.forFeaturedCollectionView() { [self] (result) in
+            featuredStickerViewModel = result
             DispatchQueue.main.async {
-                featuredCollectionView.reloadData()
+                homeFeaturedCollectionView.reloadData()
             }
         }
     }
     
     func getStickerCategoryCollectionViewData() {
-        let stickerCategory = fetchStickerCategoryData.getCategoryData()
-        stickerCategoryViewModel = stickerCategory.map({return StickerCategoryViewModel(stickerCategory: $0)})
+        let stickerCategory = fetchCategoryData.stickerCategory()
+        stickerCategoryViewModel = stickerCategory
     }
     
     func getStickerCollectionViewData(onCategory stickerCategory: String) {
         
-        fetchStickerData.onCollectionViewData(category: stickerCategory) { [self] (result) in
-            stickerViewModel = result.map({return StickerViewModel(sticker: $0)})
-            
+        fetchStickerData.forStickerCollectionView(category: stickerCategory) { [self] (result) in
+            stickerViewModel = result
             DispatchQueue.main.async { [self] in
-                stickerCollectionView.reloadData()
+                homeStickerCollectionView.reloadData()
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                loadingIndicator.isHidden = true
-                stickerCollectionView.isHidden = false
+                homeLoadingIndicatorView.isHidden = true
+                homeStickerCollectionView.isHidden = false
             }
         }
         
@@ -221,68 +222,16 @@ class HomeViewController: UIViewController {
 }
 
 
-//MARK: - Collection View Delegate
-
-extension HomeViewController: UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if collectionView == stickerCategoryCollectionView {
-            stickerCategorySelected = stickerCategoryViewModel[indexPath.row].category
-            stickerCategoryViewModel[indexPath.row].isCategorySelected = true
-            stickerCategoryViewModel[0].selectedOnStart = false
-            
-            if let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell {
-                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
-            }
-            
-            stickerCollectionView.isHidden = true
-            loadingIndicator.isHidden = false
-            
-            DispatchQueue.main.async { [self] in
-                stickerCollectionView.reloadData()
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-                getStickerCollectionViewData(onCategory: stickerCategorySelected!)
-            }
-        }
-        
-        if collectionView == stickerCollectionView {
-            if stickerViewModel != nil {
-                let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-                let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOption) as! StickerOptionViewController
-                stickerOptionVC.stickerViewModel = stickerViewModel![indexPath.row]
-                present(stickerOptionVC, animated: true)
-            }
-        }
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        
-        if collectionView == stickerCategoryCollectionView {
-            stickerCategoryViewModel[indexPath.row].isCategorySelected = false
-            if let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell {
-                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
-            }
-        }
-        
-    }
-    
-}
-
-
-//MARK: - Collection View Datasource
+//MARK: - Collection View Data Source
 
 extension HomeViewController: SkeletonCollectionViewDataSource {
     
     func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
         
-        if skeletonView == featuredCollectionView {
+        if skeletonView == homeFeaturedCollectionView {
             return Strings.featuredStickerCell
         }
-        if skeletonView == stickerCollectionView {
+        if skeletonView == homeStickerCollectionView {
             return Strings.stickerCell
         }
         
@@ -296,13 +245,13 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if collectionView == featuredCollectionView {
+        if collectionView == homeFeaturedCollectionView {
             return featuredStickerViewModel?.count ?? 2
         }
-        if collectionView == stickerCategoryCollectionView {
+        if collectionView == homeStickerCategoryCollectionView {
             return stickerCategoryViewModel.count
         }
-        if collectionView == stickerCollectionView {
+        if collectionView == homeStickerCollectionView {
             return stickerViewModel?.count ?? 6
         }
         
@@ -312,7 +261,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if collectionView == featuredCollectionView {
+        if collectionView == homeFeaturedCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedCollectionViewCell
             if featuredStickerViewModel != nil {
                 DispatchQueue.main.async() { [self] in
@@ -324,17 +273,17 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             return cell
         }
         
-        if collectionView == stickerCategoryCollectionView {
+        if collectionView == homeStickerCategoryCollectionView {
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCategoryCell, for: indexPath) as? StickerCategoryCollectionViewCell {
                 DispatchQueue.main.async { [self] in
                     cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
-                    cell.setDesignOnElements()
+                    cell.setDesignElements()
                 }
                 return cell
             }
         }
         
-        if collectionView == stickerCollectionView {
+        if collectionView == homeStickerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCell, for: indexPath) as! StickerCollectionViewCell
             if stickerViewModel != nil {
                 DispatchQueue.main.async { [self] in
@@ -347,6 +296,58 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         }
         
         return UICollectionViewCell()
+        
+    }
+    
+}
+
+
+//MARK: - Collection View Delegate
+
+extension HomeViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if collectionView == homeStickerCategoryCollectionView {
+            stickerCategorySelected = stickerCategoryViewModel[indexPath.row].category
+            stickerCategoryViewModel[indexPath.row].isCategorySelected = true
+            stickerCategoryViewModel[0].selectedOnStart = false
+            
+            if let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell {
+                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
+            }
+            
+            homeStickerCollectionView.isHidden = true
+            homeLoadingIndicatorView.isHidden = false
+            
+            DispatchQueue.main.async { [self] in
+                homeStickerCollectionView.reloadData()
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+                getStickerCollectionViewData(onCategory: stickerCategorySelected!)
+            }
+        }
+        
+        if collectionView == homeStickerCollectionView {
+            if stickerViewModel != nil {
+                let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+                let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionCell) as! StickerOptionViewController
+                stickerOptionVC.stickerViewModel = stickerViewModel![indexPath.row]
+                present(stickerOptionVC, animated: true)
+            }
+        }
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
+        if collectionView == homeStickerCategoryCollectionView {
+            stickerCategoryViewModel[indexPath.row].isCategorySelected = false
+            if let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell {
+                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
+            }
+        }
         
     }
     
@@ -367,14 +368,14 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if collectionView == stickerCategoryCollectionView {
-            let stickerCategoryCollectionViewLayout = stickerCategoryCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        if collectionView == homeStickerCategoryCollectionView {
+            let stickerCategoryCollectionViewLayout = homeStickerCategoryCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             stickerCategoryCollectionViewLayout.sectionInset.left = 25
             return CGSize(width: 100, height: 30)
         }
         
-        if collectionView == stickerCollectionView {
-            let stickersCollectionViewLayout = stickerCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        if collectionView == homeStickerCollectionView {
+            let stickersCollectionViewLayout = homeStickerCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             stickersCollectionViewLayout.sectionInset.left = 25
             return CGSize(width: 140, height: 140)
         }

@@ -10,10 +10,6 @@ import SkeletonView
 import Kingfisher
 import Firebase
 
-protocol StickerCollectionViewCellDelegate {
-    func getVC(of viewController: UIViewController)
-}
-
 class StickerCollectionViewCell: UICollectionViewCell {
     
     //MARK: - IBOutlets
@@ -29,8 +25,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
-    var stickerCollectionViewCellDelegate: StickerCollectionViewCellDelegate?
-    private var heartButtonLogic = HeartButtonLogic()
+    private let heartButtonLogic = HeartButtonLogic()
     private var stickerDocumentID: String?
     private var heartButtonTapped: Bool?
     

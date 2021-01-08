@@ -377,6 +377,23 @@ struct Utilities {
         
     }
     
+    // Use for tableview
+    static func setDesignOn(tableView: UITableView, isTransparent: Bool, separatorStyle:    UITableViewCell.SeparatorStyle, rowHeight: CGFloat? = nil) {
+        
+        if isTransparent {
+            tableView.backgroundColor = .clear
+        }
+        
+        tableView.separatorStyle = separatorStyle
+        
+        if rowHeight != nil {
+            tableView.rowHeight = rowHeight!
+        }
+    
+    }
+    
+    
+    
     // Use for loading indicator
     static func setDesignOn(activityIndicatorView: UIActivityIndicatorView, size: UIActivityIndicatorView.Style, color: UIColor) {
         activityIndicatorView.color = color
@@ -435,6 +452,8 @@ struct Utilities {
         button.backgroundColor = color
         
     }
+    
+    
     
     
     
