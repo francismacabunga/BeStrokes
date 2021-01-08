@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProfileSettings {
+struct ProfileSettingsModel {
     
     let profileSettings: [String]
     

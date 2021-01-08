@@ -16,7 +16,7 @@ struct UserViewModel {
     let email: String
     let profilePic: URL
     
-    init(_ user: User) {
+    init(_ user: UserModel) {
         self.userID = user.userID
         self.firstName = user.firstName
         self.lastname = user.lastName
@@ -26,12 +26,12 @@ struct UserViewModel {
     
 }
 
-struct FetchUserData {
+struct User {
     
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
-    func signedInUser(completed: @escaping(UserViewModel)->Void) {
+    func getSignedInUserData(completed: @escaping(UserViewModel)->Void) {
         
         if user != nil {
             let userID = user!.uid
@@ -47,12 +47,26 @@ struct FetchUserData {
                 let lastName = result["lastName"] as! String
                 let profilePic = URL(string: result["profilePic"] as! String)!
                 
-                let userViewModel = UserViewModel(User(userID: userID, firstName: firstName, lastName: lastName, email: userEmail, profilePic: profilePic))
+                let userViewModel = UserViewModel(UserModel(userID: userID, firstName: firstName, lastName: lastName, email: userEmail, profilePic: profilePic))
                 completed(userViewModel)
                 
             }
         }
         
+    }
+    
+    func signOutUser()->Bool? {
+        if user != nil {
+            do {
+                try Auth.auth().signOut()
+                return true
+            } catch {
+                // Show error message
+                return false
+            }
+        }
+        // Show no signed in user message
+        return Bool()
     }
     
 }

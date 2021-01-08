@@ -17,7 +17,7 @@ struct FeaturedStickerViewModel {
     let category: String
     let tag: String
     
-    init(_ featuredSticker: Sticker) {
+    init(_ featuredSticker: StickerModel) {
         self.stickerDocumentID = featuredSticker.stickerDocumentID
         self.name = featuredSticker.name
         self.image = featuredSticker.image
@@ -37,7 +37,7 @@ struct StickerViewModel {
     let category: String
     let tag: String
     
-    init(_ sticker: Sticker) {
+    init(_ sticker: StickerModel) {
         self.stickerDocumentID = sticker.stickerDocumentID
         self.name = sticker.name
         self.image = sticker.image
@@ -144,13 +144,13 @@ struct FetchStickerData {
         }
     }
     
-    func fetchFirebaseData(query: Query, completed: @escaping([Sticker])->Void) {
+    func fetchFirebaseData(query: Query, completed: @escaping([StickerModel])->Void) {
         query.getDocuments { (snapshot, error) in
             if error != nil {
                 // Show error
             }
             guard let results = snapshot?.documents else {return}
-            let stickerData = results.map({return Sticker(stickerDocumentID: $0[Strings.stickerDocumentIDField] as! String,
+            let stickerData = results.map({return StickerModel(stickerDocumentID: $0[Strings.stickerDocumentIDField] as! String,
                                                           name: $0[Strings.stickerNameField] as! String,
                                                           image: URL(string: $0[Strings.stickerImageField] as! String)!,
                                                           description: $0[Strings.stickerDescriptionField] as! String,

@@ -56,7 +56,7 @@ struct Strings {
     
     
     
-   
+    
     
     
     
@@ -96,6 +96,9 @@ struct Strings {
     
     static let featuredHeadingText = "Featured"
     static let stickerHeadingText = "Stickers"
+    static let settingsHeadingText = "Settings"
+    static let profileTrademark1Text = "BeStrokes"
+    static let profileTrademark2Text = "made by Francis"
     
     
     
@@ -115,8 +118,10 @@ struct Strings {
     static let stickerCell = "StickerCollectionViewCell"
     static let stickerOptionCell = "StickerOptionViewController"
     
+    // VC
     
-   
+    static let landingVC = "LandingViewController"
+    
     
     
     
@@ -138,7 +143,7 @@ struct Strings {
     static let unheartSticker = "heart"
     static let heartSticker = "heart.fill"
     
-  
+    
     
     // db
     
@@ -166,7 +171,7 @@ struct Strings {
     static let profileSettingsLogout = "Logout"
     
     
-
+    
     
     // Stickers
     
@@ -186,8 +191,17 @@ struct Strings {
     
     static let profileVC = "ProfileViewController"
     
-
     
-   
+    // Alert controller messages
+    
+    
+    static let logoutAlertTitle = "Are you sure?"
+    static let logoutYesAction = "Yes"
+    static let logoutNoAction = "No"
+    
+    
+    
+    
+    
     
 }

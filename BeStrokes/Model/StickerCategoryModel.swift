@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct StickerCategory {
+struct StickerCategoryModel {
     
     let category: String
     var isCategorySelected: Bool?

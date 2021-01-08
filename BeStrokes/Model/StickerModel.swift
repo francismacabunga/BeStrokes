@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Sticker {
+struct StickerModel {
     
     let stickerDocumentID: String
     let name: String

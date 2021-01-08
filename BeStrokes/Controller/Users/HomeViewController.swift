@@ -29,15 +29,12 @@ class HomeViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let user = Auth.auth().currentUser
-    private let db = Firestore.firestore()
-    
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
     private var stickerViewModel: [StickerViewModel]?
     
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
-    private let fetchUserData = FetchUserData()
+    private let user = User()
     private let fetchStickerData = FetchStickerData()
     private let fetchCategoryData = FetchCategoryData()
     private let heartButtonLogic = HeartButtonLogic()
@@ -100,7 +97,7 @@ class HomeViewController: UIViewController {
     }
     
     func setProfilePicture() {
-        fetchUserData.signedInUser { (result) in
+        user.getSignedInUserData { (result) in
             let profilePicImageURL = result.profilePic
             DispatchQueue.main.async { [self] in
                 homeProfilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))

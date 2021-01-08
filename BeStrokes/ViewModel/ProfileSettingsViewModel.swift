@@ -11,7 +11,7 @@ struct ProfileSettingsViewModel {
     
     let profileSettings: [String]
     
-    init(_ settings: ProfileSettings) {
+    init(_ settings: ProfileSettingsModel) {
         self.profileSettings = settings.profileSettings
     }
     
@@ -20,7 +20,7 @@ struct ProfileSettingsViewModel {
 struct FetchProfileData {
     
     func settings() -> ProfileSettingsViewModel {
-        let profileSettingsViewModel = ProfileSettingsViewModel(ProfileSettings(profileSettings: [Strings.profileSettingsNotifications, Strings.profileSettingsDarkAppearance, Strings.profileSettingsLogout]))
+        let profileSettingsViewModel = ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [Strings.profileSettingsNotifications, Strings.profileSettingsDarkAppearance, Strings.profileSettingsLogout]))
         return profileSettingsViewModel
     }
     

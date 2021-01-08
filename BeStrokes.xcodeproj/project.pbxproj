@@ -13,7 +13,7 @@
 		2F11255E2551A083004A02B1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F11255D2551A083004A02B1 /* HomeViewController.swift */; };
 		2F1125622551A097004A02B1 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1125612551A097004A02B1 /* AccountViewController.swift */; };
 		2F1125662551AE59004A02B1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1125652551AE59004A02B1 /* GoogleService-Info.plist */; };
-		2F1D266D259C5725003ABDCF /* StickerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1D266C259C5725003ABDCF /* StickerCategory.swift */; };
+		2F1D266D259C5725003ABDCF /* StickerCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1D266C259C5725003ABDCF /* StickerCategoryModel.swift */; };
 		2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */; };
 		2F3141582594EFC900D47E3F /* ProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F3141562594EFC900D47E3F /* ProfileTableViewCell.xib */; };
 		2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F382FC52562E3CD00D3A125 /* Utilities.swift */; };
@@ -25,10 +25,10 @@
 		2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */; };
 		2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */; };
 		2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */; };
-		2F58B0E125A47CE0009EFDE5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0E025A47CE0009EFDE5 /* User.swift */; };
+		2F58B0E125A47CE0009EFDE5 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0E025A47CE0009EFDE5 /* UserModel.swift */; };
 		2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */; };
 		2F7950D0259CC62F005B2A27 /* StickerCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7950CF259CC62F005B2A27 /* StickerCategoryViewModel.swift */; };
-		2F88A016259B1FBC00AAC82D /* Sticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A015259B1FBC00AAC82D /* Sticker.swift */; };
+		2F88A016259B1FBC00AAC82D /* StickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A015259B1FBC00AAC82D /* StickerModel.swift */; };
 		2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A018259B239700AAC82D /* StickerViewModel.swift */; };
 		2F8F950D2565C59A00ECDF83 /* SignUpViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */; };
 		2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1ABE42552ED8C0076A8FD /* Strings.swift */; };
@@ -50,7 +50,7 @@
 		2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF328302580FEF4001E6E1E /* TabBarViewController.swift */; };
 		2FFB0C4825A84EAC00FAED42 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */; };
 		2FFB0C4B25A873EC00FAED42 /* ProfileSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */; };
-		2FFB0C4E25A8740400FAED42 /* ProfileSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4D25A8740400FAED42 /* ProfileSettings.swift */; };
+		2FFB0C4E25A8740400FAED42 /* ProfileSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4D25A8740400FAED42 /* ProfileSettingsModel.swift */; };
 		C701D0654D7D370E8996BA27 /* Pods_BeStrokes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497871CF40741AC493C61604 /* Pods_BeStrokes.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,7 +61,7 @@
 		2F11255D2551A083004A02B1 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		2F1125612551A097004A02B1 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		2F1125652551AE59004A02B1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		2F1D266C259C5725003ABDCF /* StickerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategory.swift; sourceTree = "<group>"; };
+		2F1D266C259C5725003ABDCF /* StickerCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryModel.swift; sourceTree = "<group>"; };
 		2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		2F3141562594EFC900D47E3F /* ProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileTableViewCell.xib; sourceTree = "<group>"; };
 		2F382FC52562E3CD00D3A125 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -72,10 +72,10 @@
 		2F4CE06D257E63F9001C3768 /* StickersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersViewController.swift; sourceTree = "<group>"; };
 		2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewControllerContainer.swift; sourceTree = "<group>"; };
 		2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
-		2F58B0E025A47CE0009EFDE5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		2F58B0E025A47CE0009EFDE5 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerOptionViewController.swift; sourceTree = "<group>"; };
 		2F7950CF259CC62F005B2A27 /* StickerCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryViewModel.swift; sourceTree = "<group>"; };
-		2F88A015259B1FBC00AAC82D /* Sticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sticker.swift; sourceTree = "<group>"; };
+		2F88A015259B1FBC00AAC82D /* StickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerModel.swift; sourceTree = "<group>"; };
 		2F88A018259B239700AAC82D /* StickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewModel.swift; sourceTree = "<group>"; };
 		2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewControllerContainer.swift; sourceTree = "<group>"; };
 		2FB1ABE42552ED8C0076A8FD /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 		2FF328302580FEF4001E6E1E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewModel.swift; sourceTree = "<group>"; };
-		2FFB0C4D25A8740400FAED42 /* ProfileSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettings.swift; sourceTree = "<group>"; };
+		2FFB0C4D25A8740400FAED42 /* ProfileSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsModel.swift; sourceTree = "<group>"; };
 		497871CF40741AC493C61604 /* Pods_BeStrokes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BeStrokes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		648C2547C4CAA81B7FA7CD60 /* Pods-BeStrokes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeStrokes.release.xcconfig"; path = "Target Support Files/Pods-BeStrokes/Pods-BeStrokes.release.xcconfig"; sourceTree = "<group>"; };
 		9E470226026C6FA7D956F1DD /* Pods-BeStrokes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeStrokes.debug.xcconfig"; path = "Target Support Files/Pods-BeStrokes/Pods-BeStrokes.debug.xcconfig"; sourceTree = "<group>"; };
@@ -162,10 +162,10 @@
 		2F88A013259B1A6300AAC82D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2F58B0E025A47CE0009EFDE5 /* User.swift */,
-				2F88A015259B1FBC00AAC82D /* Sticker.swift */,
-				2F1D266C259C5725003ABDCF /* StickerCategory.swift */,
-				2FFB0C4D25A8740400FAED42 /* ProfileSettings.swift */,
+				2F58B0E025A47CE0009EFDE5 /* UserModel.swift */,
+				2F88A015259B1FBC00AAC82D /* StickerModel.swift */,
+				2F1D266C259C5725003ABDCF /* StickerCategoryModel.swift */,
+				2FFB0C4D25A8740400FAED42 /* ProfileSettingsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -428,9 +428,9 @@
 				2F11255B2551A03E004A02B1 /* ForgotPasswordViewController.swift in Sources */,
 				2F393A13255AEB57006CDBDE /* LandingViewController.swift in Sources */,
 				2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */,
-				2F58B0E125A47CE0009EFDE5 /* User.swift in Sources */,
+				2F58B0E125A47CE0009EFDE5 /* UserModel.swift in Sources */,
 				2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */,
-				2F88A016259B1FBC00AAC82D /* Sticker.swift in Sources */,
+				2F88A016259B1FBC00AAC82D /* StickerModel.swift in Sources */,
 				2FD6E4DA257AC99900B49E41 /* StickerCollectionViewCell.swift in Sources */,
 				2FD6E4E0257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift in Sources */,
 				2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */,
@@ -443,7 +443,7 @@
 				2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */,
 				2F8F950D2565C59A00ECDF83 /* SignUpViewControllerContainer.swift in Sources */,
 				2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */,
-				2FFB0C4E25A8740400FAED42 /* ProfileSettings.swift in Sources */,
+				2FFB0C4E25A8740400FAED42 /* ProfileSettingsModel.swift in Sources */,
 				2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */,
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
 				2F393A0F255AEAEA006CDBDE /* LandingPageViewController.swift in Sources */,
@@ -456,7 +456,7 @@
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
 				2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */,
 				2F7950D0259CC62F005B2A27 /* StickerCategoryViewModel.swift in Sources */,
-				2F1D266D259C5725003ABDCF /* StickerCategory.swift in Sources */,
+				2F1D266D259C5725003ABDCF /* StickerCategoryModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
