@@ -32,12 +32,12 @@ struct FetchUserData {
     func getProfilePicture(completed: @escaping(URL)->Void) {
         if user != nil {
             let userID = user?.uid
-            db.collection("users").whereField("userID", isEqualTo: userID!).getDocuments { (snapshot, error) in
+            db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: userID!).getDocuments { (snapshot, error) in
                 if error != nil {
                     // Show error
                 }
                 guard let result = snapshot?.documents.first else {return}
-                let profilePicImageURL = URL(string: result["profilePic"] as! String)!
+                let profilePicImageURL = URL(string: result[Strings.userProfilePicField] as! String)!
                 completed(profilePicImageURL)
             }
         }

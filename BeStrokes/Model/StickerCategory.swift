@@ -11,5 +11,6 @@ struct StickerCategory {
     
     let category: String
     var isCategorySelected: Bool?
+    var selectedOnStart: Bool?
     
 }

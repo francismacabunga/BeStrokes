@@ -115,10 +115,9 @@ struct Strings {
     static let stickerOption = "StickerOptionViewController"
     
     
-    // Sticker Kind Names
+   
     
-    static let allStickers = "All"
-    static let featuredStickers = "Featured"
+    
     
     
     // Image Strings
@@ -138,8 +137,39 @@ struct Strings {
     static let unheartSticker = "heart"
     static let heartSticker = "heart.fill"
     
-    // Sticker
+  
     
+    // db
+    
+    static let userCollection = "users"
+    static let stickerCollection = "stickers"
+    static let heartByCollection = "heartBy"
+    
+    static let userDocumentIDField = "documentID"
+    static let userIDField = "userID"
+    static let userFirstNameField = "firstName"
+    static let userEmailField = "email"
+    static let userProfilePicField = "profilePic"
+    
+    static let stickerDocumentIDField = "documentID"
+    static let stickerNameField = "name"
+    static let stickerImageField = "image"
+    static let stickerDescriptionField = "description"
+    static let stickerCategoryField = "category"
+    static let stickerTagField = "tag"
+    
+
+    
+    // Stickers
+    
+    static let allStickers = "All"
+    static let animalStickers = "Animals"
+    static let foodStickers = "Food"
+    static let objectStickers = "Objects"
+    static let coloredStickers = "Colored"
+    static let travelStickers = "Travel"
+    
+    static let featuredStickers = "Featured"
     static let noStickerTag = "none"
     
 }

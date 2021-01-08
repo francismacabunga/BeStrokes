@@ -19,12 +19,19 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     
     var stickerCategoryViewModel: StickerCategoryViewModel! {
         didSet {
-            let isCatagorySelected = stickerCategoryViewModel.isCategorySelected
+            let isCategorySelected = stickerCategoryViewModel.isCategorySelected
+            let selectedOnStart = stickerCategoryViewModel.selectedOnStart
             stickerCategoryLabel.text = stickerCategoryViewModel.category
             
-            if isCatagorySelected != nil {
-                if isCatagorySelected! {
-                    Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9538965821, green: 0.9584284425, blue: 0, alpha: 1))
+            if selectedOnStart != nil {
+                if selectedOnStart! {
+                    Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9944363236, green: 0.9993038774, blue: 0, alpha: 1))
+                }
+            }
+            
+            if isCategorySelected != nil {
+                if isCategorySelected! {
+                    Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9944363236, green: 0.9993038774, blue: 0, alpha: 1))
                 } else {
                     Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
                 }
@@ -38,12 +45,13 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        stickerCategoryContentView.isHidden = true
+        Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         
     }
     
@@ -52,8 +60,7 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     
     func setDesignOnElements() {
         
-        stickerCategoryContentView.isHidden = false
-        Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(view: stickerCategoryContentView, isCircular: true)
         Utilities.setDesignOn(stickerCategoryLabel, font: Strings.defaultFontBold, fontSize: 13, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.9)
         
     }

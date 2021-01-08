@@ -56,13 +56,13 @@ struct HeartButtonLogic {
     func checkIfStickerLiked(using stickerDocumentID: String, completed: @escaping (Bool)->Void) {
         guard let signedInUser = user else {return}
         let signedInUserID = signedInUser.uid
-        db.collection("stickers").document(stickerDocumentID).collection("heartBy").whereField("userID", isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
+        db.collection(Strings.stickerCollection).document(stickerDocumentID).collection(Strings.heartByCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
             if error != nil {
                 // Show error
             }
             if let results = snapshot?.documents  {
                 for result in results {
-                    let userID = result["userID"] as! String
+                    let userID = result[Strings.userIDField] as! String
                     if userID == signedInUserID {
                         completed(true)
                         return
@@ -77,36 +77,36 @@ struct HeartButtonLogic {
     func saveUserData(using stickerDocumentID: String)  {
         getSignedInUserData { [self] (result) in
             var userData = result
-            let query = db.collection("stickers").document(stickerDocumentID).collection("heartBy").document()
-            userData["documentID"] = query.documentID
+            let query = db.collection(Strings.stickerCollection).document(stickerDocumentID).collection(Strings.heartByCollection).document()
+            userData[Strings.userDocumentIDField] = query.documentID
             query.setData(userData)
         }
     }
     
     func removeUserData(using stickerDocumentID: String) {
         guard let signedInUser = user else {return}
-        let userID = signedInUser.uid
-        db.collection("stickers").document(stickerDocumentID).collection("heartBy").whereField("userID", isEqualTo: userID).getDocuments { [self] (snapshot, error) in
+        let signedInUserID = signedInUser.uid
+        db.collection(Strings.stickerCollection).document(stickerDocumentID).collection(Strings.heartByCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).getDocuments { [self] (snapshot, error) in
             if error != nil {
                 // Show error
             }
             guard let result = snapshot?.documents.first else {return}
-            let userDocumentID = result["documentID"] as! String
-            db.collection("stickers").document(stickerDocumentID).collection("heartBy").document(userDocumentID).delete()
+            let userDocumentID = result[Strings.userDocumentIDField] as! String
+            db.collection(Strings.stickerCollection).document(stickerDocumentID).collection(Strings.heartByCollection).document(userDocumentID).delete()
         }
     }
     
     func getSignedInUserData(completion: @escaping ([String:String])->Void) {
         guard let signedInUser = user else {return}
-        let userID = signedInUser.uid
+        let signedInUserID = signedInUser.uid
         let userEmail = signedInUser.email!
-        db.collection("users").whereField("userID", isEqualTo: userID).getDocuments { (snapshot, error) in
+        db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
             if error != nil {
                 // Show error
             } else {
                 guard let result = snapshot?.documents.first else {return}
-                let firstName = result["firstName"] as! String
-                completion(["userID": userID, "firstName": firstName, "email": userEmail])
+                let firstName = result[Strings.userFirstNameField] as! String
+                completion([Strings.userIDField: signedInUserID, Strings.userFirstNameField: firstName, Strings.userEmailField: userEmail])
             }
         }
     }
@@ -121,20 +121,20 @@ struct FetchStickerData {
         
         var firebaseQuery: Query
         
-        if stickerTag == "Featured" {
-            firebaseQuery = db.collection("stickers").whereField("tag", isEqualTo: stickerTag!)
+        if stickerTag == Strings.featuredStickers {
+            firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: stickerTag!)
             fetchFirebaseData(query: firebaseQuery) { (result) in
                 completed(result)
                 return
             }
-        } else if category == nil || category == "All" {
-            firebaseQuery = db.collection("stickers")
+        } else if category == nil || category == Strings.allStickers {
+            firebaseQuery = db.collection(Strings.stickerCollection)
             fetchFirebaseData(query: firebaseQuery) { (result) in
                 completed(result)
                 return
             }
         } else if category != nil {
-            firebaseQuery = db.collection("stickers").whereField("category", isEqualTo: category!)
+            firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerCategoryField, isEqualTo: category!)
             fetchFirebaseData(query: firebaseQuery) { (result) in
                 completed(result)
                 return
@@ -149,12 +149,12 @@ struct FetchStickerData {
                 // Show error
             }
             guard let results = snapshot?.documents else {return}
-            let stickerData = results.map({return Sticker(stickerDocumentID: $0["documentID"] as! String,
-                                                          name: $0["name"] as! String,
-                                                          image: URL(string: $0["image"] as! String)!,
-                                                          description: $0["description"] as! String,
-                                                          category: $0["category"] as! String,
-                                                          tag: $0["tag"] as! String)})
+            let stickerData = results.map({return Sticker(stickerDocumentID: $0[Strings.stickerDocumentIDField] as! String,
+                                                          name: $0[Strings.stickerNameField] as! String,
+                                                          image: URL(string: $0[Strings.stickerImageField] as! String)!,
+                                                          description: $0[Strings.stickerDescriptionField] as! String,
+                                                          category: $0[Strings.stickerCategoryField] as! String,
+                                                          tag: $0[Strings.stickerTagField] as! String)})
             completed(stickerData)
         }
     }

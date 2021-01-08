@@ -59,6 +59,11 @@ class HomeViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        let selectedIndexPath = IndexPath(item: 0, section: 0)
+        stickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .left)
+    }
+    
     
     //MARK: - Design Elements
     
@@ -197,6 +202,7 @@ class HomeViewController: UIViewController {
     }
     
     func getStickerCollectionViewData(onCategory stickerCategory: String) {
+        
         fetchStickerData.onCollectionViewData(category: stickerCategory) { [self] (result) in
             stickerViewModel = result.map({return StickerViewModel(sticker: $0)})
             
@@ -208,8 +214,8 @@ class HomeViewController: UIViewController {
                 loadingIndicator.isHidden = true
                 stickerCollectionView.isHidden = false
             }
-            
         }
+        
     }
     
 }
@@ -222,9 +228,9 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView == stickerCategoryCollectionView {
-            
             stickerCategorySelected = stickerCategoryViewModel[indexPath.row].category
             stickerCategoryViewModel[indexPath.row].isCategorySelected = true
+            stickerCategoryViewModel[0].selectedOnStart = false
             
             if let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell {
                 cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
@@ -240,7 +246,6 @@ extension HomeViewController: UICollectionViewDelegate {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
                 getStickerCollectionViewData(onCategory: stickerCategorySelected!)
             }
-            
         }
         
         if collectionView == stickerCollectionView {
@@ -280,6 +285,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if skeletonView == stickerCollectionView {
             return Strings.stickerCell
         }
+        
         return ReusableCellIdentifier()
         
     }
@@ -299,6 +305,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if collectionView == stickerCollectionView {
             return stickerViewModel?.count ?? 6
         }
+        
         return 0
         
     }
