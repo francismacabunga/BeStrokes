@@ -117,21 +117,12 @@ extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
-//        let sample = profileSettingsViewModel[indexPath.item]
-        let sample = profileSettingsViewModel[indexPath.item].profileSettings
-        
-       
-        
-        for i in sample {
-            let clickedCell = i.settingLabel
-        
-        
+        let clickedCell = profileSettingsViewModel[indexPath.item].profileSettings.first!.settingLabel
         if clickedCell == Strings.profileSettingsLogout {
             let alert = UIAlertController(title: Strings.logoutAlertTitle, message: nil, preferredStyle: .alert)
             let noAction = UIAlertAction(title: Strings.logoutNoAction, style: .cancel)
             let yesAction = UIAlertAction(title: Strings.logoutYesAction, style: .default) { [self] (action) in
-
+                
                 let signoutUser = user.signOutUser()
                 if signoutUser! {
                     let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
@@ -141,16 +132,12 @@ extension ProfileViewController: UITableViewDelegate {
                 } else {
                     // Show error
                 }
-
+                
             }
             alert.addAction(yesAction)
             alert.addAction(noAction)
             present(alert, animated: true)
         }
-        
-        
-        }
-        
         
     }
     

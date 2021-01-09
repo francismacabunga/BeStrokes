@@ -201,7 +201,11 @@ struct Strings {
     
     
     
+    // SF Symbols
     
+    static let notificationIcon = "bell.badge"
+    static let darkModeIcon = "moon"
+    static let logoutIcon = "power"
     
     
 }
