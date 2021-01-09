@@ -21,7 +21,6 @@
 		2F393A13255AEB57006CDBDE /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F393A12255AEB57006CDBDE /* LandingViewController.swift */; };
 		2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F393A16255AEBBE006CDBDE /* LandingPageContentViewController.swift */; };
 		2F402CA6256806DD00666028 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F402CA5256806DD00666028 /* User.storyboard */; };
-		2F4CE06E257E63F9001C3768 /* StickersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4CE06D257E63F9001C3768 /* StickersViewController.swift */; };
 		2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */; };
 		2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */; };
 		2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */; };
@@ -45,8 +44,8 @@
 		2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */; };
 		2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99CFD25183D3F002AFFDC /* Main.storyboard */; };
 		2FE99D0425183D40002AFFDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99D0225183D40002AFFDC /* LaunchScreen.storyboard */; };
-		2FEB84042598B0E200E1112C /* SavedStickersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEB84002598B0E200E1112C /* SavedStickersTableViewCell.swift */; };
-		2FEB84052598B0E200E1112C /* SavedStickersTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FEB84012598B0E200E1112C /* SavedStickersTableViewCell.xib */; };
+		2FEAC09925AA0B6400E149CE /* LikedStickersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEAC09725AA0B6400E149CE /* LikedStickersTableViewCell.swift */; };
+		2FEAC09A25AA0B6400E149CE /* LikedStickersTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FEAC09825AA0B6400E149CE /* LikedStickersTableViewCell.xib */; };
 		2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF328302580FEF4001E6E1E /* TabBarViewController.swift */; };
 		2FFB0C4825A84EAC00FAED42 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */; };
 		2FFB0C4B25A873EC00FAED42 /* ProfileSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */; };
@@ -69,7 +68,6 @@
 		2F393A12255AEB57006CDBDE /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		2F393A16255AEBBE006CDBDE /* LandingPageContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageContentViewController.swift; sourceTree = "<group>"; };
 		2F402CA5256806DD00666028 /* User.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
-		2F4CE06D257E63F9001C3768 /* StickersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickersViewController.swift; sourceTree = "<group>"; };
 		2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewControllerContainer.swift; sourceTree = "<group>"; };
 		2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		2F58B0E025A47CE0009EFDE5 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -95,8 +93,8 @@
 		2FE99CFE25183D3F002AFFDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2FE99D0325183D40002AFFDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2FE99D0525183D40002AFFDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2FEB84002598B0E200E1112C /* SavedStickersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedStickersTableViewCell.swift; sourceTree = "<group>"; };
-		2FEB84012598B0E200E1112C /* SavedStickersTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SavedStickersTableViewCell.xib; sourceTree = "<group>"; };
+		2FEAC09725AA0B6400E149CE /* LikedStickersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedStickersTableViewCell.swift; sourceTree = "<group>"; };
+		2FEAC09825AA0B6400E149CE /* LikedStickersTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LikedStickersTableViewCell.xib; sourceTree = "<group>"; };
 		2FF328302580FEF4001E6E1E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -211,8 +209,8 @@
 		2FC8FAEA25A7D97D00A3C7F2 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				2FEB84002598B0E200E1112C /* SavedStickersTableViewCell.swift */,
-				2FEB84012598B0E200E1112C /* SavedStickersTableViewCell.xib */,
+				2FEAC09725AA0B6400E149CE /* LikedStickersTableViewCell.swift */,
+				2FEAC09825AA0B6400E149CE /* LikedStickersTableViewCell.xib */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -251,7 +249,6 @@
 				2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */,
 				2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */,
 				2F1125612551A097004A02B1 /* AccountViewController.swift */,
-				2F4CE06D257E63F9001C3768 /* StickersViewController.swift */,
 				2FF328302580FEF4001E6E1E /* TabBarViewController.swift */,
 			);
 			path = Users;
@@ -362,8 +359,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FE99CFA25183D3F002AFFDC /* art.scnassets in Resources */,
-				2FEB84052598B0E200E1112C /* SavedStickersTableViewCell.xib in Resources */,
 				2FE99D0425183D40002AFFDC /* LaunchScreen.storyboard in Resources */,
+				2FEAC09A25AA0B6400E149CE /* LikedStickersTableViewCell.xib in Resources */,
 				2F1125662551AE59004A02B1 /* GoogleService-Info.plist in Resources */,
 				2F3141582594EFC900D47E3F /* ProfileTableViewCell.xib in Resources */,
 				2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */,
@@ -434,7 +431,6 @@
 				2FD6E4DA257AC99900B49E41 /* StickerCollectionViewCell.swift in Sources */,
 				2FD6E4E0257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift in Sources */,
 				2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */,
-				2FEB84042598B0E200E1112C /* SavedStickersTableViewCell.swift in Sources */,
 				2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */,
 				2FFB0C4825A84EAC00FAED42 /* ProfileViewController.swift in Sources */,
 				2FD6E4D2257AC96100B49E41 /* FeaturedCollectionViewCell.swift in Sources */,
@@ -447,7 +443,6 @@
 				2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */,
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
 				2F393A0F255AEAEA006CDBDE /* LandingPageViewController.swift in Sources */,
-				2F4CE06E257E63F9001C3768 /* StickersViewController.swift in Sources */,
 				2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */,
 				2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */,
 				2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */,
@@ -456,6 +451,7 @@
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
 				2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */,
 				2F7950D0259CC62F005B2A27 /* StickerCategoryViewModel.swift in Sources */,
+				2FEAC09925AA0B6400E149CE /* LikedStickersTableViewCell.swift in Sources */,
 				2F1D266D259C5725003ABDCF /* StickerCategoryModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

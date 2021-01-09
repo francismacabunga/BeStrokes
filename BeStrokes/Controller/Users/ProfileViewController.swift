@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import SkeletonView
 
 class ProfileViewController: UIViewController {
     
@@ -52,26 +53,40 @@ class ProfileViewController: UIViewController {
         Utilities.setDesignOn(imageView: profileImageView, isCircular: true)
         Utilities.setDesignOn(profileNameLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.7)
         Utilities.setDesignOn(profileEmailLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.7)
-        Utilities.setDesignOn(profileHeadingLabel, label: Strings.settingsHeadingText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1)
-        Utilities.setDesignOn(tableView: profileTableView, isTransparent: true, separatorStyle: .singleLine)
+        Utilities.setDesignOn(profileHeadingLabel, label: Strings.profileSettingsHeadingText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1)
+        Utilities.setDesignOn(tableView: profileTableView, isTransparent: true, separatorStyle: .singleLine, showVerticalScrollIndicator: false)
         Utilities.setDesignOn(profileTrademark1Label, label: Strings.profileTrademark1Text, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1)
         Utilities.setDesignOn(profileTrademark2Label, label: Strings.profileTrademark2Text, font: Strings.defaultFontMedium, fontSize: 10, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1)
+    }
+    
+    func showLoadingSkeletonView() {
+        DispatchQueue.main.async { [self] in
+            profileContentView.isSkeletonable = true
+            profileContentView.showAnimatedSkeleton()
+        }
+    }
+    
+    func hideLoadingSkeletonView() {
+        profileContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
     func setData() {
         let profileSettingsData = fetchProfileData.settings()
         profileSettingsViewModel = profileSettingsData
         
-        user.getSignedInUserData { [self] (result) in
-            let profilePic = result.profilePic
-            let firstName = result.firstName
-            let lastName = result.lastname
-            let email = result.email
-            profileImageView.kf.setImage(with: profilePic)
-            profileNameLabel.text = "\(firstName) \(lastName)"
-            profileEmailLabel.text = email
+        showLoadingSkeletonView()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+            user.getSignedInUserData { [self] (result) in
+                let profilePic = result.profilePic
+                let firstName = result.firstName
+                let lastName = result.lastname
+                let email = result.email
+                profileImageView.kf.setImage(with: profilePic)
+                profileNameLabel.text = "\(firstName) \(lastName)"
+                profileEmailLabel.text = email
+                hideLoadingSkeletonView()
+            }
         }
-        
     }
     
     
@@ -100,7 +115,9 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: Strings.profileTableViewCell) as? ProfileTableViewCell {
-            cell.profileViewModel = profileSettingsViewModel[indexPath.item]
+            DispatchQueue.main.async { [self] in
+                cell.profileViewModel = profileSettingsViewModel[indexPath.item]
+            }
             return cell
         }
         

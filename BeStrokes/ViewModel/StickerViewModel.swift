@@ -48,6 +48,26 @@ struct StickerViewModel {
     
 }
 
+struct LikedStickerViewModel {
+    
+    let stickerDocumentID: String
+    let name: String
+    let image: URL
+    let description: String
+    let category: String
+    let tag: String
+    
+    init(_ sticker: StickerModel) {
+        self.stickerDocumentID = sticker.stickerDocumentID
+        self.name = sticker.name
+        self.image = sticker.image
+        self.description = sticker.description
+        self.category = sticker.category
+        self.tag = sticker.tag
+    }
+    
+}
+
 struct HeartButtonLogic {
     
     private let user = Auth.auth().currentUser
@@ -151,11 +171,11 @@ struct FetchStickerData {
             }
             guard let results = snapshot?.documents else {return}
             let stickerData = results.map({return StickerModel(stickerDocumentID: $0[Strings.stickerDocumentIDField] as! String,
-                                                          name: $0[Strings.stickerNameField] as! String,
-                                                          image: URL(string: $0[Strings.stickerImageField] as! String)!,
-                                                          description: $0[Strings.stickerDescriptionField] as! String,
-                                                          category: $0[Strings.stickerCategoryField] as! String,
-                                                          tag: $0[Strings.stickerTagField] as! String)})
+                                                               name: $0[Strings.stickerNameField] as! String,
+                                                               image: URL(string: $0[Strings.stickerImageField] as! String)!,
+                                                               description: $0[Strings.stickerDescriptionField] as! String,
+                                                               category: $0[Strings.stickerCategoryField] as! String,
+                                                               tag: $0[Strings.stickerTagField] as! String)})
             completed(stickerData)
         }
     }

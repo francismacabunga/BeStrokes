@@ -7,206 +7,149 @@
 
 import UIKit
 import Firebase
+import Kingfisher
+import SkeletonView
 
 class AccountViewController: UIViewController {
     
-    @IBOutlet weak var profileView: UIView!
-    @IBOutlet weak var savedStickersView: UIView!
+    //MARK: - IBOutlets
+    
+    @IBOutlet weak var accountTopView: UIView!
+    @IBOutlet weak var accountBottomView: UIView!
+    @IBOutlet weak var accountNotificationButton: UIButton!
+    @IBOutlet weak var accountEditButton: UIButton!
+    @IBOutlet weak var accountHeadingLabel: UILabel!
+    @IBOutlet weak var accountNameHeadingLabel: UILabel!
+    @IBOutlet weak var accountEmailHeadingLabel: UILabel!
+    @IBOutlet weak var accountLikedStickersHeadingLabel: UILabel!
+    @IBOutlet weak var accountImageView: UIImageView!
+    @IBOutlet weak var accountLikedStickersTableView: UITableView!
     
     
+    //MARK: - Constants / Variables
+    
+    private let user = User()
+    private let fetchStickerData = FetchStickerData()
+    private var stickerViewModel: [StickerViewModel]?
     
     
-    @IBOutlet weak var notificationButton: UIButton!
-    @IBOutlet weak var editProfileButton: UIButton!
-    
-    
-    @IBOutlet weak var profilePictureImageView: UIImageView!
-    
-    
-    @IBOutlet weak var profileHeading: UILabel!
-    @IBOutlet weak var profileNameHeading: UILabel!
-    @IBOutlet weak var profileEmailHeading: UILabel!
-    
-    @IBOutlet weak var savedStickersHeading: UILabel!
-    @IBOutlet weak var savedStickersTableView: UITableView!
-    
-    
-    
-    
-    
-    
-    
+    //MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Auth.auth().currentUser?.reload(completion: nil)
-        //getProfileIcon()
         
-        
-        savedStickersTableView.dataSource = self
-        savedStickersTableView.register(UINib(nibName: "SavedStickersTableViewCell", bundle: nil), forCellReuseIdentifier: "SavedStickersTableViewCell")
-        
-        
-        view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        profileView.backgroundColor = .clear
-        savedStickersView.backgroundColor = .clear
-        
-        
-        
-        notificationButton.setTitle("", for: .normal)
-        notificationButton.setBackgroundImage(UIImage(systemName: "bell.badge.fill"), for: .normal)
-        notificationButton.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        editProfileButton.setTitle("", for: .normal)
-        editProfileButton.setBackgroundImage(UIImage(systemName: "pencil.circle.fill"), for: .normal)
-        editProfileButton.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        
-        
-        
-        
-        profilePictureImageView.image = UIImage(named: "Avatar")
-        profilePictureImageView.layer.cornerRadius = profilePictureImageView.bounds.height / 2
-        profilePictureImageView.clipsToBounds = true
-        profilePictureImageView.contentMode = .scaleAspectFit
-        
-        
-        profileHeading.text = "Profile"
-        profileHeading.textAlignment = .center
-        profileHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        profileHeading.font = UIFont(name: "Futura-Bold", size: 35)
-        
-        
-        
-        profileNameHeading.text = "Francis Norman"
-        profileNameHeading.textAlignment = .center
-        profileNameHeading.numberOfLines = 1
-        profileNameHeading.adjustsFontSizeToFitWidth = true
-        profileNameHeading.minimumScaleFactor = 0.6
-        profileNameHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        profileNameHeading.font = UIFont(name: "Futura-Bold", size: 25)
-        
-        
-        profileEmailHeading.text = "normanfrancism@gmail.com"
-        profileEmailHeading.textAlignment = .center
-        profileEmailHeading.numberOfLines = 1
-        profileEmailHeading.adjustsFontSizeToFitWidth = true
-        profileEmailHeading.minimumScaleFactor = 0.8
-        profileEmailHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        profileEmailHeading.font = UIFont(name: "Futura-Bold", size: 15)
-        
-        
-        
-        savedStickersHeading.text = "Saved Stickers"
-        savedStickersHeading.font = UIFont(name: "Futura-Bold", size: 25)
-        savedStickersHeading.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        
-        
-        
-        savedStickersTableView.rowHeight = 170
-        savedStickersTableView.separatorStyle = .none
-        savedStickersTableView.backgroundColor = .clear
-        
-        
+        setDesignElements()
+        setDataSourceAndDelegate()
+        registerNib()
+        setData()
         
     }
     
     
+    //MARK: - Design Elements
     
+    func setDesignElements() {
+        Utilities.setDesignOn(view: view, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(view: accountTopView, color: .clear)
+        Utilities.setDesignOn(view: accountBottomView, color: .clear)
+        Utilities.setDesignOn(button: accountNotificationButton, tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundImage: UIImage(systemName: Strings.accountNotificationIcon))
+        Utilities.setDesignOn(button: accountEditButton, tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon))
+        Utilities.setDesignOn(imageView: accountImageView, isCircular: true)
+        Utilities.setDesignOn(accountHeadingLabel, label: Strings.accountProfileHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1)
+        Utilities.setDesignOn(accountNameHeadingLabel, label: " ", font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.6)
+        Utilities.setDesignOn(accountEmailHeadingLabel, label: " ", font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(accountLikedStickersHeadingLabel, label: Strings.accountLikedStickersHeadingText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .left, numberofLines: 1)
+        Utilities.setDesignOn(tableView: accountLikedStickersTableView, isTransparent: true, separatorStyle: .none, rowHeight: 170, showVerticalScrollIndicator: false)
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-    @IBAction func logoutButtonPressed(_ sender: UIButton) {
-        do {
-            try Auth.auth().signOut()
-            
-            print("Successfuly logged out")
-            let LandingViewController = Utilities.transitionTo(storyboardName: Strings.mainStoryboard, identifier: Strings.landingStoryboardID)
-            view.window?.rootViewController = LandingViewController
-            view.window?.makeKeyAndVisible()
-            
-        } catch {
-            let signOutError = NSError()
-            print("Error in signing out \(signOutError)")
+    func showLoadingSkeletonView() {
+        DispatchQueue.main.async { [self] in
+            accountImageView.isSkeletonable = true
+            Utilities.setDesignOn(imageView: accountImageView, isCircularSkeleton: true)
+            accountNameHeadingLabel.isSkeletonable = true
+            accountEmailHeadingLabel.isSkeletonable = true
+            accountImageView.showAnimatedSkeleton()
+            accountNameHeadingLabel.showAnimatedSkeleton()
+            accountEmailHeadingLabel.showAnimatedSkeleton()
+        }
+    }
+    
+    func hideLoadingSkeletonView() {
+        accountImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        accountEmailHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+    }
+    
+    func setData() {
+        fetchStickerData.forStickerCollectionView(category: "All") { [self] (result) in
+            stickerViewModel = result
+            DispatchQueue.main.async {
+                accountLikedStickersTableView.reloadData()
+            }
+        }
+        showLoadingSkeletonView()
+        user.getSignedInUserData { [self] (result) in
+            let profilePic = result.profilePic
+            let firstName = result.firstName
+            let lastName = result.lastname
+            let email = result.email
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                accountImageView.kf.setImage(with: profilePic)
+                accountNameHeadingLabel.text = "\(firstName) \(lastName)"
+                accountEmailHeadingLabel.text = email
+                hideLoadingSkeletonView()
+            }
         }
     }
     
     
+    //MARK: - Table View Process
     
-    //    func getProfileIcon() {
-    //
-    //        guard let user = Auth.auth().currentUser else {return}
-    //        let userID = user.uid
-    //
-    //        let db = Firestore.firestore()
-    //
-    //        let collectionRef = db.collection(Strings.collectionName).whereField("UID", isEqualTo: userID)
-    //        collectionRef.getDocuments { [self] (snapshotResult, error) in
-    //
-    //            if error != nil {
-    //                print("There has been an error!")
-    //            } else {
-    //                if let profilePic = snapshotResult?.documents.first {
-    //                    if let profilePicLocation = profilePic["profilePic"] as? String {
-    //
-    //                        if let imageURL = URL(string: profilePicLocation) {
-    //
-    //                            do {
-    //                                print("Hello")
-    //                                let imageData = try Data(contentsOf: imageURL)
-    //                                profileIcon.image = UIImage(data: imageData)
-    //                                profileIcon.layer.cornerRadius = profileIcon.frame.size.width / 2
-    //                                profileIcon.clipsToBounds = true
-    //                                profileIcon.contentMode = .scaleAspectFill
-    //                            } catch {
-    //                                print("There has been an error")
-    //                            }
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //                        }
-    //
-    //
-    //
-    //
-    //
-    //                    }
-    //
-    //
-    //                }
-    //
-    //            }
-    //
-    //        }
-    //
-    //    }
+    func setDataSourceAndDelegate() {
+        accountLikedStickersTableView.dataSource = self
+        accountLikedStickersTableView.delegate = self
+    }
     
+    func registerNib() {
+        accountLikedStickersTableView.register(UINib(nibName: Strings.likedStickerCell, bundle: nil), forCellReuseIdentifier: Strings.likedStickerCell)
+    }
     
 }
 
 
+//MARK: - Table View Data Source
 
 extension AccountViewController: UITableViewDataSource {
     
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return stickerViewModel?.count ?? 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SavedStickersTableViewCell") as! SavedStickersTableViewCell
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.likedStickerCell) as! LikedStickersTableViewCell
+        if stickerViewModel != nil {
+            DispatchQueue.main.async { [self] in
+                cell.stickerViewModel = stickerViewModel![indexPath.item]
+                cell.prepareLikedStickerCollectionViewCell()
+            }
+            return cell
+        }
         
         return cell
+        
     }
-    
     
 }
 
+
+//MARK: - Table View Delegate
+
+extension AccountViewController: UITableViewDelegate {
+    
+}
 

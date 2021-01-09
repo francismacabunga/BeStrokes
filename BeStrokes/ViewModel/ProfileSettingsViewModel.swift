@@ -21,9 +21,9 @@ struct FetchProfileData {
     
     func settings()->[ProfileSettingsViewModel]  {
         let profileSettingsViewModel = [
-            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.notificationIcon, settingLabel: Strings.profileSettingsNotifications)])),
-            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.darkModeIcon, settingLabel: Strings.profileSettingsDarkAppearance)])),
-            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.logoutIcon, settingLabel: Strings.profileSettingsLogout)]))]
+            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.settingNotificationIcon, settingLabel: Strings.profileSettingsNotifications)])),
+            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.settingDarkModeIcon, settingLabel: Strings.profileSettingsDarkAppearance)])),
+            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.settingLogoutIcon, settingLabel: Strings.profileSettingsLogout)]))]
         return profileSettingsViewModel
     }
     

@@ -14,7 +14,7 @@ class StickerOptionViewController: UIViewController {
     
     @IBOutlet weak var stickerNavigationBar: UINavigationBar!
     @IBOutlet weak var stickerStackContentView: UIStackView!
-    @IBOutlet weak var stickerUpperView: UIView!
+    @IBOutlet weak var stickerTopView: UIView!
     @IBOutlet weak var stickerMiddleView: UIView!
     @IBOutlet weak var stickerBottomView: UIView!
     @IBOutlet weak var stickerImageView: UIImageView!
@@ -51,7 +51,7 @@ class StickerOptionViewController: UIViewController {
         
         Utilities.setDesignOn(view: view, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(stackView: stickerStackContentView, color: .clear)
-        Utilities.setDesignOn(view: stickerUpperView, color: .clear)
+        Utilities.setDesignOn(view: stickerTopView, color: .clear)
         Utilities.setDesignOn(view: stickerMiddleView, color: .clear)
         Utilities.setDesignOn(view: stickerBottomView, color: .clear)
         

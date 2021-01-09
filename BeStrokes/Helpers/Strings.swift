@@ -94,11 +94,15 @@ struct Strings {
     
     // Heading Text Value
     
-    static let featuredHeadingText = "Featured"
-    static let stickerHeadingText = "Stickers"
-    static let settingsHeadingText = "Settings"
+    static let homeFeaturedHeadingText = "Featured"
+    static let homeStickerHeadingText = "Stickers"
+    static let profileSettingsHeadingText = "Settings"
     static let profileTrademark1Text = "BeStrokes"
     static let profileTrademark2Text = "made by Francis"
+    static let accountProfileHeadingText = "Profile"
+    static let accountLikedStickersHeadingText = "Liked Stickers"
+    
+    
     
     
     
@@ -117,6 +121,7 @@ struct Strings {
     static let profileTableViewCell = "ProfileTableViewCell"
     static let stickerCell = "StickerCollectionViewCell"
     static let stickerOptionCell = "StickerOptionViewController"
+    static let likedStickerCell = "LikedStickersTableViewCell"
     
     // VC
     
@@ -203,9 +208,25 @@ struct Strings {
     
     // SF Symbols
     
-    static let notificationIcon = "bell.badge"
-    static let darkModeIcon = "moon"
-    static let logoutIcon = "power"
+    static let settingNotificationIcon = "bell.badge"
+    static let settingDarkModeIcon = "moon"
+    static let settingLogoutIcon = "power"
+    
+    static let tabHomeIcon = "house.fill"
+    static let tabCaptureIcon = "camera.fill"
+    static let tabAccountIcon = "person.crop.circle.fill"
+    
+    static let accountNotificationIcon = "bell.badge.fill"
+    static let accountEditAccountIcon = "pencil.circle.fill"
+    
+    
+    
+    // tab bar items
+    
+    static let homeTab = "Home"
+    static let captureTab = "Capture"
+    static let accountTab = "Account"
+    
     
     
 }

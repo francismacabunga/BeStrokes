@@ -378,10 +378,14 @@ struct Utilities {
     }
     
     // Use for tableview
-    static func setDesignOn(tableView: UITableView, isTransparent: Bool, separatorStyle:    UITableViewCell.SeparatorStyle, rowHeight: CGFloat? = nil) {
+    static func setDesignOn(tableView: UITableView, isTransparent: Bool, backgroundColor: UIColor? = nil, separatorStyle: UITableViewCell.SeparatorStyle, rowHeight: CGFloat? = nil, showVerticalScrollIndicator: Bool) {
         
         if isTransparent {
             tableView.backgroundColor = .clear
+        }
+        
+        if backgroundColor != nil {
+            tableView.backgroundColor = backgroundColor
         }
         
         tableView.separatorStyle = separatorStyle
@@ -389,6 +393,14 @@ struct Utilities {
         if rowHeight != nil {
             tableView.rowHeight = rowHeight!
         }
+        
+        if showVerticalScrollIndicator {
+            tableView.showsVerticalScrollIndicator = true
+        }
+        
+        tableView.showsVerticalScrollIndicator = false
+        
+       
     
     }
     
@@ -431,11 +443,32 @@ struct Utilities {
     
     
     // Use for buttons
-    static func setDesignOn(button: UIButton, title: String, font: String, size: CGFloat, titleColor: UIColor, backgroundColor: UIColor? = nil, isCircular: Bool? = nil) {
+    static func setDesignOn(button: UIButton, title: String? = nil, font: String? = nil, size: CGFloat? = nil, titleColor: UIColor? = nil, backgroundColor: UIColor? = nil, tintColor: UIColor? = nil, backgroundImage: UIImage? = nil, isCircular: Bool? = nil) {
         
-        button.setTitle(title, for: .normal)
-        button.titleLabel?.font = UIFont(name: font, size: size)
-        button.setTitleColor(titleColor, for: .normal)
+        
+        if titleColor != nil {
+            button.setTitleColor(titleColor, for: .normal)
+        }
+        
+        if font != nil, size != nil {
+            button.titleLabel?.font = UIFont(name: font!, size: size!)
+        }
+        
+        
+        
+        
+        
+        
+        if title != nil {
+            button.setTitle(title, for: .normal)
+        }
+        
+        if tintColor != nil {
+            button.tintColor = tintColor
+        }
+        
+        
+        
         
         var color = UIColor()
         
@@ -449,7 +482,15 @@ struct Utilities {
             button.backgroundColor = color
         }
         
-        button.backgroundColor = color
+        if backgroundImage != nil {
+            button.setBackgroundImage(backgroundImage, for: .normal)
+        }
+        
+        if backgroundColor != nil {
+            button.backgroundColor = color
+        }
+        
+        
         
     }
     
