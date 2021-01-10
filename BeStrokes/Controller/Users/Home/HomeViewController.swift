@@ -83,8 +83,8 @@ class HomeViewController: UIViewController {
             homeProfilePictureImageView.showAnimatedSkeleton()
         }
         
-        Utilities.setDesignOn(homeFeaturedHeadingLabelText, label: Strings.homeFeaturedHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
-        Utilities.setDesignOn(homeStickerHeadingLabelText, label: Strings.homeStickerHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
+        Utilities.setDesignOn(label: homeFeaturedHeadingLabelText, text: Strings.homeFeaturedHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
+        Utilities.setDesignOn(label: homeStickerHeadingLabelText, text: Strings.homeStickerHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
         
         Utilities.setDesignOn(collectionView: homeFeaturedCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)

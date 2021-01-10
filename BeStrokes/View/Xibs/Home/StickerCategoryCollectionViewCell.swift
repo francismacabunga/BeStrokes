@@ -60,7 +60,7 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     func setDesignElements() {
         
         Utilities.setDesignOn(view: stickerCategoryContentView, isCircular: true)
-        Utilities.setDesignOn(stickerCategoryLabelText, font: Strings.defaultFontBold, fontSize: 13, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.9)
+        Utilities.setDesignOn(label: stickerCategoryLabelText, font: Strings.defaultFontBold, fontSize: 13, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.9)
         
     }
     

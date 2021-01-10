@@ -275,10 +275,10 @@ struct Utilities {
     
     
     // Use for text
-    static func setDesignOn(_ label: UILabel, label labelValue: String? = nil, font: String, fontSize: CGFloat, fontColor: UIColor, textAlignment: NSTextAlignment? = .none, numberofLines: Int, lineBreakMode: NSLineBreakMode? = .none, canResize: Bool? = nil, minimumScaleFactor: CGFloat? = nil, isCircular: Bool? = nil, backgroundColor: UIColor? = nil) {
+    static func setDesignOn(label: UILabel, text: String? = nil, font: String, fontSize: CGFloat, fontColor: UIColor, textAlignment: NSTextAlignment? = .none, numberofLines: Int, lineBreakMode: NSLineBreakMode? = .none, canResize: Bool? = nil, minimumScaleFactor: CGFloat? = nil, isCircular: Bool? = nil, backgroundColor: UIColor? = nil) {
         
-        if labelValue != nil {
-            label.text = labelValue
+        if text != nil {
+            label.text = text
         }
         
         label.textColor = fontColor
@@ -400,8 +400,8 @@ struct Utilities {
         
         tableView.showsVerticalScrollIndicator = false
         
-       
-    
+        
+        
     }
     
     
@@ -495,11 +495,40 @@ struct Utilities {
     }
     
     
-    
+    static func setDesignOn(textfield: UITextField, placeholder: String? = nil, placeholderTextColor: UIColor? = nil, font: String, fontSize: CGFloat, textColor: UIColor, isCircular: Bool? = nil) {
+        
+        if isCircular != nil {
+            textfield.layer.cornerRadius = textfield.bounds.height / 2
+            textfield.clipsToBounds = true
+        }
+        
+        textfield.font = UIFont(name: font, size: fontSize)
+        textfield.textColor = textColor
+        
+        
+        if placeholder != nil && placeholderTextColor != nil {
+            textfield.attributedPlaceholder = NSAttributedString(string: placeholder!, attributes: [
+                .foregroundColor: placeholderTextColor!,
+                .font: UIFont(name: font, size: fontSize)!
+            ])
+            
+            
+            
+        }
+        
+        
+        
+        
+       
+        
+        
+    }
     
     
     
     
 }
+
+
 
 
