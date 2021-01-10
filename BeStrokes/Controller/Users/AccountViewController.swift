@@ -85,7 +85,7 @@ class AccountViewController: UIViewController {
     }
     
     func setData() {
-        fetchStickerData.forStickerCollectionView(category: "All") { [self] (result) in
+        fetchStickerData.stickerCollectionView(category: "All") { [self] (result) in
             stickerViewModel = result
             DispatchQueue.main.async {
                 accountLikedStickersTableView.reloadData()

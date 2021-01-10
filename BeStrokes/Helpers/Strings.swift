@@ -168,6 +168,8 @@ struct Strings {
     static let stickerDescriptionField = "description"
     static let stickerCategoryField = "category"
     static let stickerTagField = "tag"
+    static let stickerIsCategorySelected = "isCategorySelected"
+    static let stickerSelectedOnStart = "selectedOnStart"
     
     
     

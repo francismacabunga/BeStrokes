@@ -22,7 +22,6 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
             let isCategorySelected = stickerCategoryViewModel.isCategorySelected
             let selectedOnStart = stickerCategoryViewModel.selectedOnStart
             stickerCategoryLabel.text = stickerCategoryViewModel.category
-            
             if selectedOnStart != nil {
                 if selectedOnStart! {
                     Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9944363236, green: 0.9993038774, blue: 0, alpha: 1))
@@ -30,7 +29,6 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
                     Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
                 }
             }
-            
             if isCategorySelected != nil {
                 if isCategorySelected! {
                     Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9944363236, green: 0.9993038774, blue: 0, alpha: 1))
@@ -38,7 +36,6 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
                     Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
                 }
             }
-            
         }
     }
     

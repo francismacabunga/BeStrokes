@@ -36,7 +36,6 @@ class HomeViewController: UIViewController {
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private let user = User()
     private let fetchStickerData = FetchStickerData()
-    private let fetchCategoryData = FetchCategoryData()
     private let heartButtonLogic = HeartButtonLogic()
     
     private var stickerCategorySelected: String?
@@ -187,7 +186,7 @@ class HomeViewController: UIViewController {
     }
     
     func getFeaturedCollectionViewData() {
-        fetchStickerData.forFeaturedCollectionView() { [self] (result) in
+        fetchStickerData.featuredCollectionView() { [self] (result) in
             featuredStickerViewModel = result
             DispatchQueue.main.async {
                 homeFeaturedCollectionView.reloadData()
@@ -196,13 +195,13 @@ class HomeViewController: UIViewController {
     }
     
     func getStickerCategoryCollectionViewData() {
-        let stickerCategory = fetchCategoryData.stickerCategory()
+        let stickerCategory = fetchStickerData.stickerCategory()
         stickerCategoryViewModel = stickerCategory
     }
     
     func getStickerCollectionViewData(onCategory stickerCategory: String) {
         
-        fetchStickerData.forStickerCollectionView(category: stickerCategory) { [self] (result) in
+        fetchStickerData.stickerCollectionView(category: stickerCategory) { [self] (result) in
             stickerViewModel = result
             DispatchQueue.main.async { [self] in
                 homeStickerCollectionView.reloadData()
