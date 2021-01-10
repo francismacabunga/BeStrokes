@@ -115,42 +115,18 @@ class HomeViewController: UIViewController {
     //MARK: - UIGestureHandlers
     
     func registerGestures() {
-        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
         homeProfilePictureImageView.addGestureRecognizer(tapGesture)
         homeProfilePictureImageView.isUserInteractionEnabled = true
-        
-        let featuredDoubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(featuredDoubleTapGestureHandler))
-        featuredDoubleTapGesture.numberOfTapsRequired = 2
-        homeFeaturedCollectionView.addGestureRecognizer(featuredDoubleTapGesture)
-        
     }
     
     @objc func tapGestureHandler() {
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
         let profileVC = storyboard.instantiateViewController(identifier: Strings.profileVC) as! ProfileViewController
         present(profileVC, animated: true)
-        
     }
     
-    @objc func featuredDoubleTapGestureHandler(doubleTap: UITapGestureRecognizer) {
-        
-        let doubleTapLocation = doubleTap.location(in: homeFeaturedCollectionView)
-        guard let cellIndexPath = homeFeaturedCollectionView.indexPathForItem(at: doubleTapLocation) else {return}
-        if featuredStickerViewModel != nil {
-            let stickerDocumentID = featuredStickerViewModel![cellIndexPath.row].stickerDocumentID
-            if featuredHeartButtonTapped != nil {
-                if featuredHeartButtonTapped! {
-                    heartButtonLogic.removeUserData(using: stickerDocumentID)
-                } else {
-                    heartButtonLogic.saveUserData(using: stickerDocumentID)
-                }
-            }
-        }
-        
-    }
-    
-    
+
     //MARK: - Collection View Process
     
     func registerCollectionView() {
@@ -328,7 +304,7 @@ extension HomeViewController: UICollectionViewDelegate {
         if collectionView == homeStickerCollectionView {
             if stickerViewModel != nil {
                 let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-                let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionCell) as! StickerOptionViewController
+                let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
                 stickerOptionVC.stickerViewModel = stickerViewModel![indexPath.row]
                 present(stickerOptionVC, animated: true)
             }

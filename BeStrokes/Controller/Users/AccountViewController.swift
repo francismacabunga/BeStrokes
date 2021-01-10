@@ -55,7 +55,7 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(button: accountNotificationButton, tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundImage: UIImage(systemName: Strings.accountNotificationIcon))
         Utilities.setDesignOn(button: accountEditButton, tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon))
         Utilities.setDesignOn(imageView: accountImageView, isCircular: true)
-        Utilities.setDesignOn(accountHeadingLabel, label: Strings.accountProfileHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1)
+        Utilities.setDesignOn(accountHeadingLabel, label: Strings.accountHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1)
         Utilities.setDesignOn(accountNameHeadingLabel, label: " ", font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.6)
         Utilities.setDesignOn(accountEmailHeadingLabel, label: " ", font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(accountLikedStickersHeadingLabel, label: Strings.accountLikedStickersHeadingText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .left, numberofLines: 1)
@@ -150,6 +150,15 @@ extension AccountViewController: UITableViewDataSource {
 //MARK: - Table View Delegate
 
 extension AccountViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+        let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
+        stickerOptionVC.stickerViewModel = stickerViewModel![indexPath.item]
+        present(stickerOptionVC, animated: true)
+        
+    }
     
 }
 

@@ -99,7 +99,7 @@ struct Strings {
     static let profileSettingsHeadingText = "Settings"
     static let profileTrademark1Text = "BeStrokes"
     static let profileTrademark2Text = "made by Francis"
-    static let accountProfileHeadingText = "Profile"
+    static let accountHeadingText = "Account"
     static let accountLikedStickersHeadingText = "Liked Stickers"
     
     
@@ -120,13 +120,12 @@ struct Strings {
     static let stickerCategoryCell = "StickerCategoryCollectionViewCell"
     static let profileTableViewCell = "ProfileTableViewCell"
     static let stickerCell = "StickerCollectionViewCell"
-    static let stickerOptionCell = "StickerOptionViewController"
     static let likedStickerCell = "LikedStickersTableViewCell"
     
     // VC
     
     static let landingVC = "LandingViewController"
-    
+    static let stickerOptionVC = "StickerOptionViewController"
     
     
     

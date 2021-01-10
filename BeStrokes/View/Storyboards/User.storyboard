@@ -174,11 +174,12 @@
                         <outlet property="accountNameHeadingLabel" destination="bxe-Py-Fir" id="p1Q-em-dnE"/>
                         <outlet property="accountNotificationButton" destination="BZf-6P-r2Z" id="fAm-h7-X1C"/>
                         <outlet property="accountTopView" destination="gaT-5y-Vv4" id="4jg-Iu-tE2"/>
+                        <segue destination="lUS-1w-s8Y" kind="show" id="Dro-OK-Ihi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JbU-7O-o8w" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5250.7246376811599" y="85.044642857142847"/>
+            <point key="canvasLocation" x="5322" y="85"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="FTl-L9-mY1">
@@ -530,7 +531,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1jd-GY-TMR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2634" y="825"/>
+            <point key="canvasLocation" x="2633" y="851"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="DZk-Di-UFJ">
@@ -645,7 +646,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WOH-od-2bV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3488.8000000000002" y="823.53823088455783"/>
+            <point key="canvasLocation" x="3490" y="851"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="apn-WH-ZOE">
@@ -667,6 +668,9 @@
             <point key="canvasLocation" x="3489.8550724637685" y="85.714285714285708"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="LnV-W9-OdI"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
