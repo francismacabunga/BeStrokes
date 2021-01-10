@@ -15,7 +15,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     //MARK: - IBOutlets
     
     @IBOutlet weak var stickerContentView: UIView!
-    @IBOutlet weak var stickerLabel: UILabel!
+    @IBOutlet weak var stickerLabelText: UILabel!
     @IBOutlet weak var stickerOptionImageView: UIImageView!
     @IBOutlet weak var stickerImageView: UIImageView!
     
@@ -32,7 +32,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     var stickerViewModel: StickerViewModel! {
         didSet {
             stickerDocumentID = stickerViewModel.stickerDocumentID
-            stickerLabel.text = stickerViewModel.name
+            stickerLabelText.text = stickerViewModel.name
             stickerImageView.kf.setImage(with: stickerViewModel.image.absoluteURL)
         }
     }
@@ -56,7 +56,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     
     func setDesignOnElements() {
         Utilities.setDesignOn(view: stickerContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), amountOfCurve: 30)
-        Utilities.setDesignOn(stickerLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(stickerLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(imageView: stickerOptionImageView, image: UIImage(named: Strings.optionImage))
         Utilities.setDesignOn(imageView: stickerImageView)
     }

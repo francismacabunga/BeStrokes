@@ -126,6 +126,8 @@ struct Strings {
     
     static let landingVC = "LandingViewController"
     static let stickerOptionVC = "StickerOptionViewController"
+    static let editAccountVC = "EditAccountViewController"
+    static let editAccountContainerVC = "EditAccountContainerViewController"
     
     
     

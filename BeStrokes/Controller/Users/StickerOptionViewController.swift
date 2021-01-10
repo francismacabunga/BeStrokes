@@ -19,11 +19,11 @@ class StickerOptionViewController: UIViewController {
     @IBOutlet weak var stickerBottomView: UIView!
     @IBOutlet weak var stickerImageView: UIImageView!
     @IBOutlet weak var stickerHeartButtonImageView: UIImageView!
-    @IBOutlet weak var stickerTryMeButton: UIButton!
-    @IBOutlet weak var stickerNameLabel: UILabel!
-    @IBOutlet weak var stickerCategoryLabel: UILabel!
-    @IBOutlet weak var stickerTagLabel: UILabel!
-    @IBOutlet weak var stickerDescriptionLabel: UILabel!
+    @IBOutlet weak var stickerTryMeButtonLabel: UIButton!
+    @IBOutlet weak var stickerNameLabelText: UILabel!
+    @IBOutlet weak var stickerCategoryLabelText: UILabel!
+    @IBOutlet weak var stickerTagLabelText: UILabel!
+    @IBOutlet weak var stickerDescriptionLabelText: UILabel!
     
     
     //MARK: - Constants / Variables
@@ -59,12 +59,12 @@ class StickerOptionViewController: UIViewController {
         
         Utilities.setDesignOn(imageView: stickerImageView, image: UIImage(systemName: Strings.unheartSticker))
         
-        Utilities.setDesignOn(stickerNameLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
-        Utilities.setDesignOn(stickerCategoryLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(stickerTagLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(stickerDescriptionLabel, font: Strings.defaultFont, fontSize: 17, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 0, lineBreakMode: .byWordWrapping)
+        Utilities.setDesignOn(stickerNameLabelText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(stickerCategoryLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(stickerTagLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(stickerDescriptionLabelText, font: Strings.defaultFont, fontSize: 17, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 0, lineBreakMode: .byWordWrapping)
         
-        Utilities.setDesignOn(button: stickerTryMeButton, title: Strings.tryMeButton, font: Strings.defaultFontBold, size: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(button: stickerTryMeButtonLabel, title: Strings.tryMeButton, font: Strings.defaultFontBold, size: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         
     }
     
@@ -82,17 +82,17 @@ class StickerOptionViewController: UIViewController {
     
     func setStickerData() {
         stickerImageView.kf.setImage(with: stickerViewModel.image)
-        stickerNameLabel.text = stickerViewModel.name
+        stickerNameLabelText.text = stickerViewModel.name
         getHeartButtonValue()
-        stickerCategoryLabel.text = stickerViewModel.category
+        stickerCategoryLabelText.text = stickerViewModel.category
         
         if stickerViewModel.tag != Strings.noStickerTag {
-            stickerTagLabel.text = stickerViewModel.tag
+            stickerTagLabelText.text = stickerViewModel.tag
         } else {
-            stickerTagLabel.isHidden = true
+            stickerTagLabelText.isHidden = true
         }
         
-        stickerDescriptionLabel.text = stickerViewModel.description
+        stickerDescriptionLabelText.text = stickerViewModel.description
     }
     
     

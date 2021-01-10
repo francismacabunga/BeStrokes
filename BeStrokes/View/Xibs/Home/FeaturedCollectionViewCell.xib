@@ -79,8 +79,8 @@
                 <outlet property="featuredContentView" destination="hmF-Fx-H3d" id="jNc-eY-9Sa"/>
                 <outlet property="featuredHeartButtonImageView" destination="lcu-MU-fmP" id="tlh-rj-Dki"/>
                 <outlet property="featuredImageView" destination="XIP-zB-JB0" id="Nvo-q2-pJu"/>
-                <outlet property="featuredLabel" destination="E9N-0X-pmf" id="5nO-vv-GCq"/>
-                <outlet property="featuredTryMeButton" destination="8I6-Sa-EzO" id="7S6-FE-Aug"/>
+                <outlet property="featuredLabelText" destination="E9N-0X-pmf" id="5nO-vv-GCq"/>
+                <outlet property="featuredTryMeButtonLabel" destination="8I6-Sa-EzO" id="7S6-FE-Aug"/>
             </connections>
             <point key="canvasLocation" x="-25.362318840579711" y="99.776785714285708"/>
         </collectionViewCell>

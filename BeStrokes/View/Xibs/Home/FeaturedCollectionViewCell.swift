@@ -15,9 +15,9 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     //MARK: - IBOutlets
     
     @IBOutlet weak var featuredContentView: UIView!
-    @IBOutlet weak var featuredLabel: UILabel!
+    @IBOutlet weak var featuredLabelText: UILabel!
     @IBOutlet weak var featuredHeartButtonImageView: UIImageView!
-    @IBOutlet weak var featuredTryMeButton: UIButton!
+    @IBOutlet weak var featuredTryMeButtonLabel: UIButton!
     @IBOutlet weak var featuredImageView: UIImageView!
     
     
@@ -33,7 +33,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     var featuredStickerViewModel: FeaturedStickerViewModel! {
         didSet {
             stickerDocumentID = featuredStickerViewModel.stickerDocumentID
-            featuredLabel.text = featuredStickerViewModel.name
+            featuredLabelText.text = featuredStickerViewModel.name
             featuredImageView.kf.setImage(with: featuredStickerViewModel.image.absoluteURL)
         }
     }
@@ -59,8 +59,8 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     func setDesignElements() {
         
         Utilities.setDesignOn(view: featuredContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, amountOfCurve: 40)
-        Utilities.setDesignOn(featuredLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, lineBreakMode: .byWordWrapping, canResize: false)
-        Utilities.setDesignOn(button: featuredTryMeButton, title: Strings.tryMeButton, font: Strings.defaultFontBold, size: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(featuredLabelText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, lineBreakMode: .byWordWrapping, canResize: false)
+        Utilities.setDesignOn(button: featuredTryMeButtonLabel, title: Strings.tryMeButton, font: Strings.defaultFontBold, size: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         Utilities.setDesignOn(imageView: featuredImageView)
         
     }

@@ -16,12 +16,12 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var profileNavigationBar: UINavigationBar!
     @IBOutlet weak var profileContentView: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
-    @IBOutlet weak var profileNameLabel: UILabel!
-    @IBOutlet weak var profileEmailLabel: UILabel!
-    @IBOutlet weak var profileHeadingLabel: UILabel!
+    @IBOutlet weak var profileNameLabelText: UILabel!
+    @IBOutlet weak var profileEmailLabelText: UILabel!
+    @IBOutlet weak var profileHeadingLabelText: UILabel!
     @IBOutlet weak var profileTableView: UITableView!
-    @IBOutlet weak var profileTrademark1Label: UILabel!
-    @IBOutlet weak var profileTrademark2Label: UILabel!
+    @IBOutlet weak var profileTrademark1LabelText: UILabel!
+    @IBOutlet weak var profileTrademark2LabelText: UILabel!
     
     
     //MARK: - Constants / Variables
@@ -51,12 +51,12 @@ class ProfileViewController: UIViewController {
         Utilities.setDesignOn(navigationBar: profileNavigationBar, isDarkMode: true)
         Utilities.setDesignOn(view: profileContentView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), amountOfCurve: 25)
         Utilities.setDesignOn(imageView: profileImageView, isCircular: true)
-        Utilities.setDesignOn(profileNameLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.7)
-        Utilities.setDesignOn(profileEmailLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.7)
-        Utilities.setDesignOn(profileHeadingLabel, label: Strings.profileSettingsHeadingText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1)
+        Utilities.setDesignOn(profileNameLabelText, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.7)
+        Utilities.setDesignOn(profileEmailLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.7)
+        Utilities.setDesignOn(profileHeadingLabelText, label: Strings.profileSettingsHeadingText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1)
         Utilities.setDesignOn(tableView: profileTableView, isTransparent: true, separatorStyle: .singleLine, showVerticalScrollIndicator: false)
-        Utilities.setDesignOn(profileTrademark1Label, label: Strings.profileTrademark1Text, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1)
-        Utilities.setDesignOn(profileTrademark2Label, label: Strings.profileTrademark2Text, font: Strings.defaultFontMedium, fontSize: 10, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1)
+        Utilities.setDesignOn(profileTrademark1LabelText, label: Strings.profileTrademark1Text, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1)
+        Utilities.setDesignOn(profileTrademark2LabelText, label: Strings.profileTrademark2Text, font: Strings.defaultFontMedium, fontSize: 10, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1)
     }
     
     func showLoadingSkeletonView() {
@@ -82,8 +82,8 @@ class ProfileViewController: UIViewController {
                 let lastName = result.lastname
                 let email = result.email
                 profileImageView.kf.setImage(with: profilePic)
-                profileNameLabel.text = "\(firstName) \(lastName)"
-                profileEmailLabel.text = email
+                profileNameLabelText.text = "\(firstName) \(lastName)"
+                profileEmailLabelText.text = email
                 hideLoadingSkeletonView()
             }
         }

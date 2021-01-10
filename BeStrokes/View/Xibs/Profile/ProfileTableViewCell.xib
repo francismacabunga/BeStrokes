@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -33,6 +32,7 @@
                         </constraints>
                     </imageView>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="4eb-24-4fw" firstAttribute="leading" secondItem="ajY-Ie-4IR" secondAttribute="trailing" constant="10" id="BF2-xS-Ug9"/>
                     <constraint firstItem="ajY-Ie-4IR" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="BiK-zf-qWy"/>
@@ -45,9 +45,10 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="settingIconImageView" destination="PeL-1g-Wd9" id="t7B-kb-X7y"/>
-                <outlet property="settingLabel" destination="ajY-Ie-4IR" id="0ov-af-Lwo"/>
+                <outlet property="settingLabelText" destination="ajY-Ie-4IR" id="0ov-af-Lwo"/>
                 <outlet property="settingSwitch" destination="4eb-24-4fw" id="cF5-68-bQL"/>
             </connections>
             <point key="canvasLocation" x="18.840579710144929" y="99.776785714285708"/>

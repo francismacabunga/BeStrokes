@@ -12,7 +12,7 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     //MARK: - IBOutlets
     
     @IBOutlet weak var stickerCategoryContentView: UIView!
-    @IBOutlet weak var stickerCategoryLabel: UILabel!
+    @IBOutlet weak var stickerCategoryLabelText: UILabel!
     
     
     //MARK: - Constants / Variables
@@ -21,7 +21,7 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
         didSet {
             let isCategorySelected = stickerCategoryViewModel.isCategorySelected
             let selectedOnStart = stickerCategoryViewModel.selectedOnStart
-            stickerCategoryLabel.text = stickerCategoryViewModel.category
+            stickerCategoryLabelText.text = stickerCategoryViewModel.category
             if selectedOnStart != nil {
                 if selectedOnStart! {
                     Utilities.setDesignOn(view: stickerCategoryContentView, color: #colorLiteral(red: 0.9944363236, green: 0.9993038774, blue: 0, alpha: 1))
@@ -60,7 +60,7 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     func setDesignElements() {
         
         Utilities.setDesignOn(view: stickerCategoryContentView, isCircular: true)
-        Utilities.setDesignOn(stickerCategoryLabel, font: Strings.defaultFontBold, fontSize: 13, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.9)
+        Utilities.setDesignOn(stickerCategoryLabelText, font: Strings.defaultFontBold, fontSize: 13, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.9)
         
     }
     
