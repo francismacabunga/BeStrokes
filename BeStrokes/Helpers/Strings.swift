@@ -160,6 +160,7 @@ struct Strings {
     static let userDocumentIDField = "documentID"
     static let userIDField = "userID"
     static let userFirstNameField = "firstName"
+    static let userLastNameField = "lastName"
     static let userEmailField = "email"
     static let userProfilePicField = "profilePic"
     

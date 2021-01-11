@@ -133,14 +133,14 @@ struct HeartButtonLogic {
     func getSignedInUserData(completion: @escaping ([String:String])->Void) {
         guard let signedInUser = user else {return}
         let signedInUserID = signedInUser.uid
-        let userEmail = signedInUser.email!
+        let signedInUserEmail = signedInUser.email!
         db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
             if error != nil {
                 // Show error
             } else {
                 guard let result = snapshot?.documents.first else {return}
                 let firstName = result[Strings.userFirstNameField] as! String
-                completion([Strings.userIDField: signedInUserID, Strings.userFirstNameField: firstName, Strings.userEmailField: userEmail])
+                completion([Strings.userIDField: signedInUserID, Strings.userFirstNameField: firstName, Strings.userEmailField: signedInUserEmail])
             }
         }
     }

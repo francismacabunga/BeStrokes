@@ -31,6 +31,7 @@ class AccountViewController: UIViewController {
     private let user = User()
     private let fetchStickerData = FetchStickerData()
     private var stickerViewModel: [StickerViewModel]?
+    private var userViewModel: UserViewModel?
     
     
     //MARK: - View Controller Life Cycle
@@ -93,6 +94,7 @@ class AccountViewController: UIViewController {
         }
         showLoadingSkeletonView()
         user.getSignedInUserData { [self] (result) in
+            userViewModel = result
             let profilePic = result.profilePic
             let firstName = result.firstName
             let lastName = result.lastname
@@ -115,8 +117,9 @@ class AccountViewController: UIViewController {
     
     @IBAction func accountEditButton(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        let editAccountContainerVC = storyboard.instantiateViewController(identifier: Strings.editAccountContainerVC) as! EditAccountContainerViewController
-        present(editAccountContainerVC, animated: true)
+        let editAccountVC = storyboard.instantiateViewController(identifier: Strings.editAccountVC) as! EditAccountViewController
+        editAccountVC.userViewModel = userViewModel
+        present(editAccountVC, animated: true)
     }
     
     
@@ -174,4 +177,3 @@ extension AccountViewController: UITableViewDelegate {
     }
     
 }
-

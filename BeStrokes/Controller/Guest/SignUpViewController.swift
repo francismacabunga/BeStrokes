@@ -123,8 +123,11 @@ class SignUpViewController: UIViewController {
         
         guard let user = Auth.auth().currentUser else {return}
         let userID = user.uid
+        let userEmail = user.email
         let db = Firestore.firestore()
-        var dictionary = [Strings.firstName: firstName, Strings.lastName: lastName, Strings.UID: userID]
+        let query = db.collection(Strings.collectionName).document()
+        let documentID = query.documentID
+        var dictionary = [Strings.firstName: firstName, Strings.lastName: lastName, Strings.userEmailField : userEmail, Strings.UID: userID, Strings.userDocumentIDField: documentID]
         
         // We are setting the selected image in a guarded constant
         guard let imageSelected = chosenImage else {return}
@@ -157,13 +160,8 @@ class SignUpViewController: UIViewController {
                             dictionary[Strings.profilePicture] = imageURLLocation
                             
                             // Finally adding to the DB
-                            db.collection(Strings.collectionName).addDocument(data: dictionary) { [self] (error) in
-                                if error != nil {
-                                    Utilities.showAnimatedError(on: validationMessage, withError: error, withCustomizedString: nil)
-                                } else {
-                                    sendEmailVerification()
-                                }
-                            }
+                            query.setData(dictionary)
+                            sendEmailVerification()
                         }
                     }
                 }

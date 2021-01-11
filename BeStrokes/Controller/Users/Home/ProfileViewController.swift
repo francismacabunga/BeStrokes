@@ -42,7 +42,7 @@ class ProfileViewController: UIViewController {
         setData()
         
     }
-    
+   
     
     //MARK: - Design Elements
     
