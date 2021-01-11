@@ -41,14 +41,12 @@ struct User {
                     // Show error
                 }
                 guard let result = snapshot?.documents.first else {return}
-                
-                let documentID = result["documentID"] as! String
-                let userID = result["userID"] as! String
-                let firstName = result["firstName"] as! String
-                let lastName = result["lastName"] as! String
-                let email = result["email"] as! String
-                let profilePic = URL(string: result["profilePic"] as! String)!
-                
+                let documentID = result[Strings.userDocumentIDField] as! String
+                let userID = result[Strings.userIDField] as! String
+                let firstName = result[Strings.userFirstNameField] as! String
+                let lastName = result[Strings.userLastNameField] as! String
+                let email = result[Strings.userEmailField] as! String
+                let profilePic = URL(string: result[Strings.userProfilePicField] as! String)!
                 let userViewModel = UserViewModel(UserModel(documentID: documentID, userID: userID, firstName: firstName, lastName: lastName, email: email, profilePic: profilePic))
                 completed(userViewModel)
             }
@@ -103,11 +101,6 @@ struct User {
             })
         }
     }
-    
-    
-    
-    
-    
     
 }
 
