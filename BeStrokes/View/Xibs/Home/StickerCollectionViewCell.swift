@@ -55,8 +55,8 @@ class StickerCollectionViewCell: UICollectionViewCell {
     //MARK: - Design Elements
     
     func setDesignOnElements() {
-        Utilities.setDesignOn(view: stickerContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), amountOfCurve: 30)
-        Utilities.setDesignOn(label: stickerLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(view: stickerContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), setCustomCircleCurve: 30)
+        Utilities.setDesignOn(label: stickerLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(imageView: stickerOptionImageView, image: UIImage(named: Strings.optionImage))
         Utilities.setDesignOn(imageView: stickerImageView)
     }
@@ -64,7 +64,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             stickerContentView.isSkeletonable = true
-            Utilities.setDesignOn(view: stickerContentView, isCircularSkeleton: true, circularSkeletonCurve: 30)
+            Utilities.setDesignOn(view: stickerContentView, isSkeletonPerfectCircle: true, setCustomCircleSkeletonCurve: 30)
             stickerContentView.showAnimatedSkeleton()
         }
     }

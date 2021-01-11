@@ -48,24 +48,18 @@ class StickerOptionViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        
-        Utilities.setDesignOn(view: view, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(stackView: stickerStackContentView, color: .clear)
-        Utilities.setDesignOn(view: stickerTopView, color: .clear)
-        Utilities.setDesignOn(view: stickerMiddleView, color: .clear)
-        Utilities.setDesignOn(view: stickerBottomView, color: .clear)
-        
+        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(stackView: stickerStackContentView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: stickerTopView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: stickerMiddleView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: stickerBottomView, backgroundColor: .clear)
         Utilities.setDesignOn(navigationBar: stickerNavigationBar, isDarkMode: true)
-        
         Utilities.setDesignOn(imageView: stickerImageView, image: UIImage(systemName: Strings.unheartSticker))
-        
-        Utilities.setDesignOn(label: stickerNameLabelText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
-        Utilities.setDesignOn(label: stickerCategoryLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(label: stickerTagLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(label: stickerDescriptionLabelText, font: Strings.defaultFont, fontSize: 17, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: .left, numberofLines: 0, lineBreakMode: .byWordWrapping)
-        
-        Utilities.setDesignOn(button: stickerTryMeButtonLabel, title: Strings.tryMeButton, font: Strings.defaultFontBold, size: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
-        
+        Utilities.setDesignOn(label: stickerNameLabelText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(label: stickerCategoryLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(label: stickerTagLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(label: stickerDescriptionLabelText, font: Strings.defaultFont, fontSize: 17, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping)
+        Utilities.setDesignOn(button: stickerTryMeButtonLabel, title: Strings.tryMeButton, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
     }
     
     func getHeartButtonValue() {

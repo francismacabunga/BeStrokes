@@ -57,18 +57,16 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        
-        Utilities.setDesignOn(view: featuredContentView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, amountOfCurve: 40)
+        Utilities.setDesignOn(view: featuredContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isPerfectCircle: true, setCustomCircleCurve: 40)
         Utilities.setDesignOn(label: featuredLabelText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, lineBreakMode: .byWordWrapping, canResize: false)
-        Utilities.setDesignOn(button: featuredTryMeButtonLabel, title: Strings.tryMeButton, font: Strings.defaultFontBold, size: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(button: featuredTryMeButtonLabel, title: Strings.tryMeButton, font: Strings.defaultFontBold, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(imageView: featuredImageView)
-        
     }
     
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             featuredContentView.isSkeletonable = true
-            Utilities.setDesignOn(view: featuredContentView, isCircularSkeleton: true, circularSkeletonCurve: 40)
+            Utilities.setDesignOn(view: featuredContentView, isSkeletonPerfectCircle: true, setCustomCircleSkeletonCurve: 40)
             featuredContentView.showAnimatedSkeleton()
         }
     }

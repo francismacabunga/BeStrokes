@@ -27,7 +27,7 @@ class EditAccountContainerViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        Utilities.setDesignOn(view: view, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(navigationBar: editAccountNavigationBar, isDarkMode: true)
     }
     

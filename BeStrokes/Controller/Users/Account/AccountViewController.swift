@@ -49,17 +49,17 @@ class AccountViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        Utilities.setDesignOn(view: view, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(view: accountTopView, color: .clear)
-        Utilities.setDesignOn(view: accountBottomView, color: .clear)
-        Utilities.setDesignOn(button: accountNotificationButtonLabel, tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundImage: UIImage(systemName: Strings.accountNotificationIcon))
-        Utilities.setDesignOn(button: accountEditButtonLabel, tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon))
-        Utilities.setDesignOn(imageView: accountImageView, isCircular: true)
-        Utilities.setDesignOn(label: accountHeadingLabelText, text: Strings.accountHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1)
-        Utilities.setDesignOn(label: accountNameHeadingLabelText, text: " ", font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.6)
-        Utilities.setDesignOn(label: accountEmailHeadingLabelText, text: " ", font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .center, numberofLines: 1, canResize: true, minimumScaleFactor: 0.8)
-        Utilities.setDesignOn(label: accountLikedStickersHeadingLabelText, text: Strings.accountLikedStickersHeadingText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), textAlignment: .left, numberofLines: 1)
-        Utilities.setDesignOn(tableView: accountLikedStickersTableView, isTransparent: true, separatorStyle: .none, rowHeight: 170, showVerticalScrollIndicator: false)
+        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(view: accountTopView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: accountBottomView, backgroundColor: .clear)
+        Utilities.setDesignOn(button: accountNotificationButtonLabel, backgroundImage: UIImage(systemName: Strings.accountNotificationIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(button: accountEditButtonLabel, backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(imageView: accountImageView, isPerfectCircle: true)
+        Utilities.setDesignOn(label: accountHeadingLabelText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, text: Strings.accountHeadingText)
+        Utilities.setDesignOn(label: accountNameHeadingLabelText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.6)
+        Utilities.setDesignOn(label: accountEmailHeadingLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(label: accountLikedStickersHeadingLabelText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.accountLikedStickersHeadingText)
+        Utilities.setDesignOn(tableView: accountLikedStickersTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -69,7 +69,7 @@ class AccountViewController: UIViewController {
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             accountImageView.isSkeletonable = true
-            Utilities.setDesignOn(imageView: accountImageView, isCircularSkeleton: true)
+            Utilities.setDesignOn(imageView: accountImageView, isSkeletonPerfectCircle: true)
             accountNameHeadingLabelText.isSkeletonable = true
             accountEmailHeadingLabelText.isSkeletonable = true
             accountImageView.showAnimatedSkeleton()
@@ -110,7 +110,7 @@ class AccountViewController: UIViewController {
     //MARK: - Buttons
     
     @IBAction func accountNotificationButton(_ sender: UIButton) {
-    
+        
     }
     
     @IBAction func accountEditButton(_ sender: UIButton) {

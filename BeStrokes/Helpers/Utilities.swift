@@ -12,7 +12,7 @@ import Kingfisher
 
 struct Utilities {
     
-    
+    //MARK: - For Refactoring
     
     let user = Auth.auth().currentUser
     let db = Firestore.firestore()
@@ -262,83 +262,214 @@ struct Utilities {
     
     
     
-    //MARK: - MVVM
+    //MARK: - MVVM Refactored Code
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // Use for text
-    static func setDesignOn(label: UILabel, text: String? = nil, font: String, fontSize: CGFloat, fontColor: UIColor, textAlignment: NSTextAlignment? = .none, numberofLines: Int, lineBreakMode: NSLineBreakMode? = .none, canResize: Bool? = nil, minimumScaleFactor: CGFloat? = nil, isCircular: Bool? = nil, backgroundColor: UIColor? = nil) {
-        
-        if text != nil {
-            label.text = text
+    // Text Field
+    static func setDesignOn(textField: UITextField,
+                            font: String,
+                            fontSize: CGFloat,
+                            textColor: UIColor,
+                            backgroundColor: UIColor,
+                            placeholder: String? = nil,
+                            placeholderTextColor: UIColor? = nil,
+                            isCircular: Bool? = nil)
+    {
+        textField.font = UIFont(name: font, size: fontSize)
+        textField.textColor = textColor
+        textField.backgroundColor = backgroundColor
+        if placeholder != nil && placeholderTextColor != nil {
+            textField.attributedPlaceholder = NSAttributedString(string: placeholder!, attributes: [
+                                                                    .foregroundColor: placeholderTextColor!,
+                                                                    .font: UIFont(name: font, size: fontSize)!])
         }
-        
-        label.textColor = fontColor
+        if isCircular != nil {
+            textField.layer.cornerRadius = textField.bounds.height / 2
+            textField.clipsToBounds = true
+        }
+    }
+    
+    // Label
+    static func setDesignOn(label: UILabel,
+                            font: String,
+                            fontSize: CGFloat,
+                            fontColor: UIColor,
+                            numberofLines: Int,
+                            textAlignment: NSTextAlignment? = .none,
+                            lineBreakMode: NSLineBreakMode? = .none,
+                            text: String? = nil,
+                            canResize: Bool? = nil,
+                            minimumScaleFactor: CGFloat? = nil,
+                            isCircular: Bool? = nil,
+                            backgroundColor: UIColor? = nil)
+    {
         label.font = UIFont(name: font, size: fontSize)
+        label.textColor = fontColor
         label.numberOfLines = numberofLines
-        
         if textAlignment != nil {
             label.textAlignment = textAlignment!
         }
-        
         if lineBreakMode != nil {
             label.lineBreakMode = lineBreakMode!
         }
-        
+        if text != nil {
+            label.text = text
+        }
         if canResize != nil {
             label.adjustsFontSizeToFitWidth = canResize!
         }
-        
         if minimumScaleFactor != nil {
             label.minimumScaleFactor = minimumScaleFactor!
         }
-        
         if isCircular != nil {
             label.layer.cornerRadius = label.bounds.height / 2
             label.clipsToBounds = true
             label.backgroundColor = backgroundColor
         }
-        
     }
     
-    // Use for images
-    static func setDesignOn(imageView: UIImageView, image: UIImage? = nil, tintColor: UIColor? = nil, isCircular: Bool? = nil, isCircularSkeleton: Bool? = nil) {
-        
+    // Button
+    static func setDesignOn(button: UIButton,
+                            title: String? = nil,
+                            font: String? = nil,
+                            fontSize: CGFloat? = nil,
+                            titleColor: UIColor? = nil,
+                            backgroundImage: UIImage? = nil,
+                            tintColor: UIColor? = nil,
+                            isCircular: Bool? = nil,
+                            backgroundColor: UIColor? = nil)
+    {
+        var color = UIColor()
+        if title != nil {
+            button.setTitle(title, for: .normal)
+        }
+        if font != nil, fontSize != nil {
+            button.titleLabel?.font = UIFont(name: font!, size: fontSize!)
+        }
+        if titleColor != nil {
+            button.setTitleColor(titleColor, for: .normal)
+        }
+        if backgroundImage != nil {
+            button.setBackgroundImage(backgroundImage, for: .normal)
+        }
+        if tintColor != nil {
+            button.tintColor = tintColor
+        }
+        if isCircular != nil {
+            button.layer.cornerRadius = button.bounds.height / 2
+            button.clipsToBounds = true
+        }
+        if backgroundColor != nil {
+            color = backgroundColor!
+            button.backgroundColor = color
+        }
+    }
+    
+    // Stack View
+    static func setDesignOn(stackView: UIStackView,
+                            backgroundColor: UIColor)
+    {
+        stackView.backgroundColor = backgroundColor
+    }
+    
+    // View
+    static func setDesignOn(view: UIView,
+                            backgroundColor: UIColor? = nil,
+                            isPerfectCircle: Bool? = nil,
+                            setCustomCircleCurve: CGFloat? = nil,
+                            isSkeletonPerfectCircle: Bool? = nil,
+                            setCustomCircleSkeletonCurve: Float? = nil)
+    {
+        if backgroundColor != nil {
+            view.backgroundColor = backgroundColor
+        }
+        if isPerfectCircle != nil {
+            view.layer.cornerRadius = view.frame.size.height / 2
+            view.clipsToBounds = true
+        }
+        if setCustomCircleCurve != nil {
+            view.layer.cornerRadius = setCustomCircleCurve!
+            view.clipsToBounds = true
+        }
+        if isSkeletonPerfectCircle != nil {
+            view.skeletonCornerRadius = setCustomCircleSkeletonCurve!
+        }
+    }
+    
+    // Image View
+    static func setDesignOn(imageView: UIImageView,
+                            image: UIImage? = nil,
+                            tintColor: UIColor? = nil,
+                            isPerfectCircle: Bool? = nil,
+                            isSkeletonPerfectCircle: Bool? = nil)
+    {
+        imageView.contentMode = .scaleAspectFit
         if image != nil {
             imageView.image = image
         }
-        
         if tintColor != nil {
             imageView.tintColor = tintColor
         }
-        
-        if isCircular != nil {
+        if isPerfectCircle != nil {
             imageView.layer.cornerRadius = imageView.frame.size.height / 2
             imageView.clipsToBounds = true
             imageView.contentMode = .scaleAspectFit
         }
-        
-        if isCircularSkeleton != nil {
+        if isSkeletonPerfectCircle != nil {
             imageView.skeletonCornerRadius = Float(imageView.frame.size.height / 2)
         }
-        imageView.contentMode = .scaleAspectFit
-        
     }
     
-    // Use for navbar
-    static func setDesignOn(navigationBar: UINavigationBar, isDarkMode: Bool) {
-        
+    // Collection View
+    static func setDesignOn(collectionView: UICollectionView,
+                            backgroundColor: UIColor,
+                            isHorizontalDirection: Bool,
+                            showScrollIndicator: Bool)
+    {
+        collectionView.backgroundColor = backgroundColor
+        if isHorizontalDirection {
+            collectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
+        } else {
+            collectionView.configureForPeekingDelegate(scrollDirection: .vertical)
+        }
+        if showScrollIndicator {
+            if isHorizontalDirection {
+                collectionView.showsHorizontalScrollIndicator = true
+            } else {
+                collectionView.showsVerticalScrollIndicator = true
+            }
+        } else {
+            if isHorizontalDirection {
+                collectionView.showsHorizontalScrollIndicator = false
+            } else {
+                collectionView.showsVerticalScrollIndicator = false
+            }
+        }
+    }
+    
+    // Table View
+    static func setDesignOn(tableView: UITableView,
+                            backgroundColor: UIColor,
+                            separatorStyle: UITableViewCell.SeparatorStyle,
+                            showVerticalScrollIndicator: Bool,
+                            rowHeight: CGFloat? = nil)
+    {
+        tableView.backgroundColor = backgroundColor
+        tableView.separatorStyle = separatorStyle
+        tableView.showsVerticalScrollIndicator = false
+        if showVerticalScrollIndicator {
+            tableView.showsVerticalScrollIndicator = true
+        }
+        if rowHeight != nil {
+            tableView.rowHeight = rowHeight!
+        }
+    }
+    
+    // Navigation Bar
+    static func setDesignOn(navigationBar: UINavigationBar,
+                            isDarkMode: Bool)
+    {
         let imageView = UIImageView()
         var image = UIImage()
-        
         if isDarkMode {
             image = UIImage(named: Strings.blackBar)!
             navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -346,186 +477,19 @@ struct Utilities {
             image = UIImage(named: Strings.whiteBar)!
             navigationBar.barTintColor = #colorLiteral(red: 0.7843137255, green: 0.7882352941, blue: 0.8039215686, alpha: 1)
         }
-        
-        imageView.contentMode = .scaleAspectFit
         imageView.image = image
+        imageView.contentMode = .scaleAspectFit
         navigationBar.topItem?.titleView = imageView
     }
     
-    // Use for collection view
-    static func setDesignOn(collectionView: UICollectionView, isTransparent: Bool, isHorizontalDirection: Bool, showIndicator: Bool) {
-        
-        if isTransparent {
-            collectionView.backgroundColor = .clear
-        }
-        
-        if isHorizontalDirection {
-            collectionView.configureForPeekingDelegate(scrollDirection: .horizontal)
-        } else {
-            collectionView.configureForPeekingDelegate(scrollDirection: .vertical)
-        }
-        
-        if showIndicator {
-            if isHorizontalDirection {
-                collectionView.showsHorizontalScrollIndicator = true
-            }
-        } else {
-            if !isHorizontalDirection {
-                collectionView.showsVerticalScrollIndicator = false
-            }
-        }
-        
-    }
-    
-    // Use for tableview
-    static func setDesignOn(tableView: UITableView, isTransparent: Bool, backgroundColor: UIColor? = nil, separatorStyle: UITableViewCell.SeparatorStyle, rowHeight: CGFloat? = nil, showVerticalScrollIndicator: Bool) {
-        
-        if isTransparent {
-            tableView.backgroundColor = .clear
-        }
-        
-        if backgroundColor != nil {
-            tableView.backgroundColor = backgroundColor
-        }
-        
-        tableView.separatorStyle = separatorStyle
-        
-        if rowHeight != nil {
-            tableView.rowHeight = rowHeight!
-        }
-        
-        if showVerticalScrollIndicator {
-            tableView.showsVerticalScrollIndicator = true
-        }
-        
-        tableView.showsVerticalScrollIndicator = false
-        
-        
-        
-    }
-    
-    
-    
-    // Use for loading indicator
-    static func setDesignOn(activityIndicatorView: UIActivityIndicatorView, size: UIActivityIndicatorView.Style, color: UIColor) {
-        activityIndicatorView.color = color
+    // Loading Indicator
+    static func setDesignOn(activityIndicatorView: UIActivityIndicatorView,
+                            size: UIActivityIndicatorView.Style,
+                            backgroundColor: UIColor)
+    {
         activityIndicatorView.style = size
+        activityIndicatorView.color = backgroundColor
     }
-    
-    // Use for view
-    static func setDesignOn(view: UIView, color: UIColor? = nil, isCircular: Bool? = nil, amountOfCurve: CGFloat? = nil, isCircularSkeleton: Bool? = nil, circularSkeletonCurve: Float? = nil) {
-        
-        if color != nil {
-            view.backgroundColor = color
-        }
-        
-        if isCircular != nil {
-            view.layer.cornerRadius = view.frame.size.height / 2
-            view.clipsToBounds = true
-        }
-        
-        if amountOfCurve != nil {
-            view.layer.cornerRadius = amountOfCurve!
-            view.clipsToBounds = true
-        }
-        
-        if isCircularSkeleton != nil {
-            view.skeletonCornerRadius = circularSkeletonCurve!
-        }
-        
-    }
-    
-    // Use for stack
-    static func setDesignOn(stackView: UIStackView, color: UIColor) {
-        stackView.backgroundColor = color
-    }
-    
-    
-    
-    // Use for buttons
-    static func setDesignOn(button: UIButton, title: String? = nil, font: String? = nil, size: CGFloat? = nil, titleColor: UIColor? = nil, backgroundColor: UIColor? = nil, tintColor: UIColor? = nil, backgroundImage: UIImage? = nil, isCircular: Bool? = nil) {
-        
-        
-        if titleColor != nil {
-            button.setTitleColor(titleColor, for: .normal)
-        }
-        
-        if font != nil, size != nil {
-            button.titleLabel?.font = UIFont(name: font!, size: size!)
-        }
-        
-        
-        
-        
-        
-        
-        if title != nil {
-            button.setTitle(title, for: .normal)
-        }
-        
-        if tintColor != nil {
-            button.tintColor = tintColor
-        }
-        
-        
-        
-        
-        var color = UIColor()
-        
-        if backgroundColor != nil {
-            color = backgroundColor!
-        }
-        
-        if isCircular != nil {
-            button.layer.cornerRadius = button.bounds.height / 2
-            button.clipsToBounds = true
-            button.backgroundColor = color
-        }
-        
-        if backgroundImage != nil {
-            button.setBackgroundImage(backgroundImage, for: .normal)
-        }
-        
-        if backgroundColor != nil {
-            button.backgroundColor = color
-        }
-        
-        
-        
-    }
-    
-    
-    static func setDesignOn(textfield: UITextField, placeholder: String? = nil, placeholderTextColor: UIColor? = nil, font: String, fontSize: CGFloat, textColor: UIColor, isCircular: Bool? = nil) {
-        
-        if isCircular != nil {
-            textfield.layer.cornerRadius = textfield.bounds.height / 2
-            textfield.clipsToBounds = true
-        }
-        
-        textfield.font = UIFont(name: font, size: fontSize)
-        textfield.textColor = textColor
-        
-        
-        if placeholder != nil && placeholderTextColor != nil {
-            textfield.attributedPlaceholder = NSAttributedString(string: placeholder!, attributes: [
-                .foregroundColor: placeholderTextColor!,
-                .font: UIFont(name: font, size: fontSize)!
-            ])
-            
-            
-            
-        }
-        
-        
-        
-        
-       
-        
-        
-    }
-    
-    
-    
     
 }
 

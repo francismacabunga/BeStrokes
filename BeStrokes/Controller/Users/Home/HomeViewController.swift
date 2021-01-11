@@ -70,27 +70,25 @@ class HomeViewController: UIViewController {
     func setDesignElements() {
         navigationController?.setNavigationBarHidden(true, animated: true)
         
-        Utilities.setDesignOn(view: view, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(view: homeFeaturedView, color: .clear)
-        Utilities.setDesignOn(view: homeStickerView, color: .clear)
-        Utilities.setDesignOn(stackView: homeContentStackView, color: .clear)
-        
-        Utilities.setDesignOn(imageView: homeProfilePictureImageView, isCircular: true)
+        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(view: homeFeaturedView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: homeStickerView, backgroundColor: .clear)
+        Utilities.setDesignOn(stackView: homeContentStackView, backgroundColor: .clear)
+        Utilities.setDesignOn(imageView: homeProfilePictureImageView, isPerfectCircle: true)
         
         DispatchQueue.main.async { [self] in
             homeProfilePictureImageView.isSkeletonable = true
-            Utilities.setDesignOn(imageView: homeProfilePictureImageView, isCircularSkeleton: true)
+            Utilities.setDesignOn(imageView: homeProfilePictureImageView, isSkeletonPerfectCircle: true)
             homeProfilePictureImageView.showAnimatedSkeleton()
         }
         
-        Utilities.setDesignOn(label: homeFeaturedHeadingLabelText, text: Strings.homeFeaturedHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
-        Utilities.setDesignOn(label: homeStickerHeadingLabelText, text: Strings.homeStickerHeadingText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1)
+        Utilities.setDesignOn(label: homeFeaturedHeadingLabelText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeFeaturedHeadingText)
+        Utilities.setDesignOn(label: homeStickerHeadingLabelText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeStickerHeadingText)
+        Utilities.setDesignOn(collectionView: homeFeaturedCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
+        Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
+        Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
+        Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         
-        Utilities.setDesignOn(collectionView: homeFeaturedCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
-        Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
-        Utilities.setDesignOn(collectionView: homeStickerCollectionView, isTransparent: true, isHorizontalDirection: true, showIndicator: false)
-        
-        Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         homeLoadingIndicatorView.startAnimating()
         homeLoadingIndicatorView.isHidden = true
     }
@@ -126,7 +124,7 @@ class HomeViewController: UIViewController {
         present(profileVC, animated: true)
     }
     
-
+    
     //MARK: - Collection View Process
     
     func registerCollectionView() {
