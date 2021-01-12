@@ -323,7 +323,9 @@ struct Utilities {
         if isCircular != nil {
             label.layer.cornerRadius = label.bounds.height / 2
             label.clipsToBounds = true
-            label.backgroundColor = backgroundColor
+        }
+        if backgroundColor != nil {
+            label.backgroundColor = backgroundColor!
         }
     }
     
@@ -338,7 +340,6 @@ struct Utilities {
                             isCircular: Bool? = nil,
                             backgroundColor: UIColor? = nil)
     {
-        var color = UIColor()
         if title != nil {
             button.setTitle(title, for: .normal)
         }
@@ -359,8 +360,7 @@ struct Utilities {
             button.clipsToBounds = true
         }
         if backgroundColor != nil {
-            color = backgroundColor!
-            button.backgroundColor = color
+            button.backgroundColor = backgroundColor!
         }
     }
     

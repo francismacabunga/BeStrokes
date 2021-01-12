@@ -13,24 +13,34 @@ class EditAccountViewController: UIViewController {
     //MARK: - IBOutlets
     
     @IBOutlet weak var editAccountNavigationBar: UINavigationBar!
-    @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var editAccountStackView: UIStackView!
+    @IBOutlet weak var editAccountHeadingContentView: UIView!
+    @IBOutlet weak var editAccountSaveButtonContentView: UIView!
     @IBOutlet weak var editAccountHeadingLabelText: UILabel!
     @IBOutlet weak var editAccountImageView: UIImageView!
+    @IBOutlet weak var editAccountCameraIconImageView: UIImageView!
     @IBOutlet weak var editAccountLabel1Text: UILabel!
     @IBOutlet weak var editAccountLabel2Text: UILabel!
     @IBOutlet weak var editAccountLabel3Text: UILabel!
+    @IBOutlet weak var editAccountLabel4Text: UILabel!
     @IBOutlet weak var editAccountTextField1: UITextField!
     @IBOutlet weak var editAccountTextField2: UITextField!
     @IBOutlet weak var editAccountTextField3: UITextField!
     @IBOutlet weak var editAccountSaveButtonLabel: UIButton!
     
     
+    
+    
+    
+    
+    
+    
     //MARK: - Constants / Variables
     
+    var userViewModel: UserViewModel!
     private let imagePicker = UIImagePickerController()
     private let user = User()
-    var userViewModel: UserViewModel!
-    private let isSaveButtonPressed = false
+    private var editedImage: UIImage?
     
     
     //MARK: - View Controller Life Cycle
@@ -49,14 +59,22 @@ class EditAccountViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
+        editAccountLabel4Text.isHidden = true
+        
+        
+        
         Utilities.setDesignOn(navigationBar: editAccountNavigationBar, isDarkMode: true)
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(view: contentView, backgroundColor: .clear)
-        Utilities.setDesignOn(label: editAccountHeadingLabelText, font: Strings.defaultFontBold, fontSize: 30, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: "Update Account")
+        Utilities.setDesignOn(stackView: editAccountStackView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: editAccountHeadingContentView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: editAccountSaveButtonContentView, backgroundColor: .clear)
+        Utilities.setDesignOn(label: editAccountHeadingLabelText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: "Update Account")
         Utilities.setDesignOn(imageView: editAccountImageView, isPerfectCircle: true)
-        Utilities.setDesignOn(label: editAccountLabel1Text, font: Strings.defaultFont, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: "First Name")
-        Utilities.setDesignOn(label: editAccountLabel2Text, font: Strings.defaultFont, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: "Last Name")
-        Utilities.setDesignOn(label: editAccountLabel3Text, font: Strings.defaultFont, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: "Email")
+        Utilities.setDesignOn(imageView: editAccountCameraIconImageView, image: UIImage(named: "Camera"))
+        Utilities.setDesignOn(label: editAccountLabel1Text, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: "First Name")
+        Utilities.setDesignOn(label: editAccountLabel2Text, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: "Last Name")
+        Utilities.setDesignOn(label: editAccountLabel3Text, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: "Email")
+        Utilities.setDesignOn(label: editAccountLabel4Text, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, text: "Hello this is a test!", backgroundColor: #colorLiteral(red: 0.970628202, green: 0.08276668936, blue: 0.005421592388, alpha: 1))
         Utilities.setDesignOn(textField: editAccountTextField1, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
         Utilities.setDesignOn(textField: editAccountTextField2, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
         Utilities.setDesignOn(textField: editAccountTextField3, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
@@ -70,7 +88,7 @@ class EditAccountViewController: UIViewController {
     }
     
     func setData() {
-        //        editAccountImageView.kf.setImage(with: userViewModel.profilePic)
+        editAccountImageView.kf.setImage(with: URL(string: userViewModel.profilePic))
         //        editAccountTextField1.text = userViewModel.firstName
         //        editAccountTextField2.text = userViewModel.lastname
         //        editAccountTextField3.text = userViewModel.email
@@ -108,12 +126,28 @@ class EditAccountViewController: UIViewController {
         
         if firstName != "" && lastName != "" && email != "" {
             print("Completed fields")
-            user.updateUserData(firstName!, lastName!, email!)
+            if editedImage != nil {
+                print("Nagpalit ng pic")
+                user.uploadProfilePic(with: editedImage!, using: userViewModel.userID) { [self] (imageString) in
+                    user.updateUserData(firstName!, lastName!, email!, imageString)
+                }
+            } else {
+                print("Hindi nagpalit")
+                user.updateUserData(firstName!, lastName!, email!, userViewModel.profilePic)
+            }
         } else {
             print("Incomplete fields")
+            UIView.animate(withDuration: 0.2) { [self] in
+                editAccountLabel4Text.text = "Incomplete fields"
+                editAccountLabel4Text.isHidden = false
+            }
         }
         
     }
+    
+    
+    
+    
     
     
     //MARK: - Buttons
@@ -122,6 +156,9 @@ class EditAccountViewController: UIViewController {
         
         
         updateAccountProcess()
+        
+        
+        
         
         
     }
@@ -149,9 +186,11 @@ extension EditAccountViewController: UINavigationControllerDelegate, UIImagePick
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
         
         editAccountImageView.image = image
+        editedImage = image
         let viewController = cropViewController.children.first!
         viewController.modalTransitionStyle = .coverVertical
         viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+        
     }
     
 }
@@ -170,6 +209,10 @@ extension EditAccountViewController: UITextFieldDelegate {
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.text == "" {
             print("Walang pang laman")
+            UIView.animate(withDuration: 0.2) { [self] in
+                editAccountLabel4Text.text = "Incomplete fields"
+                editAccountLabel4Text.isHidden = false
+            }
             return false
         } else {
             return true

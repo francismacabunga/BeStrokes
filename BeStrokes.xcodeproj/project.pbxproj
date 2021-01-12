@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F0C49E425AB0E7700981FDB /* EditAccountContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0C49E325AB0E7700981FDB /* EditAccountContainerViewController.swift */; };
 		2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1125532551A005004A02B1 /* LoginViewController.swift */; };
 		2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1125562551A024004A02B1 /* SignUpViewController.swift */; };
 		2F11255B2551A03E004A02B1 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F11255A2551A03E004A02B1 /* ForgotPasswordViewController.swift */; };
@@ -54,7 +53,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2F0C49E325AB0E7700981FDB /* EditAccountContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountContainerViewController.swift; sourceTree = "<group>"; };
 		2F1125532551A005004A02B1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2F1125562551A024004A02B1 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		2F11255A2551A03E004A02B1 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
@@ -208,7 +206,6 @@
 			isa = PBXGroup;
 			children = (
 				2F1125612551A097004A02B1 /* AccountViewController.swift */,
-				2F0C49E325AB0E7700981FDB /* EditAccountContainerViewController.swift */,
 				2F9C40F425AAF52600A7663F /* EditAccountViewController.swift */,
 			);
 			path = Account;
@@ -461,7 +458,6 @@
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
 				2F393A0F255AEAEA006CDBDE /* LandingPageViewController.swift in Sources */,
 				2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */,
-				2F0C49E425AB0E7700981FDB /* EditAccountContainerViewController.swift in Sources */,
 				2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */,
 				2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */,
 				2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */,

@@ -95,7 +95,7 @@ class HomeViewController: UIViewController {
     
     func setProfilePicture() {
         user.getSignedInUserData { (result) in
-            let profilePicImageURL = result.profilePic
+            let profilePicImageURL = URL(string: result.profilePic)
             DispatchQueue.main.async { [self] in
                 homeProfilePictureImageView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
                 homeProfilePictureImageView.kf.setImage(with: profilePicImageURL)

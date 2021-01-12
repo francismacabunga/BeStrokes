@@ -77,7 +77,7 @@ class ProfileViewController: UIViewController {
         showLoadingSkeletonView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
             user.getSignedInUserData { [self] (result) in
-                let profilePic = result.profilePic
+                let profilePic = URL(string: result.profilePic)!
                 let firstName = result.firstName
                 let lastName = result.lastname
                 let email = result.email

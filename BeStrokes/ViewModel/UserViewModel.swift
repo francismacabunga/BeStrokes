@@ -15,7 +15,7 @@ struct UserViewModel {
     let firstName: String
     let lastname: String
     let email: String
-    let profilePic: URL
+    let profilePic: String
     
     init(_ user: UserModel) {
         self.documentID = user.documentID
@@ -46,7 +46,7 @@ struct User {
                 let firstName = result[Strings.userFirstNameField] as! String
                 let lastName = result[Strings.userLastNameField] as! String
                 let email = result[Strings.userEmailField] as! String
-                let profilePic = URL(string: result[Strings.userProfilePicField] as! String)!
+                let profilePic = result[Strings.userProfilePicField] as! String
                 let userViewModel = UserViewModel(UserModel(documentID: documentID,
                                                             userID: userID,
                                                             firstName: firstName,
@@ -55,8 +55,9 @@ struct User {
                                                             profilePic: profilePic))
                 completion(userViewModel)
             }
+        } else {
+            // Show error no user is signed in!
         }
-        // Show error no user is signed in!
     }
     
     func signOutUser() -> Bool? {
@@ -68,12 +69,13 @@ struct User {
                 // Show error message
                 return false
             }
+        } else {
+            // Show error no user is signed in!
+            return Bool()
         }
-        // Show error no user is signed in!
-        return Bool()
     }
     
-    func updateUserData(_ firstName: String, _ lastName: String, _ email: String) {
+    func updateUserData(_ firstName: String, _ lastName: String, _ email: String, _ profilePicURL: String) {
         if user != nil {
             user!.reload(completion: { (error) in
                 if error != nil {
@@ -98,7 +100,8 @@ struct User {
                                 .document(documentID)
                                 .updateData([Strings.userFirstNameField : firstName,
                                              Strings.userLastNameField : lastName,
-                                             Strings.userEmailField : email])
+                                             Strings.userEmailField : email,
+                                             Strings.userProfilePicField : profilePicURL])
                         })
                     }
                 } else {
@@ -106,9 +109,38 @@ struct User {
                     print("Email is not verified")
                 }
             })
+        } else {
+            // Show error no user is signed in!
         }
-        // Show error no user is signed in!
     }
+    
+    
+    
+    func uploadProfilePic(with image: UIImage, using userID: String, completion: @escaping(String) -> Void) {
+        
+        guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
+        
+        let storagePath = Storage.storage().reference(forURL: Strings.firebaseStoragePath)
+        let profilePicStoragePath = storagePath.child(Strings.firebaseProfilePicStoragePath).child(userID)
+        
+        let imageMetadata = StorageMetadata()
+        imageMetadata.contentType = Strings.metadataContentType
+        
+        profilePicStoragePath.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
+            if error != nil {
+                // Show error
+            }
+            profilePicStoragePath.downloadURL { (url, error) in
+                if error != nil {
+                    // Show error
+                }
+                guard let imageString = url?.absoluteString else {return}
+                completion(imageString)
+            }
+        }
+        
+    }
+    
     
 }
 

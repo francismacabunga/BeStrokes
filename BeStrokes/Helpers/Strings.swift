@@ -81,7 +81,7 @@ struct Strings {
     static let profilePicture = "profilePic"
     
     static let firebaseStorageReference = "gs://bestrokes-f5c28.appspot.com/"
-    static let metadataContentType = "image/jpg"
+    
     
     static let defaultProfilePicture = "Woman"
     
@@ -92,8 +92,7 @@ struct Strings {
     
     
     
-    // Heading Text Value
-    
+    // Heading Text
     static let homeFeaturedHeadingText = "Featured"
     static let homeStickerHeadingText = "Stickers"
     static let profileSettingsHeadingText = "Settings"
@@ -106,8 +105,9 @@ struct Strings {
     
     
     
-    // Font Names
     
+    
+    // Font Names
     static let defaultFont = "Futura"
     static let defaultFontBold = "Futura-Bold"
     static let defaultFontMedium = "Futura-Medium"
@@ -115,15 +115,14 @@ struct Strings {
     
     
     // NIB Names
-    
     static let featuredStickerCell = "FeaturedCollectionViewCell"
     static let stickerCategoryCell = "StickerCategoryCollectionViewCell"
     static let profileTableViewCell = "ProfileTableViewCell"
     static let stickerCell = "StickerCollectionViewCell"
     static let likedStickerCell = "LikedStickersTableViewCell"
     
-    // VC
     
+    // View Controllers
     static let landingVC = "LandingViewController"
     static let stickerOptionVC = "StickerOptionViewController"
     static let editAccountVC = "EditAccountViewController"
@@ -132,27 +131,27 @@ struct Strings {
     
     
     
-    // Image Strings
-    
+    // Image Names
     static let whiteBar = "Black_Bar"
     static let blackBar = "White_Bar"
     static let optionImage = "Dots"
-    
-    // Storyboard
-    
-    static let mainStoryboard = "Main"
-    static let userStoryboard = "User"
-    
-    // Button
-    
-    static let tryMeButton = "Try me"
     static let unheartSticker = "heart"
     static let heartSticker = "heart.fill"
     
     
+    // Storyboard Names
+    static let mainStoryboard = "Main"
+    static let userStoryboard = "User"
     
-    // db
     
+    
+    // Button Label
+    static let tryMeButton = "Try me"
+    
+    
+    
+    
+    // Firebase Collections and Fields
     static let userCollection = "users"
     static let stickerCollection = "stickers"
     static let heartByCollection = "heartBy"
@@ -231,6 +230,10 @@ struct Strings {
     static let captureTab = "Capture"
     static let accountTab = "Account"
     
+    
+    static let firebaseStoragePath = "gs://bestrokes-f5c28.appspot.com/"
+    static let firebaseProfilePicStoragePath = "profilePictures"
+    static let metadataContentType = "image/jpg"
     
     
 }

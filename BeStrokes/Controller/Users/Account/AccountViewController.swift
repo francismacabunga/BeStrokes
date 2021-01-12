@@ -95,7 +95,7 @@ class AccountViewController: UIViewController {
         showLoadingSkeletonView()
         user.getSignedInUserData { [self] (result) in
             userViewModel = result
-            let profilePic = result.profilePic
+            let profilePic = URL(string: result.profilePic)!
             let firstName = result.firstName
             let lastName = result.lastname
             let email = result.email

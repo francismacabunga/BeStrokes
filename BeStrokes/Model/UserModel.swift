@@ -13,5 +13,5 @@ struct UserModel {
     let firstName: String
     let lastName: String
     let email: String
-    let profilePic: URL
+    let profilePic: String
 }
