@@ -33,7 +33,7 @@ struct User {
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
-    func getSignedInUserData(completed: @escaping(UserViewModel)->Void) {
+    func getSignedInUserData(completion: @escaping(UserViewModel) -> Void) {
         if user != nil {
             let signedInUserID = user!.uid
             db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
@@ -47,13 +47,19 @@ struct User {
                 let lastName = result[Strings.userLastNameField] as! String
                 let email = result[Strings.userEmailField] as! String
                 let profilePic = URL(string: result[Strings.userProfilePicField] as! String)!
-                let userViewModel = UserViewModel(UserModel(documentID: documentID, userID: userID, firstName: firstName, lastName: lastName, email: email, profilePic: profilePic))
-                completed(userViewModel)
+                let userViewModel = UserViewModel(UserModel(documentID: documentID,
+                                                            userID: userID,
+                                                            firstName: firstName,
+                                                            lastName: lastName,
+                                                            email: email,
+                                                            profilePic: profilePic))
+                completion(userViewModel)
             }
         }
+        // Show error no user is signed in!
     }
     
-    func signOutUser()->Bool? {
+    func signOutUser() -> Bool? {
         if user != nil {
             do {
                 try Auth.auth().signOut()
@@ -63,7 +69,7 @@ struct User {
                 return false
             }
         }
-        // Show no signed in user message
+        // Show error no user is signed in!
         return Bool()
     }
     
@@ -82,7 +88,7 @@ struct User {
                         }
                         guard let result = snapshot?.documents.first else {return}
                         let documentID = result[Strings.userDocumentIDField] as! String
-                        Auth.auth().currentUser?.updateEmail(to: email, completion: { (error) in
+                        user!.updateEmail(to: email, completion: { (error) in
                             if error != nil {
                                 // Show error
                             }
@@ -95,11 +101,13 @@ struct User {
                                              Strings.userEmailField : email])
                         })
                     }
+                } else {
+                    // Email is not verified
+                    print("Email is not verified")
                 }
-                // Email is not verified
-                print("Email is not verified")
             })
         }
+        // Show error no user is signed in!
     }
     
 }

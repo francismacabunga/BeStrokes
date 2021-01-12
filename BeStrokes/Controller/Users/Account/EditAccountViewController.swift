@@ -30,6 +30,7 @@ class EditAccountViewController: UIViewController {
     private let imagePicker = UIImagePickerController()
     private let user = User()
     var userViewModel: UserViewModel!
+    private let isSaveButtonPressed = false
     
     
     //MARK: - View Controller Life Cycle
@@ -62,11 +63,17 @@ class EditAccountViewController: UIViewController {
         Utilities.setDesignOn(button: editAccountSaveButtonLabel, title: "Save", font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
     }
     
+    func dismissKeyboard() {
+        editAccountTextField1.endEditing(true)
+        editAccountTextField2.endEditing(true)
+        editAccountTextField3.endEditing(true)
+    }
+    
     func setData() {
-        editAccountImageView.kf.setImage(with: userViewModel.profilePic)
-        editAccountTextField1.text = userViewModel.firstName
-        editAccountTextField2.text = userViewModel.lastname
-        editAccountTextField3.text = userViewModel.email
+        //        editAccountImageView.kf.setImage(with: userViewModel.profilePic)
+        //        editAccountTextField1.text = userViewModel.firstName
+        //        editAccountTextField2.text = userViewModel.lastname
+        //        editAccountTextField3.text = userViewModel.email
     }
     
     
@@ -93,23 +100,28 @@ class EditAccountViewController: UIViewController {
     
     
     
+    func updateAccountProcess() {
+        
+        let firstName = editAccountTextField1.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastName = editAccountTextField2.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let email = editAccountTextField3.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if firstName != "" && lastName != "" && email != "" {
+            print("Completed fields")
+            user.updateUserData(firstName!, lastName!, email!)
+        } else {
+            print("Incomplete fields")
+        }
+        
+    }
+    
     
     //MARK: - Buttons
     
     @IBAction func editAccountSaveButton(_ sender: UIButton) {
         
-        if let firstName = editAccountTextField1.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-           let lastName = editAccountTextField2.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-           let email = editAccountTextField3.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
-            
-            user.updateUserData(firstName, lastName, email)
-            dismiss(animated: true)
-            
-         
-            
-            
-        }
         
+        updateAccountProcess()
         
         
     }
@@ -147,8 +159,21 @@ extension EditAccountViewController: UINavigationControllerDelegate, UIImagePick
 
 extension EditAccountViewController: UITextFieldDelegate {
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
+    // Exact moment when "return" button on keyboard is pressed
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        dismissKeyboard()
+        updateAccountProcess()
+        return true
+    }
+    
+    // Checks the current text field you're at before tapping to a new one
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField.text == "" {
+            print("Walang pang laman")
+            return false
+        } else {
+            return true
+        }
     }
     
 }
