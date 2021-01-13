@@ -48,7 +48,7 @@
             <size key="customSize" width="151" height="50"/>
             <connections>
                 <outlet property="stickerCategoryContentView" destination="mqc-TK-amr" id="ta8-D0-L7J"/>
-                <outlet property="stickerCategoryLabelText" destination="pyQ-gU-4F2" id="XDb-I9-xKw"/>
+                <outlet property="stickerCategoryLabel" destination="pyQ-gU-4F2" id="XDb-I9-xKw"/>
             </connections>
             <point key="canvasLocation" x="-124.6376811594203" y="88.392857142857139"/>
         </collectionViewCell>

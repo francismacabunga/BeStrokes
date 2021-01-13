@@ -152,7 +152,7 @@ struct FetchStickerData {
     private let db = Firestore.firestore()
     
     func featuredCollectionView(completed: @escaping([FeaturedStickerViewModel])->Void) {
-        let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: Strings.featuredStickers)
+        let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: Strings.categoryFeaturedStickers)
         fetchFirebaseData(with: firebaseQuery) { (result) in
             let featuredStickerViewModel = result.map({return FeaturedStickerViewModel($0)})
             completed(featuredStickerViewModel)

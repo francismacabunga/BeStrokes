@@ -175,7 +175,7 @@ struct Utilities {
     
     static func putDesignOn(navigationBar: UINavigationBar) {
         
-        let image = UIImage(named: Strings.blackBar)
+        let image = UIImage(named: Strings.blackBarImage)
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.image = image
@@ -471,10 +471,10 @@ struct Utilities {
         let imageView = UIImageView()
         var image = UIImage()
         if isDarkMode {
-            image = UIImage(named: Strings.blackBar)!
+            image = UIImage(named: Strings.blackBarImage)!
             navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         } else {
-            image = UIImage(named: Strings.whiteBar)!
+            image = UIImage(named: Strings.whiteBarImage)!
             navigationBar.barTintColor = #colorLiteral(red: 0.7843137255, green: 0.7882352941, blue: 0.8039215686, alpha: 1)
         }
         imageView.image = image

@@ -172,12 +172,12 @@
                     <connections>
                         <outlet property="accountBottomView" destination="H3z-6G-rEQ" id="nnq-03-qwa"/>
                         <outlet property="accountEditButtonLabel" destination="6ZA-h9-qdG" id="keW-Ll-va3"/>
-                        <outlet property="accountEmailHeadingLabelText" destination="qUa-od-Bnr" id="vkQ-oh-XXA"/>
-                        <outlet property="accountHeadingLabelText" destination="2Kd-8z-l31" id="azI-Yc-pal"/>
+                        <outlet property="accountEmailHeadingLabel" destination="qUa-od-Bnr" id="vkQ-oh-XXA"/>
+                        <outlet property="accountHeadingLabel" destination="2Kd-8z-l31" id="azI-Yc-pal"/>
                         <outlet property="accountImageView" destination="oFC-18-MmU" id="2gq-b4-qKz"/>
-                        <outlet property="accountLikedStickersHeadingLabelText" destination="VIZ-vb-5pB" id="hps-8e-25R"/>
+                        <outlet property="accountLikedStickersHeadingLabel" destination="VIZ-vb-5pB" id="hps-8e-25R"/>
                         <outlet property="accountLikedStickersTableView" destination="RU8-Go-cuX" id="Ccg-hf-YM7"/>
-                        <outlet property="accountNameHeadingLabelText" destination="bxe-Py-Fir" id="p1Q-em-dnE"/>
+                        <outlet property="accountNameHeadingLabel" destination="bxe-Py-Fir" id="p1Q-em-dnE"/>
                         <outlet property="accountNotificationButtonLabel" destination="BZf-6P-r2Z" id="EJF-sc-bHG"/>
                         <outlet property="accountTopView" destination="gaT-5y-Vv4" id="4jg-Iu-tE2"/>
                         <segue destination="lUS-1w-s8Y" kind="show" id="Dro-OK-Ihi"/>
@@ -375,13 +375,13 @@
                     <connections>
                         <outlet property="homeContentStackView" destination="Wkb-yF-fay" id="bjD-g9-Rmc"/>
                         <outlet property="homeFeaturedCollectionView" destination="2oO-Sl-FZP" id="oIx-aH-gKK"/>
-                        <outlet property="homeFeaturedHeadingLabelText" destination="qzl-3Y-UCr" id="QXb-Yc-NJX"/>
                         <outlet property="homeFeaturedView" destination="nNl-Ph-CBy" id="I3J-v9-Z86"/>
+                        <outlet property="homeHeading1Label" destination="qzl-3Y-UCr" id="QXb-Yc-NJX"/>
+                        <outlet property="homeHeading2Label" destination="g26-w3-yqs" id="AO8-n3-GbB"/>
                         <outlet property="homeLoadingIndicatorView" destination="VHb-4Z-BVj" id="SdZ-xJ-99J"/>
                         <outlet property="homeProfilePictureImageView" destination="c89-1x-2Eq" id="oYV-qi-nIk"/>
                         <outlet property="homeStickerCategoryCollectionView" destination="g7G-wp-Ekk" id="Akk-fQ-fdq"/>
                         <outlet property="homeStickerCollectionView" destination="I8i-Cc-ZFw" id="pOO-dZ-FRu"/>
-                        <outlet property="homeStickerHeadingLabelText" destination="g26-w3-yqs" id="AO8-n3-GbB"/>
                         <outlet property="homeStickerView" destination="E3G-yt-gwx" id="1rr-rU-KKK"/>
                         <segue destination="lUS-1w-s8Y" kind="show" id="LnV-W9-OdI"/>
                         <segue destination="Kur-RJ-RnG" kind="show" id="qDv-AU-dU5"/>
@@ -523,15 +523,15 @@
                     <navigationItem key="navigationItem" id="pTM-QX-V3v"/>
                     <connections>
                         <outlet property="stickerBottomView" destination="wIh-fs-76u" id="vuu-4T-M68"/>
-                        <outlet property="stickerCategoryLabelText" destination="px6-YU-gAZ" id="ZV6-jV-VvL"/>
-                        <outlet property="stickerDescriptionLabelText" destination="Fmb-ky-A7y" id="fGu-de-TtA"/>
+                        <outlet property="stickerCategoryLabel" destination="px6-YU-gAZ" id="ZV6-jV-VvL"/>
+                        <outlet property="stickerDescriptionLabel" destination="Fmb-ky-A7y" id="fGu-de-TtA"/>
                         <outlet property="stickerHeartButtonImageView" destination="oFx-oK-Dbq" id="om9-KF-r58"/>
                         <outlet property="stickerImageView" destination="aQC-jg-LyR" id="KAS-2s-eNX"/>
                         <outlet property="stickerMiddleView" destination="pVy-ux-gGU" id="fpK-fB-8eO"/>
-                        <outlet property="stickerNameLabelText" destination="9PJ-Ek-3CP" id="nqF-1q-Sbe"/>
+                        <outlet property="stickerNameLabel" destination="9PJ-Ek-3CP" id="nqF-1q-Sbe"/>
                         <outlet property="stickerNavigationBar" destination="H1r-t8-Dkm" id="lLJ-lb-QQs"/>
                         <outlet property="stickerStackContentView" destination="zIX-2M-xrc" id="1b2-o5-XQD"/>
-                        <outlet property="stickerTagLabelText" destination="ydL-QT-tTC" id="oti-kq-fc7"/>
+                        <outlet property="stickerTagLabel" destination="ydL-QT-tTC" id="oti-kq-fc7"/>
                         <outlet property="stickerTopView" destination="VuT-ef-Ivc" id="kTn-aX-hYY"/>
                         <outlet property="stickerTryMeButtonLabel" destination="cqr-8n-dvk" id="iln-se-YcB"/>
                     </connections>
@@ -641,14 +641,14 @@
                     <navigationItem key="navigationItem" id="2cK-Qc-Fv9"/>
                     <connections>
                         <outlet property="profileContentView" destination="aO2-Xw-YBz" id="iMZ-MD-2a0"/>
-                        <outlet property="profileEmailLabelText" destination="kJ6-pE-GI8" id="BNe-Ke-SrL"/>
-                        <outlet property="profileHeadingLabelText" destination="XBv-Gv-qMy" id="crU-1a-uM6"/>
+                        <outlet property="profileEmailLabel" destination="kJ6-pE-GI8" id="BNe-Ke-SrL"/>
+                        <outlet property="profileHeadingLabel" destination="XBv-Gv-qMy" id="crU-1a-uM6"/>
                         <outlet property="profileImageView" destination="5OS-G2-wrh" id="GxQ-5d-biX"/>
-                        <outlet property="profileNameLabelText" destination="rC4-al-lTS" id="gUN-hG-9LX"/>
+                        <outlet property="profileNameLabel" destination="rC4-al-lTS" id="gUN-hG-9LX"/>
                         <outlet property="profileNavigationBar" destination="Ygi-pA-b7V" id="8y0-ay-I4b"/>
                         <outlet property="profileTableView" destination="0cf-4B-yQb" id="oop-xd-Nvh"/>
-                        <outlet property="profileTrademark1LabelText" destination="Bmp-0o-rj5" id="krX-Ae-LA0"/>
-                        <outlet property="profileTrademark2LabelText" destination="FEB-PM-wpc" id="iEX-Xn-7RK"/>
+                        <outlet property="profileTrademark1Label" destination="Bmp-0o-rj5" id="krX-Ae-LA0"/>
+                        <outlet property="profileTrademark2Label" destination="FEB-PM-wpc" id="iEX-Xn-7RK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WOH-od-2bV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -843,21 +843,21 @@
                     </view>
                     <navigationItem key="navigationItem" id="3Md-iX-0E0"/>
                     <connections>
+                        <outlet property="editAccount1Label" destination="jKi-yG-21t" id="0Tw-Qn-lrS"/>
+                        <outlet property="editAccount1TextField" destination="Kne-vk-eUu" id="w2A-yn-5rh"/>
+                        <outlet property="editAccount2Label" destination="iWO-la-d0d" id="3Co-wL-29c"/>
+                        <outlet property="editAccount2TextField" destination="Ppa-5H-JJp" id="8tn-MT-GHL"/>
+                        <outlet property="editAccount3Label" destination="3LO-I8-RvL" id="Cr7-gt-nSm"/>
+                        <outlet property="editAccount3TextField" destination="aJ7-Fa-iA0" id="Q7K-I9-kAe"/>
+                        <outlet property="editAccount4Label" destination="ppL-ry-do4" id="Ey6-oD-ysH"/>
                         <outlet property="editAccountCameraIconImageView" destination="cOE-1r-PNg" id="CpG-cr-0n0"/>
                         <outlet property="editAccountHeadingContentView" destination="Mzk-4X-f4s" id="tsa-RR-T9T"/>
-                        <outlet property="editAccountHeadingLabelText" destination="D6z-Io-dUk" id="FSf-0f-Zly"/>
+                        <outlet property="editAccountHeadingLabel" destination="D6z-Io-dUk" id="FSf-0f-Zly"/>
                         <outlet property="editAccountImageView" destination="N8a-11-Ihi" id="lLT-Go-0PC"/>
-                        <outlet property="editAccountLabel1Text" destination="jKi-yG-21t" id="0Tw-Qn-lrS"/>
-                        <outlet property="editAccountLabel2Text" destination="iWO-la-d0d" id="3Co-wL-29c"/>
-                        <outlet property="editAccountLabel3Text" destination="3LO-I8-RvL" id="Cr7-gt-nSm"/>
-                        <outlet property="editAccountLabel4Text" destination="ppL-ry-do4" id="Ey6-oD-ysH"/>
                         <outlet property="editAccountNavigationBar" destination="L9n-wS-Gh2" id="a4e-p6-CFq"/>
                         <outlet property="editAccountSaveButtonContentView" destination="gnp-B6-5QR" id="9AV-4R-lOo"/>
                         <outlet property="editAccountSaveButtonLabel" destination="jAn-ni-mbb" id="15N-TM-W48"/>
                         <outlet property="editAccountStackView" destination="HrH-Xg-qs0" id="iBi-ao-qP0"/>
-                        <outlet property="editAccountTextField1" destination="Kne-vk-eUu" id="w2A-yn-5rh"/>
-                        <outlet property="editAccountTextField2" destination="Ppa-5H-JJp" id="8tn-MT-GHL"/>
-                        <outlet property="editAccountTextField3" destination="aJ7-Fa-iA0" id="Q7K-I9-kAe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PB9-l2-vxz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -866,7 +866,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Dro-OK-Ihi"/>
+        <segue reference="LnV-W9-OdI"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">

@@ -19,8 +19,8 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var homeFeaturedView: UIView!
     @IBOutlet weak var homeStickerView: UIView!
     @IBOutlet weak var homeProfilePictureImageView: UIImageView!
-    @IBOutlet weak var homeFeaturedHeadingLabelText: UILabel!
-    @IBOutlet weak var homeStickerHeadingLabelText: UILabel!
+    @IBOutlet weak var homeHeading1Label: UILabel!
+    @IBOutlet weak var homeHeading2Label: UILabel!
     @IBOutlet weak var homeFeaturedCollectionView: UICollectionView!
     @IBOutlet weak var homeStickerCategoryCollectionView: UICollectionView!
     @IBOutlet weak var homeStickerCollectionView: UICollectionView!
@@ -82,8 +82,8 @@ class HomeViewController: UIViewController {
             homeProfilePictureImageView.showAnimatedSkeleton()
         }
         
-        Utilities.setDesignOn(label: homeFeaturedHeadingLabelText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeFeaturedHeadingText)
-        Utilities.setDesignOn(label: homeStickerHeadingLabelText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeStickerHeadingText)
+        Utilities.setDesignOn(label: homeHeading1Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeHeading1Text)
+        Utilities.setDesignOn(label: homeHeading2Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeHeading2Text)
         Utilities.setDesignOn(collectionView: homeFeaturedCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)

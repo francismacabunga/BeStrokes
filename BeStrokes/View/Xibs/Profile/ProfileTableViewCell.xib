@@ -48,7 +48,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="settingIconImageView" destination="PeL-1g-Wd9" id="t7B-kb-X7y"/>
-                <outlet property="settingLabelText" destination="ajY-Ie-4IR" id="0ov-af-Lwo"/>
+                <outlet property="settingLabel" destination="ajY-Ie-4IR" id="0ov-af-Lwo"/>
                 <outlet property="settingSwitch" destination="4eb-24-4fw" id="cF5-68-bQL"/>
             </connections>
             <point key="canvasLocation" x="18.840579710144929" y="99.776785714285708"/>

@@ -16,11 +16,11 @@ class TabBarViewController: UITabBarController {
         UITabBar.appearance().tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
         if let items = tabBar.items {
-            items[0].title = Strings.homeTab
+            items[0].title = Strings.homeTabText
             items[0].image = UIImage(systemName: Strings.tabHomeIcon)
-            items[1].title = Strings.captureTab
+            items[1].title = Strings.captureTabText
             items[1].image = UIImage(systemName: Strings.tabCaptureIcon)
-            items[2].title = Strings.accountTab
+            items[2].title = Strings.accountTabText
             items[2].image = UIImage(systemName: Strings.tabAccountIcon)
         }
         

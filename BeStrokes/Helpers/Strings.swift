@@ -92,29 +92,78 @@ struct Strings {
     
     
     
-    // Heading Text
-    static let homeFeaturedHeadingText = "Featured"
-    static let homeStickerHeadingText = "Stickers"
+    
+    
+    
+    //MARK: - Heading / Body Labels
+    static let homeHeading1Text = "Featured"
+    static let homeHeading2Text = "Stickers"
     static let profileSettingsHeadingText = "Settings"
     static let profileTrademark1Text = "BeStrokes"
     static let profileTrademark2Text = "made by Francis"
-    static let accountHeadingText = "Account"
-    static let accountLikedStickersHeadingText = "Liked Stickers"
+    static let accountHeading1Text = "Account"
+    static let accountHeading2Text = "Liked Stickers"
+    static let editAccountHeadingText = "Update Account"
+    
+    //MARK: - Button Labels
+    static let tryMeButtonText = "Try me"
+    static let saveButtonText = "Save"
+    
+    //MARK: - Tab Bar Labels
+    static let homeTabText = "Home"
+    static let captureTabText = "Capture"
+    static let accountTabText = "Account"
+    
+    //MARK: - Text Fields Labels
+    static let firstNameTextField = "First Name"
+    static let lastNameTextField = "Last Name"
+    static let emailTextField = "Email"
     
     
     
     
     
-    
-    
-    // Font Names
+    //MARK: - Font Names
     static let defaultFont = "Futura"
     static let defaultFontBold = "Futura-Bold"
     static let defaultFontMedium = "Futura-Medium"
     
+    //MARK: - Image Assets Names
+    static let whiteBarImage = "Black_Bar"
+    static let blackBarImage = "White_Bar"
+    static let optionImage = "Dots"
+    static let unheartStickerImage = "heart"
+    static let heartStickerImage = "heart.fill"
+    static let cameraImage = "Camera"
+    
+    //MARK: - SF Symbols Names
+    static let settingNotificationIcon = "bell.badge"
+    static let settingDarkModeIcon = "moon"
+    static let settingLogoutIcon = "power"
+    
+    static let tabHomeIcon = "house.fill"
+    static let tabCaptureIcon = "camera.fill"
+    static let tabAccountIcon = "person.crop.circle.fill"
+    
+    static let accountNotificationIcon = "bell.badge.fill"
+    static let accountEditAccountIcon = "pencil.circle.fill"
     
     
-    // NIB Names
+    
+    
+    
+    //MARK: - Storyboard Names
+    static let mainStoryboard = "Main"
+    static let userStoryboard = "User"
+    
+    //MARK: - View Controllers Names
+    static let landingVC = "LandingViewController"
+    static let stickerOptionVC = "StickerOptionViewController"
+    static let editAccountVC = "EditAccountViewController"
+    static let editAccountContainerVC = "EditAccountContainerViewController"
+    static let profileVC = "ProfileViewController"
+    
+    //MARK: - NIBs Names
     static let featuredStickerCell = "FeaturedCollectionViewCell"
     static let stickerCategoryCell = "StickerCategoryCollectionViewCell"
     static let profileTableViewCell = "ProfileTableViewCell"
@@ -122,36 +171,14 @@ struct Strings {
     static let likedStickerCell = "LikedStickersTableViewCell"
     
     
-    // View Controllers
-    static let landingVC = "LandingViewController"
-    static let stickerOptionVC = "StickerOptionViewController"
-    static let editAccountVC = "EditAccountViewController"
-    static let editAccountContainerVC = "EditAccountContainerViewController"
     
     
     
+    //MARK: - Firebase
+    static let firebaseStoragePath = "gs://bestrokes-f5c28.appspot.com/"
+    static let firebaseProfilePicStoragePath = "profilePictures"
+    static let metadataContentType = "image/jpg"
     
-    // Image Names
-    static let whiteBar = "Black_Bar"
-    static let blackBar = "White_Bar"
-    static let optionImage = "Dots"
-    static let unheartSticker = "heart"
-    static let heartSticker = "heart.fill"
-    
-    
-    // Storyboard Names
-    static let mainStoryboard = "Main"
-    static let userStoryboard = "User"
-    
-    
-    
-    // Button Label
-    static let tryMeButton = "Try me"
-    
-    
-    
-    
-    // Firebase Collections and Fields
     static let userCollection = "users"
     static let stickerCollection = "stickers"
     static let heartByCollection = "heartBy"
@@ -174,15 +201,14 @@ struct Strings {
     
     
     
-    static let profileSettingsNotifications = "Notifications"
-    static let profileSettingsDarkAppearance = "Dark Appearance"
-    static let profileSettingsLogout = "Logout"
     
     
+    //MARK: - Sticker Category/Tag Labels
+    static let categoryAllStickers = "All"
+    static let categoryFeaturedStickers = "Featured"
+    static let tagNoStickers = "none"
     
-    
-    // Stickers
-    
+    //MARK: - Sticker Category Array
     static let allStickers = "All"
     static let animalStickers = "Animals"
     static let foodStickers = "Food"
@@ -190,50 +216,36 @@ struct Strings {
     static let coloredStickers = "Colored"
     static let travelStickers = "Travel"
     
-    static let featuredStickers = "Featured"
-    static let noStickerTag = "none"
+    //MARK: - Profile Settings Array
+    static let profileSettingsNotifications = "Notifications"
+    static let profileSettingsDarkAppearance = "Dark Appearance"
+    static let profileSettingsLogout = "Logout"
     
     
     
-    // View Controllers
-    
-    static let profileVC = "ProfileViewController"
     
     
-    // Alert controller messages
-    
-    
+    //MARK: - Warning Labels
     static let logoutAlertTitle = "Are you sure?"
     static let logoutYesAction = "Yes"
     static let logoutNoAction = "No"
+    static let editAccountEmailVerficationErrorLabel = "Cannot update account, email is not verified yet. Please verify your email."
+    static let editAccountTextFieldsErrorLabel = "Some fields are incomplete."
+    static let editAccountTextFieldErrorLabel = "This field is required."
     
     
     
-    // SF Symbols
-    
-    static let settingNotificationIcon = "bell.badge"
-    static let settingDarkModeIcon = "moon"
-    static let settingLogoutIcon = "power"
-    
-    static let tabHomeIcon = "house.fill"
-    static let tabCaptureIcon = "camera.fill"
-    static let tabAccountIcon = "person.crop.circle.fill"
-    
-    static let accountNotificationIcon = "bell.badge.fill"
-    static let accountEditAccountIcon = "pencil.circle.fill"
     
     
     
-    // tab bar items
-    
-    static let homeTab = "Home"
-    static let captureTab = "Capture"
-    static let accountTab = "Account"
     
     
-    static let firebaseStoragePath = "gs://bestrokes-f5c28.appspot.com/"
-    static let firebaseProfilePicStoragePath = "profilePictures"
-    static let metadataContentType = "image/jpg"
+    
+    
+    
+    
+    
+    
     
     
 }

@@ -60,6 +60,17 @@ struct User {
         }
     }
     
+    func isEmailVerified() -> Bool {
+        if user != nil {
+            if user!.isEmailVerified {
+                return true
+            } else {
+                return false
+            }
+        }
+        return Bool()
+    }
+    
     func signOutUser() -> Bool? {
         if user != nil {
             do {
@@ -114,33 +125,29 @@ struct User {
         }
     }
     
-    
-    
     func uploadProfilePic(with image: UIImage, using userID: String, completion: @escaping(String) -> Void) {
-        
-        guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
-        
-        let storagePath = Storage.storage().reference(forURL: Strings.firebaseStoragePath)
-        let profilePicStoragePath = storagePath.child(Strings.firebaseProfilePicStoragePath).child(userID)
-        
-        let imageMetadata = StorageMetadata()
-        imageMetadata.contentType = Strings.metadataContentType
-        
-        profilePicStoragePath.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
-            if error != nil {
-                // Show error
-            }
-            profilePicStoragePath.downloadURL { (url, error) in
+        if user != nil {
+            guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
+            let storagePath = Storage.storage().reference(forURL: Strings.firebaseStoragePath)
+            let profilePicStoragePath = storagePath.child(Strings.firebaseProfilePicStoragePath).child(userID)
+            let imageMetadata = StorageMetadata()
+            imageMetadata.contentType = Strings.metadataContentType
+            profilePicStoragePath.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
                 if error != nil {
                     // Show error
                 }
-                guard let imageString = url?.absoluteString else {return}
-                completion(imageString)
+                profilePicStoragePath.downloadURL { (url, error) in
+                    if error != nil {
+                        // Show error
+                    }
+                    guard let imageString = url?.absoluteString else {return}
+                    completion(imageString)
+                }
             }
+        } else {
+            // Show error no user is signed in!
         }
-        
     }
-    
     
 }
 

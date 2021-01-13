@@ -15,7 +15,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     //MARK: - IBOutlets
     
     @IBOutlet weak var featuredContentView: UIView!
-    @IBOutlet weak var featuredLabelText: UILabel!
+    @IBOutlet weak var featuredLabel: UILabel!
     @IBOutlet weak var featuredHeartButtonImageView: UIImageView!
     @IBOutlet weak var featuredTryMeButtonLabel: UIButton!
     @IBOutlet weak var featuredImageView: UIImageView!
@@ -33,7 +33,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     var featuredStickerViewModel: FeaturedStickerViewModel! {
         didSet {
             stickerDocumentID = featuredStickerViewModel.stickerDocumentID
-            featuredLabelText.text = featuredStickerViewModel.name
+            featuredLabel.text = featuredStickerViewModel.name
             featuredImageView.kf.setImage(with: featuredStickerViewModel.image.absoluteURL)
         }
     }
@@ -58,8 +58,8 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     func setDesignElements() {
         Utilities.setDesignOn(view: featuredContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isPerfectCircle: true, setCustomCircleCurve: 40)
-        Utilities.setDesignOn(label: featuredLabelText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, lineBreakMode: .byWordWrapping, canResize: false)
-        Utilities.setDesignOn(button: featuredTryMeButtonLabel, title: Strings.tryMeButton, font: Strings.defaultFontBold, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(label: featuredLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, lineBreakMode: .byWordWrapping, canResize: false)
+        Utilities.setDesignOn(button: featuredTryMeButtonLabel, title: Strings.tryMeButtonText, font: Strings.defaultFontBold, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(imageView: featuredImageView)
     }
     
@@ -84,10 +84,10 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     func getHeartButtonValue(using stickerDocumentID: String) {
         heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
             if result {
-                Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.heartSticker), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.heartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
                 heartButtonTapped = true
             } else {
-                Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.unheartSticker), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.unheartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
                 heartButtonTapped = false
             }
         }

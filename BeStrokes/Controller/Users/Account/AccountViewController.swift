@@ -18,10 +18,10 @@ class AccountViewController: UIViewController {
     @IBOutlet weak var accountBottomView: UIView!
     @IBOutlet weak var accountNotificationButtonLabel: UIButton!
     @IBOutlet weak var accountEditButtonLabel: UIButton!
-    @IBOutlet weak var accountHeadingLabelText: UILabel!
-    @IBOutlet weak var accountNameHeadingLabelText: UILabel!
-    @IBOutlet weak var accountEmailHeadingLabelText: UILabel!
-    @IBOutlet weak var accountLikedStickersHeadingLabelText: UILabel!
+    @IBOutlet weak var accountHeadingLabel: UILabel!
+    @IBOutlet weak var accountNameHeadingLabel: UILabel!
+    @IBOutlet weak var accountEmailHeadingLabel: UILabel!
+    @IBOutlet weak var accountLikedStickersHeadingLabel: UILabel!
     @IBOutlet weak var accountImageView: UIImageView!
     @IBOutlet weak var accountLikedStickersTableView: UITableView!
     
@@ -56,10 +56,10 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(button: accountNotificationButtonLabel, backgroundImage: UIImage(systemName: Strings.accountNotificationIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(button: accountEditButtonLabel, backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(imageView: accountImageView, isPerfectCircle: true)
-        Utilities.setDesignOn(label: accountHeadingLabelText, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, text: Strings.accountHeadingText)
-        Utilities.setDesignOn(label: accountNameHeadingLabelText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.6)
-        Utilities.setDesignOn(label: accountEmailHeadingLabelText, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.8)
-        Utilities.setDesignOn(label: accountLikedStickersHeadingLabelText, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.accountLikedStickersHeadingText)
+        Utilities.setDesignOn(label: accountHeadingLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, text: Strings.accountHeading1Text)
+        Utilities.setDesignOn(label: accountNameHeadingLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, canResize: true, minimumScaleFactor: 0.6)
+        Utilities.setDesignOn(label: accountEmailHeadingLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(label: accountLikedStickersHeadingLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.accountHeading2Text)
         Utilities.setDesignOn(tableView: accountLikedStickersTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170)
     }
     
@@ -71,22 +71,22 @@ class AccountViewController: UIViewController {
         DispatchQueue.main.async { [self] in
             accountImageView.isSkeletonable = true
             Utilities.setDesignOn(imageView: accountImageView, isSkeletonPerfectCircle: true)
-            accountNameHeadingLabelText.isSkeletonable = true
-            accountEmailHeadingLabelText.isSkeletonable = true
+            accountNameHeadingLabel.isSkeletonable = true
+            accountEmailHeadingLabel.isSkeletonable = true
             accountImageView.showAnimatedSkeleton()
-            accountNameHeadingLabelText.showAnimatedSkeleton()
-            accountEmailHeadingLabelText.showAnimatedSkeleton()
+            accountNameHeadingLabel.showAnimatedSkeleton()
+            accountEmailHeadingLabel.showAnimatedSkeleton()
         }
     }
     
     func hideLoadingSkeletonView() {
         accountImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        accountNameHeadingLabelText.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        accountEmailHeadingLabelText.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        accountEmailHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
     func setData() {
-        fetchStickerData.stickerCollectionView(category: "All") { [self] (result) in
+        fetchStickerData.stickerCollectionView(category: Strings.categoryAllStickers) { [self] (result) in
             stickerViewModel = result
             DispatchQueue.main.async {
                 accountLikedStickersTableView.reloadData()
@@ -101,8 +101,8 @@ class AccountViewController: UIViewController {
             let email = result.email
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 accountImageView.kf.setImage(with: profilePic)
-                accountNameHeadingLabelText.text = "\(firstName) \(lastName)"
-                accountEmailHeadingLabelText.text = email
+                accountNameHeadingLabel.text = "\(firstName) \(lastName)"
+                accountEmailHeadingLabel.text = email
                 hideLoadingSkeletonView()
             }
         }
@@ -146,7 +146,6 @@ extension AccountViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.likedStickerCell) as! LikedStickersTableViewCell
         if stickerViewModel != nil {
             DispatchQueue.main.async { [self] in
@@ -155,9 +154,7 @@ extension AccountViewController: UITableViewDataSource {
             }
             return cell
         }
-        
         return cell
-        
     }
     
 }
@@ -168,12 +165,10 @@ extension AccountViewController: UITableViewDataSource {
 extension AccountViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
         let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
         stickerOptionVC.stickerViewModel = stickerViewModel![indexPath.item]
         present(stickerOptionVC, animated: true)
-        
     }
     
 }

@@ -65,7 +65,7 @@
             <connections>
                 <outlet property="stickerContentView" destination="ygQ-zI-xqz" id="9bb-jC-08n"/>
                 <outlet property="stickerImageView" destination="Js9-S4-QNQ" id="ptP-GK-k6F"/>
-                <outlet property="stickerLabelText" destination="qbl-Li-P68" id="eGM-KW-SRA"/>
+                <outlet property="stickerLabel" destination="qbl-Li-P68" id="eGM-KW-SRA"/>
                 <outlet property="stickerOptionImageView" destination="BS5-gP-jmS" id="jWY-hA-TlZ"/>
             </connections>
             <point key="canvasLocation" x="-100.00000000000001" y="99.776785714285708"/>

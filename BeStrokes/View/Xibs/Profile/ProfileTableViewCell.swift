@@ -13,7 +13,7 @@ class ProfileTableViewCell: UITableViewCell {
     //MARK: - IBOutlets
     
     @IBOutlet weak var settingIconImageView: UIImageView!
-    @IBOutlet weak var settingLabelText: UILabel!
+    @IBOutlet weak var settingLabel: UILabel!
     @IBOutlet weak var settingSwitch: UISwitch!
     
     
@@ -26,11 +26,11 @@ class ProfileTableViewCell: UITableViewCell {
             let icon = profileViewModel.profileSettings.first!.settingIcon
             
             if label == Strings.profileSettingsLogout {
-                settingLabelText.text = label
+                settingLabel.text = label
                 settingIconImageView.image = UIImage(systemName: icon)
                 settingSwitch.isHidden = true
             } else {
-                settingLabelText.text = label
+                settingLabel.text = label
                 settingIconImageView.image = UIImage(systemName: icon)
             }
             
@@ -54,7 +54,7 @@ class ProfileTableViewCell: UITableViewCell {
         self.selectionStyle = .none
         Utilities.setDesignOn(view: contentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(imageView: settingIconImageView, tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(label: settingLabelText, font: Strings.defaultFont, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left)
+        Utilities.setDesignOn(label: settingLabel, font: Strings.defaultFont, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left)
     }
     
 }

@@ -69,7 +69,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
-                <outlet property="likedStickerHeadingText" destination="gN4-qM-01s" id="Oz6-gI-pfQ"/>
+                <outlet property="likedStickerHeadingLabel" destination="gN4-qM-01s" id="Oz6-gI-pfQ"/>
                 <outlet property="likedStickerImageView" destination="IEj-jZ-738" id="N2J-np-zJl"/>
                 <outlet property="likedStickerOptionImageView" destination="Iq5-5n-h3r" id="PBs-FB-h3s"/>
                 <outlet property="likedStickerTryMeButtonLabel" destination="ml4-ZI-Rsz" id="qDo-Zc-drg"/>
