@@ -225,11 +225,15 @@ struct Strings {
     
     
     
-    //MARK: - Warning Labels
+    //MARK: - Alert Labels
     static let logoutAlertTitle = "Are you sure?"
     static let logoutYesAction = "Yes"
     static let logoutNoAction = "No"
-    static let editAccountEmailVerficationErrorLabel = "Cannot update account, email is not verified yet. Please verify your email."
+    static let editAccountAlertTitle = "Success!"
+    static let editAccountAlertMessage = "Your account details and email has been successfully updated. You may now sign in with your new email. Signing you out."
+    
+    //MARK: - Warning Labels
+    static let editAccountEmailVerficationErrorLabel = "Account cannot be updated, email is not verified."
     static let editAccountTextFieldsErrorLabel = "Some fields are incomplete."
     static let editAccountTextFieldErrorLabel = "This field is required."
     

@@ -41,18 +41,12 @@ struct User {
                     // Show error
                 }
                 guard let result = snapshot?.documents.first else {return}
-                let documentID = result[Strings.userDocumentIDField] as! String
-                let userID = result[Strings.userIDField] as! String
-                let firstName = result[Strings.userFirstNameField] as! String
-                let lastName = result[Strings.userLastNameField] as! String
-                let email = result[Strings.userEmailField] as! String
-                let profilePic = result[Strings.userProfilePicField] as! String
-                let userViewModel = UserViewModel(UserModel(documentID: documentID,
-                                                            userID: userID,
-                                                            firstName: firstName,
-                                                            lastName: lastName,
-                                                            email: email,
-                                                            profilePic: profilePic))
+                let userViewModel = UserViewModel(UserModel(documentID: result[Strings.userDocumentIDField] as! String,
+                                                            userID: result[Strings.userIDField] as! String,
+                                                            firstName: result[Strings.userFirstNameField] as! String,
+                                                            lastName: result[Strings.userLastNameField] as! String,
+                                                            email: result[Strings.userEmailField] as! String,
+                                                            profilePic: result[Strings.userProfilePicField] as! String))
                 completion(userViewModel)
             }
         } else {
@@ -60,15 +54,35 @@ struct User {
         }
     }
     
-    func isEmailVerified() -> Bool {
+    func isEmailVerified(completion: @escaping (Bool) -> Void) {
         if user != nil {
-            if user!.isEmailVerified {
-                return true
-            } else {
-                return false
-            }
+            user?.reload(completion: { (error) in
+                if error != nil {
+                    // Show error
+                }
+                if user!.isEmailVerified {
+                    completion(true)
+                } else {
+                    completion(false)
+                }
+            })
+        } else {
+            // Showb error no user is signed in!
         }
-        return Bool()
+    }
+    
+    func sendEmailVerification(completion: @escaping (Bool) -> Void) {
+        if user != nil {
+            user!.sendEmailVerification { (error) in
+                if error != nil {
+                    // Show error
+                    completion(false)
+                }
+                completion(true)
+            }
+        } else {
+            // Show error no user is signed in!
+        }
     }
     
     func signOutUser() -> Bool? {
@@ -86,7 +100,7 @@ struct User {
         }
     }
     
-    func updateUserData(_ firstName: String, _ lastName: String, _ email: String, _ profilePicURL: String) {
+    func updateUserData(_ firstName: String, _ lastName: String, _ email: String, _ profilePicURL: String, completion: @escaping (Bool) -> Void) {
         if user != nil {
             user!.reload(completion: { (error) in
                 if error != nil {
@@ -95,6 +109,7 @@ struct User {
                 let isEmailVerified = user!.isEmailVerified
                 if isEmailVerified {
                     let signedInUserID = user!.uid
+                    let initialUserEmail = user!.email
                     db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
                         if error != nil {
                             // Show error
@@ -113,6 +128,15 @@ struct User {
                                              Strings.userLastNameField : lastName,
                                              Strings.userEmailField : email,
                                              Strings.userProfilePicField : profilePicURL])
+                            if initialUserEmail != email {
+                                sendEmailVerification { (result) in
+                                    if result {
+                                        completion(true)
+                                    } else {
+                                        completion(false)
+                                    }
+                                }
+                            }
                         })
                     }
                 } else {

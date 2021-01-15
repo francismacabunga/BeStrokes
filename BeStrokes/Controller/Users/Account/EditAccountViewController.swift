@@ -28,14 +28,18 @@ class EditAccountViewController: UIViewController {
     @IBOutlet weak var editAccount2TextField: UITextField!
     @IBOutlet weak var editAccount3TextField: UITextField!
     @IBOutlet weak var editAccountSaveButtonLabel: UIButton!
+    @IBOutlet weak var editAccountLoadingIndicatorView: UIActivityIndicatorView!
     
     
     //MARK: - Constants / Variables
     
-    var userViewModel: UserViewModel!
+    private var userViewModel: UserViewModel?
     private let user = User()
     private let imagePicker = UIImagePickerController()
     private var editedImage: UIImage?
+    private lazy var userID = String()
+    private lazy var profilePic = String()
+    private lazy var email = String()
     
     
     //MARK: - View Controller Life Cycle
@@ -54,7 +58,8 @@ class EditAccountViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        editAccount4Label.isHidden = true
+        editAccount1Label.isHidden = true
+        editAccountLoadingIndicatorView.isHidden = true
         Utilities.setDesignOn(navigationBar: editAccountNavigationBar, isDarkMode: true)
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(stackView: editAccountStackView, backgroundColor: .clear)
@@ -63,14 +68,16 @@ class EditAccountViewController: UIViewController {
         Utilities.setDesignOn(label: editAccountHeadingLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.editAccountHeadingText)
         Utilities.setDesignOn(imageView: editAccountImageView, isPerfectCircle: true)
         Utilities.setDesignOn(imageView: editAccountCameraIconImageView, image: UIImage(named: Strings.cameraImage))
-        Utilities.setDesignOn(label: editAccount1Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.firstNameTextField)
-        Utilities.setDesignOn(label: editAccount2Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.lastNameTextField)
-        Utilities.setDesignOn(label: editAccount3Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.emailTextField)
-        Utilities.setDesignOn(label: editAccount4Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0.970628202, green: 0.08276668936, blue: 0.005421592388, alpha: 1))
+        Utilities.setDesignOn(label: editAccount1Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+        Utilities.setDesignOn(label: editAccount2Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.firstNameTextField)
+        Utilities.setDesignOn(label: editAccount3Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.lastNameTextField)
+        Utilities.setDesignOn(label: editAccount4Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.emailTextField)
         Utilities.setDesignOn(textField: editAccount1TextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
         Utilities.setDesignOn(textField: editAccount2TextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
         Utilities.setDesignOn(textField: editAccount3TextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(button: editAccountSaveButtonLabel, title: Strings.saveButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(button: editAccountSaveButtonLabel, title: Strings.saveButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(activityIndicatorView: editAccountLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.animateButton(button: editAccountSaveButtonLabel)
     }
     
     func dismissKeyboard() {
@@ -79,12 +86,35 @@ class EditAccountViewController: UIViewController {
         editAccount3TextField.endEditing(true)
     }
     
+    func showAlertController() {
+        let alert = UIAlertController(title: Strings.editAccountAlertTitle, message: Strings.editAccountAlertMessage, preferredStyle: .alert)
+        present(alert, animated: true)
+    }
+    
+    func transitionToLandingVC() {
+        showAlertController()
+        editAccountLoadingIndicatorView.isHidden = true
+        editAccountSaveButtonLabel.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
+            user.signOutUser()
+            let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+            let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
+            view.window?.rootViewController = landingVC
+            view.window?.makeKeyAndVisible()
+        }
+    }
+    
     func setData() {
-        DispatchQueue.main.async { [self] in
-            editAccountImageView.kf.setImage(with: URL(string: userViewModel.profilePic))
-            editAccount1TextField.text = userViewModel.firstName
-            editAccount2TextField.text = userViewModel.lastname
-            editAccount3TextField.text = userViewModel.email
+        user.getSignedInUserData { [self] (result) in
+            userID = result.userID
+            profilePic = result.profilePic
+            email = result.email
+            DispatchQueue.main.async { [self] in
+                editAccountImageView.kf.setImage(with: URL(string: result.profilePic)!)
+                editAccount1TextField.text = result.firstName
+                editAccount2TextField.text = result.lastname
+                editAccount3TextField.text = result.email
+            }
         }
     }
     
@@ -105,13 +135,25 @@ class EditAccountViewController: UIViewController {
     //MARK: - Buttons
     
     @IBAction func editAccountSaveButton(_ sender: UIButton) {
-        if user.isEmailVerified() {
-            updateAccountProcess()
-        } else {
-            // Show error message
-            UIView.animate(withDuration: 0.2) { [self] in
-                editAccount4Label.text = Strings.editAccountEmailVerficationErrorLabel
-                editAccount4Label.isHidden = false
+        user.isEmailVerified { [self] (result) in
+            if result {
+                updateAccountProcess()
+                editAccountSaveButtonLabel.isHidden = true
+                editAccountLoadingIndicatorView.startAnimating()
+                editAccountLoadingIndicatorView.isHidden = false
+                let initialEmail = email
+                let newEmail = editAccount3TextField.text
+                if initialEmail == newEmail {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        dismiss(animated: true)
+                    }
+                }
+            } else {
+                // Show error message
+                UIView.animate(withDuration: 0.2) { [self] in
+                    editAccount1Label.text = Strings.editAccountEmailVerficationErrorLabel
+                    editAccount1Label.isHidden = false
+                }
             }
         }
     }
@@ -133,16 +175,28 @@ class EditAccountViewController: UIViewController {
         let email = editAccount3TextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         if firstName != "" && lastName != "" && email != "" {
             if editedImage != nil {
-                user.uploadProfilePic(with: editedImage!, using: userViewModel.userID) { [self] (imageString) in
-                    user.updateUserData(firstName!, lastName!, email!, imageString)
+                user.uploadProfilePic(with: editedImage!, using: userID) { [self] (imageString) in
+                    user.updateUserData(firstName!, lastName!, email!, imageString) { (result) in
+                        if result {
+                            transitionToLandingVC()
+                        } else {
+                            // Show error
+                        }
+                    }
                 }
             } else {
-                user.updateUserData(firstName!, lastName!, email!, userViewModel.profilePic)
+                user.updateUserData(firstName!, lastName!, email!, profilePic) { [self] (result) in
+                    if result {
+                        transitionToLandingVC()
+                    } else {
+                        // Show error
+                    }
+                }
             }
         } else {
             UIView.animate(withDuration: 0.2) { [self] in
-                editAccount4Label.text = Strings.editAccountTextFieldErrorLabel
-                editAccount4Label.isHidden = false
+                editAccount1Label.text = Strings.editAccountTextFieldErrorLabel
+                editAccount1Label.isHidden = false
             }
         }
     }
@@ -193,8 +247,8 @@ extension EditAccountViewController: UITextFieldDelegate {
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.text == "" {
             UIView.animate(withDuration: 0.2) { [self] in
-                editAccount4Label.text = Strings.editAccountTextFieldErrorLabel
-                editAccount4Label.isHidden = false
+                editAccount1Label.text = Strings.editAccountTextFieldErrorLabel
+                editAccount1Label.isHidden = false
             }
             return false
         } else {

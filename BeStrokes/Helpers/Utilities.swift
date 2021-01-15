@@ -283,8 +283,10 @@ struct Utilities {
                                                                     .font: UIFont(name: font, size: fontSize)!])
         }
         if isCircular != nil {
-            textField.layer.cornerRadius = textField.bounds.height / 2
-            textField.clipsToBounds = true
+            if isCircular! {
+                textField.layer.cornerRadius = textField.bounds.height / 2
+                textField.clipsToBounds = true
+            }
         }
     }
     
@@ -312,17 +314,21 @@ struct Utilities {
             label.lineBreakMode = lineBreakMode!
         }
         if text != nil {
-            label.text = text
+            label.text = text!
         }
         if canResize != nil {
-            label.adjustsFontSizeToFitWidth = canResize!
+            if canResize! {
+                label.adjustsFontSizeToFitWidth = canResize!
+            }
         }
         if minimumScaleFactor != nil {
             label.minimumScaleFactor = minimumScaleFactor!
         }
         if isCircular != nil {
-            label.layer.cornerRadius = label.bounds.height / 2
-            label.clipsToBounds = true
+            if isCircular! {
+                label.layer.cornerRadius = label.bounds.height / 2
+                label.clipsToBounds = true
+            }
         }
         if backgroundColor != nil {
             label.backgroundColor = backgroundColor!
@@ -334,33 +340,41 @@ struct Utilities {
                             title: String? = nil,
                             font: String? = nil,
                             fontSize: CGFloat? = nil,
-                            titleColor: UIColor? = nil,
                             backgroundImage: UIImage? = nil,
+                            titleColor: UIColor? = nil,
                             tintColor: UIColor? = nil,
+                            backgroundColor: UIColor? = nil,
                             isCircular: Bool? = nil,
-                            backgroundColor: UIColor? = nil)
+                            isSkeletonPerfectCircle: Bool? = nil)
     {
         if title != nil {
-            button.setTitle(title, for: .normal)
+            button.setTitle(title!, for: .normal)
         }
         if font != nil, fontSize != nil {
             button.titleLabel?.font = UIFont(name: font!, size: fontSize!)
         }
-        if titleColor != nil {
-            button.setTitleColor(titleColor, for: .normal)
-        }
         if backgroundImage != nil {
-            button.setBackgroundImage(backgroundImage, for: .normal)
+            button.setBackgroundImage(backgroundImage!, for: .normal)
+        }
+        if titleColor != nil {
+            button.setTitleColor(titleColor!, for: .normal)
         }
         if tintColor != nil {
-            button.tintColor = tintColor
-        }
-        if isCircular != nil {
-            button.layer.cornerRadius = button.bounds.height / 2
-            button.clipsToBounds = true
+            button.tintColor = tintColor!
         }
         if backgroundColor != nil {
             button.backgroundColor = backgroundColor!
+        }
+        if isCircular != nil {
+            if isCircular! {
+                button.layer.cornerRadius = button.bounds.height / 2
+                button.clipsToBounds = true
+            }
+        }
+        if isSkeletonPerfectCircle != nil {
+            if isSkeletonPerfectCircle! {
+                button.skeletonCornerRadius = Float(button.bounds.height / 2)
+            }
         }
     }
     
@@ -380,17 +394,24 @@ struct Utilities {
                             setCustomCircleSkeletonCurve: Float? = nil)
     {
         if backgroundColor != nil {
-            view.backgroundColor = backgroundColor
+            view.backgroundColor = backgroundColor!
         }
         if isPerfectCircle != nil {
-            view.layer.cornerRadius = view.frame.size.height / 2
-            view.clipsToBounds = true
+            if isPerfectCircle! {
+                view.layer.cornerRadius = view.frame.size.height / 2
+                view.clipsToBounds = true
+            }
         }
         if setCustomCircleCurve != nil {
             view.layer.cornerRadius = setCustomCircleCurve!
             view.clipsToBounds = true
         }
         if isSkeletonPerfectCircle != nil {
+            if isSkeletonPerfectCircle! {
+                view.skeletonCornerRadius = Float(view.frame.size.height / 2)
+            }
+        }
+        if setCustomCircleSkeletonCurve != nil {
             view.skeletonCornerRadius = setCustomCircleSkeletonCurve!
         }
     }
@@ -404,18 +425,22 @@ struct Utilities {
     {
         imageView.contentMode = .scaleAspectFit
         if image != nil {
-            imageView.image = image
+            imageView.image = image!
         }
         if tintColor != nil {
-            imageView.tintColor = tintColor
+            imageView.tintColor = tintColor!
         }
         if isPerfectCircle != nil {
-            imageView.layer.cornerRadius = imageView.frame.size.height / 2
-            imageView.clipsToBounds = true
-            imageView.contentMode = .scaleAspectFit
+            if isPerfectCircle! {
+                imageView.layer.cornerRadius = imageView.frame.size.height / 2
+                imageView.clipsToBounds = true
+                imageView.contentMode = .scaleAspectFit
+            }
         }
         if isSkeletonPerfectCircle != nil {
-            imageView.skeletonCornerRadius = Float(imageView.frame.size.height / 2)
+            if isSkeletonPerfectCircle! {
+                imageView.skeletonCornerRadius = Float(imageView.frame.size.height / 2)
+            }
         }
     }
     
@@ -451,13 +476,14 @@ struct Utilities {
                             backgroundColor: UIColor,
                             separatorStyle: UITableViewCell.SeparatorStyle,
                             showVerticalScrollIndicator: Bool,
+                            separatorColor: UIColor? = nil,
                             rowHeight: CGFloat? = nil)
     {
         tableView.backgroundColor = backgroundColor
         tableView.separatorStyle = separatorStyle
-        tableView.showsVerticalScrollIndicator = false
-        if showVerticalScrollIndicator {
-            tableView.showsVerticalScrollIndicator = true
+        tableView.showsVerticalScrollIndicator = showVerticalScrollIndicator
+        if separatorColor != nil {
+            tableView.separatorColor = separatorColor!
         }
         if rowHeight != nil {
             tableView.rowHeight = rowHeight!

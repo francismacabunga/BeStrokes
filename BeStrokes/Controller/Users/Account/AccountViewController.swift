@@ -94,15 +94,10 @@ class AccountViewController: UIViewController {
         }
         showLoadingSkeletonView()
         user.getSignedInUserData { [self] (result) in
-            userViewModel = result
-            let profilePic = URL(string: result.profilePic)!
-            let firstName = result.firstName
-            let lastName = result.lastname
-            let email = result.email
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                accountImageView.kf.setImage(with: profilePic)
-                accountNameHeadingLabel.text = "\(firstName) \(lastName)"
-                accountEmailHeadingLabel.text = email
+                accountImageView.kf.setImage(with: URL(string: result.profilePic)!)
+                accountNameHeadingLabel.text = "\(result.firstName) \(result.lastname)"
+                accountEmailHeadingLabel.text = result.email
                 hideLoadingSkeletonView()
             }
         }
@@ -113,13 +108,6 @@ class AccountViewController: UIViewController {
     
     @IBAction func accountNotificationButton(_ sender: UIButton) {
         
-    }
-    
-    @IBAction func accountEditButton(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        let editAccountVC = storyboard.instantiateViewController(identifier: Strings.editAccountVC) as! EditAccountViewController
-        editAccountVC.userViewModel = userViewModel
-        present(editAccountVC, animated: true)
     }
     
     

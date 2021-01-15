@@ -95,7 +95,7 @@ class LandingViewController: UIViewController, LandingPageViewControllerDelegate
                 } else {
                     print("Valid Token")
                     
-                    // Redirect to fucking home screen!
+                    // Redirect to home screen!
                     let HomeViewController =  Utilities.transitionTo(storyboardName: Strings.userStoryboard, identifier: Strings.tabBarStoryboardID)
                     view.window?.rootViewController = HomeViewController
                     view.window?.makeKeyAndVisible()
