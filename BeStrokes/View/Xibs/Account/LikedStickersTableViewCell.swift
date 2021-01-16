@@ -36,6 +36,7 @@ class LikedStickersTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         showLoadingSkeletonView()
+        likedStickerHeadingLabel.text = ""
         
     }
     

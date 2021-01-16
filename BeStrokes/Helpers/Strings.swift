@@ -119,6 +119,53 @@ struct Strings {
     static let lastNameTextField = "Last Name"
     static let emailTextField = "Email"
     
+    //MARK: - Alert Labels
+    static let logoutAlertTitle = "Are you sure?"
+    static let logoutYesAction = "Yes"
+    static let logoutNoAction = "No"
+    static let editAccountAlertTitle = "Success!"
+    static let editAccountAlertMessage = "Your account details and email has been successfully updated. You may now sign in with your new email. Signing you out."
+    
+    //MARK: - Warning Labels
+    static let editAccountEmailVerficationErrorLabel = "Account cannot be updated, email is not verified."
+    static let editAccountTextFieldsErrorLabel = "Some fields are incomplete."
+    static let editAccountTextFieldErrorLabel = "This field is required."
+    
+    //MARK: - Text Fields Labels
+    static let accountSearchTextFieldPlaceholder = "Search"
+    
+    //MARK: - Sticker Category/Tag Labels
+    static let categoryAllStickers = "All"
+    static let categoryFeaturedStickers = "Featured"
+    static let tagNoStickers = "none"
+    
+    
+    
+    
+    
+    
+    
+    //MARK: - Sticker Category Array
+    static let allStickers = "All"
+    static let animalStickers = "Animals"
+    static let foodStickers = "Food"
+    static let objectStickers = "Objects"
+    static let coloredStickers = "Colored"
+    static let travelStickers = "Travel"
+    
+    //MARK: - Profile Settings Array
+    static let profileSettingsNotifications = "Notifications"
+    static let profileSettingsDarkAppearance = "Dark Appearance"
+    static let profileSettingsLogout = "Logout"
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -147,6 +194,8 @@ struct Strings {
     
     static let accountNotificationIcon = "bell.badge.fill"
     static let accountEditAccountIcon = "pencil.circle.fill"
+    static let accountSearchStickerIcon = "magnifyingglass"
+    static let accountArrowUpIcon = "chevron.up.square.fill"
     
     
     
@@ -203,39 +252,14 @@ struct Strings {
     
     
     
-    //MARK: - Sticker Category/Tag Labels
-    static let categoryAllStickers = "All"
-    static let categoryFeaturedStickers = "Featured"
-    static let tagNoStickers = "none"
-    
-    //MARK: - Sticker Category Array
-    static let allStickers = "All"
-    static let animalStickers = "Animals"
-    static let foodStickers = "Food"
-    static let objectStickers = "Objects"
-    static let coloredStickers = "Colored"
-    static let travelStickers = "Travel"
-    
-    //MARK: - Profile Settings Array
-    static let profileSettingsNotifications = "Notifications"
-    static let profileSettingsDarkAppearance = "Dark Appearance"
-    static let profileSettingsLogout = "Logout"
     
     
     
     
     
-    //MARK: - Alert Labels
-    static let logoutAlertTitle = "Are you sure?"
-    static let logoutYesAction = "Yes"
-    static let logoutNoAction = "No"
-    static let editAccountAlertTitle = "Success!"
-    static let editAccountAlertMessage = "Your account details and email has been successfully updated. You may now sign in with your new email. Signing you out."
     
-    //MARK: - Warning Labels
-    static let editAccountEmailVerficationErrorLabel = "Account cannot be updated, email is not verified."
-    static let editAccountTextFieldsErrorLabel = "Some fields are incomplete."
-    static let editAccountTextFieldErrorLabel = "This field is required."
+    
+    
     
     
     
