@@ -13,11 +13,7 @@ class ProfileViewController: UIViewController {
     
     //MARK: - IBOutlets
     
-    
-    
-    @IBOutlet weak var sampleNavigationBar: UINavigationBar!
-    
-    @IBOutlet weak var profileContentView: UIView!
+    @IBOutlet weak var profileNavigationBar: UINavigationBar!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var profileNameLabel: UILabel!
     @IBOutlet weak var profileEmailLabel: UILabel!
@@ -43,26 +39,15 @@ class ProfileViewController: UIViewController {
         setDataSourceAndDelegate()
         registerNib()
         setData()
-    
+        
     }
     
-    
-   
-
-    
-    
-   
     
     //MARK: - Design Elements
     
     func setDesignElements() {
-        guard let navigationBar = navigationController?.navigationBar else {return}
-//        navigationBar.isHidden = false
-        navigationBar.prefersLargeTitles = true
-        title = "Settings"
-//        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-//        Utilities.setDesignOn(navigationBar: profileNavigationBar, isDarkMode: true)
-        Utilities.setDesignOn(view: profileContentView, backgroundColor: .clear, setCustomCircleCurve: 25)
+        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(navigationBar: profileNavigationBar, isDarkMode: true)
         Utilities.setDesignOn(imageView: profileImageView, isPerfectCircle: true)
         Utilities.setDesignOn(label: profileNameLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
         Utilities.setDesignOn(label: profileEmailLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
@@ -73,20 +58,26 @@ class ProfileViewController: UIViewController {
     }
     
     func showLoadingSkeletonView() {
-//        DispatchQueue.main.async { [self] in
-//            profileContentView.isSkeletonable = true
-//            profileContentView.showAnimatedSkeleton()
-//        }
+        DispatchQueue.main.async { [self] in
+            profileImageView.isSkeletonable = true
+            Utilities.setDesignOn(imageView: profileImageView, isSkeletonPerfectCircle: true)
+            profileImageView.showAnimatedSkeleton()
+            profileNameLabel.isSkeletonable = true
+            profileNameLabel.showAnimatedSkeleton()
+            profileEmailLabel.isSkeletonable = true
+            profileEmailLabel.showAnimatedSkeleton()
+        }
     }
     
     func hideLoadingSkeletonView() {
-        profileContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        profileImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        profileNameLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        profileEmailLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
     func setData() {
         let profileSettingsData = fetchProfileData.settings()
         profileSettingsViewModel = profileSettingsData
-        
         showLoadingSkeletonView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
             user.getSignedInUserData { [self] (result) in
@@ -97,7 +88,7 @@ class ProfileViewController: UIViewController {
                 profileImageView.kf.setImage(with: profilePic)
                 profileNameLabel.text = "\(firstName) \(lastName)"
                 profileEmailLabel.text = email
-//                hideLoadingSkeletonView()
+                hideLoadingSkeletonView()
             }
         }
     }

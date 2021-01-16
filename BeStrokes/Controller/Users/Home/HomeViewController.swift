@@ -32,12 +32,10 @@ class HomeViewController: UIViewController {
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
     private var stickerViewModel: [StickerViewModel]?
-    
-    private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private let user = User()
     private let fetchStickerData = FetchStickerData()
     private let heartButtonLogic = HeartButtonLogic()
-    
+    private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private var stickerCategorySelected: String?
     private var featuredHeartButtonTapped: Bool?
     
@@ -48,14 +46,17 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         setDesignElements()
-        registerGestures()
-        registerCollectionView()
         setProfilePicture()
+        registerCollectionView()
         setCollectionViewData()
-                
+        
     }
     
- 
+    override func viewWillAppear(_ animated: Bool) {
+        let selectedIndexPath = IndexPath(item: 0, section: 0)
+        homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .right)
+    }
+    
     
     //MARK: - Design Elements
     
@@ -64,37 +65,31 @@ class HomeViewController: UIViewController {
     }
     
     func setDesignElements() {
-//        navigationController?.setNavigationBarHidden(true, animated: true)
-        
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: homeFeaturedView, backgroundColor: .clear)
         Utilities.setDesignOn(view: homeStickerView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: homeContentStackView, backgroundColor: .clear)
-        
         DispatchQueue.main.async { [self] in
             homeProfilePictureButtonLabel.isSkeletonable = true
             Utilities.setDesignOn(button: homeProfilePictureButtonLabel, isSkeletonPerfectCircle: true)
             homeProfilePictureButtonLabel.showAnimatedSkeleton()
         }
-        
         Utilities.setDesignOn(label: homeHeading1Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeHeading1Text)
         Utilities.setDesignOn(label: homeHeading2Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeHeading2Text)
         Utilities.setDesignOn(collectionView: homeFeaturedCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        
         homeLoadingIndicatorView.startAnimating()
         homeLoadingIndicatorView.isHidden = true
     }
     
     func setProfilePicture() {
         user.getSignedInUserData { (result) in
-            let profilePicImageURL = URL(string: result.profilePic)
             DispatchQueue.main.async { [self] in
                 homeProfilePictureButtonLabel.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
                 Utilities.setDesignOn(button: homeProfilePictureButtonLabel, isCircular: true)
-                homeProfilePictureButtonLabel.kf.setBackgroundImage(with: profilePicImageURL, for: .normal)
+                homeProfilePictureButtonLabel.kf.setBackgroundImage(with: URL(string: result.profilePic), for: .normal)
             }
         }
     }
@@ -106,76 +101,19 @@ class HomeViewController: UIViewController {
     }
     
     
-    //MARK: - UIGestureHandlers
-    
-    
-    @IBAction func homeProfilePictureButton(_ sender: UIButton) {
-        
-       
-        
-//        performSegue(withIdentifier: "goToProfile", sender: self)
-        
-//        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-//        let profileVC = storyboard.instantiateViewController(identifier: Strings.profileVC) as! ProfileViewController
-//        profileVC.modalPresentationStyle = .fullScreen
-//        present(profileVC, animated: true)
-        
-    }
-    
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-//        if segue.identifier == "goToProfile" {
-//            let profileVC = segue.destination as! ProfileViewController
-//            profileVC.modalTransitionStyle = .flipHorizontal
-//            
-//        }
-        
-        
-        
-//
-    }
-    
-    
-    func registerGestures() {
-        //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
-        //        homeProfilePictureImageView.addGestureRecognizer(tapGesture)
-        //        homeProfilePictureImageView.isUserInteractionEnabled = true
-    }
-    
-    @objc func tapGestureHandler() {
-        //        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        //        let profileVC = storyboard.instantiateViewController(identifier: Strings.profileVC) as! ProfileViewController
-        //        profileVC.modalPresentationStyle = .fullScreen
-        //        present(profileVC, animated: true)
-        
-        
-        //        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        //        let profileVC = storyboard.instantiateViewController(identifier: "SampleViewController") as! SampleViewController
-        //        present(profileVC, animated: true)
-        
-        
-    }
-    
-   
-    
     //MARK: - Collection View Process
     
     func registerCollectionView() {
-        
         setDataSourceAndDelegate()
         registerNib()
-        
         viewPeekingBehavior = MSCollectionViewPeekingBehavior()
         setViewPeekingBehavior(using: viewPeekingBehavior)
-        
     }
     
     func setDataSourceAndDelegate() {
         homeFeaturedCollectionView.dataSource = self
         homeStickerCategoryCollectionView.dataSource = self
         homeStickerCollectionView.dataSource = self
-        
         homeFeaturedCollectionView.delegate = self
         homeStickerCategoryCollectionView.delegate = self
         homeStickerCollectionView.delegate = self
@@ -208,19 +146,16 @@ class HomeViewController: UIViewController {
     }
     
     func getStickerCollectionViewData(onCategory stickerCategory: String) {
-        
         fetchStickerData.stickerCollectionView(category: stickerCategory) { [self] (result) in
             stickerViewModel = result
             DispatchQueue.main.async { [self] in
                 homeStickerCollectionView.reloadData()
             }
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 homeLoadingIndicatorView.isHidden = true
                 homeStickerCollectionView.isHidden = false
             }
         }
-        
     }
     
 }
@@ -258,7 +193,6 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         if collectionView == homeFeaturedCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedCollectionViewCell
             if featuredStickerViewModel != nil {
@@ -270,7 +204,6 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             }
             return cell
         }
-        
         if collectionView == homeStickerCategoryCollectionView {
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCategoryCell, for: indexPath) as? StickerCategoryCollectionViewCell {
                 DispatchQueue.main.async { [self] in
@@ -280,7 +213,6 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
                 return cell
             }
         }
-        
         if collectionView == homeStickerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCell, for: indexPath) as! StickerCollectionViewCell
             if stickerViewModel != nil {
@@ -292,9 +224,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             }
             return cell
         }
-        
         return UICollectionViewCell()
-        
     }
     
 }
@@ -305,7 +235,6 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
 extension HomeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         if collectionView == homeStickerCategoryCollectionView {
             stickerCategorySelected = stickerCategoryViewModel[indexPath.row].category
             stickerCategoryViewModel[indexPath.row].isCategorySelected = true
@@ -322,7 +251,6 @@ extension HomeViewController: UICollectionViewDelegate {
                 getStickerCollectionViewData(onCategory: stickerCategorySelected!)
             }
         }
-        
         if collectionView == homeStickerCollectionView {
             if stickerViewModel != nil {
                 let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
@@ -331,7 +259,6 @@ extension HomeViewController: UICollectionViewDelegate {
                 present(stickerOptionVC, animated: true)
             }
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -357,21 +284,17 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         if collectionView == homeStickerCategoryCollectionView {
             let stickerCategoryCollectionViewLayout = homeStickerCategoryCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             stickerCategoryCollectionViewLayout.sectionInset.left = 25
             return CGSize(width: 100, height: 30)
         }
-        
         if collectionView == homeStickerCollectionView {
             let stickersCollectionViewLayout = homeStickerCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             stickersCollectionViewLayout.sectionInset.left = 25
             return CGSize(width: 140, height: 140)
         }
-        
         return CGSize()
-        
     }
     
 }

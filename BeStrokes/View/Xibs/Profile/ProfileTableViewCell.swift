@@ -21,10 +21,8 @@ class ProfileTableViewCell: UITableViewCell {
     
     var profileViewModel: ProfileSettingsViewModel! {
         didSet {
-            
             let label = profileViewModel.profileSettings.first!.settingLabel
             let icon = profileViewModel.profileSettings.first!.settingIcon
-            
             if label == Strings.profileSettingsLogout {
                 settingLabel.text = label
                 settingIconImageView.image = UIImage(systemName: icon)
@@ -33,7 +31,6 @@ class ProfileTableViewCell: UITableViewCell {
                 settingLabel.text = label
                 settingIconImageView.image = UIImage(systemName: icon)
             }
-            
         }
     }
     
