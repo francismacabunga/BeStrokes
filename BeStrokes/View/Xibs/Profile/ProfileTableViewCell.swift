@@ -12,6 +12,7 @@ class ProfileTableViewCell: UITableViewCell {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var settingContentView: UIView!
     @IBOutlet weak var settingIconImageView: UIImageView!
     @IBOutlet weak var settingLabel: UILabel!
     @IBOutlet weak var settingSwitch: UISwitch!
@@ -49,7 +50,7 @@ class ProfileTableViewCell: UITableViewCell {
     
     func setDesignElements() {
         self.selectionStyle = .none
-        Utilities.setDesignOn(view: contentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(view: settingContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(imageView: settingIconImageView, tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(label: settingLabel, font: Strings.defaultFont, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left)
     }

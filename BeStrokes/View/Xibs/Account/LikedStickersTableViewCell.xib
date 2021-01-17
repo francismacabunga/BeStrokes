@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -69,6 +70,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="likedStickerContentView" destination="H2p-sc-9uM" id="emz-zu-64m"/>
                 <outlet property="likedStickerHeadingLabel" destination="gN4-qM-01s" id="Oz6-gI-pfQ"/>
                 <outlet property="likedStickerImageView" destination="IEj-jZ-738" id="N2J-np-zJl"/>
                 <outlet property="likedStickerOptionImageView" destination="Iq5-5n-h3r" id="PBs-FB-h3s"/>
