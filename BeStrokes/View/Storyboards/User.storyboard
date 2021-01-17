@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Item-->
+        <!--Capture View Controller-->
         <scene sceneID="NdH-39-LPf">
             <objects>
-                <viewController storyboardIdentifier="CaptureViewController" id="vmM-ba-cQN" customClass="CaptureViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CaptureViewController" id="vmM-ba-cQN" userLabel="Capture View Controller" customClass="CaptureViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sbZ-9D-eOf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -31,7 +31,7 @@
                             <constraint firstItem="obd-71-svW" firstAttribute="trailing" secondItem="dIP-9L-Khc" secondAttribute="trailing" id="sOo-Sx-U1h"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="cVZ-bV-GlH"/>
+                    <tabBarItem key="tabBarItem" title="" id="cVZ-bV-GlH"/>
                     <navigationItem key="navigationItem" id="OS8-XS-gWf">
                         <barButtonItem key="leftBarButtonItem" systemItem="trash" id="ykt-8c-FZT">
                             <connections>
@@ -202,7 +202,6 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" id="AnV-R7-mWb"/>
-                    <navigationItem key="navigationItem" id="4KN-vU-dEI"/>
                     <connections>
                         <outlet property="accountBottomSearchContentView" destination="ZeL-6Z-uUl" id="jcc-5d-W2B"/>
                         <outlet property="accountBottomStackView" destination="hkm-Bw-dtm" id="87L-C0-JBK"/>
@@ -372,7 +371,6 @@
                             <constraint firstItem="XSI-Hj-yJH" firstAttribute="trailing" secondItem="zIX-2M-xrc" secondAttribute="trailing" id="slW-Xn-jx8"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="pTM-QX-V3v"/>
                     <connections>
                         <outlet property="stickerBottomView" destination="wIh-fs-76u" id="vuu-4T-M68"/>
                         <outlet property="stickerCategoryLabel" destination="px6-YU-gAZ" id="ZV6-jV-VvL"/>
@@ -428,7 +426,7 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2hQ-6I-WaJ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                 <items>
-                                    <navigationItem title="Title" id="7qH-76-Wem"/>
+                                    <navigationItem id="7qH-76-Wem"/>
                                 </items>
                             </navigationBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mhu-jy-Mhh">
@@ -490,7 +488,6 @@
                             <constraint firstItem="2Xo-gm-9MS" firstAttribute="trailing" secondItem="mhu-jy-Mhh" secondAttribute="trailing" constant="10" id="ugv-hp-blD"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="4U9-Sf-dKJ"/>
                     <connections>
                         <outlet property="profileContentView" destination="mhu-jy-Mhh" id="cc3-cd-T61"/>
                         <outlet property="profileEmailLabel" destination="1BP-CO-dTU" id="hXX-bq-lsu"/>
@@ -537,7 +534,7 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9n-wS-Gh2">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                 <items>
-                                    <navigationItem title="Title" id="kw0-bD-2P3"/>
+                                    <navigationItem id="kw0-bD-2P3"/>
                                 </items>
                             </navigationBar>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hDf-MX-MMG">
@@ -652,7 +649,6 @@
                                                             <constraint firstAttribute="height" constant="50" id="3o0-C8-ScO"/>
                                                             <constraint firstAttribute="width" constant="145" id="hln-mw-n2F"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button"/>
                                                         <connections>
                                                             <action selector="editAccountSaveButton:" destination="cpa-sJ-RVj" eventType="touchUpInside" id="s3a-hy-Dcd"/>
                                                         </connections>
@@ -698,7 +694,6 @@
                             <constraint firstItem="hDf-MX-MMG" firstAttribute="bottom" secondItem="CZu-ZZ-ioy" secondAttribute="bottom" id="tip-D4-XOP"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="3Md-iX-0E0"/>
                     <connections>
                         <outlet property="editAccountCameraIconImageView" destination="cOE-1r-PNg" id="CpG-cr-0n0"/>
                         <outlet property="editAccountEmailLabel" destination="3LO-I8-RvL" id="e0u-y9-h2c"/>
@@ -722,10 +717,10 @@
             </objects>
             <point key="canvasLocation" x="15369" y="36"/>
         </scene>
-        <!--Item-->
+        <!--Home View Controller-->
         <scene sceneID="hX8-d0-5Yi">
             <objects>
-                <viewController storyboardIdentifier="HomeViewController" id="4Ep-et-YK5" customClass="HomeViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" id="4Ep-et-YK5" userLabel="Home View Controller" customClass="HomeViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MGl-LB-cW8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -733,10 +728,10 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jbP-We-H7c">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="RzP-lS-pUj" userLabel="Content Stack">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="RzP-lS-pUj" userLabel="Home Content Stack View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="785.5"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxT-Hi-qDl" userLabel="Featured View">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxT-Hi-qDl" userLabel="Home Featured View">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dnr-HY-Zqt">
@@ -889,8 +884,7 @@
                             <constraint firstItem="KVS-tl-07e" firstAttribute="bottom" secondItem="jbP-We-H7c" secondAttribute="bottom" id="vdj-79-imq"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="bVO-mK-gc2"/>
-                    <navigationItem key="navigationItem" id="qBv-D4-CZI"/>
+                    <tabBarItem key="tabBarItem" title="" id="bVO-mK-gc2"/>
                     <connections>
                         <outlet property="homeContentStackView" destination="RzP-lS-pUj" id="ko9-rh-h8x"/>
                         <outlet property="homeFeaturedCollectionView" destination="u41-Cg-gon" id="cDR-im-Ral"/>
