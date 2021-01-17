@@ -91,6 +91,12 @@ class EditAccountViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    func showLoadingButton() {
+        editAccountSaveButtonLabel.isHidden = true
+        editAccountLoadingIndicatorView.startAnimating()
+        editAccountLoadingIndicatorView.isHidden = false
+    }
+    
     func transitionToLandingVC() {
         showAlertController()
         editAccountLoadingIndicatorView.isHidden = true
@@ -135,12 +141,10 @@ class EditAccountViewController: UIViewController {
     //MARK: - Buttons
     
     @IBAction func editAccountSaveButton(_ sender: UIButton) {
+        showLoadingButton()
         user.isEmailVerified { [self] (result) in
             if result {
                 updateAccountProcess()
-                editAccountSaveButtonLabel.isHidden = true
-                editAccountLoadingIndicatorView.startAnimating()
-                editAccountLoadingIndicatorView.isHidden = false
                 let initialEmail = email
                 let newEmail = editAccountEmailTextField.text
                 if initialEmail == newEmail {
