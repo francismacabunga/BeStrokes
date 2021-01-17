@@ -9,12 +9,13 @@ import UIKit
 
 class TabBarViewController: UITabBarController {
     
+    //MARK: - View Controller Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         UITabBar.appearance().barTintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         UITabBar.appearance().tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        
         if let items = tabBar.items {
             items[0].title = Strings.homeTabText
             items[0].image = UIImage(systemName: Strings.tabHomeIcon)

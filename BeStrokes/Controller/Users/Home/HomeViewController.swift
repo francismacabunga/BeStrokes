@@ -18,7 +18,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var homeContentStackView: UIStackView!
     @IBOutlet weak var homeFeaturedView: UIView!
     @IBOutlet weak var homeStickerView: UIView!
-    @IBOutlet weak var homeProfilePictureButtonLabel: UIButton!
+    @IBOutlet weak var homeProfilePictureButton: UIButton!
     @IBOutlet weak var homeHeading1Label: UILabel!
     @IBOutlet weak var homeHeading2Label: UILabel!
     @IBOutlet weak var homeFeaturedCollectionView: UICollectionView!
@@ -70,9 +70,9 @@ class HomeViewController: UIViewController {
         Utilities.setDesignOn(view: homeStickerView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: homeContentStackView, backgroundColor: .clear)
         DispatchQueue.main.async { [self] in
-            homeProfilePictureButtonLabel.isSkeletonable = true
-            Utilities.setDesignOn(button: homeProfilePictureButtonLabel, isSkeletonPerfectCircle: true)
-            homeProfilePictureButtonLabel.showAnimatedSkeleton()
+            homeProfilePictureButton.isSkeletonable = true
+            Utilities.setDesignOn(button: homeProfilePictureButton, isSkeletonCircular: true)
+            homeProfilePictureButton.showAnimatedSkeleton()
         }
         Utilities.setDesignOn(label: homeHeading1Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeHeading1Text)
         Utilities.setDesignOn(label: homeHeading2Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeHeading2Text)
@@ -87,9 +87,9 @@ class HomeViewController: UIViewController {
     func setProfilePicture() {
         user.getSignedInUserData { (result) in
             DispatchQueue.main.async { [self] in
-                homeProfilePictureButtonLabel.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-                Utilities.setDesignOn(button: homeProfilePictureButtonLabel, isCircular: true)
-                homeProfilePictureButtonLabel.kf.setBackgroundImage(with: URL(string: result.profilePic), for: .normal)
+                homeProfilePictureButton.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
+                homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: result.profilePic), for: .normal)
             }
         }
     }

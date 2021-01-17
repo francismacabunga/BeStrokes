@@ -18,9 +18,9 @@ class AccountViewController: UIViewController {
     @IBOutlet weak var accountBottomStackView: UIStackView!
     @IBOutlet weak var accountBottomSearchContentView: UIView!
     @IBOutlet weak var accountTextFieldContentView: UIView!
-    @IBOutlet weak var accountNotificationButtonLabel: UIButton!
-    @IBOutlet weak var accountEditButtonLabel: UIButton!
-    @IBOutlet weak var accountSearchButtonLabel: UIButton!
+    @IBOutlet weak var accountNotificationButton: UIButton!
+    @IBOutlet weak var accountEditButton: UIButton!
+    @IBOutlet weak var accountSearchButton: UIButton!
     @IBOutlet weak var accountSearchTextField: UITextField!
     @IBOutlet weak var accountHeading1Label: UILabel!
     @IBOutlet weak var accountHeading2Label: UILabel!
@@ -61,11 +61,11 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(stackView: accountBottomStackView, backgroundColor: .clear)
         Utilities.setDesignOn(view: accountBottomSearchContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: accountTextFieldContentView, backgroundColor: .clear)
-        Utilities.setDesignOn(button: accountNotificationButtonLabel, backgroundImage: UIImage(systemName: Strings.accountNotificationIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(button: accountEditButtonLabel, backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(button: accountSearchButtonLabel, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(button: accountNotificationButton, backgroundImage: UIImage(systemName: Strings.accountNotificationIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(button: accountEditButton, backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(textField: accountSearchTextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.accountSearchTextFieldPlaceholder, placeholderTextColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(imageView: accountImageView, isPerfectCircle: true)
+        Utilities.setDesignOn(imageView: accountImageView, isCircular: true)
         Utilities.setDesignOn(label: accountHeading1Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: Strings.accountHeading1Text)
         Utilities.setDesignOn(label: accountNameHeadingLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.6)
         Utilities.setDesignOn(label: accountEmailHeadingLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.8)
@@ -80,7 +80,7 @@ class AccountViewController: UIViewController {
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             accountImageView.isSkeletonable = true
-            Utilities.setDesignOn(imageView: accountImageView, isSkeletonPerfectCircle: true)
+            Utilities.setDesignOn(imageView: accountImageView, isSkeletonCircular: true)
             accountNameHeadingLabel.isSkeletonable = true
             accountEmailHeadingLabel.isSkeletonable = true
             accountImageView.showAnimatedSkeleton()
@@ -124,10 +124,10 @@ class AccountViewController: UIViewController {
         isButtonPressed = !isButtonPressed
         if isButtonPressed {
             accountTextFieldContentView.isHidden = false
-            Utilities.setDesignOn(button: accountSearchButtonLabel, backgroundImage: UIImage(systemName: Strings.accountArrowUpIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountArrowUpIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         } else {
             accountTextFieldContentView.isHidden = true
-            Utilities.setDesignOn(button: accountSearchButtonLabel, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         }
     }
     

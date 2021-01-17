@@ -54,7 +54,7 @@ struct StickerCategoryViewModel {
     var isCategorySelected: Bool?
     var selectedOnStart: Bool?
     
-    init(category: StickerCategoryModel) {
+    init(_ category: StickerCategoryModel) {
         self.category = category.category
         self.isCategorySelected = category.isCategorySelected
         self.selectedOnStart = category.selectedOnStart
@@ -87,7 +87,7 @@ struct HeartButtonLogic {
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
-    func checkIfStickerLiked(using stickerDocumentID: String, completed: @escaping (Bool)->Void) {
+    func checkIfStickerLiked(using stickerDocumentID: String, completed: @escaping (Bool) -> Void) {
         guard let signedInUser = user else {return}
         let signedInUserID = signedInUser.uid
         db.collection(Strings.stickerCollection).document(stickerDocumentID).collection(Strings.heartByCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
@@ -130,7 +130,7 @@ struct HeartButtonLogic {
         }
     }
     
-    func getSignedInUserData(completion: @escaping ([String:String])->Void) {
+    func getSignedInUserData(completion: @escaping ([String:String]) -> Void) {
         guard let signedInUser = user else {return}
         let signedInUserID = signedInUser.uid
         let signedInUserEmail = signedInUser.email!
@@ -151,7 +151,7 @@ struct FetchStickerData {
     
     private let db = Firestore.firestore()
     
-    func featuredCollectionView(completed: @escaping([FeaturedStickerViewModel])->Void) {
+    func featuredCollectionView(completed: @escaping([FeaturedStickerViewModel]) -> Void) {
         let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: Strings.categoryFeaturedStickers)
         fetchFirebaseData(with: firebaseQuery) { (result) in
             let featuredStickerViewModel = result.map({return FeaturedStickerViewModel($0)})
@@ -159,7 +159,7 @@ struct FetchStickerData {
         }
     }
     
-    func stickerCollectionView(category: String, completed: @escaping([StickerViewModel])->Void) {
+    func stickerCollectionView(category: String, completed: @escaping([StickerViewModel]) -> Void) {
         var firebaseQuery: Query
         if category == Strings.allStickers {
             firebaseQuery = db.collection(Strings.stickerCollection)
@@ -178,7 +178,7 @@ struct FetchStickerData {
         }
     }
     
-    func fetchFirebaseData(with query: Query, completed: @escaping([StickerModel])->Void) {
+    func fetchFirebaseData(with query: Query, completed: @escaping([StickerModel]) -> Void) {
         query.getDocuments { (snapshot, error) in
             if error != nil {
                 // Show error
@@ -194,13 +194,13 @@ struct FetchStickerData {
         }
     }
     
-    func stickerCategory()->[StickerCategoryViewModel] {
-        let stickerCategoryViewModel = [StickerCategoryViewModel(category: StickerCategoryModel(category: Strings.allStickers, isCategorySelected: nil, selectedOnStart: true)),
-                                        StickerCategoryViewModel(category: StickerCategoryModel(category: Strings.animalStickers, isCategorySelected: nil, selectedOnStart: nil)),
-                                        StickerCategoryViewModel(category: StickerCategoryModel(category: Strings.foodStickers, isCategorySelected: nil, selectedOnStart: nil)),
-                                        StickerCategoryViewModel(category: StickerCategoryModel(category: Strings.objectStickers, isCategorySelected: nil, selectedOnStart: nil)),
-                                        StickerCategoryViewModel(category: StickerCategoryModel(category: Strings.coloredStickers, isCategorySelected: nil, selectedOnStart: nil)),
-                                        StickerCategoryViewModel(category: StickerCategoryModel(category: Strings.travelStickers, isCategorySelected: nil, selectedOnStart: nil))]
+    func stickerCategory() -> [StickerCategoryViewModel] {
+        let stickerCategoryViewModel = [StickerCategoryViewModel(StickerCategoryModel(category: Strings.allStickers, isCategorySelected: nil, selectedOnStart: true)),
+                                        StickerCategoryViewModel(StickerCategoryModel(category: Strings.animalStickers, isCategorySelected: nil, selectedOnStart: nil)),
+                                        StickerCategoryViewModel(StickerCategoryModel(category: Strings.foodStickers, isCategorySelected: nil, selectedOnStart: nil)),
+                                        StickerCategoryViewModel(StickerCategoryModel(category: Strings.objectStickers, isCategorySelected: nil, selectedOnStart: nil)),
+                                        StickerCategoryViewModel(StickerCategoryModel(category: Strings.coloredStickers, isCategorySelected: nil, selectedOnStart: nil)),
+                                        StickerCategoryViewModel(StickerCategoryModel(category: Strings.travelStickers, isCategorySelected: nil, selectedOnStart: nil))]
         return stickerCategoryViewModel
     }
     

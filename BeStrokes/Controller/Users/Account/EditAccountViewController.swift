@@ -27,7 +27,7 @@ class EditAccountViewController: UIViewController {
     @IBOutlet weak var editAccountFirstNameTextField: UITextField!
     @IBOutlet weak var editAccountLastNameTextField: UITextField!
     @IBOutlet weak var editAccountEmailTextField: UITextField!
-    @IBOutlet weak var editAccountSaveButtonLabel: UIButton!
+    @IBOutlet weak var editAccountSaveButton: UIButton!
     @IBOutlet weak var editAccountLoadingIndicatorView: UIActivityIndicatorView!
     
     
@@ -66,7 +66,7 @@ class EditAccountViewController: UIViewController {
         Utilities.setDesignOn(view: editAccountHeadingContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: editAccountSaveButtonContentView, backgroundColor: .clear)
         Utilities.setDesignOn(label: editAccountHeadingLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.editAccountHeadingText)
-        Utilities.setDesignOn(imageView: editAccountImageView, isPerfectCircle: true)
+        Utilities.setDesignOn(imageView: editAccountImageView, isCircular: true)
         Utilities.setDesignOn(imageView: editAccountCameraIconImageView, image: UIImage(named: Strings.cameraImage))
         Utilities.setDesignOn(label: editAccountWarningLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
         Utilities.setDesignOn(label: editAccountFirstNameLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.firstNameTextField)
@@ -75,9 +75,9 @@ class EditAccountViewController: UIViewController {
         Utilities.setDesignOn(textField: editAccountFirstNameTextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
         Utilities.setDesignOn(textField: editAccountLastNameTextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
         Utilities.setDesignOn(textField: editAccountEmailTextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(button: editAccountSaveButtonLabel, title: Strings.saveButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(button: editAccountSaveButton, title: Strings.saveButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         Utilities.setDesignOn(activityIndicatorView: editAccountLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.animateButton(button: editAccountSaveButtonLabel)
+        Utilities.animateButton(button: editAccountSaveButton)
     }
     
     func dismissKeyboard() {
@@ -92,7 +92,7 @@ class EditAccountViewController: UIViewController {
     }
     
     func showLoadingButton() {
-        editAccountSaveButtonLabel.isHidden = true
+        editAccountSaveButton.isHidden = true
         editAccountLoadingIndicatorView.startAnimating()
         editAccountLoadingIndicatorView.isHidden = false
     }
@@ -100,7 +100,7 @@ class EditAccountViewController: UIViewController {
     func transitionToLandingVC() {
         showAlertController()
         editAccountLoadingIndicatorView.isHidden = true
-        editAccountSaveButtonLabel.isHidden = false
+        editAccountSaveButton.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
             user.signOutUser()
             let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
@@ -208,9 +208,9 @@ class EditAccountViewController: UIViewController {
 }
 
 
-//MARK: - Image Picker Delegate / Crop View Controller Delegate
+//MARK: - Image Picker Delegate
 
-extension EditAccountViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate, CropViewControllerDelegate {
+extension EditAccountViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
@@ -224,6 +224,13 @@ extension EditAccountViewController: UINavigationControllerDelegate, UIImagePick
         dismiss(animated: true)
         present(cropViewController, animated: true, completion: nil)
     }
+    
+}
+
+
+//MARK: - Crop View Controller Delegate
+
+extension EditAccountViewController: CropViewControllerDelegate {
     
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
         editAccountImageView.image = image

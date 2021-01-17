@@ -92,25 +92,25 @@ struct Utilities {
         
     }
     
-    static func putDesignOn(landingHeadingLabel: UILabel) {
-        
-        landingHeadingLabel.font = UIFont(name: Strings.defaultFontBold, size: 35)
-        landingHeadingLabel.textColor = UIColor.black
-        landingHeadingLabel.textAlignment = .center
-        landingHeadingLabel.numberOfLines = 0
-        landingHeadingLabel.lineBreakMode = .byWordWrapping
-        
-    }
+    //    static func putDesignOn(landingHeadingLabel: UILabel) {
+    //
+    //        landingHeadingLabel.font = UIFont(name: Strings.defaultFontBold, size: 35)
+    //        landingHeadingLabel.textColor = UIColor.black
+    //        landingHeadingLabel.textAlignment = .center
+    //        landingHeadingLabel.numberOfLines = 0
+    //        landingHeadingLabel.lineBreakMode = .byWordWrapping
+    //
+    //    }
     
-    static func putDesignOn(landingSubheadingLabel: UILabel) {
-        
-        landingSubheadingLabel.font = UIFont(name: Strings.defaultFontMedium, size: 17)
-        landingSubheadingLabel.textColor = UIColor.black
-        landingSubheadingLabel.textAlignment = .center
-        landingSubheadingLabel.numberOfLines = 0
-        landingSubheadingLabel.lineBreakMode = .byWordWrapping
-        
-    }
+    //    static func putDesignOn(landingSubheadingLabel: UILabel) {
+    //
+    //        landingSubheadingLabel.font = UIFont(name: Strings.defaultFontMedium, size: 17)
+    //        landingSubheadingLabel.textColor = UIColor.black
+    //        landingSubheadingLabel.textAlignment = .center
+    //        landingSubheadingLabel.numberOfLines = 0
+    //        landingSubheadingLabel.lineBreakMode = .byWordWrapping
+    //
+    //    }
     
     static func putDesignOn(signUpLabel: UILabel) {
         
@@ -134,14 +134,14 @@ struct Utilities {
     
     //MARK: - Button and Other Elements Designs
     
-    static func putDesignOn(landingButton: UIButton) {
-        
-        landingButton.titleLabel?.font = UIFont(name: Strings.defaultFontBold, size: 20)
-        landingButton.setTitleColor(#colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), for: .normal)
-        landingButton.backgroundColor = UIColor.black
-        landingButton.layer.cornerRadius = 25
-        
-    }
+//    static func putDesignOn(landingButton: UIButton) {
+//
+//        landingButton.titleLabel?.font = UIFont(name: Strings.defaultFontBold, size: 20)
+//        landingButton.setTitleColor(#colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), for: .normal)
+//        landingButton.backgroundColor = UIColor.black
+//        landingButton.layer.cornerRadius = 25
+//
+//    }
     
     static func putDesignOn(forgotPasswordButton: UIButton) {
         
@@ -345,7 +345,7 @@ struct Utilities {
                             tintColor: UIColor? = nil,
                             backgroundColor: UIColor? = nil,
                             isCircular: Bool? = nil,
-                            isSkeletonPerfectCircle: Bool? = nil)
+                            isSkeletonCircular: Bool? = nil)
     {
         if title != nil {
             button.setTitle(title!, for: .normal)
@@ -371,8 +371,8 @@ struct Utilities {
                 button.clipsToBounds = true
             }
         }
-        if isSkeletonPerfectCircle != nil {
-            if isSkeletonPerfectCircle! {
+        if isSkeletonCircular != nil {
+            if isSkeletonCircular! {
                 button.skeletonCornerRadius = Float(button.bounds.height / 2)
             }
         }
@@ -388,16 +388,16 @@ struct Utilities {
     // View
     static func setDesignOn(view: UIView,
                             backgroundColor: UIColor? = nil,
-                            isPerfectCircle: Bool? = nil,
+                            isCircular: Bool? = nil,
                             setCustomCircleCurve: CGFloat? = nil,
-                            isSkeletonPerfectCircle: Bool? = nil,
-                            setCustomCircleSkeletonCurve: Float? = nil)
+                            isSkeletonCircular: Bool? = nil,
+                            setCustomSkeletonCircleCurve: Float? = nil)
     {
         if backgroundColor != nil {
             view.backgroundColor = backgroundColor!
         }
-        if isPerfectCircle != nil {
-            if isPerfectCircle! {
+        if isCircular != nil {
+            if isCircular! {
                 view.layer.cornerRadius = view.frame.size.height / 2
                 view.clipsToBounds = true
             }
@@ -406,13 +406,13 @@ struct Utilities {
             view.layer.cornerRadius = setCustomCircleCurve!
             view.clipsToBounds = true
         }
-        if isSkeletonPerfectCircle != nil {
-            if isSkeletonPerfectCircle! {
+        if isSkeletonCircular != nil {
+            if isSkeletonCircular! {
                 view.skeletonCornerRadius = Float(view.frame.size.height / 2)
             }
         }
-        if setCustomCircleSkeletonCurve != nil {
-            view.skeletonCornerRadius = setCustomCircleSkeletonCurve!
+        if setCustomSkeletonCircleCurve != nil {
+            view.skeletonCornerRadius = setCustomSkeletonCircleCurve!
         }
     }
     
@@ -420,8 +420,8 @@ struct Utilities {
     static func setDesignOn(imageView: UIImageView,
                             image: UIImage? = nil,
                             tintColor: UIColor? = nil,
-                            isPerfectCircle: Bool? = nil,
-                            isSkeletonPerfectCircle: Bool? = nil)
+                            isCircular: Bool? = nil,
+                            isSkeletonCircular: Bool? = nil)
     {
         imageView.contentMode = .scaleAspectFit
         if image != nil {
@@ -430,15 +430,15 @@ struct Utilities {
         if tintColor != nil {
             imageView.tintColor = tintColor!
         }
-        if isPerfectCircle != nil {
-            if isPerfectCircle! {
+        if isCircular != nil {
+            if isCircular! {
                 imageView.layer.cornerRadius = imageView.frame.size.height / 2
                 imageView.clipsToBounds = true
                 imageView.contentMode = .scaleAspectFit
             }
         }
-        if isSkeletonPerfectCircle != nil {
-            if isSkeletonPerfectCircle! {
+        if isSkeletonCircular != nil {
+            if isSkeletonCircular! {
                 imageView.skeletonCornerRadius = Float(imageView.frame.size.height / 2)
             }
         }

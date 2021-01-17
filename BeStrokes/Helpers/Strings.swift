@@ -34,11 +34,13 @@ struct Strings {
     
     
     static let loginStoryboardID = "LoginViewController"
-    static let landingStoryboardID = "LandingViewController"
-    static let landingNavigationStoryboardID = "LandingNavigationController"
+    
+    //static let landingStoryboardID = "LandingViewController"
+    //static let landingNavigationStoryboardID = "LandingNavigationController"
     static let tabBarStoryboardID = "UserTabBarController"
+    
     static let homeStoryboardID = "HomeViewController"
-    static let profileStoryboardID = "ProfileViewController"
+    //static let profileStoryboardID = "ProfileViewController"
     static let unwindToLandingSegue = "goBackToLanding"
     
     
@@ -104,10 +106,14 @@ struct Strings {
     static let accountHeading1Text = "Account"
     static let accountHeading2Text = "Liked Stickers"
     static let editAccountHeadingText = "Update Account"
+    static let landingSignupText = "Don't have an account yet?"
     
     //MARK: - Button Labels
     static let tryMeButtonText = "Try me"
     static let saveButtonText = "Save"
+    static let loginButtonText = "Login"
+    static let signUpButtonText = "Sign up"
+    static let getStartedButtonText = "Get Started"
     
     //MARK: - Tab Bar Labels
     static let homeTabText = "Home"
@@ -157,6 +163,17 @@ struct Strings {
     static let profileSettingsNotifications = "Notifications"
     static let profileSettingsDarkAppearance = "Dark Appearance"
     static let profileSettingsLogout = "Logout"
+    
+    //MARK: - Landing Array
+    static let lionImage = "Lion"
+    static let shirtImage = "Shirt"
+    static let dancingImage = "Dancing"
+    static let headingOne = "BeStrokes"
+    static let headingTwo = "Make it stick"
+    static let headingThree = "Show it off"
+    static let subheadingOne = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
+    static let subheadingTwo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
+    static let subheadingThree = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
     
     
     
@@ -211,6 +228,7 @@ struct Strings {
     static let editAccountVC = "EditAccountViewController"
     static let editAccountContainerVC = "EditAccountContainerViewController"
     static let profileVC = "ProfileViewController"
+    static let landingPageContentVC = "LandingPageContentViewController"
     
     //MARK: - NIBs Names
     static let featuredStickerCell = "FeaturedCollectionViewCell"

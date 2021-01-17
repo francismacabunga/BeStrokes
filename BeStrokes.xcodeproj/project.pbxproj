@@ -20,6 +20,8 @@
 		2F393A13255AEB57006CDBDE /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F393A12255AEB57006CDBDE /* LandingViewController.swift */; };
 		2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F393A16255AEBBE006CDBDE /* LandingPageContentViewController.swift */; };
 		2F402CA6256806DD00666028 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F402CA5256806DD00666028 /* User.storyboard */; };
+		2F45D04825B4ABC3005167AE /* LandingPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F45D04725B4ABC3005167AE /* LandingPageModel.swift */; };
+		2F45D04B25B4ACAA005167AE /* LandingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */; };
 		2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */; };
 		2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */; };
 		2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */; };
@@ -66,6 +68,8 @@
 		2F393A12255AEB57006CDBDE /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		2F393A16255AEBBE006CDBDE /* LandingPageContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageContentViewController.swift; sourceTree = "<group>"; };
 		2F402CA5256806DD00666028 /* User.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
+		2F45D04725B4ABC3005167AE /* LandingPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageModel.swift; sourceTree = "<group>"; };
+		2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModel.swift; sourceTree = "<group>"; };
 		2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewControllerContainer.swift; sourceTree = "<group>"; };
 		2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		2F58B0E025A47CE0009EFDE5 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -158,6 +162,7 @@
 		2F88A013259B1A6300AAC82D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2F45D04725B4ABC3005167AE /* LandingPageModel.swift */,
 				2F58B0E025A47CE0009EFDE5 /* UserModel.swift */,
 				2F88A015259B1FBC00AAC82D /* StickerModel.swift */,
 				2FFB0C4D25A8740400FAED42 /* ProfileSettingsModel.swift */,
@@ -168,6 +173,7 @@
 		2F88A014259B1DE100AAC82D /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */,
 				2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */,
 				2F88A018259B239700AAC82D /* StickerViewModel.swift */,
 				2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */,
@@ -455,6 +461,7 @@
 				2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */,
 				2FFB0C4E25A8740400FAED42 /* ProfileSettingsModel.swift in Sources */,
 				2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */,
+				2F45D04B25B4ACAA005167AE /* LandingPageViewModel.swift in Sources */,
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
 				2F393A0F255AEAEA006CDBDE /* LandingPageViewController.swift in Sources */,
 				2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */,
@@ -462,6 +469,7 @@
 				2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */,
 				2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */,
 				2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */,
+				2F45D04825B4ABC3005167AE /* LandingPageModel.swift in Sources */,
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
 				2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */,
 				2FEAC09925AA0B6400E149CE /* LikedStickersTableViewCell.swift in Sources */,

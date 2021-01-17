@@ -205,15 +205,15 @@
                     <connections>
                         <outlet property="accountBottomSearchContentView" destination="ZeL-6Z-uUl" id="jcc-5d-W2B"/>
                         <outlet property="accountBottomStackView" destination="hkm-Bw-dtm" id="87L-C0-JBK"/>
-                        <outlet property="accountEditButtonLabel" destination="qAC-5S-TxE" id="VsU-Tk-tJh"/>
+                        <outlet property="accountEditButton" destination="qAC-5S-TxE" id="VsU-Tk-tJh"/>
                         <outlet property="accountEmailHeadingLabel" destination="HZ2-78-faj" id="RXW-kr-a7B"/>
                         <outlet property="accountHeading1Label" destination="ZJr-Hj-jUZ" id="vw6-0K-EBB"/>
                         <outlet property="accountHeading2Label" destination="HeW-Ed-NOe" id="z17-ER-tze"/>
                         <outlet property="accountImageView" destination="5un-Pr-SI7" id="cze-if-NuU"/>
                         <outlet property="accountLikedStickersTableView" destination="eua-ma-MMN" id="Sew-dk-c4v"/>
                         <outlet property="accountNameHeadingLabel" destination="K2u-kp-t8Z" id="3ZM-x9-SU4"/>
-                        <outlet property="accountNotificationButtonLabel" destination="BrN-2Q-D2b" id="bv9-Pq-tSA"/>
-                        <outlet property="accountSearchButtonLabel" destination="Isp-Jk-Bx9" id="ydv-sg-6U9"/>
+                        <outlet property="accountNotificationButton" destination="BrN-2Q-D2b" id="bv9-Pq-tSA"/>
+                        <outlet property="accountSearchButton" destination="Isp-Jk-Bx9" id="ydv-sg-6U9"/>
                         <outlet property="accountSearchTextField" destination="kds-sg-1ge" id="OP8-Ec-iGq"/>
                         <outlet property="accountTextFieldContentView" destination="bbs-Yf-XH2" id="YRk-KG-jmc"/>
                         <outlet property="accountTopView" destination="UkN-UY-Jg3" id="bgd-mu-s8Q"/>
@@ -383,7 +383,7 @@
                         <outlet property="stickerStackContentView" destination="zIX-2M-xrc" id="1b2-o5-XQD"/>
                         <outlet property="stickerTagLabel" destination="ydL-QT-tTC" id="oti-kq-fc7"/>
                         <outlet property="stickerTopView" destination="VuT-ef-Ivc" id="kTn-aX-hYY"/>
-                        <outlet property="stickerTryMeButtonLabel" destination="cqr-8n-dvk" id="iln-se-YcB"/>
+                        <outlet property="stickerTryMeButton" destination="cqr-8n-dvk" id="iln-se-YcB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1jd-GY-TMR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -707,8 +707,8 @@
                         <outlet property="editAccountLastNameTextField" destination="Ppa-5H-JJp" id="8tn-MT-GHL"/>
                         <outlet property="editAccountLoadingIndicatorView" destination="ylW-AE-SGf" id="tmH-th-Lvz"/>
                         <outlet property="editAccountNavigationBar" destination="L9n-wS-Gh2" id="a4e-p6-CFq"/>
+                        <outlet property="editAccountSaveButton" destination="jAn-ni-mbb" id="15N-TM-W48"/>
                         <outlet property="editAccountSaveButtonContentView" destination="gnp-B6-5QR" id="9AV-4R-lOo"/>
-                        <outlet property="editAccountSaveButtonLabel" destination="jAn-ni-mbb" id="15N-TM-W48"/>
                         <outlet property="editAccountStackView" destination="HrH-Xg-qs0" id="iBi-ao-qP0"/>
                         <outlet property="editAccountWarningLabel" destination="ppL-ry-do4" id="rG4-Sc-7VD"/>
                     </connections>
@@ -892,7 +892,7 @@
                         <outlet property="homeHeading1Label" destination="dnr-HY-Zqt" id="ps5-cQ-pul"/>
                         <outlet property="homeHeading2Label" destination="E3s-b8-c5Q" id="iQj-lh-2Ez"/>
                         <outlet property="homeLoadingIndicatorView" destination="B3K-Yn-yge" id="YsA-Bm-Y49"/>
-                        <outlet property="homeProfilePictureButtonLabel" destination="Bma-D4-XCk" id="HgY-ga-Ky2"/>
+                        <outlet property="homeProfilePictureButton" destination="Bma-D4-XCk" id="HgY-ga-Ky2"/>
                         <outlet property="homeStickerCategoryCollectionView" destination="inL-9d-L1f" id="YRg-PH-KTS"/>
                         <outlet property="homeStickerCollectionView" destination="4jC-9x-OB5" id="6eu-Kg-HeC"/>
                         <outlet property="homeStickerView" destination="nqf-9D-brb" id="B3S-uz-8EA"/>

@@ -7,83 +7,105 @@
 
 import UIKit
 
-protocol LandingPageViewControllerDelegate {
+class LandingPageViewController: UIPageViewController {
     
-    func getValueOfCurrent(index: Int)
+    //MARK: - Constants / Variables
     
-}
-
-class LandingPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-    
-    var collectionOfImages = ["Lion",
-                              "Shirt",
-                              "Dancing"]
-    var collectionOfHeadings = ["BeStrokes",
-                                "Make it stick",
-                                "Show it off"]
-    var collectionOfSubheadings = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus.",
-                                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus.",
-                                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."]
-    var currentIndex = 0
     var LandingPageViewControllerDelegate: LandingPageViewControllerDelegate?
+    private var currentIndex = 0
+    private let fetchLandingPageData = FetchLandingPageData()
+    
+    
+    //MARK: - View Controller Life Cycle
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setDatasourceAndDelegate()
+        setInitialVC()
+        
+    }
+
+    
+   
+    
+    //MARK: - Page View Controller Process
+    
+    func setDatasourceAndDelegate() {
         dataSource = self
         delegate = self
-        
+    }
+    
+    func setInitialVC() {
         if let firstContent = landingPageContentViewController(at: 0) {
             setViewControllers([firstContent], direction: .forward, animated: true, completion: nil)
         }
-        
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        
-        var index = (viewController as! LandingPageContentViewController).index
-        index -= 1
-        return landingPageContentViewController(at: index)
-        
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        
-        var index = (viewController as! LandingPageContentViewController).index
-        index += 1
-        return landingPageContentViewController(at: index)
-        
     }
     
     func landingPageContentViewController(at index: Int) -> LandingPageContentViewController? {
-        
-        if index >= collectionOfHeadings.count || index < 0 {
+        let images = fetchLandingPageData.of().imageArray
+        let headings = fetchLandingPageData.of().headingArray
+        let subheadings = fetchLandingPageData.of().subheadingArray
+        print("Images: \(images)")
+        print("Headings: \(headings)")
+        print("Subheadings: \(subheadings)")
+        if index >= images.count || index < 0 {
             return nil
         }
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let landingPageContentViewController = storyboard.instantiateViewController(withIdentifier: "LandingPageContentViewController") as? LandingPageContentViewController {
-            
-            landingPageContentViewController.imageFileName = collectionOfImages[index]
-            landingPageContentViewController.headingLabelText = collectionOfHeadings[index]
-            landingPageContentViewController.subheadingText = collectionOfSubheadings[index]
+        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        if let landingPageContentViewController = storyboard.instantiateViewController(withIdentifier: Strings.landingPageContentVC) as? LandingPageContentViewController {
+            landingPageContentViewController.imageFileName = images[index]
+            landingPageContentViewController.headingLabelText = headings[index]
+            landingPageContentViewController.subheadingText = subheadings[index]
             landingPageContentViewController.index = index
             return landingPageContentViewController
-            
         }
-        
         return nil
-        
     }
+    
+}
+
+
+//MARK: - Page View Controller Data Source
+
+extension LandingPageViewController: UIPageViewControllerDataSource {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        var index = (viewController as! LandingPageContentViewController).index
+        index -= 1
+        return landingPageContentViewController(at: index)
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        var index = (viewController as! LandingPageContentViewController).index
+        index += 1
+        return landingPageContentViewController(at: index)
+    }
+    
+}
+
+
+//MARK: - Page View Controller Delegate
+
+extension LandingPageViewController: UIPageViewControllerDelegate {
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
         if completed {
-            let pageIndex = pageViewController.viewControllers?.first as!LandingPageContentViewController
+            let pageIndex = pageViewController.viewControllers?.first as! LandingPageContentViewController
             currentIndex = pageIndex.index
-            LandingPageViewControllerDelegate?.getValueOfCurrent(index: currentIndex)
+            LandingPageViewControllerDelegate?.getValueOf(currentIndex)
         }
-        
     }
     
+}
+
+
+//MARK: - Protocols
+
+protocol LandingPageViewControllerDelegate {
+    func getValueOf(_ index: Int)
 }

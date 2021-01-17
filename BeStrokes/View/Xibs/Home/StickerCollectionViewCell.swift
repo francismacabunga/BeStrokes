@@ -64,7 +64,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             stickerContentView.isSkeletonable = true
-            Utilities.setDesignOn(view: stickerContentView, isSkeletonPerfectCircle: true, setCustomCircleSkeletonCurve: 30)
+            Utilities.setDesignOn(view: stickerContentView, isSkeletonCircular: true, setCustomSkeletonCircleCurve: 30)
             stickerContentView.showAnimatedSkeleton()
         }
     }

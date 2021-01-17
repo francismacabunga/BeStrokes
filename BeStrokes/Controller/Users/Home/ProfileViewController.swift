@@ -50,7 +50,7 @@ class ProfileViewController: UIViewController {
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(view: profileContentView, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), setCustomCircleCurve: 25)
         Utilities.setDesignOn(navigationBar: profileNavigationBar, isDarkMode: true)
-        Utilities.setDesignOn(imageView: profileImageView, isPerfectCircle: true)
+        Utilities.setDesignOn(imageView: profileImageView, isCircular: true)
         Utilities.setDesignOn(label: profileNameLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
         Utilities.setDesignOn(label: profileEmailLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
         Utilities.setDesignOn(label: profileHeadingLabel, font: Strings.defaultFontBold, fontSize: 30, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.profileSettingsHeadingText)
@@ -62,7 +62,7 @@ class ProfileViewController: UIViewController {
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
             profileImageView.isSkeletonable = true
-            Utilities.setDesignOn(imageView: profileImageView, isSkeletonPerfectCircle: true)
+            Utilities.setDesignOn(imageView: profileImageView, isSkeletonCircular: true)
             profileImageView.showAnimatedSkeleton()
             profileNameLabel.isSkeletonable = true
             profileNameLabel.showAnimatedSkeleton()
