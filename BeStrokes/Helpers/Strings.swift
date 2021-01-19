@@ -11,68 +11,38 @@ struct Strings {
     
 
     
-    //MARK: - Storyboard
-    
-    
-    static let loginStoryboardID = "LoginViewController"
-    
-    //static let landingStoryboardID = "LandingViewController"
-    //static let landingNavigationStoryboardID = "LandingNavigationController"
-    static let tabBarStoryboardID = "UserTabBarController"
-    
-    static let homeStoryboardID = "HomeViewController"
-    //static let profileStoryboardID = "ProfileViewController"
-    static let unwindToLandingSegue = "goBackToLanding"
+
     
     
     
-    
-    
-    static let emailVerificationSent = "Email verification has ben succesfuly sent. Please check your email"
-    static let firstNameTextFieldErrorMessage = "First Name is required."
-    static let lastNameTextFieldErrorMessage = "Last Name is required."
-    static let emailTextFieldErrorMessage = "Email is required."
-    static let passwordTextFieldErrorMessage = "Password is required."
-    static let profilePictureErrorMessage = "Profile picture is required, please choose an image."
     static let resetPasswordSuccessMessage = "Your password has been successfuly reset. Please check your email."
-    static let passwordErrorMessage = "Password must be at least 8 characters long with one alphabet and one special character or more."
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    static let emailPlaceholder = "Email"
-    static let passwordPlaceholder = "Password"
-    static let firstNamePlaceholder = "First Name"
-    static let lastNamePlaceholder = "Last Name"
-    
-    
+    static let loginStoryboardID = "LoginViewController"
+    static let tabBarStoryboardID = "UserTabBarController"
+    static let homeStoryboardID = "HomeViewController"
+    static let unwindToLandingSegue = "goBackToLanding"
+    static let emailVerificationSent = "Email verification has ben succesfuly sent. Please check your email"
     static let changeSignUpButtonText = "Logging in..."
-    
-    
-    
-    
     static let collectionName = "users"
     static let profilePictureStorageReference = "profilePictures"
     static let firstName = "firstName"
     static let lastName = "lastName"
     static let UID = "userID"
     static let profilePicture = "profilePic"
-    
     static let firebaseStorageReference = "gs://bestrokes-f5c28.appspot.com/"
     
     
-    static let defaultProfilePicture = "Woman"
+    
+    //static let landingStoryboardID = "LandingViewController"
+    //static let landingNavigationStoryboardID = "LandingNavigationController"
+    //static let profileStoryboardID = "ProfileViewController"
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -94,6 +64,7 @@ struct Strings {
     static let accountHeading2Text = "Liked Stickers"
     static let editAccountHeadingText = "Update Account"
     static let landingSignupText = "Don't have an account yet?"
+    static let signUpHeadingText = "Create Account"
     
     //MARK: - Button Labels
     static let tryMeButtonText = "Try me"
@@ -111,6 +82,7 @@ struct Strings {
     static let firstNameTextField = "First Name"
     static let lastNameTextField = "Last Name"
     static let emailTextField = "Email"
+    static let passwordTextField = "Password"
     
     //MARK: - Alert Labels
     static let logoutAlertTitle = "Are you sure?"
@@ -133,6 +105,12 @@ struct Strings {
     static let editAccountEmailVerficationErrorLabel = "Account cannot be updated, email is not verified."
     static let editAccountTextFieldsErrorLabel = "Some fields are incomplete."
     static let editAccountTextFieldErrorLabel = "This field is required."
+    static let signUpFirstNameTextFieldErrorLabel = "First Name is required."
+    static let signUpLastNameTextFieldErrorLabel = "Last Name is required."
+    static let signUpEmailTextFieldErrorLabel = "Email is required."
+    static let signUpPasswordTextFieldErrorLabel = "Password is required."
+    static let signUpPasswordErrorLabel = "Password must be at least 8 characters long with one alphabet and one special character or more."
+    static let signUpProfilePictureErrorLabel = "Profile picture is required, please choose an image."
     
     
    
@@ -212,6 +190,7 @@ struct Strings {
     static let unheartStickerImage = "heart"
     static let heartStickerImage = "heart.fill"
     static let cameraImage = "Camera"
+    static let signUpDefaultIcon = "Woman"
     
     //MARK: - SF Symbols Names
     static let settingNotificationIcon = "bell.badge"

@@ -80,12 +80,6 @@ class EditAccountViewController: UIViewController {
         Utilities.animateButton(button: editAccountSaveButton)
     }
     
-    func dismissKeyboard() {
-        editAccountFirstNameTextField.endEditing(true)
-        editAccountLastNameTextField.endEditing(true)
-        editAccountEmailTextField.endEditing(true)
-    }
-    
     func showAlert() {
         let alert = UIAlertController(title: Strings.editAccountAlertTitle, message: Strings.editAccountAlertMessage, preferredStyle: .alert)
         present(alert, animated: true)
@@ -95,6 +89,19 @@ class EditAccountViewController: UIViewController {
         editAccountSaveButton.isHidden = true
         editAccountLoadingIndicatorView.startAnimating()
         editAccountLoadingIndicatorView.isHidden = false
+    }
+    
+    func presentCropViewController(with imagePicked: UIImage) {
+        let cropViewController = CropViewController(croppingStyle: .circular, image: imagePicked)
+        cropViewController.delegate = self
+        dismiss(animated: true)
+        present(cropViewController, animated: true, completion: nil)
+    }
+    
+    func dismissKeyboard() {
+        editAccountFirstNameTextField.endEditing(true)
+        editAccountLastNameTextField.endEditing(true)
+        editAccountEmailTextField.endEditing(true)
     }
     
     func transitionToLandingVC() {
@@ -144,7 +151,7 @@ class EditAccountViewController: UIViewController {
         showLoadingButton()
         user.isEmailVerified { [self] (result) in
             if result {
-                updateAccountProcess()
+                processUpdateAccount()
                 let initialEmail = email
                 let newEmail = editAccountEmailTextField.text
                 if initialEmail == newEmail {
@@ -173,7 +180,7 @@ class EditAccountViewController: UIViewController {
         editAccountEmailTextField.delegate = self
     }
     
-    func updateAccountProcess() {
+    func processUpdateAccount() {
         let firstName = editAccountFirstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let lastName = editAccountLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let email = editAccountEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -198,8 +205,8 @@ class EditAccountViewController: UIViewController {
                 }
             }
         } else {
+            editAccountWarningLabel.text = Strings.editAccountTextFieldErrorLabel
             UIView.animate(withDuration: 0.2) { [self] in
-                editAccountWarningLabel.text = Strings.editAccountTextFieldErrorLabel
                 editAccountWarningLabel.isHidden = false
             }
         }
@@ -208,7 +215,7 @@ class EditAccountViewController: UIViewController {
 }
 
 
-//MARK: - Image Picker Delegate
+//MARK: - Image Picker & Navigation Delegate
 
 extension EditAccountViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
@@ -216,13 +223,6 @@ extension EditAccountViewController: UINavigationControllerDelegate, UIImagePick
         if let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             presentCropViewController(with: imagePicked)
         }
-    }
-    
-    func presentCropViewController(with imagePicked: UIImage) {
-        let cropViewController = CropViewController(croppingStyle: .circular, image: imagePicked)
-        cropViewController.delegate = self
-        dismiss(animated: true)
-        present(cropViewController, animated: true, completion: nil)
     }
     
 }
@@ -250,7 +250,7 @@ extension EditAccountViewController: UITextFieldDelegate {
     // Exact moment when "return" button on keyboard is pressed
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
-        updateAccountProcess()
+        processUpdateAccount()
         return true
     }
     

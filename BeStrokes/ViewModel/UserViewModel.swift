@@ -30,8 +30,28 @@ struct UserViewModel {
 
 struct User {
     
-    private let user = Auth.auth().currentUser
-    private let db = Firestore.firestore()
+    let db = Firestore.firestore()
+    let user = Auth.auth().currentUser
+    lazy var usersDocumentID = db.collection(Strings.userCollection).document()
+    
+    
+    func createUser(withEmail email: String, password: String, completion: @escaping (Error?) -> Void) {
+        Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+            if error != nil {
+                // Show error
+                completion(error)
+                return
+            }
+        }
+    }
+    
+    func storeData(with dictionary: [String : String]) {
+        if user != nil {
+            
+        } else {
+            // Show error no user is signed in!
+        }
+    }
     
     func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?, Bool) -> Void) {
         if user != nil {

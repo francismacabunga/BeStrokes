@@ -37,10 +37,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         errorLabel.isHidden = true
         UIScrollView.appearance().indicatorStyle = .white
         
-        Utilities.putDesignOn(whitePopupHeadingLabel: mainHeadingLabel)
-        Utilities.putDesignOn(errorLabel: errorLabel)
-        Utilities.putDesignOn(textField: emailTextField, placeholder: Strings.emailPlaceholder)
-        Utilities.putDesignOn(textField: passwordTextField, placeholder: Strings.passwordPlaceholder)
+//        Utilities.putDesignOn(whitePopupHeadingLabel: mainHeadingLabel)
+//        Utilities.putDesignOn(errorLabel: errorLabel)
+//        Utilities.putDesignOn(textField: emailTextField, placeholder: Strings.emailPlaceholder)
+//        Utilities.putDesignOn(textField: passwordTextField, placeholder: Strings.passwordPlaceholder)
         Utilities.putDesignOn(forgotPasswordButton: forgotPasswordButton)
         Utilities.putDesignOn(whiteButton: loginButton)
         
@@ -84,7 +84,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             Auth.auth().signIn(withEmail: email, password: password) { [self] (authResult, error) in
                 if error != nil {
-                    
+
                     Utilities.showAnimatedError(on: errorLabel, withError: error, withCustomizedString: nil)
                     
                 } else {

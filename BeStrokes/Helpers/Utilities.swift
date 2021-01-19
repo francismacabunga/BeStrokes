@@ -12,11 +12,6 @@ import Kingfisher
 
 struct Utilities {
     
-    //MARK: - For Refactoring
-    
-    let user = Auth.auth().currentUser
-    let db = Firestore.firestore()
-    
     
     
     
@@ -24,18 +19,18 @@ struct Utilities {
     
     
     
-    static func putDesignOn(textField: UITextField, placeholder: String) {
-        
-        textField.font = UIFont(name: Strings.defaultFont, size: 15)
-        textField.textColor = UIColor.black
-        textField.layer.masksToBounds = true
-        textField.layer.cornerRadius = 15
-        textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
-            .foregroundColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1),
-            .font: UIFont(name: Strings.defaultFont, size: 15)
-        ])
-        
-    }
+//    static func putDesignOn(textField: UITextField, placeholder: String) {
+//
+//        textField.font = UIFont(name: Strings.defaultFont, size: 15)
+//        textField.textColor = UIColor.black
+//        textField.layer.masksToBounds = true
+//        textField.layer.cornerRadius = 15
+//        textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
+//            .foregroundColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1),
+//            .font: UIFont(name: Strings.defaultFont, size: 15)
+//        ])
+//
+//    }
     
     static func showError(on textField: UITextField, with textFieldErrorMessage: String ) {
         
@@ -64,14 +59,14 @@ struct Utilities {
     
     //MARK: - Label Designs
     
-    static func putDesignOn(whitePopupHeadingLabel: UILabel) {
+//    static func putDesignOn(whitePopupHeadingLabel: UILabel) {
+//
+//        whitePopupHeadingLabel.font = UIFont(name: Strings.defaultFontBold, size: 35)
+//        whitePopupHeadingLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+//        whitePopupHeadingLabel.numberOfLines = 0
+//        whitePopupHeadingLabel.lineBreakMode = .byWordWrapping
         
-        whitePopupHeadingLabel.font = UIFont(name: Strings.defaultFontBold, size: 35)
-        whitePopupHeadingLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        whitePopupHeadingLabel.numberOfLines = 0
-        whitePopupHeadingLabel.lineBreakMode = .byWordWrapping
-        
-    }
+//    }
     
     //    static func putDesignOn(blackPopupHeadingLabel: UILabel) {
     //
@@ -105,16 +100,16 @@ struct Utilities {
         
     }
     
-    static func putDesignOn(errorLabel: UILabel) {
-        
-        errorLabel.font = UIFont(name: Strings.defaultFontBold, size: 15)
-        errorLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        errorLabel.backgroundColor = UIColor.red
-        errorLabel.numberOfLines = 0
-        errorLabel.lineBreakMode = .byWordWrapping
-        errorLabel.textAlignment = .center
-        
-    }
+//    static func putDesignOn(errorLabel: UILabel) {
+//
+//        errorLabel.font = UIFont(name: Strings.defaultFontBold, size: 15)
+//        errorLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+//        errorLabel.backgroundColor = UIColor.red
+//        errorLabel.numberOfLines = 0
+//        errorLabel.lineBreakMode = .byWordWrapping
+//        errorLabel.textAlignment = .center
+//
+//    }
     
     //MARK: - Button and Other Elements Designs
     
@@ -165,11 +160,11 @@ struct Utilities {
     //MARK: - Animations
     
     static func animateButton(button: UIButton) {
-        
+
         UIView.animate(withDuration: 0.2) {
             button.alpha = 0.4
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             UIView.animate(withDuration: 0.2) {
                 button.alpha = 1
@@ -245,15 +240,19 @@ struct Utilities {
     static func setDesignOn(textField: UITextField,
                             font: String,
                             fontSize: CGFloat,
-                            textColor: UIColor,
-                            backgroundColor: UIColor,
+                            textColor: UIColor? = nil,
+                            backgroundColor: UIColor? = nil,
                             placeholder: String? = nil,
                             placeholderTextColor: UIColor? = nil,
                             isCircular: Bool? = nil)
     {
         textField.font = UIFont(name: font, size: fontSize)
-        textField.textColor = textColor
-        textField.backgroundColor = backgroundColor
+        if textColor != nil {
+            textField.textColor = textColor!
+        }
+        if backgroundColor != nil {
+            textField.backgroundColor = backgroundColor!
+        }
         if placeholder != nil && placeholderTextColor != nil {
             textField.attributedPlaceholder = NSAttributedString(string: placeholder!, attributes: [
                                                                     .foregroundColor: placeholderTextColor!,

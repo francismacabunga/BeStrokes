@@ -38,10 +38,10 @@ class ForgotPasswordViewController: UIViewController, UITextFieldDelegate {
         validationMessage.isHidden = true
         UIScrollView.appearance().indicatorStyle = .white
         
-        Utilities.putDesignOn(whitePopupHeadingLabel: headingLabel)
+//        Utilities.putDesignOn(whitePopupHeadingLabel: headingLabel)
         Utilities.putDesignOn(whitePopupSubheadingLabel: subHeadingLabel)
-        Utilities.putDesignOn(errorLabel: validationMessage)
-        Utilities.putDesignOn(textField: emailTextField, placeholder: Strings.emailPlaceholder)
+//        Utilities.putDesignOn(errorLabel: validationMessage)
+//        Utilities.putDesignOn(textField: emailTextField, placeholder: Strings.emailPlaceholder)
         Utilities.putDesignOn(whiteButton: submitButton)
         Utilities.putDesignOn(whiteButton: dismissButton)
         
