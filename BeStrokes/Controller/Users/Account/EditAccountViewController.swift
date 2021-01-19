@@ -86,7 +86,7 @@ class EditAccountViewController: UIViewController {
         editAccountEmailTextField.endEditing(true)
     }
     
-    func showAlertController() {
+    func showAlert() {
         let alert = UIAlertController(title: Strings.editAccountAlertTitle, message: Strings.editAccountAlertMessage, preferredStyle: .alert)
         present(alert, animated: true)
     }
@@ -98,7 +98,7 @@ class EditAccountViewController: UIViewController {
     }
     
     func transitionToLandingVC() {
-        showAlertController()
+        showAlert()
         editAccountLoadingIndicatorView.isHidden = true
         editAccountSaveButton.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in

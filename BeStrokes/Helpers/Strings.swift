@@ -9,26 +9,7 @@ import Foundation
 
 struct Strings {
     
-    //MARK: - Validation Messages
-    
-    static let firstNameTextFieldErrorMessage = "First Name is required."
-    static let lastNameTextFieldErrorMessage = "Last Name is required."
-    static let emailTextFieldErrorMessage = "Email is required."
-    static let passwordTextFieldErrorMessage = "Password is required."
-    static let profilePictureErrorMessage = "Profile picture is required, please choose an image."
-    static let resetPasswordSuccessMessage = "Your password has been successfuly reset. Please check your email."
-    static let passwordErrorMessage = "Password must be at least 8 characters long with one alphabet and one special character or more."
-    static let invalidCErrorMessage = "Invalid credentials"
-    static let invalidUTErrorMessage = "Invalid user token"
-    static let invalidCTErrorMessage = "Invalid custom token"
-    static let userTEErrorMessage = "User token expired"
-    static let userDErrorMessage = "User is disabled"
-    static let userNFErrorMessage = "User not found"
-    static let customTMErrorMessage = "Custom token mismatch"
-    static let callDErrorMessage = "Default error"
-    static let alertControllerMessage = "User is automatically signed out."
-    static let alertActionMessage = "Dismiss"
-    static let emailVerificationSent = "Email verification has ben succesfuly sent. Please check your email"
+
     
     //MARK: - Storyboard
     
@@ -47,8 +28,14 @@ struct Strings {
     
     
     
-    
-    
+    static let emailVerificationSent = "Email verification has ben succesfuly sent. Please check your email"
+    static let firstNameTextFieldErrorMessage = "First Name is required."
+    static let lastNameTextFieldErrorMessage = "Last Name is required."
+    static let emailTextFieldErrorMessage = "Email is required."
+    static let passwordTextFieldErrorMessage = "Password is required."
+    static let profilePictureErrorMessage = "Profile picture is required, please choose an image."
+    static let resetPasswordSuccessMessage = "Your password has been successfuly reset. Please check your email."
+    static let passwordErrorMessage = "Password must be at least 8 characters long with one alphabet and one special character or more."
     
     
     
@@ -131,11 +118,37 @@ struct Strings {
     static let logoutNoAction = "No"
     static let editAccountAlertTitle = "Success!"
     static let editAccountAlertMessage = "Your account details and email has been successfully updated. You may now sign in with your new email. Signing you out."
+    static let homeAlertMessage = "User is automatically signed out."
+    static let homeAlertAction = "Dismiss"
+    static let homeInvalidCErrorAlertTitle = "Invalid credentials"
+    static let homeInvalidUTErrorAlertTitle = "Invalid user token"
+    static let homeInvalidCTErrorAlertTitle = "Invalid custom token"
+    static let homeUserTEErrorAlertTitle = "User token expired"
+    static let homeUserDErrorAlertTitle = "User is disabled"
+    static let homeUserNFErrorAlertTitle = "User not found"
+    static let homeCustomTMErrorAlertTitle = "Custom token mismatch"
+    static let homeCallDErrorAlertTitle = "Default error"
     
     //MARK: - Warning Labels
     static let editAccountEmailVerficationErrorLabel = "Account cannot be updated, email is not verified."
     static let editAccountTextFieldsErrorLabel = "Some fields are incomplete."
     static let editAccountTextFieldErrorLabel = "This field is required."
+    
+    
+   
+    
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     //MARK: - Text Fields Labels
     static let accountSearchTextFieldPlaceholder = "Search"
@@ -224,6 +237,8 @@ struct Strings {
     
     //MARK: - View Controllers Names
     static let landingVC = "LandingViewController"
+    static let tabBarVC = "UserTabBarController"
+    static let homeVC = "HomeViewController"
     static let stickerOptionVC = "StickerOptionViewController"
     static let editAccountVC = "EditAccountViewController"
     static let editAccountContainerVC = "EditAccountContainerViewController"

@@ -33,21 +33,23 @@ struct User {
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
-    func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?) -> Void) {
+    func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?, Bool) -> Void) {
         if user != nil {
             print("The user is signed in!")
             user!.reload { (error) in
                 if error != nil {
                     guard let NSError = error as NSError? else {return}
                     if let error = AuthErrorCode(rawValue: NSError.code) {
-                        return completion(error)
+                        return completion(error, true)
                     }
                 }
                 print("Valid token")
+                return completion(nil, false)
             }
         } else {
             // Show error no user is signed in!
             print("The user is not signed in!")
+            completion(nil, true)
         }
     }
     

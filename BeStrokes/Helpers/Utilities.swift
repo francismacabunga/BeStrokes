@@ -92,25 +92,9 @@ struct Utilities {
         
     }
     
-    //    static func putDesignOn(landingHeadingLabel: UILabel) {
-    //
-    //        landingHeadingLabel.font = UIFont(name: Strings.defaultFontBold, size: 35)
-    //        landingHeadingLabel.textColor = UIColor.black
-    //        landingHeadingLabel.textAlignment = .center
-    //        landingHeadingLabel.numberOfLines = 0
-    //        landingHeadingLabel.lineBreakMode = .byWordWrapping
-    //
-    //    }
     
-    //    static func putDesignOn(landingSubheadingLabel: UILabel) {
-    //
-    //        landingSubheadingLabel.font = UIFont(name: Strings.defaultFontMedium, size: 17)
-    //        landingSubheadingLabel.textColor = UIColor.black
-    //        landingSubheadingLabel.textAlignment = .center
-    //        landingSubheadingLabel.numberOfLines = 0
-    //        landingSubheadingLabel.lineBreakMode = .byWordWrapping
-    //
-    //    }
+    
+    
     
     static func putDesignOn(signUpLabel: UILabel) {
         
@@ -134,14 +118,7 @@ struct Utilities {
     
     //MARK: - Button and Other Elements Designs
     
-//    static func putDesignOn(landingButton: UIButton) {
-//
-//        landingButton.titleLabel?.font = UIFont(name: Strings.defaultFontBold, size: 20)
-//        landingButton.setTitleColor(#colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), for: .normal)
-//        landingButton.backgroundColor = UIColor.black
-//        landingButton.layer.cornerRadius = 25
-//
-//    }
+    
     
     static func putDesignOn(forgotPasswordButton: UIButton) {
         
@@ -515,6 +492,15 @@ struct Utilities {
     {
         activityIndicatorView.style = size
         activityIndicatorView.color = backgroundColor
+    }
+    
+    // Page Control
+    static func setDesign(pageControl: UIPageControl,
+                          pageIndicatorColor: UIColor,
+                          currentPageColor: UIColor)
+    {
+        pageControl.pageIndicatorTintColor = pageIndicatorColor
+        pageControl.currentPageIndicatorTintColor = currentPageColor
     }
     
 }
