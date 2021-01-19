@@ -16,51 +16,54 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="515"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v5D-Rw-98D">
-                                <rect key="frame" x="166.5" y="473.5" width="42" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="375" id="fEM-az-A5A"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n07-2K-aBA">
-                                <rect key="frame" x="166.5" y="494.5" width="42" height="20.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="375" id="TDz-zr-ax5"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mk9-qT-z58">
-                                <rect key="frame" x="5" y="10" width="365" height="453.5"/>
-                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="WFB-xs-fgY">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="495"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dhk-ET-hbC">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="440"/>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="9iJ-1d-8Hv">
+                                        <rect key="frame" x="167" y="440" width="41.5" height="55"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N52-wx-VcV">
+                                                <rect key="frame" x="0.0" y="0.0" width="41.5" height="24.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="441-Tq-lfe">
+                                                <rect key="frame" x="0.0" y="34.5" width="41.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="375" id="4r9-q9-gvS"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Qkn-fZ-xIf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="v5D-Rw-98D" firstAttribute="top" secondItem="Mk9-qT-z58" secondAttribute="bottom" constant="10" id="Dvy-QY-52g"/>
-                            <constraint firstItem="n07-2K-aBA" firstAttribute="centerX" secondItem="PXK-Ia-mng" secondAttribute="centerX" id="HcM-Pv-fuw"/>
-                            <constraint firstItem="v5D-Rw-98D" firstAttribute="centerX" secondItem="PXK-Ia-mng" secondAttribute="centerX" id="ILN-Oz-ZoA"/>
-                            <constraint firstItem="n07-2K-aBA" firstAttribute="bottom" secondItem="Qkn-fZ-xIf" secondAttribute="bottom" id="Kh0-tx-pGs"/>
-                            <constraint firstItem="Mk9-qT-z58" firstAttribute="top" secondItem="Qkn-fZ-xIf" secondAttribute="top" constant="10" id="VrA-EB-QvB"/>
-                            <constraint firstItem="n07-2K-aBA" firstAttribute="top" secondItem="v5D-Rw-98D" secondAttribute="bottom" id="nDN-iK-5Y7"/>
-                            <constraint firstItem="Mk9-qT-z58" firstAttribute="leading" secondItem="Qkn-fZ-xIf" secondAttribute="leading" constant="5" id="pc8-l1-hyd"/>
-                            <constraint firstItem="Qkn-fZ-xIf" firstAttribute="trailing" secondItem="Mk9-qT-z58" secondAttribute="trailing" constant="5" id="x1S-wV-6Pj"/>
+                            <constraint firstItem="Qkn-fZ-xIf" firstAttribute="bottom" secondItem="WFB-xs-fgY" secondAttribute="bottom" constant="20" id="Fai-a1-jmr"/>
+                            <constraint firstItem="Qkn-fZ-xIf" firstAttribute="trailing" secondItem="WFB-xs-fgY" secondAttribute="trailing" id="JPZ-Pn-eWl"/>
+                            <constraint firstItem="WFB-xs-fgY" firstAttribute="leading" secondItem="Qkn-fZ-xIf" secondAttribute="leading" id="LVX-wW-qCN"/>
+                            <constraint firstItem="WFB-xs-fgY" firstAttribute="top" secondItem="Qkn-fZ-xIf" secondAttribute="top" id="LZ5-jg-lGg"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="375" height="515"/>
                     <connections>
-                        <outlet property="landingPageContentHeadingLabel" destination="v5D-Rw-98D" id="Abl-Hn-ZBI"/>
-                        <outlet property="landingPageContentImageView" destination="Mk9-qT-z58" id="Xjb-wB-K5W"/>
-                        <outlet property="landingPageContentSubheadingLabel" destination="n07-2K-aBA" id="1Xy-4B-XsA"/>
+                        <outlet property="landingPageContentHeadingLabel" destination="N52-wx-VcV" id="zdW-VI-wUT"/>
+                        <outlet property="landingPageContentImageView" destination="dhk-ET-hbC" id="bPo-b3-dG3"/>
+                        <outlet property="landingPageContentSubheadingLabel" destination="441-Tq-lfe" id="u1X-VI-q9c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qBF-6o-jSv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-641" y="-2614"/>
+            <point key="canvasLocation" x="-846" y="-2615"/>
         </scene>
         <!--Landing Page View Controller-->
         <scene sceneID="rAn-ib-nCd">
@@ -84,24 +87,24 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0nK-Ah-zBP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="519" y="-3264"/>
+            <point key="canvasLocation" x="1967" y="-1525"/>
         </scene>
         <!--Login View Controller Container-->
         <scene sceneID="K2H-Ig-C9B">
             <objects>
                 <viewController id="eN1-F7-BSd" customClass="LoginViewControllerContainer" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hxm-rm-Rnv">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4KP-V8-X1O">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <segue destination="PQO-WK-sPh" kind="embed" id="4om-ZV-FsK"/>
                                 </connections>
                             </containerView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1mI-SR-dzU">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <items>
                                     <navigationItem title="Title" id="C05-Fz-Ybm"/>
                                 </items>
@@ -125,18 +128,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7GX-zy-fte" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="518" y="-2545"/>
+            <point key="canvasLocation" x="1967" y="-806"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="SFJ-uW-sP7">
             <objects>
                 <viewController id="PQO-WK-sPh" customClass="LoginViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sp0-bF-QgM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QNT-Kv-8vw">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oth-a2-Kxr" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="535"/>
@@ -321,24 +324,24 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EhU-x9-5Bj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1289" y="-2554"/>
+            <point key="canvasLocation" x="2738" y="-815"/>
         </scene>
         <!--Sign Up View Controller Container-->
         <scene sceneID="OWs-8H-vwC">
             <objects>
                 <viewController id="7x9-Mk-Ozb" customClass="SignUpViewControllerContainer" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="onL-KK-bSd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B0p-ka-OaR">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <segue destination="hC3-X8-W20" kind="embed" id="sbZ-ey-o6B"/>
                                 </connections>
                             </containerView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="85h-nu-aDz">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <items>
                                     <navigationItem title="Title" id="XBL-sR-ccQ"/>
                                 </items>
@@ -362,18 +365,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yqj-dy-62Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="518" y="-1786"/>
+            <point key="canvasLocation" x="1967" y="-47"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="y1r-kq-B7P">
             <objects>
                 <viewController id="hC3-X8-W20" customClass="SignUpViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NPt-Le-Y7q">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5c3-Y7-cYp">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zk1-f1-pMD" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="730"/>
@@ -586,18 +589,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aHs-Gl-8rz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1289" y="-1795"/>
+            <point key="canvasLocation" x="2738" y="-56"/>
         </scene>
         <!--Forgot Password View Controller Container-->
         <scene sceneID="pmT-wX-3t4">
             <objects>
                 <viewController id="Lc6-4v-A1F" customClass="ForgotPasswordViewControllerContainer" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="plx-2l-rP2">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="627"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vuT-dD-ctB">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="627"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                 <connections>
                                     <segue destination="mOx-VQ-9lQ" kind="embed" id="Adf-Kd-eJO"/>
                                 </connections>
@@ -626,18 +629,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wxa-j3-1cH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2137" y="-2554"/>
+            <point key="canvasLocation" x="3586" y="-815"/>
         </scene>
         <!--Forgot Password View Controller-->
         <scene sceneID="fbB-Oh-EfR">
             <objects>
                 <viewController id="mOx-VQ-9lQ" customClass="ForgotPasswordViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="48z-oD-bUW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="627"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYV-zF-bC8">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="627"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ojt-1j-n9n">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
@@ -806,7 +809,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FjE-dJ-7R7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="fXg-r9-t9k" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2936.8000000000002" y="-2563.2683658170918"/>
+            <point key="canvasLocation" x="4386" y="-824"/>
         </scene>
         <!--Landing View Controller-->
         <scene sceneID="NA8-pp-haO">
@@ -838,9 +841,6 @@
                                     <constraint firstAttribute="height" constant="50" id="GTR-Xi-fAH"/>
                                     <constraint firstAttribute="width" constant="280" id="bED-yc-koq"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="eN1-F7-BSd" kind="show" id="7A8-LO-Ohh"/>
-                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YUy-s2-pUX">
                                 <rect key="frame" x="90" y="642" width="195" height="25"/>
@@ -860,9 +860,6 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="aW5-JZ-w3M"/>
                                         </constraints>
-                                        <connections>
-                                            <segue destination="7x9-Mk-Ozb" kind="show" id="H1N-IQ-9TF"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -1023,7 +1020,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fjE-QE-gxZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2500" y="-2545"/>
+            <point key="canvasLocation" x="-4169" y="-623"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="DIv-Ya-WtB">
@@ -1031,7 +1028,7 @@
                 <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="tTb-nb-cKw" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gjq-WF-gme" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2500" y="-1877"/>
+            <point key="canvasLocation" x="-4169" y="43"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="laF-eQ-zue">
@@ -1085,15 +1082,10 @@
                         </constraints>
                     </view>
                     <size key="freeformSize" width="375" height="515"/>
-                    <connections>
-                        <outlet property="headingLabel" destination="mz9-tg-uy8" id="eIB-NR-bBW"/>
-                        <outlet property="imageView" destination="Ueh-gg-ma4" id="1j6-RY-Vyx"/>
-                        <outlet property="subheadingLabel" destination="llC-Od-N58" id="P1c-2R-6Nq"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZBq-Fi-DXi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3290" y="-2613"/>
+            <point key="canvasLocation" x="-2956" y="-1048"/>
         </scene>
     </scenes>
     <resources>

@@ -18,10 +18,6 @@ class LandingPageViewController: UIPageViewController {
     
     //MARK: - View Controller Life Cycle
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,15 +25,12 @@ class LandingPageViewController: UIPageViewController {
         setInitialVC()
         
     }
-
     
-   
     
-    //MARK: - Page View Controller Process
+    //MARK: - Design Elements
     
-    func setDatasourceAndDelegate() {
-        dataSource = self
-        delegate = self
+    required init?(coder aDecoder: NSCoder) {
+        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
     }
     
     func setInitialVC() {
@@ -46,13 +39,18 @@ class LandingPageViewController: UIPageViewController {
         }
     }
     
+    
+    //MARK: - Page View Controller Process
+    
+    func setDatasourceAndDelegate() {
+        dataSource = self
+        delegate = self
+    }
+    
     func landingPageContentViewController(at index: Int) -> LandingPageContentViewController? {
         let images = fetchLandingPageData.of().imageArray
         let headings = fetchLandingPageData.of().headingArray
         let subheadings = fetchLandingPageData.of().subheadingArray
-        print("Images: \(images)")
-        print("Headings: \(headings)")
-        print("Subheadings: \(subheadings)")
         if index >= images.count || index < 0 {
             return nil
         }
