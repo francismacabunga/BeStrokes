@@ -80,17 +80,17 @@
             <objects>
                 <viewController id="eN1-F7-BSd" customClass="LoginViewControllerContainer" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hxm-rm-Rnv">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4KP-V8-X1O">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <segue destination="PQO-WK-sPh" kind="embed" id="4om-ZV-FsK"/>
                                 </connections>
                             </containerView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1mI-SR-dzU">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <items>
                                     <navigationItem title="Title" id="C05-Fz-Ybm"/>
                                 </items>
@@ -114,18 +114,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7GX-zy-fte" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-714" y="-2546"/>
+            <point key="canvasLocation" x="900" y="-1323"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="SFJ-uW-sP7">
             <objects>
                 <viewController id="PQO-WK-sPh" customClass="LoginViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sp0-bF-QgM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QNT-Kv-8vw">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oth-a2-Kxr" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="535"/>
@@ -310,7 +310,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EhU-x9-5Bj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="113" y="-2555"/>
+            <point key="canvasLocation" x="1727" y="-1332"/>
         </scene>
         <!--Sign Up View Controller Container-->
         <scene sceneID="OWs-8H-vwC">
@@ -351,7 +351,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yqj-dy-62Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1972" y="-1837"/>
+            <point key="canvasLocation" x="-5674" y="167"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="y1r-kq-B7P">
@@ -575,7 +575,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aHs-Gl-8rz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="196" y="-1775"/>
+            <point key="canvasLocation" x="-4980" y="274"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="YnY-Rb-6pM">
@@ -735,18 +735,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QMz-nf-wLq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-714" y="-1775"/>
+            <point key="canvasLocation" x="-686" y="-2546"/>
         </scene>
         <!--Forgot Password View Controller Container-->
         <scene sceneID="pmT-wX-3t4">
             <objects>
                 <viewController id="Lc6-4v-A1F" customClass="ForgotPasswordViewControllerContainer" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="plx-2l-rP2">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="627"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vuT-dD-ctB">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="627"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                 <connections>
                                     <segue destination="mOx-VQ-9lQ" kind="embed" id="Adf-Kd-eJO"/>
                                 </connections>
@@ -775,18 +775,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wxa-j3-1cH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="958" y="-2555"/>
+            <point key="canvasLocation" x="2572" y="-1332"/>
         </scene>
         <!--Forgot Password View Controller-->
         <scene sceneID="fbB-Oh-EfR">
             <objects>
                 <viewController id="mOx-VQ-9lQ" customClass="ForgotPasswordViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="48z-oD-bUW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="627"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYV-zF-bC8">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="627"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ojt-1j-n9n">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
@@ -955,7 +955,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FjE-dJ-7R7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="fXg-r9-t9k" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1799" y="-2555"/>
+            <point key="canvasLocation" x="3412" y="-1332"/>
         </scene>
         <!--Landing View Controller-->
         <scene sceneID="NA8-pp-haO">
@@ -987,9 +987,6 @@
                                     <constraint firstAttribute="height" constant="50" id="GTR-Xi-fAH"/>
                                     <constraint firstAttribute="width" constant="280" id="bED-yc-koq"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="eN1-F7-BSd" kind="show" id="DQz-E2-Mh8"/>
-                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YUy-s2-pUX">
                                 <rect key="frame" x="90" y="642" width="195" height="25"/>
@@ -1172,7 +1169,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fjE-QE-gxZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4271" y="-113"/>
+            <point key="canvasLocation" x="-4980" y="-413"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="DIv-Ya-WtB">
@@ -1180,7 +1177,7 @@
                 <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="tTb-nb-cKw" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gjq-WF-gme" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4271" y="554"/>
+            <point key="canvasLocation" x="-4286" y="-503"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="laF-eQ-zue">
@@ -1237,7 +1234,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZBq-Fi-DXi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4271" y="-769"/>
+            <point key="canvasLocation" x="-5674" y="-482"/>
         </scene>
     </scenes>
     <resources>

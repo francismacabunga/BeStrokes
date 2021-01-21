@@ -30,28 +30,57 @@ struct UserViewModel {
 
 struct User {
     
-    let db = Firestore.firestore()
-    let user = Auth.auth().currentUser
-    lazy var usersDocumentID = db.collection(Strings.userCollection).document()
+    private let db = Firestore.firestore()
+    private let user = Auth.auth().currentUser
     
-    
-    func createUser(withEmail email: String, password: String, completion: @escaping (Error?) -> Void) {
+    func createUser(with email: String, _ password: String, completion: @escaping (Error?, AuthDataResult?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
             if error != nil {
                 // Show error
-                completion(error)
+                completion(error, nil)
                 return
+            }
+            completion(nil, authResult)
+        }
+    }
+    
+    func storeData(with dictionary: [String : String], completion: @escaping (Error?, Bool?) -> Void) {
+        let documentReference = db.collection(Strings.userCollection).document()
+        let documentID = documentReference.documentID
+        documentReference.setData([Strings.userDocumentIDField : documentID]) { (error) in
+            if error != nil {
+                completion(error, nil)
+                return
+            }
+            documentReference.updateData(dictionary) { (error) in
+                if error != nil {
+                    completion(error, nil)
+                    return
+                }
+                completion(nil, true)
             }
         }
     }
     
-    func storeData(with dictionary: [String : String]) {
-        if user != nil {
-            
-        } else {
-            // Show error no user is signed in!
-        }
+    func sendEmailVerification(completion: @escaping (Error?, Bool) -> Void) {
+        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
+            if error != nil {
+                completion(error, false)
+                return
+            }
+            completion(nil, true)
+        })
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?, Bool) -> Void) {
         if user != nil {
@@ -73,7 +102,7 @@ struct User {
         }
     }
     
-    func getSignedInUserData(completion: @escaping(UserViewModel) -> Void) {
+    func getSignedInUserData(completion: @escaping (UserViewModel) -> Void) {
         if user != nil {
             let signedInUserID = user!.uid
             db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
@@ -94,16 +123,20 @@ struct User {
         }
     }
     
-    func isEmailVerified(completion: @escaping (Bool) -> Void) {
+    func isEmailVerified(completion: @escaping (Error?, Bool?) -> Void) {
         if user != nil {
             user?.reload(completion: { (error) in
                 if error != nil {
                     // Show error
+                    completion(error, nil)
+                    return
                 }
                 if user!.isEmailVerified {
-                    completion(true)
+                    completion(nil, true)
+                    return
                 } else {
-                    completion(false)
+                    completion(nil, false)
+                    return
                 }
             })
         } else {
@@ -111,19 +144,81 @@ struct User {
         }
     }
     
-    func sendEmailVerification(completion: @escaping (Bool) -> Void) {
+    
+    
+    
+    
+    func updateUserData(_ firstName: String, _ lastName: String, _ email: String, _ profilePicURL: String, completion: @escaping (Error?) -> Void) {
         if user != nil {
-            user!.sendEmailVerification { (error) in
+            user!.reload(completion: { (error) in
                 if error != nil {
                     // Show error
-                    completion(false)
+                    completion(error)
+                    return
                 }
-                completion(true)
-            }
+                let isEmailVerified = user!.isEmailVerified
+                if isEmailVerified {
+                    let signedInUserID = user!.uid
+                    let initialUserEmail = user!.email
+                    db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
+                        if error != nil {
+                            // Show error
+                            completion(error)
+                            return
+                        }
+                        guard let result = snapshot?.documents.first else {return}
+                        let documentID = result[Strings.userDocumentIDField] as! String
+                        user!.updateEmail(to: email, completion: { (error) in
+                            if error != nil {
+                                // Show error
+                                completion(error)
+                                return
+                            }
+                            // Password successfully changed
+                            print("Email changed")
+                            db.collection(Strings.userCollection)
+                                .document(documentID)
+                                .updateData([Strings.userFirstNameField : firstName,
+                                             Strings.userLastNameField : lastName,
+                                             Strings.userEmailField : email,
+                                             Strings.userProfilePicField : profilePicURL])
+                        })
+                    }
+                } else {
+                    // Email is not verified
+                    print("Email is not verified")
+                }
+            })
         } else {
             // Show error no user is signed in!
         }
     }
+    
+    func uploadProfilePic(with image: UIImage, using userID: String, completion: @escaping(Error?, String?) -> Void) {
+        guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
+        let storagePath = Storage.storage().reference(forURL: Strings.firebaseStoragePath)
+        let profilePicStoragePath = storagePath.child(Strings.firebaseProfilePicStoragePath).child(userID)
+        let imageMetadata = StorageMetadata()
+        imageMetadata.contentType = Strings.metadataContentType
+        profilePicStoragePath.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
+            if error != nil {
+                // Show error
+                completion(error, nil)
+                return
+            }
+            profilePicStoragePath.downloadURL { (url, error) in
+                if error != nil {
+                    // Show error
+                    completion(error, nil)
+                    return
+                }
+                guard let imageString = url?.absoluteString else {return}
+                completion(nil, imageString)
+            }
+        }
+    }
+    
+    
     
     func signOutUser() -> Bool? {
         if user != nil {
@@ -137,79 +232,6 @@ struct User {
         } else {
             // Show error no user is signed in!
             return Bool()
-        }
-    }
-    
-    func updateUserData(_ firstName: String, _ lastName: String, _ email: String, _ profilePicURL: String, completion: @escaping (Bool) -> Void) {
-        if user != nil {
-            user!.reload(completion: { (error) in
-                if error != nil {
-                    // Show error
-                }
-                let isEmailVerified = user!.isEmailVerified
-                if isEmailVerified {
-                    let signedInUserID = user!.uid
-                    let initialUserEmail = user!.email
-                    db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
-                        if error != nil {
-                            // Show error
-                        }
-                        guard let result = snapshot?.documents.first else {return}
-                        let documentID = result[Strings.userDocumentIDField] as! String
-                        user!.updateEmail(to: email, completion: { (error) in
-                            if error != nil {
-                                // Show error
-                            }
-                            // Password successfully changed
-                            print("Email changed")
-                            db.collection(Strings.userCollection)
-                                .document(documentID)
-                                .updateData([Strings.userFirstNameField : firstName,
-                                             Strings.userLastNameField : lastName,
-                                             Strings.userEmailField : email,
-                                             Strings.userProfilePicField : profilePicURL])
-                            if initialUserEmail != email {
-                                sendEmailVerification { (result) in
-                                    if result {
-                                        completion(true)
-                                    } else {
-                                        completion(false)
-                                    }
-                                }
-                            }
-                        })
-                    }
-                } else {
-                    // Email is not verified
-                    print("Email is not verified")
-                }
-            })
-        } else {
-            // Show error no user is signed in!
-        }
-    }
-    
-    func uploadProfilePic(with image: UIImage, using userID: String, completion: @escaping(String) -> Void) {
-        if user != nil {
-            guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
-            let storagePath = Storage.storage().reference(forURL: Strings.firebaseStoragePath)
-            let profilePicStoragePath = storagePath.child(Strings.firebaseProfilePicStoragePath).child(userID)
-            let imageMetadata = StorageMetadata()
-            imageMetadata.contentType = Strings.metadataContentType
-            profilePicStoragePath.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
-                if error != nil {
-                    // Show error
-                }
-                profilePicStoragePath.downloadURL { (url, error) in
-                    if error != nil {
-                        // Show error
-                    }
-                    guard let imageString = url?.absoluteString else {return}
-                    completion(imageString)
-                }
-            }
-        } else {
-            // Show error no user is signed in!
         }
     }
     

@@ -86,6 +86,7 @@ class HomeViewController: UIViewController {
     
     func setProfilePicture() {
         user.getSignedInUserData { (result) in
+            print(result)
             DispatchQueue.main.async { [self] in
                 homeProfilePictureButton.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
                 Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)

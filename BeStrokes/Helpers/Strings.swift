@@ -9,29 +9,28 @@ import Foundation
 
 struct Strings {
     
-
     
-
+    
+    
     
     
     
     static let resetPasswordSuccessMessage = "Your password has been successfuly reset. Please check your email."
     static let loginStoryboardID = "LoginViewController"
-    static let tabBarStoryboardID = "UserTabBarController"
     static let homeStoryboardID = "HomeViewController"
     static let unwindToLandingSegue = "goBackToLanding"
-    static let emailVerificationSent = "Email verification has ben succesfuly sent. Please check your email"
-    static let changeSignUpButtonText = "Logging in..."
-    static let collectionName = "users"
-    static let profilePictureStorageReference = "profilePictures"
-    static let firstName = "firstName"
-    static let lastName = "lastName"
-    static let UID = "userID"
-    static let profilePicture = "profilePic"
-    static let firebaseStorageReference = "gs://bestrokes-f5c28.appspot.com/"
     
     
     
+    
+    
+    //static let tabBarStoryboardID = "UserTabBarController"
+    //static let emailVerificationSent = "Email verification has ben succesfuly sent. Please check your email"
+    //    static let collectionName = "users"
+    //    static let firstName = "firstName"
+    //    static let lastName = "lastName"
+    //    static let UID = "userID"
+    //    static let profilePicture = "profilePic"
     //static let landingStoryboardID = "LandingViewController"
     //static let landingNavigationStoryboardID = "LandingNavigationController"
     //static let profileStoryboardID = "ProfileViewController"
@@ -72,6 +71,7 @@ struct Strings {
     static let loginButtonText = "Login"
     static let signUpButtonText = "Sign up"
     static let getStartedButtonText = "Get Started"
+    static let signUpButtonTransitionText = "Redirecting"
     
     //MARK: - Tab Bar Labels
     static let homeTabText = "Home"
@@ -111,11 +111,12 @@ struct Strings {
     static let signUpPasswordTextFieldErrorLabel = "Password is required."
     static let signUpPasswordErrorLabel = "Password must be at least 8 characters long with one alphabet and one special character or more."
     static let signUpProfilePictureErrorLabel = "Profile picture is required, please choose an image."
+    static let signUpProcessSuccessfulLabel = "Successfully created your account. Email verification has been sent, please check your email."
     
     
-   
     
-   
+    
+    
     
     
     

@@ -250,12 +250,12 @@
 				2F393A12255AEB57006CDBDE /* LandingViewController.swift */,
 				2F393A0E255AEAEA006CDBDE /* LandingPageViewController.swift */,
 				2F393A16255AEBBE006CDBDE /* LandingPageContentViewController.swift */,
+				2F1125562551A024004A02B1 /* SignUpViewController.swift */,
 				2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */,
 				2F1125532551A005004A02B1 /* LoginViewController.swift */,
 				2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */,
 				2F11255A2551A03E004A02B1 /* ForgotPasswordViewController.swift */,
 				2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */,
-				2F1125562551A024004A02B1 /* SignUpViewController.swift */,
 				2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */,
 			);
 			path = Guest;

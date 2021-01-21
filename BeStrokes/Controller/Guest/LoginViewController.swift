@@ -91,9 +91,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     
                     print("The user entered the right credentials! Logging in...")
                     //Transition to Homescreen
-                    let HomeViewController = Utilities.transitionTo(storyboardName: Strings.userStoryboard, identifier: Strings.tabBarStoryboardID)
-                    view.window?.rootViewController = HomeViewController
-                    view.window?.makeKeyAndVisible()
+//                    let HomeViewController = Utilities.transitionTo(storyboardName: Strings.userStoryboard, identifier: Strings.tabBarStoryboardID)
+//                    view.window?.rootViewController = HomeViewController
+//                    view.window?.makeKeyAndVisible()
                     
                 }
             }

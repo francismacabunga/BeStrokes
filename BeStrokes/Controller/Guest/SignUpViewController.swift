@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import FirebaseAuth
-import Firebase
 import CropViewController
 
 class SignUpViewController: UIViewController {
@@ -70,10 +68,10 @@ class SignUpViewController: UIViewController {
         Utilities.setDesignOn(label: signUpHeadingLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.signUpHeadingText)
         Utilities.setDesignOn(label: signUpWarning1Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
         Utilities.setDesignOn(label: signUpWarning2Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        Utilities.setDesignOn(textField: signUpFirstNameTextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.firstNameTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(textField: signUpLastNameTextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.lastNameTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(textField: signUpEmailTextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(textField: signUpPasswordTextField, font: Strings.defaultFont, fontSize: 15, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.passwordTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(textField: signUpFirstNameTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.firstNameTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(textField: signUpLastNameTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.lastNameTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(textField: signUpEmailTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(textField: signUpPasswordTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.passwordTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(button: signUpButton, title: Strings.signUpButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
     }
@@ -85,11 +83,37 @@ class SignUpViewController: UIViewController {
         present(cropViewController, animated: true, completion: nil)
     }
     
-  
+    func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
+        if error != nil {
+            label.text = error!.localizedDescription
+        }
+        if customizedWarning != nil {
+            label.text = customizedWarning
+        }
+        if isASuccessMessage {
+            Utilities.setDesignOn(label: label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1))
+        }
+        UIView.animate(withDuration: 0.2) {
+            label.isHidden = false
+        }
+    }
     
- 
+    func setSignUpButtonTappedAnimation() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+            signUpButton.isHidden = true
+            signUpLoadingIndicatorView.isHidden = false
+            signUpLoadingIndicatorView.startAnimating()
+        }
+    }
     
-    
+    func setSignUpButtonTransitionAnimation() {
+        signUpLoadingIndicatorView.isHidden = true
+        signUpButton.setTitle(Strings.signUpButtonTransitionText, for: .normal)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+            signUpButton.isHidden = false
+            signUpButton.isEnabled = false
+        }
+    }
     
     func dismissKeyboard() {
         signUpFirstNameTextField.endEditing(true)
@@ -98,35 +122,10 @@ class SignUpViewController: UIViewController {
         signUpPasswordTextField.endEditing(true)
     }
     
-    
-    
-    func animateSignUpButton() {
-        UIView.animate(withDuration: 0.3) { [self] in
-            signUpButton.alpha = 0
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
-            signUpButton.isHidden = true
-//            loadingIcon.isHidden = false
-//            loadingIcon.startAnimating()
-        }
-    }
-    
-    func animateSignUpButtonToLogin() {
-//        loadingIcon.isHidden = true
-        signUpButton.setTitle(Strings.changeSignUpButtonText, for: .normal)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
-            signUpButton.isHidden = false
-            UIView.animate(withDuration: 0.2) {
-                signUpButton.alpha = 1
-                signUpButton.isEnabled = false
-            }
-        }
-    }
-    
-    func transtionToHome() {
+    func transitionToLandingVC() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
-            let HomeViewController = Utilities.transitionTo(storyboardName: Strings.userStoryboard, identifier: Strings.tabBarStoryboardID)
-            view.window?.rootViewController = HomeViewController
+            let homeVC = Utilities.transitionTo(storyboardName: Strings.userStoryboard, identifier: Strings.tabBarVC)
+            view.window?.rootViewController = homeVC
             view.window?.makeKeyAndVisible()
         }
     }
@@ -150,13 +149,11 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpButton(_ sender: UIButton) {
         Utilities.animateButton(button: sender)
-        
-        dismissKeyboard()
         validateProfilePicture()
         validateTextFields()
         processSignUp()
-        
-        
+        setSignUpButtonTappedAnimation()
+        dismissKeyboard()
     }
     
     
@@ -170,30 +167,30 @@ class SignUpViewController: UIViewController {
         signUpEmailTextField.delegate = self
         signUpPasswordTextField.delegate = self
     }
- 
     
-    
+    func validateProfilePicture() -> Bool {
+        if imageIsChanged {
+            return true
+        } else {
+            showWarningLabel(on: signUpWarning2Label, customizedWarning: Strings.signUpProfilePictureErrorLabel, isASuccessMessage: false)
+            return false
+        }
+    }
     
     func validateTextFields() -> Bool {
         if signUpFirstNameTextField.text == "" || signUpLastNameTextField.text == "" || signUpEmailTextField.text == "" || signUpPasswordTextField.text == "" {
-            Utilities.setDesignOn(textField: signUpFirstNameTextField, font: Strings.defaultFont, fontSize: 15, placeholder: Strings.signUpFirstNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-            Utilities.setDesignOn(textField: signUpLastNameTextField, font: Strings.defaultFont, fontSize: 15, placeholder: Strings.signUpLastNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-            Utilities.setDesignOn(textField: signUpEmailTextField, font: Strings.defaultFont, fontSize: 15, placeholder: Strings.signUpEmailTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-            Utilities.setDesignOn(textField: signUpPasswordTextField, font: Strings.defaultFont, fontSize: 15, placeholder: Strings.signUpPasswordTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+            Utilities.setDesignOn(textField: signUpFirstNameTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpFirstNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+            Utilities.setDesignOn(textField: signUpLastNameTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpLastNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+            Utilities.setDesignOn(textField: signUpEmailTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, placeholder: Strings.signUpEmailTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+            Utilities.setDesignOn(textField: signUpPasswordTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, placeholder: Strings.signUpPasswordTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
         } else {
             if signUpPasswordTextField.text != "" {
                 if let password = signUpPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
                     let passwordValid = Utilities.isPasswordValid(password)
                     if passwordValid {
-//                        UIView.animate(withDuration: 0.2) { [self] in
-//                            signUpWarning1Label.isHidden = true
-//                        }
                         return true
                     } else {
-                        signUpWarning1Label.text = Strings.signUpPasswordErrorLabel
-                        UIView.animate(withDuration: 0.2) { [self] in
-                            signUpWarning1Label.isHidden = false
-                        }
+                        showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpPasswordErrorLabel, isASuccessMessage: false)
                         return false
                     }
                 }
@@ -202,143 +199,54 @@ class SignUpViewController: UIViewController {
         return false
     }
     
-    func validateProfilePicture() -> Bool {
-        if imageIsChanged {
-            return true
-        } else {
-            signUpWarning2Label.text = Strings.signUpProfilePictureErrorLabel
-            UIView.animate(withDuration: 0.2) { [self] in
-                signUpWarning2Label.isHidden = false
-            }
-            return false
-        }
-    }
-    
-    
-    
     func processSignUp() {
-        
-        
-        
-        
-
         if validateTextFields() && validateProfilePicture() {
-            print("PROCEED")
             if let firstName = signUpFirstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
                let lastName = signUpLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
                let email = signUpEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
                let password = signUpPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
-
-                user.createUser(withEmail: email, password: password) { [self] (error) in
+                user.createUser(with: email, password) { [self] (error, authResult) in
                     if error != nil {
-                        signUpWarning1Label.text = error!.localizedDescription
-                        UIView.animate(withDuration: 0.2) { [self] in
-                            signUpWarning1Label.isHidden = false
-                        }
+                        showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
                         return
                     }
-                    
-                }
-                
-                
-//                user.createUser(withEmail: email, password: lastName) { [self] (result) in
-//                    if result {
-//                        let userID = user.user!.uid
-//                        let documentID = user.usersDocumentID.documentID
-//                        user.uploadProfilePic(with: editedImage!, using: userID) { (imageString) in
-//                            let dictionary = ["firstName" : firstName, "lastName" : lastName, "email" : email, "password" : password, "profilePic" : imageString, "documentID" : documentID]
-//                        }
-//                    } else {
-//                        // Show error cannot create account now
-//                    }
-//                }
-                
-                
-                
-//                Auth.auth().createUser(withEmail: email, password: password) { [self] (authResult, error) in
-//                    if error != nil {
-//                        Utilities.showAnimatedError(on: validationMessage, withError: error)
-//                    } else {
-//                        // Successfuly created an account
-//                        animateSignUpButton()
-//                        storeDataToDB(firstName, lastName)
-//                    }
-//                }
-                
-                
-            }
-        }
-        
-        
-    }
-    
-    func storeDataToDB(_ firstName: String, _ lastName: String) {
-        
-        guard let user = Auth.auth().currentUser else {return}
-        let userID = user.uid
-        let userEmail = user.email
-        let db = Firestore.firestore()
-        let query = db.collection(Strings.collectionName).document()
-        let documentID = query.documentID
-        var dictionary = [Strings.firstName: firstName, Strings.lastName: lastName, Strings.userEmailField: userEmail, Strings.UID: userID, Strings.userDocumentIDField: documentID]
-        
-        // We are setting the selected image in a guarded constant
-        guard let imageSelected = editedImage else {return}
-        
-        // Converting the selected image as a jpeg
-        guard let imageData = imageSelected.jpegData(compressionQuality: 0.4) else {return}
-        
-        // Getting the Firebase storage URL and creating a folder inside of it to store the image
-        let storageReference = Storage.storage().reference(forURL: Strings.firebaseStorageReference)
-        let profilePicStorageReference = storageReference.child(Strings.profilePictureStorageReference).child(userID)
-        
-        // Setting propeties to the image
-        let metadata = StorageMetadata()
-        metadata.contentType = Strings.metadataContentType
-        
-        // Uploading of the image to the storage
-        profilePicStorageReference.putData(imageData, metadata: metadata) { [self] (storageMetadata, error) in
-            if error != nil {
-//                Utilities.showAnimatedError(on: validationMessage, withError: error)
-            } else {
-                
-                // After succesfully uploaded we are downloading the image from the storage folder we created above
-                profilePicStorageReference.downloadURL { (url, error) in
-                    if error != nil {
-//                        Utilities.showAnimatedError(on: validationMessage, withError: error)
-                    } else {
-                        
-                        // Changing of the URL to a string to feed it to our dictionary
-                        if let imageURLLocation = url?.absoluteString {
-                            dictionary[Strings.profilePicture] = imageURLLocation
-                            
-                            // Finally adding to the DB
-                            query.setData(dictionary)
-                            sendEmailVerification()
+                    guard let result = authResult else {return}
+                    let userID = result.user.uid
+                    UIView.animate(withDuration: 0.2) { [self] in
+                        signUpWarning1Label.isHidden = true
+                    }
+                    user.uploadProfilePic(with: editedImage!, using: userID) { (error, imageString) in
+                        if error != nil {
+                            showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
+                            return
+                        }
+                        guard let profilePic = imageString else {return}
+                        let dictionary = [Strings.userIDField : userID, Strings.userFirstNameField : firstName, Strings.userLastNameField : lastName, Strings.userEmailField : email, Strings.userProfilePicField : profilePic]
+                        user.storeData(with: dictionary) { (error, result) in
+                            if error != nil {
+                                showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
+                                return
+                            }
+                            guard let isFinishedStoring = result else {return}
+                            if isFinishedStoring {
+                                user.sendEmailVerification { (error, isEmailVerificationSent) in
+                                    if error != nil {
+                                        showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
+                                        return
+                                    }
+                                    if isEmailVerificationSent {
+                                        showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
+                                        setSignUpButtonTransitionAnimation()
+                                        transitionToLandingVC()
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
     }
-    
-    func sendEmailVerification() {
-        
-        Auth.auth().currentUser?.sendEmailVerification(completion: { [self] (error) in
-            if error != nil {
-//                Utilities.showAnimatedError(on: validationMessage, withError: error, withCustomizedString: nil)
-            } else {
-//                Utilities.showAnimatedEmailVerificationSuccessfulySent(validationLabel: validationMessage)
-                animateSignUpButtonToLogin()
-                transtionToHome()
-            }
-        })
-    }
-    
-    
-
-    
-    
     
 }
 
@@ -350,10 +258,6 @@ extension SignUpViewController: UINavigationControllerDelegate, UIImagePickerCon
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             presentCropViewController(imagePicked)
-        }
-        imageIsChanged = true
-        UIView.animate(withDuration: 0.2) { [self] in
-            signUpWarning2Label.isHidden = true
         }
     }
     
@@ -367,6 +271,8 @@ extension SignUpViewController: CropViewControllerDelegate {
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
         editedImage = image
         signUpImageView.image = image
+        imageIsChanged = true
+        signUpWarning2Label.isHidden = true
         let viewController = cropViewController.children.first!
         viewController.modalTransitionStyle = .coverVertical
         viewController.presentingViewController?.dismiss(animated: true, completion: nil)
