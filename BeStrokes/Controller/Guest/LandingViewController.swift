@@ -84,7 +84,6 @@ class LandingViewController: UIViewController {
                     }
                 }
             } else {
-                print("Redirect to homescreen")
                 let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
                 let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
                 self.view.window?.rootViewController = homeVC

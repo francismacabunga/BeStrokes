@@ -22,18 +22,14 @@
 		2F402CA6256806DD00666028 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F402CA5256806DD00666028 /* User.storyboard */; };
 		2F45D04825B4ABC3005167AE /* LandingPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F45D04725B4ABC3005167AE /* LandingPageModel.swift */; };
 		2F45D04B25B4ACAA005167AE /* LandingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */; };
-		2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */; };
 		2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */; };
 		2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */; };
 		2F58B0E125A47CE0009EFDE5 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0E025A47CE0009EFDE5 /* UserModel.swift */; };
 		2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */; };
 		2F88A016259B1FBC00AAC82D /* StickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A015259B1FBC00AAC82D /* StickerModel.swift */; };
 		2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A018259B239700AAC82D /* StickerViewModel.swift */; };
-		2F8F950D2565C59A00ECDF83 /* SignUpViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */; };
 		2F9C40F525AAF52600A7663F /* EditAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9C40F425AAF52600A7663F /* EditAccountViewController.swift */; };
 		2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1ABE42552ED8C0076A8FD /* Strings.swift */; };
-		2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */; };
-		2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */; };
 		2FD6E4D2257AC96100B49E41 /* FeaturedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */; };
 		2FD6E4D3257AC96100B49E41 /* FeaturedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */; };
 		2FD6E4DA257AC99900B49E41 /* StickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D8257AC99900B49E41 /* StickerCollectionViewCell.swift */; };
@@ -70,17 +66,13 @@
 		2F402CA5256806DD00666028 /* User.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
 		2F45D04725B4ABC3005167AE /* LandingPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageModel.swift; sourceTree = "<group>"; };
 		2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModel.swift; sourceTree = "<group>"; };
-		2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewControllerContainer.swift; sourceTree = "<group>"; };
 		2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		2F58B0E025A47CE0009EFDE5 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerOptionViewController.swift; sourceTree = "<group>"; };
 		2F88A015259B1FBC00AAC82D /* StickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerModel.swift; sourceTree = "<group>"; };
 		2F88A018259B239700AAC82D /* StickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewModel.swift; sourceTree = "<group>"; };
-		2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewControllerContainer.swift; sourceTree = "<group>"; };
 		2F9C40F425AAF52600A7663F /* EditAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewController.swift; sourceTree = "<group>"; };
 		2FB1ABE42552ED8C0076A8FD /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
-		2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerContainer.swift; sourceTree = "<group>"; };
-		2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedViewController.swift; sourceTree = "<group>"; };
 		2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedCollectionViewCell.swift; sourceTree = "<group>"; };
 		2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeaturedCollectionViewCell.xib; sourceTree = "<group>"; };
 		2FD6E4D8257AC99900B49E41 /* StickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -247,16 +239,12 @@
 		2FD634692567F76600C00EE9 /* Guest */ = {
 			isa = PBXGroup;
 			children = (
-				2F393A12255AEB57006CDBDE /* LandingViewController.swift */,
-				2F393A0E255AEAEA006CDBDE /* LandingPageViewController.swift */,
 				2F393A16255AEBBE006CDBDE /* LandingPageContentViewController.swift */,
+				2F393A0E255AEAEA006CDBDE /* LandingPageViewController.swift */,
+				2F393A12255AEB57006CDBDE /* LandingViewController.swift */,
 				2F1125562551A024004A02B1 /* SignUpViewController.swift */,
-				2FBA003E25656C7200B763D7 /* LoginViewControllerContainer.swift */,
 				2F1125532551A005004A02B1 /* LoginViewController.swift */,
-				2F51D3202565915C00EDCD00 /* ForgotPasswordViewControllerContainer.swift */,
 				2F11255A2551A03E004A02B1 /* ForgotPasswordViewController.swift */,
-				2F8F950C2565C59A00ECDF83 /* SignUpViewControllerContainer.swift */,
-				2FD12264255AB77A00DA9F9E /* GetStartedViewController.swift */,
 			);
 			path = Guest;
 			sourceTree = "<group>";
@@ -457,21 +445,17 @@
 				2F11255E2551A083004A02B1 /* HomeViewController.swift in Sources */,
 				2F9C40F525AAF52600A7663F /* EditAccountViewController.swift in Sources */,
 				2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */,
-				2F8F950D2565C59A00ECDF83 /* SignUpViewControllerContainer.swift in Sources */,
-				2FBA003F25656C7200B763D7 /* LoginViewControllerContainer.swift in Sources */,
 				2FFB0C4E25A8740400FAED42 /* ProfileSettingsModel.swift in Sources */,
 				2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */,
 				2F45D04B25B4ACAA005167AE /* LandingPageViewModel.swift in Sources */,
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
 				2F393A0F255AEAEA006CDBDE /* LandingPageViewController.swift in Sources */,
-				2FD12265255AB77A00DA9F9E /* GetStartedViewController.swift in Sources */,
 				2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */,
 				2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */,
 				2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */,
 				2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */,
 				2F45D04825B4ABC3005167AE /* LandingPageModel.swift in Sources */,
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
-				2F51D3212565915D00EDCD00 /* ForgotPasswordViewControllerContainer.swift in Sources */,
 				2FEAC09925AA0B6400E149CE /* LikedStickersTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

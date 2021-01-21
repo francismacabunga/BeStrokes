@@ -64,6 +64,7 @@ struct Strings {
     static let editAccountHeadingText = "Update Account"
     static let landingSignupText = "Don't have an account yet?"
     static let signUpHeadingText = "Create Account"
+    static let loginHeadingText = "Welcome Back!"
     
     //MARK: - Button Labels
     static let tryMeButtonText = "Try me"
@@ -72,6 +73,7 @@ struct Strings {
     static let signUpButtonText = "Sign up"
     static let getStartedButtonText = "Get Started"
     static let signUpButtonTransitionText = "Redirecting"
+    static let forgotPasswordButton = "Forgot Password"
     
     //MARK: - Tab Bar Labels
     static let homeTabText = "Home"
@@ -192,6 +194,7 @@ struct Strings {
     static let heartStickerImage = "heart.fill"
     static let cameraImage = "Camera"
     static let signUpDefaultIcon = "Woman"
+    static let loginDefaultIcon = "Avatar"
     
     //MARK: - SF Symbols Names
     static let settingNotificationIcon = "bell.badge"

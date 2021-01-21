@@ -6,96 +6,119 @@
 //
 
 import UIKit
-import Firebase
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController {
     
-    @IBOutlet weak var mainHeadingLabel: UILabel!
-    @IBOutlet weak var errorLabel: UILabel!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var forgotPasswordButton: UIButton!
+    //MARK: - IBOutlets
+    
+    @IBOutlet weak var loginContentView: UIView!
+    @IBOutlet weak var loginHeadingStackView: UIStackView!
+    @IBOutlet weak var loginTextFieldsStackView: UIStackView!
+    @IBOutlet weak var loginForgotPasswordButtonStackView: UIStackView!
+    @IBOutlet weak var loginForgotPasswordButtonSpacerView: UIView!
+    @IBOutlet weak var loginNavigationBar: UINavigationBar!
+    @IBOutlet weak var loginHeadingLabel: UILabel!
+    @IBOutlet weak var loginImageView: UIImageView!
+    @IBOutlet weak var loginWarningLabel: UILabel!
+    @IBOutlet weak var loginEmailTextField: UITextField!
+    @IBOutlet weak var loginPasswordTextField: UITextField!
+    @IBOutlet weak var loginForgotPasswordButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
+    
+    
+    //MARK: - Constants / Variables
+    
+    private let user = User()
+    
+    
+    //MARK: - View Controller Life Cyle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
-        designElements()
+        setDesignElements()
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        emailTextField.becomeFirstResponder()
-        
+        loginEmailTextField.becomeFirstResponder()
     }
     
-    func designElements() {
-        
-        errorLabel.isHidden = true
+    
+    //MARK: - Design Elements
+    
+    func setDesignElements() {
         UIScrollView.appearance().indicatorStyle = .white
-        
-//        Utilities.putDesignOn(whitePopupHeadingLabel: mainHeadingLabel)
-//        Utilities.putDesignOn(errorLabel: errorLabel)
-//        Utilities.putDesignOn(textField: emailTextField, placeholder: Strings.emailPlaceholder)
-//        Utilities.putDesignOn(textField: passwordTextField, placeholder: Strings.passwordPlaceholder)
-        Utilities.putDesignOn(forgotPasswordButton: forgotPasswordButton)
-        Utilities.putDesignOn(whiteButton: loginButton)
-        
+        loginWarningLabel.isHidden = true
+        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(view: loginContentView, backgroundColor: .clear)
+        Utilities.setDesignOn(stackView: loginHeadingStackView, backgroundColor: .clear)
+        Utilities.setDesignOn(stackView: loginTextFieldsStackView, backgroundColor: .clear)
+        Utilities.setDesignOn(stackView: loginForgotPasswordButtonStackView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: loginForgotPasswordButtonSpacerView, backgroundColor: .clear)
+        Utilities.setDesignOn(navigationBar: loginNavigationBar, isDarkMode: false)
+        Utilities.setDesignOn(label: loginHeadingLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.loginHeadingText)
+        Utilities.setDesignOn(imageView: loginImageView, image: UIImage(named: Strings.loginDefaultIcon), isCircular: true)
+        Utilities.setDesignOn(label: loginWarningLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+        Utilities.setDesignOn(textField: loginEmailTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(textField: loginPasswordTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.passwordTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(button: loginForgotPasswordButton, title: Strings.forgotPasswordButton, font: Strings.defaultFontMedium, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(button: loginButton, title: Strings.loginButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
     }
     
-    @IBAction func forgotPasswordButton(_ sender: UIButton) {
-        
-        Utilities.animateButton(button: sender)
-        
+    func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
+        if error != nil {
+            label.text = error!.localizedDescription
+        }
+        if customizedWarning != nil {
+            label.text = customizedWarning
+        }
+        if isASuccessMessage {
+            Utilities.setDesignOn(label: label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1))
+        }
+        UIView.animate(withDuration: 0.2) {
+            label.isHidden = false
+        }
     }
+    
+    func dismissKeyboard() {
+        loginEmailTextField.endEditing(true)
+        loginPasswordTextField.endEditing(true)
+    }
+    
+    func transitionToLandingVC() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
+            let homeVC = Utilities.transitionTo(storyboardName: Strings.userStoryboard, identifier: Strings.tabBarVC)
+            view.window?.rootViewController = homeVC
+            view.window?.makeKeyAndVisible()
+        }
+    }
+    
+    
+    //MARK: - Buttons
     
     @IBAction func loginButton(_ sender: UIButton) {
-        
         Utilities.animateButton(button: sender)
-        emailTextField.endEditing(true)
-        passwordTextField.endEditing(true)
         processLogin()
-        
+        dismissKeyboard()
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        emailTextField.endEditing(true)
-        passwordTextField.endEditing(true)
-        processLogin()
-        return true
-        
+    
+    //MARK: - Login Process
+    
+    func setDatasourceAndDelegate() {
+        loginEmailTextField.delegate = self
+        loginPasswordTextField.delegate = self
     }
     
     func processLogin() {
-        
-        if let email = emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), let password = passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
-            
-            
-            
-            
-          
-            
-            
-            
-            
-            Auth.auth().signIn(withEmail: email, password: password) { [self] (authResult, error) in
+        if let email = loginEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), let password = loginPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            user.signInUser(with: email, password) { [self] (error, authResult) in
                 if error != nil {
-
-                    Utilities.showAnimatedError(on: errorLabel, withError: error, withCustomizedString: nil)
-                    
-                } else {
-                    
-                    print("The user entered the right credentials! Logging in...")
-                    //Transition to Homescreen
-//                    let HomeViewController = Utilities.transitionTo(storyboardName: Strings.userStoryboard, identifier: Strings.tabBarStoryboardID)
-//                    view.window?.rootViewController = HomeViewController
-//                    view.window?.makeKeyAndVisible()
-                    
+                    showWarningLabel(on: loginWarningLabel, with: error!, isASuccessMessage: false)
+                    return
                 }
+                transitionToLandingVC()
             }
         }
     }
@@ -103,3 +126,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 }
 
 
+//MARK: - Text Field Delegate
+
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        loginEmailTextField.endEditing(true)
+        loginPasswordTextField.endEditing(true)
+        processLogin()
+        return true
+    }
+    
+}

@@ -318,11 +318,7 @@ struct Utilities {
         
     }
     
-    static func isPasswordValid(_ password: String) -> Bool{
-        let passwordTest = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])[A-Za-z\\d$@$#!%*?&]{8,}")
-        return passwordTest.evaluate(with: password)
-    }
-    
+
     
     //MARK: - Label Designs
     
@@ -334,12 +330,7 @@ struct Utilities {
         whitePopupSubheadingLabel.textAlignment = .left
     }
     
-    static func putDesignOn(signUpLabel: UILabel) {
-        signUpLabel.font = UIFont(name: Strings.defaultFontMedium, size: 13)
-        signUpLabel.textColor = UIColor.black
-        signUpLabel.numberOfLines = 0
-        signUpLabel.lineBreakMode = .byWordWrapping
-    }
+
     
     
     //MARK: - Button and Other Elements Designs
@@ -462,6 +453,18 @@ struct Utilities {
 
 
 
+
+
+//    static func putDesignOn(signUpLabel: UILabel) {
+//        signUpLabel.font = UIFont(name: Strings.defaultFontMedium, size: 13)
+//        signUpLabel.textColor = UIColor.black
+//        signUpLabel.numberOfLines = 0
+//        signUpLabel.lineBreakMode = .byWordWrapping
+//    }
+//    static func isPasswordValid(_ password: String) -> Bool{
+//        let passwordTest = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])[A-Za-z\\d$@$#!%*?&]{8,}")
+//        return passwordTest.evaluate(with: password)
+//    }
 //    static func putDesignOn(textField: UITextField, placeholder: String) {
 //
 //        textField.font = UIFont(name: Strings.defaultFont, size: 15)

@@ -33,7 +33,7 @@ class SignUpViewController: UIViewController {
     private let imagePicker = UIImagePickerController()
     private var editedImage: UIImage? = nil
     private var imageIsChanged = false
-    private var user = User()
+    private let user = User()
     
     
     //MARK: - View Controller Life Cycle
@@ -186,7 +186,7 @@ class SignUpViewController: UIViewController {
         } else {
             if signUpPasswordTextField.text != "" {
                 if let password = signUpPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
-                    let passwordValid = Utilities.isPasswordValid(password)
+                    let passwordValid = user.isPasswordValid(password)
                     if passwordValid {
                         return true
                     } else {

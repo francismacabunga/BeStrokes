@@ -33,10 +33,14 @@ struct User {
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
     
+    func isPasswordValid(_ password: String) -> Bool{
+        let passwordTest = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])[A-Za-z\\d$@$#!%*?&]{8,}")
+        return passwordTest.evaluate(with: password)
+    }
+    
     func createUser(with email: String, _ password: String, completion: @escaping (Error?, AuthDataResult?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
             if error != nil {
-                // Show error
                 completion(error, nil)
                 return
             }
@@ -72,16 +76,6 @@ struct User {
         })
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?, Bool) -> Void) {
         if user != nil {
             print("The user is signed in!")
@@ -96,11 +90,37 @@ struct User {
                 return completion(nil, false)
             }
         } else {
-            // Show error no user is signed in!
             print("The user is not signed in!")
             completion(nil, true)
         }
     }
+    
+    func signInUser(with email: String, _ password: String, completion: @escaping (Error?, AuthDataResult?) -> Void) {
+        Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
+            if error != nil {
+                completion(error, nil)
+                return
+            }
+            completion(nil, authResult)
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //MARK: - FOR CHECKING
+    
+    
+    
+    
+    
+    
     
     func getSignedInUserData(completion: @escaping (UserViewModel) -> Void) {
         if user != nil {
@@ -122,6 +142,13 @@ struct User {
             // Show error no user is signed in!
         }
     }
+    
+    
+    
+    
+    
+    
+    
     
     func isEmailVerified(completion: @escaping (Error?, Bool?) -> Void) {
         if user != nil {
@@ -194,6 +221,12 @@ struct User {
         }
     }
     
+    
+    
+    
+    
+    
+    
     func uploadProfilePic(with image: UIImage, using userID: String, completion: @escaping(Error?, String?) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
         let storagePath = Storage.storage().reference(forURL: Strings.firebaseStoragePath)
@@ -220,6 +253,8 @@ struct User {
     
     
     
+    
+    
     func signOutUser() -> Bool? {
         if user != nil {
             do {
@@ -234,6 +269,12 @@ struct User {
             return Bool()
         }
     }
+    
+    
+    
+    
+    
+    
     
 }
 
