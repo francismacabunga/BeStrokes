@@ -184,6 +184,7 @@ struct Utilities {
     static func setDesignOn(imageView: UIImageView,
                             image: UIImage? = nil,
                             tintColor: UIColor? = nil,
+                            alpha: CGFloat? = nil,
                             isCircular: Bool? = nil,
                             isSkeletonCircular: Bool? = nil)
     {
@@ -193,6 +194,9 @@ struct Utilities {
         }
         if tintColor != nil {
             imageView.tintColor = tintColor!
+        }
+        if alpha != nil {
+            imageView.alpha = alpha!
         }
         if isCircular != nil {
             if isCircular! {
@@ -307,65 +311,10 @@ struct Utilities {
     
     //MARK: - TO BE DELETED
     
-    //MARK: - Text Fields Designs
-    
-    static func showError(on textField: UITextField, with textFieldErrorMessage: String ) {
-        
-        textField.attributedPlaceholder = NSAttributedString(string: textFieldErrorMessage, attributes: [
-            .foregroundColor: UIColor.red,
-            .font: UIFont(name: Strings.defaultFont, size: 15)
-        ])
-        
-    }
-    
+ 
 
     
-    //MARK: - Label Designs
-    
-    static func putDesignOn(whitePopupSubheadingLabel: UILabel) {
-        whitePopupSubheadingLabel.font = UIFont(name: Strings.defaultFontMedium, size: 17)
-        whitePopupSubheadingLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        whitePopupSubheadingLabel.numberOfLines = 0
-        whitePopupSubheadingLabel.lineBreakMode = .byWordWrapping
-        whitePopupSubheadingLabel.textAlignment = .left
-    }
-    
-
-    
-    
-    //MARK: - Button and Other Elements Designs
-    
-    static func putDesignOn(forgotPasswordButton: UIButton) {
-        forgotPasswordButton.titleLabel?.font = UIFont(name: Strings.defaultFontMedium, size: 15)
-        forgotPasswordButton.setTitleColor(#colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), for: .normal)
-    }
-    
-    static func putDesignOn(whiteButton: UIButton) {
-        whiteButton.titleLabel?.font = UIFont(name: Strings.defaultFontBold, size: 20)
-        whiteButton.titleLabel?.textColor = UIColor.black
-        whiteButton.setTitleColor(UIColor.black, for: .normal)
-        whiteButton.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-        whiteButton.layer.cornerRadius = 20
-    }
-    
-    static func putDesignOn(signUpButton: UIButton) {
-        signUpButton.titleLabel?.font = UIFont(name: Strings.defaultFontBold, size: 13)
-        signUpButton.setTitleColor(UIColor.black, for: .normal)
-    }
-    
-    static func putDesignOn(loadingIcon: UIActivityIndicatorView) {
-        loadingIcon.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-    }
-    
-    static func putDesignOn(navigationBar: UINavigationBar) {
-        let image = UIImage(named: Strings.blackBarImage)
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = image
-        navigationBar.topItem?.titleView = imageView
-        navigationBar.barTintColor = #colorLiteral(red: 0.7843137255, green: 0.7882352941, blue: 0.8039215686, alpha: 1)
-        navigationBar.isTranslucent = true
-    }
+  
     
     //MARK: - Animations
     
@@ -382,62 +331,22 @@ struct Utilities {
         }
     }
     
-    static func showAnimatedResetPasswordSuccessMessage(validationLabel: UILabel) {
-        
-        validationLabel.font = UIFont(name: Strings.defaultFontBold, size: 15)
-        validationLabel.textColor = UIColor.black
-        validationLabel.backgroundColor = UIColor.green
-        validationLabel.numberOfLines = 0
-        validationLabel.lineBreakMode = .byWordWrapping
-        validationLabel.textAlignment = .center
-        
-        UIView.animate(withDuration: 0.2) {
-            validationLabel.isHidden = false
-            validationLabel.text = Strings.resetPasswordSuccessMessage
-        }
-    }
+//    static func showAnimatedResetPasswordSuccessMessage(validationLabel: UILabel) {
+//        
+//        validationLabel.font = UIFont(name: Strings.defaultFontBold, size: 15)
+//        validationLabel.textColor = UIColor.black
+//        validationLabel.backgroundColor = UIColor.green
+//        validationLabel.numberOfLines = 0
+//        validationLabel.lineBreakMode = .byWordWrapping
+//        validationLabel.textAlignment = .center
+//        
+//        UIView.animate(withDuration: 0.2) {
+//            validationLabel.isHidden = false
+//            validationLabel.text = Strings.resetPasswordSuccessMessage
+//        }
+//    }
     
-    static func showAnimatedEmailVerificationSuccessfulySent(validationLabel: UILabel) {
-        
-        validationLabel.font = UIFont(name: Strings.defaultFontBold, size: 15)
-        validationLabel.textColor = UIColor.black
-        validationLabel.backgroundColor = UIColor.green
-        validationLabel.numberOfLines = 0
-        validationLabel.lineBreakMode = .byWordWrapping
-        validationLabel.textAlignment = .center
-        
-        UIView.animate(withDuration: 0.2) {
-            validationLabel.isHidden = false
-            //            validationLabel.text = Strings.emailVerificationSent
-        }
-        
-    }
-    
-    static func showAnimatedError(on errorLabel: UILabel, withError error: Error? = nil, withCustomizedString: String? = nil) {
-        
-        UIView.animate(withDuration: 0.2) {
-            errorLabel.isHidden = false
-            errorLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            errorLabel.backgroundColor = UIColor.red
-            
-            if let errorIsPresent = error {
-                errorLabel.text = errorIsPresent.localizedDescription
-            }
-            
-            if let customizedStringIsPresent = withCustomizedString {
-                errorLabel.text = customizedStringIsPresent
-            }
-        }
-        
-    }
-    
-    static func transitionTo(storyboardName: String, identifier: String) -> UIViewController {
-        
-        let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: identifier)
-        return viewController
-        
-    }
+
     
     
     
@@ -454,6 +363,104 @@ struct Utilities {
 
 
 
+
+
+
+
+//    static func showError(on textField: UITextField, with textFieldErrorMessage: String ) {
+//
+//        textField.attributedPlaceholder = NSAttributedString(string: textFieldErrorMessage, attributes: [
+//            .foregroundColor: UIColor.red,
+//            .font: UIFont(name: Strings.defaultFont, size: 15)
+//        ])
+//
+//    }
+
+
+
+
+//    static func putDesignOn(whitePopupSubheadingLabel: UILabel) {
+//        whitePopupSubheadingLabel.font = UIFont(name: Strings.defaultFontMedium, size: 17)
+//        whitePopupSubheadingLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+//        whitePopupSubheadingLabel.numberOfLines = 0
+//        whitePopupSubheadingLabel.lineBreakMode = .byWordWrapping
+//        whitePopupSubheadingLabel.textAlignment = .left
+//    }
+
+
+//static func putDesignOn(forgotPasswordButton: UIButton) {
+//        forgotPasswordButton.titleLabel?.font = UIFont(name: Strings.defaultFontMedium, size: 15)
+//        forgotPasswordButton.setTitleColor(#colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), for: .normal)
+//    }
+//
+//    static func putDesignOn(whiteButton: UIButton) {
+//        whiteButton.titleLabel?.font = UIFont(name: Strings.defaultFontBold, size: 20)
+//        whiteButton.titleLabel?.textColor = UIColor.black
+//        whiteButton.setTitleColor(UIColor.black, for: .normal)
+//        whiteButton.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+//        whiteButton.layer.cornerRadius = 20
+//    }
+//
+//    static func putDesignOn(signUpButton: UIButton) {
+//        signUpButton.titleLabel?.font = UIFont(name: Strings.defaultFontBold, size: 13)
+//        signUpButton.setTitleColor(UIColor.black, for: .normal)
+//    }
+//
+//    static func putDesignOn(loadingIcon: UIActivityIndicatorView) {
+//        loadingIcon.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+//    }
+//
+//    static func putDesignOn(navigationBar: UINavigationBar) {
+//        let image = UIImage(named: Strings.blackBarImage)
+//        let imageView = UIImageView()
+//        imageView.contentMode = .scaleAspectFit
+//        imageView.image = image
+//        navigationBar.topItem?.titleView = imageView
+//        navigationBar.barTintColor = #colorLiteral(red: 0.7843137255, green: 0.7882352941, blue: 0.8039215686, alpha: 1)
+//        navigationBar.isTranslucent = true
+//    }
+
+//    static func showAnimatedEmailVerificationSuccessfulySent(validationLabel: UILabel) {
+//
+//        validationLabel.font = UIFont(name: Strings.defaultFontBold, size: 15)
+//        validationLabel.textColor = UIColor.black
+//        validationLabel.backgroundColor = UIColor.green
+//        validationLabel.numberOfLines = 0
+//        validationLabel.lineBreakMode = .byWordWrapping
+//        validationLabel.textAlignment = .center
+//
+//        UIView.animate(withDuration: 0.2) {
+//            validationLabel.isHidden = false
+//            //            validationLabel.text = Strings.emailVerificationSent
+//        }
+//
+//    }
+    
+//    static func showAnimatedError(on errorLabel: UILabel, withError error: Error? = nil, withCustomizedString: String? = nil) {
+//
+//        UIView.animate(withDuration: 0.2) {
+//            errorLabel.isHidden = false
+//            errorLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+//            errorLabel.backgroundColor = UIColor.red
+//
+//            if let errorIsPresent = error {
+//                errorLabel.text = errorIsPresent.localizedDescription
+//            }
+//
+//            if let customizedStringIsPresent = withCustomizedString {
+//                errorLabel.text = customizedStringIsPresent
+//            }
+//        }
+//
+//    }
+    
+//    static func transitionTo(storyboardName: String, identifier: String) -> UIViewController {
+//
+//        let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
+//        let viewController = storyboard.instantiateViewController(withIdentifier: identifier)
+//        return viewController
+//
+//    }
 
 //    static func putDesignOn(signUpLabel: UILabel) {
 //        signUpLabel.font = UIFont(name: Strings.defaultFontMedium, size: 13)

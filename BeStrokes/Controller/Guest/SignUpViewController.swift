@@ -124,7 +124,8 @@ class SignUpViewController: UIViewController {
     
     func transitionToLandingVC() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
-            let homeVC = Utilities.transitionTo(storyboardName: Strings.userStoryboard, identifier: Strings.tabBarVC)
+            let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+            let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
             view.window?.rootViewController = homeVC
             view.window?.makeKeyAndVisible()
         }

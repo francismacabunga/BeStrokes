@@ -109,6 +109,15 @@ struct User {
     
     
     
+    func forgotPassword(with email: String, completion: @escaping (Error?, Bool) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { (error) in
+            if error != nil {
+                completion(error, false)
+                return
+            }
+            completion(nil, true)
+        }
+    }
     
     
     

@@ -625,10 +625,10 @@
             </objects>
             <point key="canvasLocation" x="-732" y="-1775.2623688155923"/>
         </scene>
-        <!--View Controller-->
+        <!--Forgot Password View Controller-->
         <scene sceneID="sl9-3y-dsY">
             <objects>
-                <viewController id="C53-5W-Xxe" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ForgotPasswordViewController" id="C53-5W-Xxe" customClass="ForgotPasswordViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vLd-zd-jFR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -643,19 +643,26 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="591"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Lx-Uu-6bE">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="350"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="400"/>
                                         <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7S0-R9-CSB">
+                                                <rect key="frame" x="115" y="50" width="250" height="250"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="250" id="lOE-1K-T03"/>
+                                                    <constraint firstAttribute="height" constant="250" id="ziv-Qt-CdR"/>
+                                                </constraints>
+                                            </imageView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zKw-u6-jRT">
-                                                <rect key="frame" x="32.5" y="50" width="310" height="49"/>
+                                                <rect key="frame" x="32.5" y="50" width="310" height="108"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l77-nj-nG6">
-                                                        <rect key="frame" x="0.0" y="0.0" width="310" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l77-nj-nG6">
+                                                        <rect key="frame" x="0.0" y="0.0" width="310" height="50"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nz3-fh-4J0">
-                                                        <rect key="frame" x="0.0" y="28.5" width="310" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nz3-fh-4J0">
+                                                        <rect key="frame" x="0.0" y="58" width="310" height="50"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -666,10 +673,10 @@
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Vya-Ki-GGS">
-                                                <rect key="frame" x="32.5" y="129" width="310" height="89"/>
+                                                <rect key="frame" x="32.5" y="188" width="310" height="104"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCw-6D-KUz">
-                                                        <rect key="frame" x="0.0" y="0.0" width="310" height="35"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCw-6D-KUz">
+                                                        <rect key="frame" x="0.0" y="0.0" width="310" height="50"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="k1c-on-dNd"/>
                                                         </constraints>
@@ -678,7 +685,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZqX-xw-28s">
-                                                        <rect key="frame" x="0.0" y="55" width="310" height="34"/>
+                                                        <rect key="frame" x="0.0" y="70" width="310" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
@@ -688,20 +695,38 @@
                                                 </constraints>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8yc-tz-DfF">
-                                                <rect key="frame" x="115" y="248" width="145" height="30"/>
+                                                <rect key="frame" x="115" y="322" width="145" height="40"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="145" id="jBd-c7-VPQ"/>
+                                                    <constraint firstAttribute="height" constant="40" id="Xu0-ke-THN"/>
+                                                    <constraint firstAttribute="width" constant="145" id="jBd-c7-VPQ"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="forgotPasswordDismissButton:" destination="C53-5W-Xxe" eventType="touchUpInside" id="DbI-kz-oqD"/>
+                                                    <segue destination="gMX-pw-9M0" kind="unwind" identifier="goBackToLandingVC" unwindAction="unwindToLandingVCWithSegue:" id="DBa-tj-63Y"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sfq-XQ-bU3">
+                                                <rect key="frame" x="115" y="322" width="145" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="Ecn-Q0-OXz"/>
+                                                    <constraint firstAttribute="width" constant="145" id="EtI-Bc-Kgb"/>
+                                                </constraints>
+                                                <connections>
+                                                    <action selector="forgotPasswordSubmitButton:" destination="C53-5W-Xxe" eventType="touchUpInside" id="Lok-9P-ork"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="Vya-Ki-GGS" firstAttribute="top" secondItem="zKw-u6-jRT" secondAttribute="bottom" constant="30" id="7ZE-rp-klA"/>
+                                            <constraint firstItem="sfq-XQ-bU3" firstAttribute="centerX" secondItem="0Lx-Uu-6bE" secondAttribute="centerX" id="HMU-Q5-bIt"/>
                                             <constraint firstItem="8yc-tz-DfF" firstAttribute="centerX" secondItem="0Lx-Uu-6bE" secondAttribute="centerX" id="Pgj-Ou-xAp"/>
+                                            <constraint firstItem="7S0-R9-CSB" firstAttribute="top" secondItem="0Lx-Uu-6bE" secondAttribute="top" constant="50" id="Tfi-qT-8ol"/>
                                             <constraint firstItem="zKw-u6-jRT" firstAttribute="top" secondItem="0Lx-Uu-6bE" secondAttribute="top" constant="50" id="VGF-b2-buq"/>
                                             <constraint firstItem="Vya-Ki-GGS" firstAttribute="centerX" secondItem="0Lx-Uu-6bE" secondAttribute="centerX" id="cRl-Sn-ZYp"/>
-                                            <constraint firstAttribute="height" constant="350" id="tEc-xK-yCk"/>
+                                            <constraint firstAttribute="trailing" secondItem="7S0-R9-CSB" secondAttribute="trailing" constant="10" id="gld-mX-dj1"/>
+                                            <constraint firstItem="sfq-XQ-bU3" firstAttribute="top" secondItem="Vya-Ki-GGS" secondAttribute="bottom" constant="30" id="osM-AV-qg4"/>
+                                            <constraint firstAttribute="height" constant="400" id="tEc-xK-yCk"/>
                                             <constraint firstItem="8yc-tz-DfF" firstAttribute="top" secondItem="Vya-Ki-GGS" secondAttribute="bottom" constant="30" id="uuu-Iz-Ln4"/>
                                             <constraint firstItem="zKw-u6-jRT" firstAttribute="centerX" secondItem="0Lx-Uu-6bE" secondAttribute="centerX" id="yjJ-65-QoB"/>
                                         </constraints>
@@ -731,8 +756,22 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="YUb-xU-yDE"/>
+                    <connections>
+                        <outlet property="forgotPasswordContentView" destination="0Lx-Uu-6bE" id="cDQ-Oe-zEc"/>
+                        <outlet property="forgotPasswordDismissButton" destination="8yc-tz-DfF" id="o3x-zW-E2M"/>
+                        <outlet property="forgotPasswordEmailTextField" destination="ZqX-xw-28s" id="kgk-Ui-fV1"/>
+                        <outlet property="forgotPasswordHeadingLabel" destination="l77-nj-nG6" id="tIL-Of-jc0"/>
+                        <outlet property="forgotPasswordHeadingsStackView" destination="zKw-u6-jRT" id="pQp-iJ-veF"/>
+                        <outlet property="forgotPasswordImageView" destination="7S0-R9-CSB" id="Kog-St-8Ct"/>
+                        <outlet property="forgotPasswordNavigationBar" destination="HYK-nY-vRQ" id="wdy-3m-1nh"/>
+                        <outlet property="forgotPasswordSubheadingLabel" destination="Nz3-fh-4J0" id="1V0-gu-11e"/>
+                        <outlet property="forgotPasswordSubmitButton" destination="sfq-XQ-bU3" id="Pz5-GW-4id"/>
+                        <outlet property="forgotPasswordTextFieldStackView" destination="Vya-Ki-GGS" id="LLj-WX-Bkr"/>
+                        <outlet property="forgotPasswordWarningLabel" destination="CCw-6D-KUz" id="SOT-e8-gf1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IRi-MO-8UH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="gMX-pw-9M0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="64.799999999999997" y="-1775.2623688155923"/>
         </scene>
@@ -954,7 +993,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FjE-dJ-7R7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="fXg-r9-t9k" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-3074" y="-163"/>
+            <point key="canvasLocation" x="-1873" y="-362"/>
         </scene>
         <!--Landing View Controller-->
         <scene sceneID="NA8-pp-haO">

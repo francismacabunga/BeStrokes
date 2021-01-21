@@ -37,6 +37,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         setDesignElements()
+        setDatasourceAndDelegate()
         
     }
     
@@ -62,7 +63,7 @@ class LoginViewController: UIViewController {
         Utilities.setDesignOn(label: loginWarningLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
         Utilities.setDesignOn(textField: loginEmailTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(textField: loginPasswordTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.passwordTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(button: loginForgotPasswordButton, title: Strings.forgotPasswordButton, font: Strings.defaultFontMedium, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(button: loginForgotPasswordButton, title: Strings.forgotPasswordButtonText, font: Strings.defaultFontMedium, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(button: loginButton, title: Strings.loginButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
     }
     
@@ -88,7 +89,8 @@ class LoginViewController: UIViewController {
     
     func transitionToLandingVC() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
-            let homeVC = Utilities.transitionTo(storyboardName: Strings.userStoryboard, identifier: Strings.tabBarVC)
+            let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+            let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
             view.window?.rootViewController = homeVC
             view.window?.makeKeyAndVisible()
         }

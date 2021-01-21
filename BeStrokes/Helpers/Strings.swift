@@ -15,10 +15,11 @@ struct Strings {
     
     
     
-    static let resetPasswordSuccessMessage = "Your password has been successfuly reset. Please check your email."
-    static let loginStoryboardID = "LoginViewController"
-    static let homeStoryboardID = "HomeViewController"
-    static let unwindToLandingSegue = "goBackToLanding"
+    
+//    static let loginStoryboardID = "LoginViewController"
+//    static let homeStoryboardID = "HomeViewController"
+    
+    
     
     
     
@@ -65,6 +66,8 @@ struct Strings {
     static let landingSignupText = "Don't have an account yet?"
     static let signUpHeadingText = "Create Account"
     static let loginHeadingText = "Welcome Back!"
+    static let forgotPasswordHeadingText = "Forgot your password?"
+    static let forgotPasswordSubheadingText = "Enter your associated email with your account."
     
     //MARK: - Button Labels
     static let tryMeButtonText = "Try me"
@@ -73,7 +76,9 @@ struct Strings {
     static let signUpButtonText = "Sign up"
     static let getStartedButtonText = "Get Started"
     static let signUpButtonTransitionText = "Redirecting"
-    static let forgotPasswordButton = "Forgot Password"
+    static let forgotPasswordButtonText = "Forgot Password"
+    static let submitButtonText = "Submit"
+    static let dismissButtonText = "Dismiss"
     
     //MARK: - Tab Bar Labels
     static let homeTabText = "Home"
@@ -114,6 +119,7 @@ struct Strings {
     static let signUpPasswordErrorLabel = "Password must be at least 8 characters long with one alphabet and one special character or more."
     static let signUpProfilePictureErrorLabel = "Profile picture is required, please choose an image."
     static let signUpProcessSuccessfulLabel = "Successfully created your account. Email verification has been sent, please check your email."
+    static let forgotPasswordProcessSuccessfulLabel = "Your password has been successfuly reset. Please check your email."
     
     
     
@@ -195,6 +201,7 @@ struct Strings {
     static let cameraImage = "Camera"
     static let signUpDefaultIcon = "Woman"
     static let loginDefaultIcon = "Avatar"
+    static let forgotPasswordBackgroundImage = "Keys"
     
     //MARK: - SF Symbols Names
     static let settingNotificationIcon = "bell.badge"
@@ -234,6 +241,9 @@ struct Strings {
     static let profileTableViewCell = "ProfileTableViewCell"
     static let stickerCell = "StickerCollectionViewCell"
     static let likedStickerCell = "LikedStickersTableViewCell"
+    
+    //MARK: - Segue
+    static let unwindToLandingVC = "goBackToLandingVC"
     
     
     
