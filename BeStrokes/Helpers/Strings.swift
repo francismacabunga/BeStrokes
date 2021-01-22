@@ -9,51 +9,6 @@ import Foundation
 
 struct Strings {
     
-    
-    
-    
-    
-    
-    
-    
-//    static let loginStoryboardID = "LoginViewController"
-//    static let homeStoryboardID = "HomeViewController"
-    
-    
-    
-    
-    
-    
-    
-    //static let tabBarStoryboardID = "UserTabBarController"
-    //static let emailVerificationSent = "Email verification has ben succesfuly sent. Please check your email"
-    //    static let collectionName = "users"
-    //    static let firstName = "firstName"
-    //    static let lastName = "lastName"
-    //    static let UID = "userID"
-    //    static let profilePicture = "profilePic"
-    //static let landingStoryboardID = "LandingViewController"
-    //static let landingNavigationStoryboardID = "LandingNavigationController"
-    //static let profileStoryboardID = "ProfileViewController"
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //MARK: - MVVM
-    
-    
-    
-    
-    
-    
-    
     //MARK: - Heading / Body Labels
     static let homeHeading1Text = "Featured"
     static let homeHeading2Text = "Stickers"
@@ -90,6 +45,7 @@ struct Strings {
     static let lastNameTextField = "Last Name"
     static let emailTextField = "Email"
     static let passwordTextField = "Password"
+    static let searchTextField = "Search"
     
     //MARK: - Alert Labels
     static let logoutAlertTitle = "Are you sure?"
@@ -124,32 +80,10 @@ struct Strings {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //MARK: - Text Fields Labels
-    static let accountSearchTextFieldPlaceholder = "Search"
-    
-    //MARK: - Sticker Category/Tag Labels
+    //MARK: - Sticker Category/Tag Title
     static let categoryAllStickers = "All"
     static let categoryFeaturedStickers = "Featured"
     static let tagNoStickers = "none"
-    
-    
-    
-    
-    
-    
     
     //MARK: - Sticker Category Array
     static let allStickers = "All"
@@ -174,15 +108,6 @@ struct Strings {
     static let subheadingOne = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
     static let subheadingTwo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
     static let subheadingThree = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -220,7 +145,6 @@ struct Strings {
     
     
     
-    
     //MARK: - Storyboard Names
     static let mainStoryboard = "Main"
     static let userStoryboard = "User"
@@ -244,7 +168,6 @@ struct Strings {
     
     //MARK: - Segue
     static let unwindToLandingVC = "goBackToLandingVC"
-    
     
     
     
@@ -274,32 +197,8 @@ struct Strings {
     static let stickerIsCategorySelected = "isCategorySelected"
     static let stickerSelectedOnStart = "selectedOnStart"
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    //MARK: - Password Regex
+    static let regexFormat = "SELF MATCHES %@"
+    static let validationType = "^(?=.*[a-z])(?=.*[$@$#!%*?&])[A-Za-z\\d$@$#!%*?&]{8,}"
     
 }

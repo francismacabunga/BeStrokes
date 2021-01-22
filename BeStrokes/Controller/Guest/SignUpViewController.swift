@@ -115,6 +115,11 @@ class SignUpViewController: UIViewController {
         }
     }
     
+    func setSignUpButtonToOriginalDesign() {
+        signUpLoadingIndicatorView.isHidden = true
+        signUpButton.isHidden = false
+    }
+    
     func dismissKeyboard() {
         signUpFirstNameTextField.endEditing(true)
         signUpLastNameTextField.endEditing(true)
@@ -153,7 +158,6 @@ class SignUpViewController: UIViewController {
         validateProfilePicture()
         validateTextFields()
         processSignUp()
-        setSignUpButtonTappedAnimation()
         dismissKeyboard()
     }
     
@@ -206,9 +210,11 @@ class SignUpViewController: UIViewController {
                let lastName = signUpLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
                let email = signUpEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
                let password = signUpPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+                setSignUpButtonTappedAnimation()
                 user.createUser(with: email, password) { [self] (error, authResult) in
                     if error != nil {
                         showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
+                        setSignUpButtonToOriginalDesign()
                         return
                     }
                     guard let result = authResult else {return}
@@ -219,6 +225,7 @@ class SignUpViewController: UIViewController {
                     user.uploadProfilePic(with: editedImage!, using: userID) { (error, imageString) in
                         if error != nil {
                             showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
+                            setSignUpButtonToOriginalDesign()
                             return
                         }
                         guard let profilePic = imageString else {return}
@@ -226,6 +233,7 @@ class SignUpViewController: UIViewController {
                         user.storeData(with: dictionary) { (error, result) in
                             if error != nil {
                                 showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
+                                setSignUpButtonToOriginalDesign()
                                 return
                             }
                             guard let isFinishedStoring = result else {return}
@@ -233,6 +241,7 @@ class SignUpViewController: UIViewController {
                                 user.sendEmailVerification { (error, isEmailVerificationSent) in
                                     if error != nil {
                                         showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
+                                        setSignUpButtonToOriginalDesign()
                                         return
                                     }
                                     if isEmailVerificationSent {

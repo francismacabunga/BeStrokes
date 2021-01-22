@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Firebase
 
 class ForgotPasswordViewController: UIViewController {
     
@@ -61,22 +60,9 @@ class ForgotPasswordViewController: UIViewController {
         Utilities.setDesignOn(label: forgotPasswordSubheadingLabel, font: Strings.defaultFontMedium, fontSize: 17, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.forgotPasswordSubheadingText)
         Utilities.setDesignOn(label: forgotPasswordWarningLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
         Utilities.setDesignOn(textField: forgotPasswordEmailTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
-        
         Utilities.setDesignOn(button: forgotPasswordSubmitButton, title: Strings.submitButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: forgotPasswordDismissButton, title: Strings.dismissButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
-        
-        
-        
-        
-        //        dismissButton.isHidden = true
-        //        dismissButton.alpha = 0
-        
-        
-        
-        
-        
     }
-    
     
     func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
         if error != nil {
@@ -93,29 +79,29 @@ class ForgotPasswordViewController: UIViewController {
         }
     }
     
+    func showDismissButton() {
+        UIView.animate(withDuration: 0.3) { [self] in
+            forgotPasswordSubmitButton.isHidden = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            UIView.animate(withDuration: 0.2) { [self] in
+                forgotPasswordDismissButton.isHidden = false
+            }
+        }
+    }
     
     func dismissKeyboard() {
         forgotPasswordEmailTextField.endEditing(true)
     }
     
-    func setDatasourceAndDelegate() {
-        forgotPasswordEmailTextField.delegate = self
-    }
     
+    //MARK: - Buttons
     
     @IBAction func forgotPasswordSubmitButton(_ sender: UIButton) {
-        
-        
         Utilities.animateButton(button: sender)
-        dismissKeyboard()
         processForgotPassword()
-        
-        
-
-        
-        
+        dismissKeyboard()
     }
-    
     
     @IBAction func forgotPasswordDismissButton(_ sender: UIButton) {
         Utilities.animateButton(button: sender)
@@ -123,6 +109,11 @@ class ForgotPasswordViewController: UIViewController {
     }
     
     
+    //MARK: - Forgot Password Process
+    
+    func setDatasourceAndDelegate() {
+        forgotPasswordEmailTextField.delegate = self
+    }
     
     func processForgotPassword() {
         if let email = forgotPasswordEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)  {
@@ -133,25 +124,7 @@ class ForgotPasswordViewController: UIViewController {
                 }
                 if isPasswordResetSent {
                     showWarningLabel(on: forgotPasswordWarningLabel, customizedWarning: Strings.forgotPasswordProcessSuccessfulLabel, isASuccessMessage: true)
-                    
-                    
-                    
-                    UIView.animate(withDuration: 0.3) {
-                        forgotPasswordSubmitButton.isHidden = true
-                       
-                    }
-                    
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        UIView.animate(withDuration: 0.2) {
-                            forgotPasswordDismissButton.isHidden = false
-
-                        }
-                    }
-                    
-
-                    
-                    
+                    showDismissButton()
                 }
             }
         }

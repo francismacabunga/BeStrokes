@@ -12,6 +12,7 @@ class LandingViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var landingSignupStackView: UIStackView!
     @IBOutlet weak var landingPageControl: UIPageControl!
     @IBOutlet weak var landingSignUpLabel: UILabel!
     @IBOutlet weak var landingSignUpButton: UIButton!
@@ -41,6 +42,7 @@ class LandingViewController: UIViewController {
     
     func setDesignElements() {
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(stackView: landingSignupStackView, backgroundColor: .clear)
         Utilities.setDesignOn(button: landingGetStartedButton, title: Strings.getStartedButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: landingLoginButton, title: Strings.loginButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: landingSignUpButton, title: Strings.signUpButtonText, font: Strings.defaultFontBold, fontSize: 13, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))

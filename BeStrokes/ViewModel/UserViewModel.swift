@@ -33,8 +33,8 @@ struct User {
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
     
-    func isPasswordValid(_ password: String) -> Bool{
-        let passwordTest = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[a-z])(?=.*[$@$#!%*?&])[A-Za-z\\d$@$#!%*?&]{8,}")
+    func isPasswordValid(_ password: String) -> Bool {
+        let passwordTest = NSPredicate(format: Strings.regexFormat, Strings.validationType)
         return passwordTest.evaluate(with: password)
     }
     
@@ -76,6 +76,26 @@ struct User {
         })
     }
     
+    func signInUser(with email: String, _ password: String, completion: @escaping (Error?, AuthDataResult?) -> Void) {
+        Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
+            if error != nil {
+                completion(error, nil)
+                return
+            }
+            completion(nil, authResult)
+        }
+    }
+    
+    func forgotPassword(with email: String, completion: @escaping (Error?, Bool) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { (error) in
+            if error != nil {
+                completion(error, false)
+                return
+            }
+            completion(nil, true)
+        }
+    }
+    
     func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?, Bool) -> Void) {
         if user != nil {
             print("The user is signed in!")
@@ -95,29 +115,7 @@ struct User {
         }
     }
     
-    func signInUser(with email: String, _ password: String, completion: @escaping (Error?, AuthDataResult?) -> Void) {
-        Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
-            if error != nil {
-                completion(error, nil)
-                return
-            }
-            completion(nil, authResult)
-        }
-    }
     
-    
-    
-    
-    
-    func forgotPassword(with email: String, completion: @escaping (Error?, Bool) -> Void) {
-        Auth.auth().sendPasswordReset(withEmail: email) { (error) in
-            if error != nil {
-                completion(error, false)
-                return
-            }
-            completion(nil, true)
-        }
-    }
     
     
     
