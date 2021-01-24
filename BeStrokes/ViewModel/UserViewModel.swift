@@ -45,6 +45,7 @@ struct User {
                 return
             }
             completion(nil, authResult)
+            return
         }
     }
     
@@ -62,6 +63,7 @@ struct User {
                     return
                 }
                 completion(nil, true)
+                return
             }
         }
     }
@@ -73,6 +75,7 @@ struct User {
                 return
             }
             completion(nil, true)
+            return
         })
     }
     
@@ -83,6 +86,7 @@ struct User {
                 return
             }
             completion(nil, authResult)
+            return
         }
     }
     
@@ -93,6 +97,7 @@ struct User {
                 return
             }
             completion(nil, true)
+            return
         }
     }
     
@@ -103,17 +108,101 @@ struct User {
                 if error != nil {
                     guard let NSError = error as NSError? else {return}
                     if let error = AuthErrorCode(rawValue: NSError.code) {
-                        return completion(error, true)
+                        completion(error, true)
+                        return
                     }
                 }
                 print("Valid token")
-                return completion(nil, false)
+                completion(nil, false)
+                return
             }
         } else {
             print("The user is not signed in!")
             completion(nil, true)
+            return
         }
     }
+    
+    func getSignedInUserData(completion: @escaping (Error?, Bool?, UserViewModel?) -> Void) {
+        if user != nil {
+            let signedInUserID = user!.uid
+            db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
+                if error != nil {
+                    // Show error
+                    completion(error, true, nil)
+                    return
+                }
+                guard let result = snapshot?.documents.first else {return}
+                let userViewModel = UserViewModel(UserModel(documentID: result[Strings.userDocumentIDField] as! String,
+                                                            userID: result[Strings.userIDField] as! String,
+                                                            firstName: result[Strings.userFirstNameField] as! String,
+                                                            lastName: result[Strings.userLastNameField] as! String,
+                                                            email: result[Strings.userEmailField] as! String,
+                                                            profilePic: result[Strings.userProfilePicField] as! String))
+                completion(nil, true, userViewModel)
+                return
+            }
+        } else {
+            // Show error no user is signed in!
+            completion(nil, false, nil)
+            return
+        }
+    }
+    
+    func isEmailVerified(completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+        guard let signedInUser = user else {
+            completion(nil, false, nil)
+            return
+        }
+        signedInUser.reload { (error) in
+            if error != nil {
+                completion(error!, true, nil)
+            }
+            if signedInUser.isEmailVerified {
+                completion(nil, true, true)
+            } else {
+                completion(nil, true, false)
+            }
+        }
+    }
+    
+    func updateUserData(_ firstName: String, _ lastName: String, _ email: String, _ profilePicURL: String, completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+        guard let signedInUser = user else {
+            completion(nil, false, false)
+            return
+        }
+        signedInUser.reload { (error) in
+            if error != nil {
+                completion(error, true, false)
+                return
+            }
+            let signedInUserID = signedInUser.uid
+            db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
+                if error != nil {
+                    completion(error, true, false)
+                    return
+                }
+                guard let result = snapshot?.documents.first else {return}
+                let documentID = result[Strings.userDocumentIDField] as! String
+                signedInUser.updateEmail(to: email) { (error) in
+                    if error != nil {
+                        completion(error, true, false)
+                        return
+                    }
+                    db.collection(Strings.userCollection).document(documentID).updateData([Strings.userFirstNameField : firstName,
+                                                                                           Strings.userLastNameField : lastName,
+                                                                                           Strings.userEmailField : email,
+                                                                                           Strings.userProfilePicField : profilePicURL])
+                    completion(nil, true, true)
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    
     
     
     
@@ -129,104 +218,10 @@ struct User {
     
     
     
-    func getSignedInUserData(completion: @escaping (UserViewModel) -> Void) {
-        if user != nil {
-            let signedInUserID = user!.uid
-            db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
-                if error != nil {
-                    // Show error
-                }
-                guard let result = snapshot?.documents.first else {return}
-                let userViewModel = UserViewModel(UserModel(documentID: result[Strings.userDocumentIDField] as! String,
-                                                            userID: result[Strings.userIDField] as! String,
-                                                            firstName: result[Strings.userFirstNameField] as! String,
-                                                            lastName: result[Strings.userLastNameField] as! String,
-                                                            email: result[Strings.userEmailField] as! String,
-                                                            profilePic: result[Strings.userProfilePicField] as! String))
-                completion(userViewModel)
-            }
-        } else {
-            // Show error no user is signed in!
-        }
-    }
     
     
     
     
-    
-    
-    
-    
-    func isEmailVerified(completion: @escaping (Error?, Bool?) -> Void) {
-        if user != nil {
-            user?.reload(completion: { (error) in
-                if error != nil {
-                    // Show error
-                    completion(error, nil)
-                    return
-                }
-                if user!.isEmailVerified {
-                    completion(nil, true)
-                    return
-                } else {
-                    completion(nil, false)
-                    return
-                }
-            })
-        } else {
-            // Showb error no user is signed in!
-        }
-    }
-    
-    
-    
-    
-    
-    func updateUserData(_ firstName: String, _ lastName: String, _ email: String, _ profilePicURL: String, completion: @escaping (Error?) -> Void) {
-        if user != nil {
-            user!.reload(completion: { (error) in
-                if error != nil {
-                    // Show error
-                    completion(error)
-                    return
-                }
-                let isEmailVerified = user!.isEmailVerified
-                if isEmailVerified {
-                    let signedInUserID = user!.uid
-                    let initialUserEmail = user!.email
-                    db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
-                        if error != nil {
-                            // Show error
-                            completion(error)
-                            return
-                        }
-                        guard let result = snapshot?.documents.first else {return}
-                        let documentID = result[Strings.userDocumentIDField] as! String
-                        user!.updateEmail(to: email, completion: { (error) in
-                            if error != nil {
-                                // Show error
-                                completion(error)
-                                return
-                            }
-                            // Password successfully changed
-                            print("Email changed")
-                            db.collection(Strings.userCollection)
-                                .document(documentID)
-                                .updateData([Strings.userFirstNameField : firstName,
-                                             Strings.userLastNameField : lastName,
-                                             Strings.userEmailField : email,
-                                             Strings.userProfilePicField : profilePicURL])
-                        })
-                    }
-                } else {
-                    // Email is not verified
-                    print("Email is not verified")
-                }
-            })
-        } else {
-            // Show error no user is signed in!
-        }
-    }
     
     
     

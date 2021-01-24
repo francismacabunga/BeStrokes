@@ -38,6 +38,7 @@ class HomeViewController: UIViewController {
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private var stickerCategorySelected: String?
     private var featuredHeartButtonTapped: Bool?
+    private var alertControllerErrorMessage: String?
     
     
     //MARK: - View Controller Life Cycle
@@ -84,13 +85,44 @@ class HomeViewController: UIViewController {
         homeLoadingIndicatorView.isHidden = true
     }
     
+    func showErrorFetchingAlert(using errorMessage: String) {
+        let alert = UIAlertController(title: Strings.homeAlertTitle, message: errorMessage, preferredStyle: .alert)
+        let tryAgainAction = UIAlertAction(title: Strings.homeAlert1Action, style: .default) { [self] (alertAction) in
+            setProfilePicture()
+            dismiss(animated: true)
+        }
+        alert.addAction(tryAgainAction)
+        present(alert, animated: true)
+    }
+    
+    func showNoSignedInUserAlert() {
+        let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { (alertAction) in
+            let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+            let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
+            self.view.window?.rootViewController = landingVC
+            self.view.window?.makeKeyAndVisible()
+        }
+        alert.addAction(dismissAction)
+        present(alert, animated: true)
+    }
+    
     func setProfilePicture() {
-        user.getSignedInUserData { (result) in
-            print(result)
+        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+            if error != nil {
+                showErrorFetchingAlert(using: error!.localizedDescription)
+                return
+            }
+            guard let isUserSignedIn = isUserSignedIn else {return}
+            if !isUserSignedIn {
+                showNoSignedInUserAlert()
+                return
+            }
+            guard let userData = userData else {return}
             DispatchQueue.main.async { [self] in
                 homeProfilePictureButton.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
                 Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
-                homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: result.profilePic), for: .normal)
+                homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
             }
         }
     }

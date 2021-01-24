@@ -54,10 +54,10 @@ class LandingViewController: UIViewController {
         return .darkContent
     }
     
-    func showAlert(with errorMessage: String?) {
-        let alert = UIAlertController(title: errorMessage, message: Strings.homeAlertMessage, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: Strings.homeAlertAction, style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
+    func showAlert(using errorMessage: String?) {
+        let alert = UIAlertController(title: errorMessage, message: Strings.landingAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.landingAlertAction, style: .cancel, handler: nil)
+        alert.addAction(dismissAction)
         present(alert, animated: true, completion: nil)
     }
     
@@ -75,14 +75,14 @@ class LandingViewController: UIViewController {
             if invalidUser {
                 if authErrorCode != nil {
                     switch authErrorCode! {
-                    case .invalidCredential: showAlert(with: Strings.homeInvalidCErrorAlertTitle)
-                    case .invalidUserToken: showAlert(with: Strings.homeInvalidUTErrorAlertTitle)
-                    case .invalidCustomToken: showAlert(with: Strings.homeInvalidCTErrorAlertTitle)
-                    case .userTokenExpired: showAlert(with: Strings.homeUserTEErrorAlertTitle)
-                    case .userDisabled: showAlert(with: Strings.homeUserDErrorAlertTitle)
-                    case .userNotFound: showAlert(with: Strings.homeUserNFErrorAlertTitle)
-                    case .customTokenMismatch: showAlert(with: Strings.homeCustomTMErrorAlertTitle)
-                    default: showAlert(with: Strings.homeCallDErrorAlertTitle)
+                    case .invalidCredential: showAlert(using: Strings.landingInvalidCErrorAlertTitle)
+                    case .invalidUserToken: showAlert(using: Strings.landingInvalidUTErrorAlertTitle)
+                    case .invalidCustomToken: showAlert(using: Strings.landingInvalidCTErrorAlertTitle)
+                    case .userTokenExpired: showAlert(using: Strings.landingUserTEErrorAlertTitle)
+                    case .userDisabled: showAlert(using: Strings.landingUserDErrorAlertTitle)
+                    case .userNotFound: showAlert(using: Strings.landingUserNFErrorAlertTitle)
+                    case .customTokenMismatch: showAlert(using: Strings.landingCustomTMErrorAlertTitle)
+                    default: showAlert(using: Strings.landingCallDErrorAlertTitle)
                     }
                 }
             } else {

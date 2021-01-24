@@ -89,10 +89,53 @@ class AccountViewController: UIViewController {
         }
     }
     
+    func showErrorFetchingAlert(using errorMessage: String) {
+        let alert = UIAlertController(title: Strings.homeAlertTitle, message: errorMessage, preferredStyle: .alert)
+        let tryAgainAction = UIAlertAction(title: Strings.homeAlert1Action, style: .default) { [self] (alertAction) in
+            getSignedInUserData()
+            dismiss(animated: true)
+        }
+        alert.addAction(tryAgainAction)
+        present(alert, animated: true)
+    }
+    
+    func showNoSignedInUserAlert() {
+        let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { (alertAction) in
+            let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+            let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
+            self.view.window?.rootViewController = landingVC
+            self.view.window?.makeKeyAndVisible()
+        }
+        alert.addAction(dismissAction)
+        present(alert, animated: true)
+    }
+    
     func hideLoadingSkeletonView() {
         accountImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         accountEmailHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+    }
+    
+    func getSignedInUserData() {
+        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+            if error != nil {
+                showErrorFetchingAlert(using: error!.localizedDescription)
+                return
+            }
+            guard let isUserSignedIn = isUserSignedIn else {return}
+            if !isUserSignedIn {
+                showNoSignedInUserAlert()
+                return
+            }
+            guard let userData = userData else {return}
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                accountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                accountNameHeadingLabel.text = "\(userData.firstName) \(userData.lastname)"
+                accountEmailHeadingLabel.text = userData.email
+                hideLoadingSkeletonView()
+            }
+        }
     }
     
     func setData() {
@@ -103,14 +146,7 @@ class AccountViewController: UIViewController {
             }
         }
         showLoadingSkeletonView()
-        user.getSignedInUserData { [self] (result) in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                accountImageView.kf.setImage(with: URL(string: result.profilePic)!)
-                accountNameHeadingLabel.text = "\(result.firstName) \(result.lastname)"
-                accountEmailHeadingLabel.text = result.email
-                hideLoadingSkeletonView()
-            }
-        }
+        getSignedInUserData()
     }
     
     

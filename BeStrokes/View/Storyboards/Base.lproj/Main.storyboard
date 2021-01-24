@@ -93,7 +93,7 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="591"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mIT-EX-Adi">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="650"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="625"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Wki-jL-ntx">
                                                 <rect key="frame" x="32.5" y="50" width="310" height="100"/>
@@ -184,7 +184,7 @@
                                             <constraint firstItem="FGz-ja-Dx7" firstAttribute="centerX" secondItem="mIT-EX-Adi" secondAttribute="centerX" id="RVh-hC-ZpZ"/>
                                             <constraint firstItem="Wki-jL-ntx" firstAttribute="top" secondItem="mIT-EX-Adi" secondAttribute="top" constant="50" id="UNl-Jd-7bz"/>
                                             <constraint firstItem="ifq-Yb-fPx" firstAttribute="centerX" secondItem="mIT-EX-Adi" secondAttribute="centerX" id="gYH-QQ-Tjv"/>
-                                            <constraint firstAttribute="height" constant="650" id="nLJ-x2-BRl"/>
+                                            <constraint firstAttribute="height" constant="625" id="nLJ-x2-BRl"/>
                                             <constraint firstItem="ZO0-zR-yPn" firstAttribute="top" secondItem="Wki-jL-ntx" secondAttribute="bottom" constant="40" id="ozS-cR-qhU"/>
                                             <constraint firstItem="Wki-jL-ntx" firstAttribute="centerX" secondItem="mIT-EX-Adi" secondAttribute="centerX" id="vDn-tD-KPA"/>
                                         </constraints>
@@ -253,7 +253,7 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="591"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oBG-ri-xpU">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="525"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="520"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mTI-WJ-V2v">
                                                 <rect key="frame" x="32.5" y="50" width="310" height="100"/>
@@ -334,7 +334,7 @@
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="525" id="2y4-d3-7Dj"/>
+                                            <constraint firstAttribute="height" constant="520" id="2y4-d3-7Dj"/>
                                             <constraint firstItem="7Zg-YM-beO" firstAttribute="top" secondItem="mTI-WJ-V2v" secondAttribute="bottom" constant="40" id="6Sh-1N-wO1"/>
                                             <constraint firstItem="mTI-WJ-V2v" firstAttribute="top" secondItem="oBG-ri-xpU" secondAttribute="top" constant="50" id="PRm-pG-fH6"/>
                                             <constraint firstItem="5Rr-aa-GYR" firstAttribute="centerX" secondItem="oBG-ri-xpU" secondAttribute="centerX" id="aro-h0-z6f"/>
@@ -406,7 +406,7 @@
                                 <rect key="frame" x="0.0" y="56" width="375" height="591"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Lx-Uu-6bE">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="400"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="380"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7S0-R9-CSB">
                                                 <rect key="frame" x="115" y="50" width="250" height="250"/>
@@ -489,7 +489,7 @@
                                             <constraint firstItem="Vya-Ki-GGS" firstAttribute="centerX" secondItem="0Lx-Uu-6bE" secondAttribute="centerX" id="cRl-Sn-ZYp"/>
                                             <constraint firstAttribute="trailing" secondItem="7S0-R9-CSB" secondAttribute="trailing" constant="10" id="gld-mX-dj1"/>
                                             <constraint firstItem="sfq-XQ-bU3" firstAttribute="top" secondItem="Vya-Ki-GGS" secondAttribute="bottom" constant="30" id="osM-AV-qg4"/>
-                                            <constraint firstAttribute="height" constant="400" id="tEc-xK-yCk"/>
+                                            <constraint firstAttribute="height" constant="380" id="tEc-xK-yCk"/>
                                             <constraint firstItem="8yc-tz-DfF" firstAttribute="top" secondItem="Vya-Ki-GGS" secondAttribute="bottom" constant="30" id="uuu-Iz-Ln4"/>
                                             <constraint firstItem="zKw-u6-jRT" firstAttribute="centerX" secondItem="0Lx-Uu-6bE" secondAttribute="centerX" id="yjJ-65-QoB"/>
                                         </constraints>
