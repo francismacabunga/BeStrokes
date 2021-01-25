@@ -71,10 +71,14 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    func showErrorFetchingAlert(using errorMessage: String) {
-        let alert = UIAlertController(title: Strings.homeAlertTitle, message: errorMessage, preferredStyle: .alert)
+    func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
+        var alert = UIAlertController()
+        if error {
+            alert = UIAlertController(title: Strings.homeAlertTitle, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
+        } else {
+            alert = UIAlertController(title: Strings.homeAlertTitle, message: withCustomizedString, preferredStyle: .alert)
+        }
         let tryAgainAction = UIAlertAction(title: Strings.homeAlert1Action, style: .default) { [self] (alertAction) in
-            getSignedInUserData()
             dismiss(animated: true)
         }
         alert.addAction(tryAgainAction)
@@ -83,11 +87,8 @@ class ProfileViewController: UIViewController {
     
     func showNoSignedInUserAlert() {
         let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { (alertAction) in
-            let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
-            let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
-            self.view.window?.rootViewController = landingVC
-            self.view.window?.makeKeyAndVisible()
+        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { [self] (alertAction) in
+            transitionToLandingVC()
         }
         alert.addAction(dismissAction)
         present(alert, animated: true)
@@ -99,10 +100,17 @@ class ProfileViewController: UIViewController {
         profileEmailLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
+    func transitionToLandingVC() {
+        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
+        view.window?.rootViewController = landingVC
+        view.window?.makeKeyAndVisible()
+    }
+    
     func getSignedInUserData() {
         user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
             if error != nil {
-                showErrorFetchingAlert(using: error!.localizedDescription)
+                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
                 return
             }
             guard let isUserSignedIn = isUserSignedIn else {return}
@@ -177,14 +185,16 @@ extension ProfileViewController: UITableViewDelegate {
             let alert = UIAlertController(title: Strings.logoutAlertTitle, message: nil, preferredStyle: .alert)
             let noAction = UIAlertAction(title: Strings.logoutNoAction, style: .cancel)
             let yesAction = UIAlertAction(title: Strings.logoutYesAction, style: .default) { [self] (action) in
-                let signoutUser = user.signOutUser()
-                if signoutUser! {
-                    let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
-                    let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
-                    view.window?.rootViewController = landingVC
-                    view.window?.makeKeyAndVisible()
+                let signOutUser = user.signOutUser { (isUserSignedIn) in
+                    if !isUserSignedIn {
+                        showNoSignedInUserAlert()
+                        return
+                    }
+                }
+                if signOutUser {
+                    transitionToLandingVC()
                 } else {
-                    // Show error
+                    showErrorFetchingAlert(usingError: false, withCustomizedString: Strings.profileCannotSignOutUserLabel)
                 }
             }
             alert.addAction(yesAction)

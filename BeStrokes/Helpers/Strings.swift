@@ -75,6 +75,7 @@ struct Strings {
     static let editAccountTextFieldErrorLabel = "All fields are required, please fill them out."
     static let editAccountSuccessfullySentEmailVerificationLabel = "Email verfication has been successfully resent, please check your email."
     static let editAccountProcessSuccessfulLabel = "Your account has been updated, please verify your new email address to edit your account again."
+    static let profileCannotSignOutUserLabel = "Cannot sign out user now. Please try again."
     static let signUpFirstNameTextFieldErrorLabel = "First Name is required."
     static let signUpLastNameTextFieldErrorLabel = "Last Name is required."
     static let signUpEmailTextFieldErrorLabel = "Email is required."

@@ -84,10 +84,14 @@ class EditAccountViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    func showErrorFetchingAlert(using errorMessage: String) {
-        let alert = UIAlertController(title: Strings.homeAlertTitle, message: errorMessage, preferredStyle: .alert)
+    func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
+        var alert = UIAlertController()
+        if error {
+            alert = UIAlertController(title: Strings.homeAlertTitle, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
+        } else {
+            alert = UIAlertController(title: Strings.homeAlertTitle, message: withCustomizedString, preferredStyle: .alert)
+        }
         let tryAgainAction = UIAlertAction(title: Strings.homeAlert1Action, style: .default) { [self] (alertAction) in
-            setData()
             dismiss(animated: true)
         }
         alert.addAction(tryAgainAction)
@@ -164,7 +168,7 @@ class EditAccountViewController: UIViewController {
     func setData() {
         user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
             if error != nil {
-                showErrorFetchingAlert(using: error!.localizedDescription)
+                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
                 return
             }
             guard let isUserSignedIn = isUserSignedIn else {return}
@@ -301,6 +305,7 @@ class EditAccountViewController: UIViewController {
                 if !isUserSignedIn {
                     showNoSignedInUserAlert()
                     setEditAccountButtonToOriginalDesign()
+                    return
                 }
                 guard let isUpdateDataFinished = isUpdateDataFinished else {return}
                 if isUpdateDataFinished {

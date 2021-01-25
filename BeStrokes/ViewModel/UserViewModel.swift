@@ -124,27 +124,24 @@ struct User {
     }
     
     func getSignedInUserData(completion: @escaping (Error?, Bool?, UserViewModel?) -> Void) {
-        if user != nil {
-            let signedInUserID = user!.uid
-            db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
-                if error != nil {
-                    // Show error
-                    completion(error, true, nil)
-                    return
-                }
-                guard let result = snapshot?.documents.first else {return}
-                let userViewModel = UserViewModel(UserModel(documentID: result[Strings.userDocumentIDField] as! String,
-                                                            userID: result[Strings.userIDField] as! String,
-                                                            firstName: result[Strings.userFirstNameField] as! String,
-                                                            lastName: result[Strings.userLastNameField] as! String,
-                                                            email: result[Strings.userEmailField] as! String,
-                                                            profilePic: result[Strings.userProfilePicField] as! String))
-                completion(nil, true, userViewModel)
+        guard let signedInUser = user else {
+            completion(nil, false, nil)
+            return
+        }
+        let signedInUserID = signedInUser.uid
+        db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
+            if error != nil {
+                completion(error, true, nil)
                 return
             }
-        } else {
-            // Show error no user is signed in!
-            completion(nil, false, nil)
+            guard let result = snapshot?.documents.first else {return}
+            let userViewModel = UserViewModel(UserModel(documentID: result[Strings.userDocumentIDField] as! String,
+                                                        userID: result[Strings.userIDField] as! String,
+                                                        firstName: result[Strings.userFirstNameField] as! String,
+                                                        lastName: result[Strings.userLastNameField] as! String,
+                                                        email: result[Strings.userEmailField] as! String,
+                                                        profilePic: result[Strings.userProfilePicField] as! String))
+            completion(nil, true, userViewModel)
             return
         }
     }
@@ -157,11 +154,14 @@ struct User {
         signedInUser.reload { (error) in
             if error != nil {
                 completion(error!, true, nil)
+                return
             }
             if signedInUser.isEmailVerified {
                 completion(nil, true, true)
+                return
             } else {
                 completion(nil, true, false)
+                return
             }
         }
     }
@@ -194,40 +194,11 @@ struct User {
                                                                                            Strings.userEmailField : email,
                                                                                            Strings.userProfilePicField : profilePicURL])
                     completion(nil, true, true)
+                    return
                 }
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //MARK: - FOR CHECKING
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     func uploadProfilePic(with image: UIImage, using userID: String, completion: @escaping(Error?, String?) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
@@ -237,46 +208,35 @@ struct User {
         imageMetadata.contentType = Strings.metadataContentType
         profilePicStoragePath.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
             if error != nil {
-                // Show error
                 completion(error, nil)
                 return
             }
             profilePicStoragePath.downloadURL { (url, error) in
                 if error != nil {
-                    // Show error
                     completion(error, nil)
                     return
                 }
                 guard let imageString = url?.absoluteString else {return}
                 completion(nil, imageString)
+                return
             }
         }
     }
     
-    
-    
-    
-    
-    func signOutUser() -> Bool? {
-        if user != nil {
-            do {
-                try Auth.auth().signOut()
-                return true
-            } catch {
-                // Show error message
-                return false
-            }
-        } else {
-            // Show error no user is signed in!
-            return Bool()
+    func signOutUser(completion: @escaping (Bool) -> Void) -> Bool {
+        guard let _ = user else {
+            completion(false)
+            return false
+        }
+        do {
+            try Auth.auth().signOut()
+            completion(true)
+            return true
+        } catch {
+            completion(true)
+            return false
         }
     }
-    
-    
-    
-    
-    
-    
     
 }
 
