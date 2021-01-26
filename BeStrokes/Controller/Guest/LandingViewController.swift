@@ -54,7 +54,7 @@ class LandingViewController: UIViewController {
         return .darkContent
     }
     
-    func showAlert(using errorMessage: String?) {
+    func showInvalidUserAlert(using errorMessage: String?) {
         let alert = UIAlertController(title: errorMessage, message: Strings.landingAlertMessage, preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: Strings.landingAlertAction, style: .cancel, handler: nil)
         alert.addAction(dismissAction)
@@ -67,30 +67,39 @@ class LandingViewController: UIViewController {
         }
     }
     
+    func transitionToHomeVC() {
+        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+        let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
+        self.view.window?.rootViewController = homeVC
+        self.view.window?.makeKeyAndVisible()
+    }
+    
     
     //MARK: - Checking of Signed In User Process
     
     func checkIfUserIsSignedIn() {
-        user.checkIfUserIsSignedIn { [self] (authErrorCode, invalidUser) in
-            if invalidUser {
-                if authErrorCode != nil {
-                    switch authErrorCode! {
-                    case .invalidCredential: showAlert(using: Strings.landingInvalidCErrorAlertTitle)
-                    case .invalidUserToken: showAlert(using: Strings.landingInvalidUTErrorAlertTitle)
-                    case .invalidCustomToken: showAlert(using: Strings.landingInvalidCTErrorAlertTitle)
-                    case .userTokenExpired: showAlert(using: Strings.landingUserTEErrorAlertTitle)
-                    case .userDisabled: showAlert(using: Strings.landingUserDErrorAlertTitle)
-                    case .userNotFound: showAlert(using: Strings.landingUserNFErrorAlertTitle)
-                    case .customTokenMismatch: showAlert(using: Strings.landingCustomTMErrorAlertTitle)
-                    default: showAlert(using: Strings.landingCallDErrorAlertTitle)
-                    }
+        user.checkIfUserIsSignedIn { [self] (authErrorCode, isUserSignedIn, isUserInvalid) in
+            guard let isUserSignedIn = isUserSignedIn else {return}
+            if isUserSignedIn {
+                print("User is signed in!")
+                guard let authErrorCode = authErrorCode else {
+                    print("Valid Token!")
+                    transitionToHomeVC()
+                    return
                 }
-            } else {
-                let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-                let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
-                self.view.window?.rootViewController = homeVC
-                self.view.window?.makeKeyAndVisible()
+                print("Invalid user!")
+                switch authErrorCode {
+                case .invalidCredential: showInvalidUserAlert(using: Strings.landingInvalidCErrorAlertTitle)
+                case .invalidUserToken: showInvalidUserAlert(using: Strings.landingInvalidUTErrorAlertTitle)
+                case .invalidCustomToken: showInvalidUserAlert(using: Strings.landingInvalidCTErrorAlertTitle)
+                case .userTokenExpired: showInvalidUserAlert(using: Strings.landingUserTEErrorAlertTitle)
+                case .userDisabled: showInvalidUserAlert(using: Strings.landingUserDErrorAlertTitle)
+                case .userNotFound: showInvalidUserAlert(using: Strings.landingUserNFErrorAlertTitle)
+                case .customTokenMismatch: showInvalidUserAlert(using: Strings.landingCustomTMErrorAlertTitle)
+                default: showInvalidUserAlert(using: Strings.landingCallDErrorAlertTitle)
+                }
             }
+            print("User is not signed in!")
         }
     }
     
