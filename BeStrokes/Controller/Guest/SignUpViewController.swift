@@ -127,7 +127,7 @@ class SignUpViewController: UIViewController {
         signUpPasswordTextField.endEditing(true)
     }
     
-    func transitionToLandingVC() {
+    func transitionToHomeVC() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
             let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
             let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
@@ -247,7 +247,7 @@ class SignUpViewController: UIViewController {
                                     if isEmailVerificationSent {
                                         showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
                                         setSignUpButtonTransitionAnimation()
-                                        transitionToLandingVC()
+                                        transitionToHomeVC()
                                     }
                                 }
                             }

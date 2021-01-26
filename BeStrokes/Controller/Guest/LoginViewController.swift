@@ -24,6 +24,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginPasswordTextField: UITextField!
     @IBOutlet weak var loginForgotPasswordButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var loginLoadingIndicatorView: UIActivityIndicatorView!
     
     
     //MARK: - Constants / Variables
@@ -51,6 +52,7 @@ class LoginViewController: UIViewController {
     func setDesignElements() {
         UIScrollView.appearance().indicatorStyle = .white
         loginWarningLabel.isHidden = true
+        loginLoadingIndicatorView.isHidden = true
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: loginContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: loginHeadingStackView, backgroundColor: .clear)
@@ -64,6 +66,7 @@ class LoginViewController: UIViewController {
         Utilities.setDesignOn(textField: loginPasswordTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.passwordTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: loginForgotPasswordButton, title: Strings.forgotPasswordButtonText, font: Strings.defaultFontMedium, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(button: loginButton, title: Strings.loginButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
     }
     
     func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
@@ -83,13 +86,26 @@ class LoginViewController: UIViewController {
         }
     }
     
+    func setLoginButtonTappedAnimation() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+            loginButton.isHidden = true
+            loginLoadingIndicatorView.isHidden = false
+            loginLoadingIndicatorView.startAnimating()
+        }
+    }
+    
+    func setLoginButtonToOriginalDesign() {
+        loginLoadingIndicatorView.isHidden = true
+        loginButton.isHidden = false
+    }
+    
     func dismissKeyboard() {
         loginEmailTextField.endEditing(true)
         loginPasswordTextField.endEditing(true)
     }
     
-    func transitionToLandingVC() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
+    func transitionToHomeVC() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
             let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
             let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
             view.window?.rootViewController = homeVC
@@ -102,6 +118,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginButton(_ sender: UIButton) {
         Utilities.animateButton(button: sender)
+        setLoginButtonTappedAnimation()
         processLogin()
         dismissKeyboard()
     }
@@ -119,9 +136,13 @@ class LoginViewController: UIViewController {
             user.signInUser(with: email, password) { [self] (error, authResult) in
                 if error != nil {
                     showWarningLabel(on: loginWarningLabel, with: error!, isASuccessMessage: false)
+                    setLoginButtonToOriginalDesign()
                     return
                 }
-                transitionToLandingVC()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    setLoginButtonToOriginalDesign()
+                    transitionToHomeVC()
+                }
             }
         }
     }
@@ -134,9 +155,8 @@ class LoginViewController: UIViewController {
 extension LoginViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        loginEmailTextField.endEditing(true)
-        loginPasswordTextField.endEditing(true)
         processLogin()
+        dismissKeyboard()
         return true
     }
     

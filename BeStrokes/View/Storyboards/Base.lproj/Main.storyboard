@@ -331,12 +331,17 @@
                                                     <action selector="loginButton:" destination="8oq-w7-PUG" eventType="touchUpInside" id="f7m-5p-Up2"/>
                                                 </connections>
                                             </button>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="qSa-Cd-YHk">
+                                                <rect key="frame" x="177.5" y="458" width="20" height="20"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
+                                            <constraint firstItem="qSa-Cd-YHk" firstAttribute="top" secondItem="7Zg-YM-beO" secondAttribute="bottom" constant="40" id="296-3H-VzW"/>
                                             <constraint firstAttribute="height" constant="520" id="2y4-d3-7Dj"/>
                                             <constraint firstItem="7Zg-YM-beO" firstAttribute="top" secondItem="mTI-WJ-V2v" secondAttribute="bottom" constant="40" id="6Sh-1N-wO1"/>
                                             <constraint firstItem="mTI-WJ-V2v" firstAttribute="top" secondItem="oBG-ri-xpU" secondAttribute="top" constant="50" id="PRm-pG-fH6"/>
+                                            <constraint firstItem="qSa-Cd-YHk" firstAttribute="centerX" secondItem="oBG-ri-xpU" secondAttribute="centerX" id="XxQ-pS-yHs"/>
                                             <constraint firstItem="5Rr-aa-GYR" firstAttribute="centerX" secondItem="oBG-ri-xpU" secondAttribute="centerX" id="aro-h0-z6f"/>
                                             <constraint firstItem="5Rr-aa-GYR" firstAttribute="top" secondItem="7Zg-YM-beO" secondAttribute="bottom" constant="40" id="d9g-5F-jka"/>
                                             <constraint firstItem="mTI-WJ-V2v" firstAttribute="centerX" secondItem="oBG-ri-xpU" secondAttribute="centerX" id="jyY-St-iRX"/>
@@ -378,6 +383,7 @@
                         <outlet property="loginHeadingLabel" destination="8fW-3u-OcR" id="xMQ-3l-f8K"/>
                         <outlet property="loginHeadingStackView" destination="mTI-WJ-V2v" id="hYp-Qu-LI9"/>
                         <outlet property="loginImageView" destination="SWl-vp-g7i" id="QvX-n0-ele"/>
+                        <outlet property="loginLoadingIndicatorView" destination="qSa-Cd-YHk" id="uxV-1V-gSp"/>
                         <outlet property="loginNavigationBar" destination="sH1-Bf-KWF" id="uNJ-4J-uMz"/>
                         <outlet property="loginPasswordTextField" destination="ynp-YK-xR7" id="ZPs-p5-vVb"/>
                         <outlet property="loginTextFieldsStackView" destination="7Zg-YM-beO" id="JLt-c8-I6V"/>

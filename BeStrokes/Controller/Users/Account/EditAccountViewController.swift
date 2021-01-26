@@ -100,11 +100,8 @@ class EditAccountViewController: UIViewController {
     
     func showNoSignedInUserAlert() {
         let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { (alertAction) in
-            let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
-            let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
-            self.view.window?.rootViewController = landingVC
-            self.view.window?.makeKeyAndVisible()
+        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { [self] (alertAction) in
+            transitionToLandingVC()
         }
         alert.addAction(dismissAction)
         present(alert, animated: true)
@@ -163,6 +160,13 @@ class EditAccountViewController: UIViewController {
         let initialUserEmail = Auth.auth().currentUser?.email
         let userDataDictionary = [Strings.userFirstNameField: firstName, Strings.userLastNameField: lastName, Strings.userEmailField: email, Strings.userInitialUserEmail: initialUserEmail]
         return userDataDictionary
+    }
+    
+    func transitionToLandingVC() {
+        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
+        view.window?.rootViewController = landingVC
+        view.window?.makeKeyAndVisible()
     }
     
     func setData() {
