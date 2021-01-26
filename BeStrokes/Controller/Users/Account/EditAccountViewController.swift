@@ -14,10 +14,10 @@ class EditAccountViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var editAccountNavigationBar: UINavigationBar!
     @IBOutlet weak var editAccountStackView: UIStackView!
     @IBOutlet weak var editAccountHeadingContentView: UIView!
     @IBOutlet weak var editAccountSaveButtonContentView: UIView!
-    @IBOutlet weak var editAccountNavigationBar: UINavigationBar!
     @IBOutlet weak var editAccountHeadingLabel: UILabel!
     @IBOutlet weak var editAccountImageView: UIImageView!
     @IBOutlet weak var editAccountCameraIconImageView: UIImageView!

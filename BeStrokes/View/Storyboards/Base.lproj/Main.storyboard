@@ -321,6 +321,9 @@
                                                     <constraint firstAttribute="width" constant="310" id="Hxk-mO-Ybu"/>
                                                 </constraints>
                                             </stackView>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="qSa-Cd-YHk">
+                                                <rect key="frame" x="177.5" y="458" width="20" height="20"/>
+                                            </activityIndicatorView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rr-aa-GYR">
                                                 <rect key="frame" x="115" y="458" width="145" height="40"/>
                                                 <constraints>
@@ -331,9 +334,6 @@
                                                     <action selector="loginButton:" destination="8oq-w7-PUG" eventType="touchUpInside" id="f7m-5p-Up2"/>
                                                 </connections>
                                             </button>
-                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="qSa-Cd-YHk">
-                                                <rect key="frame" x="177.5" y="458" width="20" height="20"/>
-                                            </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>

@@ -11,12 +11,12 @@ class LoginViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var loginNavigationBar: UINavigationBar!
     @IBOutlet weak var loginContentView: UIView!
     @IBOutlet weak var loginHeadingStackView: UIStackView!
     @IBOutlet weak var loginTextFieldsStackView: UIStackView!
     @IBOutlet weak var loginForgotPasswordButtonStackView: UIStackView!
     @IBOutlet weak var loginForgotPasswordButtonSpacerView: UIView!
-    @IBOutlet weak var loginNavigationBar: UINavigationBar!
     @IBOutlet weak var loginHeadingLabel: UILabel!
     @IBOutlet weak var loginImageView: UIImageView!
     @IBOutlet weak var loginWarningLabel: UILabel!

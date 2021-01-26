@@ -18,9 +18,9 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var homeContentStackView: UIStackView!
     @IBOutlet weak var homeFeaturedView: UIView!
     @IBOutlet weak var homeStickerView: UIView!
-    @IBOutlet weak var homeProfilePictureButton: UIButton!
     @IBOutlet weak var homeHeading1Label: UILabel!
     @IBOutlet weak var homeHeading2Label: UILabel!
+    @IBOutlet weak var homeProfilePictureButton: UIButton!
     @IBOutlet weak var homeFeaturedCollectionView: UICollectionView!
     @IBOutlet weak var homeStickerCategoryCollectionView: UICollectionView!
     @IBOutlet weak var homeStickerCollectionView: UICollectionView!
@@ -66,6 +66,7 @@ class HomeViewController: UIViewController {
     }
     
     func setDesignElements() {
+        homeLoadingIndicatorView.isHidden = true
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: homeFeaturedView, backgroundColor: .clear)
         Utilities.setDesignOn(view: homeStickerView, backgroundColor: .clear)
@@ -81,7 +82,6 @@ class HomeViewController: UIViewController {
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        homeLoadingIndicatorView.isHidden = true
     }
     
     func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {

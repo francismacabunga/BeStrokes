@@ -13,11 +13,11 @@ class LandingViewController: UIViewController {
     //MARK: - IBOutlets
     
     @IBOutlet weak var landingSignupStackView: UIStackView!
-    @IBOutlet weak var landingPageControl: UIPageControl!
     @IBOutlet weak var landingSignUpLabel: UILabel!
     @IBOutlet weak var landingSignUpButton: UIButton!
-    @IBOutlet weak var landingGetStartedButton: UIButton!
     @IBOutlet weak var landingLoginButton: UIButton!
+    @IBOutlet weak var landingGetStartedButton: UIButton!
+    @IBOutlet weak var landingPageControl: UIPageControl!
     @IBAction func unwindToLandingVC(segue: UIStoryboardSegue) {}
     
     

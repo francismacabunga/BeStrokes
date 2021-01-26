@@ -18,14 +18,14 @@ class AccountViewController: UIViewController {
     @IBOutlet weak var accountBottomStackView: UIStackView!
     @IBOutlet weak var accountBottomSearchContentView: UIView!
     @IBOutlet weak var accountTextFieldContentView: UIView!
-    @IBOutlet weak var accountNotificationButton: UIButton!
-    @IBOutlet weak var accountEditButton: UIButton!
-    @IBOutlet weak var accountSearchButton: UIButton!
-    @IBOutlet weak var accountSearchTextField: UITextField!
     @IBOutlet weak var accountHeading1Label: UILabel!
     @IBOutlet weak var accountHeading2Label: UILabel!
     @IBOutlet weak var accountNameHeadingLabel: UILabel!
     @IBOutlet weak var accountEmailHeadingLabel: UILabel!
+    @IBOutlet weak var accountNotificationButton: UIButton!
+    @IBOutlet weak var accountEditButton: UIButton!
+    @IBOutlet weak var accountSearchButton: UIButton!
+    @IBOutlet weak var accountSearchTextField: UITextField!
     @IBOutlet weak var accountImageView: UIImageView!
     @IBOutlet weak var accountLikedStickersTableView: UITableView!
     

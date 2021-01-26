@@ -16,9 +16,9 @@ class LikedStickersTableViewCell: UITableViewCell {
     @IBOutlet weak var likedStickerContentView: UIView!
     @IBOutlet weak var likedStickerView: UIView!
     @IBOutlet weak var likedStickerHeadingLabel: UILabel!
+    @IBOutlet weak var likedStickerImageView: UIImageView!
     @IBOutlet weak var likedStickerOptionImageView: UIImageView!
     @IBOutlet weak var likedStickerTryMeButton: UIButton!
-    @IBOutlet weak var likedStickerImageView: UIImageView!
     
     
     //MARK: - Constants / Variables

@@ -12,10 +12,10 @@ class SignUpViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var signUpNavigationBar: UINavigationBar!
     @IBOutlet weak var signUpContentView: UIView!
     @IBOutlet weak var signUpHeadingStackView: UIStackView!
     @IBOutlet weak var signUpTextFieldsStackView: UIStackView!
-    @IBOutlet weak var signUpNavigationBar: UINavigationBar!
     @IBOutlet weak var signUpHeadingLabel: UILabel!
     @IBOutlet weak var signUpImageView: UIImageView!
     @IBOutlet weak var signUpWarning1Label: UILabel!
