@@ -286,7 +286,7 @@ class EditAccountViewController: UIViewController {
         if editedImage != nil {
             user.uploadProfilePic(with: editedImage!, using: userID) { [self] (error, imageString) in
                 if error != nil {
-                    showWarningLabel(on: editAccountWarningLabel, with: error, isASuccessMessage: false)
+                    showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
                     return
                 }
                 guard let chosenPic = imageString else {return}

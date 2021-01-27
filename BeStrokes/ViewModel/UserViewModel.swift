@@ -196,7 +196,7 @@ struct User {
         }
     }
     
-    func uploadProfilePic(with image: UIImage, using userID: String, completion: @escaping(Error?, String?) -> Void) {
+    func uploadProfilePic(with image: UIImage, using userID: String, completion: @escaping (Error?, String?) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
         let storagePath = Storage.storage().reference(forURL: Strings.firebaseStoragePath)
         let profilePicStoragePath = storagePath.child(Strings.firebaseProfilePicStoragePath).child(userID)

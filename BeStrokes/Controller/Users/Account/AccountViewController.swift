@@ -47,7 +47,7 @@ class AccountViewController: UIViewController {
         setDesignElements()
         setDataSourceAndDelegate()
         registerNib()
-        setData()
+//        setData()
         
     }
     
@@ -146,16 +146,16 @@ class AccountViewController: UIViewController {
         }
     }
     
-    func setData() {
-        fetchStickerData.stickerCollectionView(category: Strings.categoryAllStickers) { [self] (result) in
-            stickerViewModel = result
-            DispatchQueue.main.async {
-                accountLikedStickersTableView.reloadData()
-            }
-        }
-        showLoadingSkeletonView()
-        getSignedInUserData()
-    }
+//    func setData() {
+//        fetchStickerData.stickerCollectionView(category: Strings.categoryAllStickers) { [self] (result) in
+//            stickerViewModel = result
+//            DispatchQueue.main.async {
+//                accountLikedStickersTableView.reloadData()
+//            }
+//        }
+//        showLoadingSkeletonView()
+//        getSignedInUserData()
+//    }
     
     
     //MARK: - Buttons

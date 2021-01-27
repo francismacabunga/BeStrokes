@@ -79,13 +79,11 @@ class StickerOptionViewController: UIViewController {
         stickerNameLabel.text = stickerViewModel.name
         getHeartButtonValue()
         stickerCategoryLabel.text = stickerViewModel.category
-        
         if stickerViewModel.tag != Strings.tagNoStickers {
             stickerTagLabel.text = stickerViewModel.tag
         } else {
             stickerTagLabel.isHidden = true
         }
-        
         stickerDescriptionLabel.text = stickerViewModel.description
     }
     

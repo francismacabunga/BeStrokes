@@ -10,6 +10,8 @@ import UIKit
 
 struct Utilities {
     
+    //MARK: - Design Elements
+    
     // Label
     static func setDesignOn(label: UILabel,
                             font: String,

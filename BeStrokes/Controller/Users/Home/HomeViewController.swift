@@ -172,7 +172,12 @@ class HomeViewController: UIViewController {
     }
     
     func getFeaturedCollectionViewData() {
-        fetchStickerData.featuredCollectionView() { [self] (result) in
+        fetchStickerData.featuredCollectionView { [self] (error, result) in
+            if error != nil {
+                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+                return
+            }
+            guard let result = result else {return}
             featuredStickerViewModel = result
             DispatchQueue.main.async {
                 homeFeaturedCollectionView.reloadData()
@@ -186,9 +191,14 @@ class HomeViewController: UIViewController {
     }
     
     func getStickerCollectionViewData(onCategory stickerCategory: String) {
-        fetchStickerData.stickerCollectionView(category: stickerCategory) { [self] (result) in
+        fetchStickerData.stickerCollectionView(category: stickerCategory) { [self] (error, result) in
+            if error != nil {
+                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+                return
+            }
+            guard let result = result else {return}
             stickerViewModel = result
-            DispatchQueue.main.async { [self] in
+            DispatchQueue.main.async {
                 homeStickerCollectionView.reloadData()
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
