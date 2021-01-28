@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,21 @@
 
 #import <Foundation/Foundation.h>
 
-#import "FirebaseAuth/Sources/Backend/FIRAuthRPCResponse.h"
+@class FBLPromise<Value>;
+@class GULURLSessionDataResponse;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/** @class FIRGetProjectConfigResponse
-    @brief Represents the response from the getProjectConfig endpoint.
- */
-@interface FIRGetProjectConfigResponse : NSObject <FIRAuthRPCResponse>
+/** Promise based API for `NSURLSession`. */
+@interface NSURLSession (GULPromises)
 
-/** @property projectID
-    @brief The unique ID pertaining to the current project.
+/** Creates a promise wrapping `-[NSURLSession dataTaskWithRequest:completionHandler:]` method.
+ * @param URLRequest The request to create a data task with.
+ * @return A promise that is fulfilled when an HTTP response is received (with any response code),
+ * or is rejected with the error passed to the task completion.
  */
-@property(nonatomic, strong, readonly, nullable) NSString *projectID;
-
-/** @property authorizedDomains
-    @brief A list of domains allowlisted for the current project.
- */
-@property(nonatomic, strong, readonly, nullable) NSArray *authorizedDomains;
+- (FBLPromise<GULURLSessionDataResponse *> *)gul_dataTaskPromiseWithRequest:
+    (NSURLRequest *)URLRequest;
 
 @end
 

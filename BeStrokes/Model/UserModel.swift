@@ -8,7 +8,6 @@
 import Foundation
 
 struct UserModel {
-    let documentID: String
     let userID: String
     let firstName: String
     let lastName: String

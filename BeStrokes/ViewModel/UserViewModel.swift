@@ -10,7 +10,6 @@ import Firebase
 
 struct UserViewModel {
     
-    let documentID: String
     let userID: String
     let firstName: String
     let lastname: String
@@ -18,7 +17,6 @@ struct UserViewModel {
     let profilePic: String
     
     init(_ user: UserModel) {
-        self.documentID = user.documentID
         self.userID = user.userID
         self.firstName = user.firstName
         self.lastname = user.lastName
@@ -49,22 +47,14 @@ struct User {
         }
     }
     
-    func storeData(with dictionary: [String : String], completion: @escaping (Error?, Bool?) -> Void) {
-        let documentReference = db.collection(Strings.userCollection).document()
-        let documentID = documentReference.documentID
-        documentReference.setData([Strings.userDocumentIDField : documentID]) { (error) in
+    func storeData(using userID: String, with dictionary: [String : String], completion: @escaping (Error?, Bool?) -> Void) {
+        db.collection(Strings.userCollection).document(userID).setData(dictionary) { (error) in
             if error != nil {
                 completion(error, nil)
                 return
             }
-            documentReference.updateData(dictionary) { (error) in
-                if error != nil {
-                    completion(error, nil)
-                    return
-                }
-                completion(nil, true)
-                return
-            }
+            completion(nil, true)
+            return
         }
     }
     
@@ -131,8 +121,7 @@ struct User {
                 return
             }
             guard let result = snapshot?.documents.first else {return}
-            let userViewModel = UserViewModel(UserModel(documentID: result[Strings.userDocumentIDField] as! String,
-                                                        userID: result[Strings.userIDField] as! String,
+            let userViewModel = UserViewModel(UserModel(userID: result[Strings.userIDField] as! String,
                                                         firstName: result[Strings.userFirstNameField] as! String,
                                                         lastName: result[Strings.userLastNameField] as! String,
                                                         email: result[Strings.userEmailField] as! String,

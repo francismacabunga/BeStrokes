@@ -34,8 +34,9 @@ class AccountViewController: UIViewController {
     
     private let user = User()
     private let fetchStickerData = FetchStickerData()
-    private var stickerViewModel: [StickerViewModel]?
+    private var likedStickerViewModel: [LikedStickerViewModel]?
     private var userViewModel: UserViewModel?
+    private let heartButtonLogic = HeartButtonLogic()
     private var isButtonPressed = false
     
     
@@ -47,7 +48,7 @@ class AccountViewController: UIViewController {
         setDesignElements()
         setDataSourceAndDelegate()
         registerNib()
-//        setData()
+        setData()
         
     }
     
@@ -146,16 +147,25 @@ class AccountViewController: UIViewController {
         }
     }
     
-//    func setData() {
+    func setData() {
+        heartButtonLogic.showLovedStickers { [self] (error, isUserSignedIn, result) in
+            likedStickerViewModel = result
+            DispatchQueue.main.async {
+                accountLikedStickersTableView.reloadData()
+            }
+        }
+        
+        
 //        fetchStickerData.stickerCollectionView(category: Strings.categoryAllStickers) { [self] (result) in
 //            stickerViewModel = result
 //            DispatchQueue.main.async {
 //                accountLikedStickersTableView.reloadData()
 //            }
 //        }
-//        showLoadingSkeletonView()
-//        getSignedInUserData()
-//    }
+        
+        showLoadingSkeletonView()
+        getSignedInUserData()
+    }
     
     
     //MARK: - Buttons
@@ -195,14 +205,14 @@ class AccountViewController: UIViewController {
 extension AccountViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return stickerViewModel?.count ?? 2
+        return likedStickerViewModel?.count ?? 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.likedStickerCell) as! LikedStickersTableViewCell
-        if stickerViewModel != nil {
+        if likedStickerViewModel != nil {
             DispatchQueue.main.async { [self] in
-                cell.stickerViewModel = stickerViewModel![indexPath.item]
+                cell.likedStickerViewModel = likedStickerViewModel![indexPath.item]
                 cell.prepareLikedStickerCollectionViewCell()
             }
             return cell
@@ -217,11 +227,11 @@ extension AccountViewController: UITableViewDataSource {
 
 extension AccountViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
-        stickerOptionVC.stickerViewModel = stickerViewModel![indexPath.item]
-        present(stickerOptionVC, animated: true)
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+//        let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
+//        stickerOptionVC.stickerViewModel = likedStickerViewModel![indexPath.item]
+//        present(stickerOptionVC, animated: true)
+//    }
     
 }

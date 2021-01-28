@@ -230,7 +230,7 @@ class SignUpViewController: UIViewController {
                         }
                         guard let profilePic = imageString else {return}
                         let dictionary = [Strings.userIDField : userID, Strings.userFirstNameField : firstName, Strings.userLastNameField : lastName, Strings.userEmailField : email, Strings.userProfilePicField : profilePic]
-                        user.storeData(with: dictionary) { (error, result) in
+                        user.storeData(using: userID, with: dictionary) { (error, result) in
                             if error != nil {
                                 showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
                                 setSignUpButtonToOriginalDesign()

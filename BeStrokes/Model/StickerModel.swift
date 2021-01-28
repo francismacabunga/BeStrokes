@@ -8,9 +8,9 @@
 import Foundation
 
 struct StickerModel {
-    let stickerDocumentID: String
+    let stickerID: String
     let name: String
-    let image: URL
+    let image: String
     let description: String
     let category: String
     let tag: String

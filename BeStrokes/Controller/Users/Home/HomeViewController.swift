@@ -34,7 +34,6 @@ class HomeViewController: UIViewController {
     private var stickerViewModel: [StickerViewModel]?
     private let user = User()
     private let fetchStickerData = FetchStickerData()
-    private let heartButtonLogic = HeartButtonLogic()
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private var stickerCategorySelected: String?
     private var featuredHeartButtonTapped: Bool?

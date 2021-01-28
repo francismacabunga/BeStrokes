@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-#import "GDTCORClock.h"
-#import "GDTCORConsoleLogger.h"
-#import "GDTCOREndpoints.h"
-#import "GDTCOREvent.h"
-#import "GDTCOREventDataObject.h"
-#import "GDTCOREventTransformer.h"
-#import "GDTCORTargets.h"
-#import "GDTCORTransport.h"
+#import <Foundation/Foundation.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+/** The class represents HTTP response received from `NSURLSession`. */
+@interface GULURLSessionDataResponse : NSObject
+
+@property(nonatomic, readonly) NSHTTPURLResponse *HTTPResponse;
+@property(nonatomic, nullable, readonly) NSData *HTTPBody;
+
+- (instancetype)initWithResponse:(NSHTTPURLResponse *)response HTTPBody:(nullable NSData *)body;
+
+@end
+
+NS_ASSUME_NONNULL_END

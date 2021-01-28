@@ -23,10 +23,10 @@ class LikedStickersTableViewCell: UITableViewCell {
     
     //MARK: - Constants / Variables
     
-    var stickerViewModel: StickerViewModel! {
+    var likedStickerViewModel: LikedStickerViewModel! {
         didSet {
-            likedStickerHeadingLabel.text = stickerViewModel.name
-            likedStickerImageView.kf.setImage(with: stickerViewModel.image)
+            likedStickerHeadingLabel.text = likedStickerViewModel.name
+            likedStickerImageView.kf.setImage(with: URL(string: likedStickerViewModel.image))
         }
     }
     

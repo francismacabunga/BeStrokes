@@ -27,14 +27,14 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     private let db = Firestore.firestore()
     
     private let heartButtonLogic = HeartButtonLogic()
-    private var stickerDocumentID: String?
+    private var stickerID: String?
     private var heartButtonTapped: Bool?
     
     var featuredStickerViewModel: FeaturedStickerViewModel! {
         didSet {
-            stickerDocumentID = featuredStickerViewModel.stickerDocumentID
+            stickerID = featuredStickerViewModel.stickerID
             featuredLabel.text = featuredStickerViewModel.name
-            featuredImageView.kf.setImage(with: featuredStickerViewModel.image.absoluteURL)
+            featuredImageView.kf.setImage(with: URL(string: featuredStickerViewModel.image))
         }
     }
     
@@ -78,12 +78,22 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     func prepareFeatureCollectionViewCell() {
         hideLoadingSkeletonView()
         setDesignElements()
-        getHeartButtonValue(using: stickerDocumentID!)
+        getHeartButtonValue(using: stickerID!)
     }
     
     func getHeartButtonValue(using stickerDocumentID: String) {
-        heartButtonLogic.checkIfStickerLiked(using: stickerDocumentID) { [self] (result) in
-            if result {
+        heartButtonLogic.checkIfStickerIsLoved(using: stickerDocumentID) { [self] (error, isUserSignedIn, isStickerLoved) in
+            if error != nil {
+                // Show error
+                return
+            }
+            guard let isUserSignedIn = isUserSignedIn else {return}
+            if !isUserSignedIn {
+                // Show error
+                return
+            }
+            guard let isStickerLoved = isStickerLoved else {return}
+            if isStickerLoved {
                 Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.heartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
                 heartButtonTapped = true
             } else {
@@ -104,9 +114,41 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     @objc func tapGestureHandler() {
         if heartButtonTapped! {
-            heartButtonLogic.removeUserData(using: stickerDocumentID!)
+            heartButtonLogic.removeUserDataToSticker(using: stickerID!) { (error, isUserSignedIn) in
+                if error != nil {
+                    // Show error
+                    return
+                }
+                if !isUserSignedIn {
+                    // Show error
+                    return
+                }
+            }
+            heartButtonLogic.removeStickerToUser(using: stickerID!) { (error, isUserSignedIn) in
+                
+            }
         } else {
-            heartButtonLogic.saveUserData(using: stickerDocumentID!)
+            heartButtonLogic.saveUserDataToSticker(using: stickerID!) { (error, isUserSignedIn) in
+                if error != nil {
+                    // Show error
+                    return
+                }
+                guard let isUserSignedIn = isUserSignedIn else {return}
+                if !isUserSignedIn {
+                    // Show error
+                    return
+                }
+            }
+            let dictionary = [Strings.stickerIDField : featuredStickerViewModel.stickerID,
+                              Strings.stickerNameField : featuredStickerViewModel.name,
+                              Strings.stickerImageField : featuredStickerViewModel.image,
+                              Strings.stickerDescriptionField : featuredStickerViewModel.description,
+                              Strings.stickerCategoryField : featuredStickerViewModel.category,
+                              Strings.stickerTagField : featuredStickerViewModel.tag]
+            heartButtonLogic.addStickerToUser(using: stickerID!, and: dictionary) { (error, isUserSignedIn) in
+                
+            }
+            
         }
     }
     

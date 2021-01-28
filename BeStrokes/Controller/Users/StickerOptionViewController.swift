@@ -63,19 +63,19 @@ class StickerOptionViewController: UIViewController {
     }
     
     func getHeartButtonValue() {
-        heartButtonLogic.checkIfStickerLiked(using: stickerViewModel.stickerDocumentID) { [self] (result) in
-            if result {
-                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.heartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                heartButtonTapped = true
-            } else {
-                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.unheartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                heartButtonTapped = false
-            }
-        }
+//        heartButtonLogic.checkIfStickerIsLiked(using: stickerViewModel.stickerDocumentID) { [self] (result) in
+//            if result {
+//                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.heartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+//                heartButtonTapped = true
+//            } else {
+//                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.unheartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+//                heartButtonTapped = false
+//            }
+//        }
     }
     
     func setStickerData() {
-        stickerImageView.kf.setImage(with: stickerViewModel.image)
+        stickerImageView.kf.setImage(with: URL(string: stickerViewModel.image))
         stickerNameLabel.text = stickerViewModel.name
         getHeartButtonValue()
         stickerCategoryLabel.text = stickerViewModel.category
@@ -98,9 +98,9 @@ class StickerOptionViewController: UIViewController {
     
     @objc func tapGestureHandler(tap: UITapGestureRecognizer) {
         if heartButtonTapped! {
-            heartButtonLogic.removeUserData(using: stickerViewModel.stickerDocumentID)
+//            heartButtonLogic.removeUserData(using: stickerViewModel.stickerDocumentID)
         } else {
-            heartButtonLogic.saveUserData(using: stickerViewModel.stickerDocumentID)
+//            heartButtonLogic.saveUserData(using: stickerViewModel.stickerDocumentID)
         }
     }
     

@@ -26,14 +26,14 @@ class StickerCollectionViewCell: UICollectionViewCell {
     private let db = Firestore.firestore()
     
     private let heartButtonLogic = HeartButtonLogic()
-    private var stickerDocumentID: String?
+    private var stickerID: String?
     private var heartButtonTapped: Bool?
     
     var stickerViewModel: StickerViewModel! {
         didSet {
-            stickerDocumentID = stickerViewModel.stickerDocumentID
+            stickerID = stickerViewModel.stickerID
             stickerLabel.text = stickerViewModel.name
-            stickerImageView.kf.setImage(with: stickerViewModel.image.absoluteURL)
+            stickerImageView.kf.setImage(with: URL(string: stickerViewModel.image))
         }
     }
     

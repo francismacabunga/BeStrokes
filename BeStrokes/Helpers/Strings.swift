@@ -187,7 +187,8 @@ struct Strings {
     
     static let userCollection = "users"
     static let stickerCollection = "stickers"
-    static let heartByCollection = "heartBy"
+    static let lovedByCollection = "lovedBy"
+    static let lovedStickerCollection = "lovedStickers"
     
     static let userDocumentIDField = "documentID"
     static let userIDField = "userID"
@@ -197,7 +198,7 @@ struct Strings {
     static let userInitialUserEmail = "initialUserEmail"
     static let userProfilePicField = "profilePic"
     
-    static let stickerDocumentIDField = "documentID"
+    static let stickerIDField = "stickerID"
     static let stickerNameField = "name"
     static let stickerImageField = "image"
     static let stickerDescriptionField = "description"
