@@ -16,7 +16,7 @@ struct Strings {
     static let profileTrademark1Text = "BeStrokes"
     static let profileTrademark2Text = "made by Francis"
     static let accountHeading1Text = "Account"
-    static let accountHeading2Text = "Liked Stickers"
+    static let accountHeading2Text = "Loved Stickers"
     static let editAccountHeadingText = "Update Account"
     static let landingSignupText = "Don't have an account yet?"
     static let signUpHeadingText = "Create Account"
@@ -70,6 +70,7 @@ struct Strings {
     static let homeAlert2Action = "Dismiss"
     
     //MARK: - Warning Labels
+    static let accountNoLovedStickersLabel = "You don't have any loved stickers yet."
     static let editAccountEmailVerficationErrorLabel = "Account cannot be updated. Kindly tap the resend button below to resend an email verification."
     static let editAccountTextFieldsErrorLabel = "Some fields are incomplete."
     static let editAccountTextFieldErrorLabel = "All fields are required, please fill them out."
@@ -169,11 +170,11 @@ struct Strings {
     static let landingPageContentVC = "LandingPageContentViewController"
     
     //MARK: - NIBs Names
-    static let featuredStickerCell = "FeaturedCollectionViewCell"
+    static let featuredStickerCell = "FeaturedStickerCollectionViewCell"
     static let stickerCategoryCell = "StickerCategoryCollectionViewCell"
     static let profileTableViewCell = "ProfileTableViewCell"
     static let stickerCell = "StickerCollectionViewCell"
-    static let likedStickerCell = "LikedStickersTableViewCell"
+    static let lovedStickerCell = "LovedStickersTableViewCell"
     
     //MARK: - Segue
     static let unwindToLandingVC = "goBackToLandingVC"

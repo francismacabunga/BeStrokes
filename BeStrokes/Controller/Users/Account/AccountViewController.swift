@@ -22,19 +22,21 @@ class AccountViewController: UIViewController {
     @IBOutlet weak var accountHeading2Label: UILabel!
     @IBOutlet weak var accountNameHeadingLabel: UILabel!
     @IBOutlet weak var accountEmailHeadingLabel: UILabel!
+    @IBOutlet weak var accountNoLovedStickerLabel: UILabel!
     @IBOutlet weak var accountNotificationButton: UIButton!
     @IBOutlet weak var accountEditButton: UIButton!
     @IBOutlet weak var accountSearchButton: UIButton!
     @IBOutlet weak var accountSearchTextField: UITextField!
     @IBOutlet weak var accountImageView: UIImageView!
-    @IBOutlet weak var accountLikedStickersTableView: UITableView!
+    @IBOutlet weak var accountLovedStickerTableView: UITableView!
+    @IBOutlet weak var accountLoadingIndicatorView: UIActivityIndicatorView!
     
     
     //MARK: - Constants / Variables
     
     private let user = User()
     private let fetchStickerData = FetchStickerData()
-    private var likedStickerViewModel: [LikedStickerViewModel]?
+    private var lovedStickerViewModel: [LovedStickerViewModel]?
     private var userViewModel: UserViewModel?
     private let heartButtonLogic = HeartButtonLogic()
     private var isButtonPressed = false
@@ -56,7 +58,10 @@ class AccountViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
+        accountBottomStackView.isHidden = true
+        accountNoLovedStickerLabel.isHidden = true
         accountTextFieldContentView.isHidden = true
+        accountLoadingIndicatorView.startAnimating()
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: accountTopView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), setCustomCircleCurve: 30)
         Utilities.setDesignOn(stackView: accountBottomStackView, backgroundColor: .clear)
@@ -71,7 +76,9 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(label: accountNameHeadingLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.6)
         Utilities.setDesignOn(label: accountEmailHeadingLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(label: accountHeading2Label, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.accountHeading2Text)
-        Utilities.setDesignOn(tableView: accountLikedStickersTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170)
+        Utilities.setDesignOn(label: accountNoLovedStickerLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, text: Strings.accountNoLovedStickersLabel)
+        Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170)
+        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -113,6 +120,28 @@ class AccountViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    func showLoadingIndicator() {
+        accountNoLovedStickerLabel.isHidden = true
+        accountLoadingIndicatorView.isHidden = false
+    }
+    
+    func showEmptyLovedStickersLabel() {
+        accountBottomStackView.isHidden = true
+        accountLoadingIndicatorView.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
+            accountLoadingIndicatorView.isHidden = true
+            accountNoLovedStickerLabel.isHidden = false
+        }
+    }
+    
+    func showLovedStickersTableView() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
+            accountBottomStackView.isHidden = false
+            accountLoadingIndicatorView.isHidden = true
+            accountNoLovedStickerLabel.isHidden = true
+        }
+    }
+    
     func hideLoadingSkeletonView() {
         accountImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
@@ -124,6 +153,11 @@ class AccountViewController: UIViewController {
         let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
         view.window?.rootViewController = landingVC
         view.window?.makeKeyAndVisible()
+    }
+    
+    func getData() {
+        getSignedInUserData()
+        getLovedStickerViewModel()
     }
     
     func getSignedInUserData() {
@@ -147,24 +181,33 @@ class AccountViewController: UIViewController {
         }
     }
     
-    func setData() {
-        heartButtonLogic.showLovedStickers { [self] (error, isUserSignedIn, likedStickerData) in
-            likedStickerViewModel = likedStickerData
-            DispatchQueue.main.async {
-                accountLikedStickersTableView.reloadData()
+    func getLovedStickerViewModel() {
+        heartButtonLogic.showLovedStickers { [self] (error, isUserSignedIn, lovedStickerData) in
+            if error != nil {
+                // Show error
+                return
+            }
+            guard let isUserSignedIn = isUserSignedIn else {return}
+            if !isUserSignedIn {
+                // Show error
+                return
+            }
+            lovedStickerViewModel = lovedStickerData
+            showLoadingIndicator()
+            if lovedStickerViewModel?.count == 0 {
+                showEmptyLovedStickersLabel()
+                return
+            }
+            showLovedStickersTableView()
+            DispatchQueue.main.async { [self] in
+                accountLovedStickerTableView.reloadData()
             }
         }
-        
-        
-        //        fetchStickerData.stickerCollectionView(category: Strings.categoryAllStickers) { [self] (result) in
-        //            stickerViewModel = result
-        //            DispatchQueue.main.async {
-        //                accountLikedStickersTableView.reloadData()
-        //            }
-        //        }
-        
+    }
+    
+    func setData() {
         showLoadingSkeletonView()
-        getSignedInUserData()
+        getData()
     }
     
     
@@ -189,12 +232,12 @@ class AccountViewController: UIViewController {
     //MARK: - Table View Process
     
     func setDataSourceAndDelegate() {
-        accountLikedStickersTableView.dataSource = self
-        accountLikedStickersTableView.delegate = self
+        accountLovedStickerTableView.dataSource = self
+        accountLovedStickerTableView.delegate = self
     }
     
     func registerNib() {
-        accountLikedStickersTableView.register(UINib(nibName: Strings.likedStickerCell, bundle: nil), forCellReuseIdentifier: Strings.likedStickerCell)
+        accountLovedStickerTableView.register(UINib(nibName: Strings.lovedStickerCell, bundle: nil), forCellReuseIdentifier: Strings.lovedStickerCell)
     }
     
 }
@@ -205,15 +248,15 @@ class AccountViewController: UIViewController {
 extension AccountViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return likedStickerViewModel?.count ?? 2
+        return lovedStickerViewModel?.count ?? 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.likedStickerCell) as! LikedStickersTableViewCell
-        if likedStickerViewModel != nil {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.lovedStickerCell) as! LovedStickersTableViewCell
+        if lovedStickerViewModel != nil {
             DispatchQueue.main.async { [self] in
-                cell.likedStickerViewModel = likedStickerViewModel![indexPath.item]
-                cell.prepareLikedStickerCollectionViewCell()
+                cell.lovedStickerViewModel = lovedStickerViewModel![indexPath.item]
+                cell.prepareLovedStickersCollectionViewCell()
             }
             return cell
         }
@@ -232,7 +275,7 @@ extension AccountViewController: UITableViewDelegate {
         let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
         stickerOptionVC.setDesignElements()
         stickerOptionVC.registerGestures()
-        stickerOptionVC.setStickerData(using: likedStickerViewModel![indexPath.item])
+        stickerOptionVC.setStickerData(using: lovedStickerViewModel![indexPath.item])
         present(stickerOptionVC, animated: true)
     }
     

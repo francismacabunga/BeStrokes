@@ -130,6 +130,15 @@
                                     <constraint firstAttribute="trailing" secondItem="K2u-kp-t8Z" secondAttribute="trailing" constant="20" id="u7J-c0-tUY"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="euH-ic-m8b">
+                                <rect key="frame" x="204" y="454" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sG2-CY-hgv">
+                                <rect key="frame" x="35" y="454" width="358" height="20.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="hkm-Bw-dtm">
                                 <rect key="frame" x="15" y="374" width="398" height="469"/>
                                 <subviews>
@@ -194,11 +203,17 @@
                         <constraints>
                             <constraint firstItem="UkN-UY-Jg3" firstAttribute="leading" secondItem="jqh-0B-fBu" secondAttribute="leading" constant="15" id="CAS-P2-BWD"/>
                             <constraint firstItem="jqh-0B-fBu" firstAttribute="trailing" secondItem="hkm-Bw-dtm" secondAttribute="trailing" constant="15" id="J4f-PF-NSk"/>
+                            <constraint firstItem="euH-ic-m8b" firstAttribute="top" secondItem="UkN-UY-Jg3" secondAttribute="bottom" constant="100" id="Ksl-x6-zjB"/>
                             <constraint firstItem="hkm-Bw-dtm" firstAttribute="leading" secondItem="jqh-0B-fBu" secondAttribute="leading" constant="15" id="L8r-uR-ikc"/>
+                            <constraint firstItem="euH-ic-m8b" firstAttribute="centerX" secondItem="AMk-j2-wsl" secondAttribute="centerX" id="OSc-34-jKk"/>
                             <constraint firstItem="hkm-Bw-dtm" firstAttribute="top" secondItem="UkN-UY-Jg3" secondAttribute="bottom" constant="20" id="Pna-fx-mu8"/>
                             <constraint firstItem="jqh-0B-fBu" firstAttribute="bottom" secondItem="hkm-Bw-dtm" secondAttribute="bottom" id="UGa-w8-ny3"/>
+                            <constraint firstItem="sG2-CY-hgv" firstAttribute="centerX" secondItem="AMk-j2-wsl" secondAttribute="centerX" id="iSF-Ta-BVF"/>
+                            <constraint firstItem="sG2-CY-hgv" firstAttribute="top" secondItem="UkN-UY-Jg3" secondAttribute="bottom" constant="100" id="isY-mC-cvc"/>
                             <constraint firstItem="UkN-UY-Jg3" firstAttribute="top" secondItem="jqh-0B-fBu" secondAttribute="top" constant="10" id="lKE-pi-T7r"/>
                             <constraint firstItem="jqh-0B-fBu" firstAttribute="trailing" secondItem="UkN-UY-Jg3" secondAttribute="trailing" constant="15" id="qNi-ln-cBY"/>
+                            <constraint firstItem="jqh-0B-fBu" firstAttribute="trailing" secondItem="sG2-CY-hgv" secondAttribute="trailing" constant="35" id="sL3-mB-XYA"/>
+                            <constraint firstItem="sG2-CY-hgv" firstAttribute="leading" secondItem="jqh-0B-fBu" secondAttribute="leading" constant="35" id="skR-OQ-EI0"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" id="AnV-R7-mWb"/>
@@ -210,8 +225,10 @@
                         <outlet property="accountHeading1Label" destination="ZJr-Hj-jUZ" id="vw6-0K-EBB"/>
                         <outlet property="accountHeading2Label" destination="HeW-Ed-NOe" id="z17-ER-tze"/>
                         <outlet property="accountImageView" destination="5un-Pr-SI7" id="cze-if-NuU"/>
-                        <outlet property="accountLikedStickersTableView" destination="eua-ma-MMN" id="Sew-dk-c4v"/>
+                        <outlet property="accountLoadingIndicatorView" destination="euH-ic-m8b" id="9KC-bh-2G6"/>
+                        <outlet property="accountLovedStickerTableView" destination="eua-ma-MMN" id="Sew-dk-c4v"/>
                         <outlet property="accountNameHeadingLabel" destination="K2u-kp-t8Z" id="3ZM-x9-SU4"/>
+                        <outlet property="accountNoLovedStickerLabel" destination="sG2-CY-hgv" id="YXa-La-F1Q"/>
                         <outlet property="accountNotificationButton" destination="BrN-2Q-D2b" id="bv9-Pq-tSA"/>
                         <outlet property="accountSearchButton" destination="Isp-Jk-Bx9" id="ydv-sg-6U9"/>
                         <outlet property="accountSearchTextField" destination="kds-sg-1ge" id="OP8-Ec-iGq"/>
@@ -763,7 +780,7 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells>
-                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="nge-vb-0gV" customClass="FeaturedCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
+                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="nge-vb-0gV" customClass="FeaturedStickerCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
                                                                 <rect key="frame" x="49" y="0.0" width="330" height="280"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="SDV-AF-6Nj">
@@ -887,7 +904,7 @@
                     <tabBarItem key="tabBarItem" title="" id="bVO-mK-gc2"/>
                     <connections>
                         <outlet property="homeContentStackView" destination="RzP-lS-pUj" id="ko9-rh-h8x"/>
-                        <outlet property="homeFeaturedCollectionView" destination="u41-Cg-gon" id="cDR-im-Ral"/>
+                        <outlet property="homeFeaturedStickerCollectionView" destination="u41-Cg-gon" id="cDR-im-Ral"/>
                         <outlet property="homeFeaturedView" destination="gxT-Hi-qDl" id="P7O-VR-Yus"/>
                         <outlet property="homeHeading1Label" destination="dnr-HY-Zqt" id="ps5-cQ-pul"/>
                         <outlet property="homeHeading2Label" destination="E3s-b8-c5Q" id="iQj-lh-2Ez"/>

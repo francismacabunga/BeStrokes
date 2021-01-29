@@ -9,7 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeaturedCollectionViewCell" id="gTV-IL-0wX" customClass="FeaturedCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeaturedStickerCollectionViewCell" id="gTV-IL-0wX" customClass="FeaturedStickerCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="319" height="280"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -77,11 +77,11 @@
             </constraints>
             <size key="customSize" width="319" height="84"/>
             <connections>
-                <outlet property="featuredContentView" destination="hmF-Fx-H3d" id="jNc-eY-9Sa"/>
-                <outlet property="featuredHeartButtonImageView" destination="lcu-MU-fmP" id="tlh-rj-Dki"/>
-                <outlet property="featuredImageView" destination="XIP-zB-JB0" id="Nvo-q2-pJu"/>
-                <outlet property="featuredLabel" destination="E9N-0X-pmf" id="5nO-vv-GCq"/>
-                <outlet property="featuredTryMeButton" destination="8I6-Sa-EzO" id="7S6-FE-Aug"/>
+                <outlet property="featuredStickerContentView" destination="hmF-Fx-H3d" id="jNc-eY-9Sa"/>
+                <outlet property="featuredStickerHeartButtonImageView" destination="lcu-MU-fmP" id="tlh-rj-Dki"/>
+                <outlet property="featuredStickerImageView" destination="XIP-zB-JB0" id="Nvo-q2-pJu"/>
+                <outlet property="featuredStickerLabel" destination="E9N-0X-pmf" id="5nO-vv-GCq"/>
+                <outlet property="featuredStickerTryMeButton" destination="8I6-Sa-EzO" id="7S6-FE-Aug"/>
             </connections>
             <point key="canvasLocation" x="-25.362318840579711" y="99.776785714285708"/>
         </collectionViewCell>

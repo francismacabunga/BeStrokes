@@ -62,7 +62,7 @@ struct StickerViewModel {
     
 }
 
-struct LikedStickerViewModel {
+struct LovedStickerViewModel {
     
     let stickerID: String
     let name: String
@@ -185,7 +185,7 @@ struct HeartButtonLogic {
         }
     }
     
-    func showLovedStickers(completion: @escaping (Error?, Bool?, [LikedStickerViewModel]?) -> Void) {
+    func showLovedStickers(completion: @escaping (Error?, Bool?, [LovedStickerViewModel]?) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
                 completion(error, true, nil)
@@ -203,7 +203,7 @@ struct HeartButtonLogic {
                     return
                 }
                 guard let result = snapshot?.documents else {return}
-                let lovedStickers = result.map({return LikedStickerViewModel(StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
+                let lovedStickers = result.map({return LovedStickerViewModel(StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
                                                                                           name: $0[Strings.stickerNameField] as! String,
                                                                                           image: $0[Strings.stickerImageField] as! String,
                                                                                           description: $0[Strings.stickerDescriptionField] as! String,
@@ -262,6 +262,7 @@ struct HeartButtonLogic {
             guard let userData = userData else {return}
             // Remove Sticker Data to User Collection
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).document(stickerID).delete { (error) in
+                print("from vm: \(error)")
                 if error != nil {
                     completion(error, true)
                     return

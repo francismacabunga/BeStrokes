@@ -30,8 +30,8 @@
 		2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A018259B239700AAC82D /* StickerViewModel.swift */; };
 		2F9C40F525AAF52600A7663F /* EditAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9C40F425AAF52600A7663F /* EditAccountViewController.swift */; };
 		2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1ABE42552ED8C0076A8FD /* Strings.swift */; };
-		2FD6E4D2257AC96100B49E41 /* FeaturedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */; };
-		2FD6E4D3257AC96100B49E41 /* FeaturedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */; };
+		2FD6E4D2257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D0257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift */; };
+		2FD6E4D3257AC96100B49E41 /* FeaturedStickerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D1257AC96100B49E41 /* FeaturedStickerCollectionViewCell.xib */; };
 		2FD6E4DA257AC99900B49E41 /* StickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D8257AC99900B49E41 /* StickerCollectionViewCell.swift */; };
 		2FD6E4DB257AC99900B49E41 /* StickerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D9257AC99900B49E41 /* StickerCollectionViewCell.xib */; };
 		2FD6E4E0257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4DE257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift */; };
@@ -41,8 +41,8 @@
 		2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */; };
 		2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99CFD25183D3F002AFFDC /* Main.storyboard */; };
 		2FE99D0425183D40002AFFDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99D0225183D40002AFFDC /* LaunchScreen.storyboard */; };
-		2FEAC09925AA0B6400E149CE /* LikedStickersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEAC09725AA0B6400E149CE /* LikedStickersTableViewCell.swift */; };
-		2FEAC09A25AA0B6400E149CE /* LikedStickersTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FEAC09825AA0B6400E149CE /* LikedStickersTableViewCell.xib */; };
+		2FEAC09925AA0B6400E149CE /* LovedStickersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEAC09725AA0B6400E149CE /* LovedStickersTableViewCell.swift */; };
+		2FEAC09A25AA0B6400E149CE /* LovedStickersTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FEAC09825AA0B6400E149CE /* LovedStickersTableViewCell.xib */; };
 		2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF328302580FEF4001E6E1E /* TabBarViewController.swift */; };
 		2FFB0C4825A84EAC00FAED42 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */; };
 		2FFB0C4B25A873EC00FAED42 /* ProfileSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */; };
@@ -73,8 +73,8 @@
 		2F88A018259B239700AAC82D /* StickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewModel.swift; sourceTree = "<group>"; };
 		2F9C40F425AAF52600A7663F /* EditAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewController.swift; sourceTree = "<group>"; };
 		2FB1ABE42552ED8C0076A8FD /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
-		2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedCollectionViewCell.swift; sourceTree = "<group>"; };
-		2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeaturedCollectionViewCell.xib; sourceTree = "<group>"; };
+		2FD6E4D0257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedStickerCollectionViewCell.swift; sourceTree = "<group>"; };
+		2FD6E4D1257AC96100B49E41 /* FeaturedStickerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeaturedStickerCollectionViewCell.xib; sourceTree = "<group>"; };
 		2FD6E4D8257AC99900B49E41 /* StickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		2FD6E4D9257AC99900B49E41 /* StickerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickerCollectionViewCell.xib; sourceTree = "<group>"; };
 		2FD6E4DE257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -87,8 +87,8 @@
 		2FE99CFE25183D3F002AFFDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2FE99D0325183D40002AFFDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2FE99D0525183D40002AFFDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2FEAC09725AA0B6400E149CE /* LikedStickersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedStickersTableViewCell.swift; sourceTree = "<group>"; };
-		2FEAC09825AA0B6400E149CE /* LikedStickersTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LikedStickersTableViewCell.xib; sourceTree = "<group>"; };
+		2FEAC09725AA0B6400E149CE /* LovedStickersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LovedStickersTableViewCell.swift; sourceTree = "<group>"; };
+		2FEAC09825AA0B6400E149CE /* LovedStickersTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LovedStickersTableViewCell.xib; sourceTree = "<group>"; };
 		2FF328302580FEF4001E6E1E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -141,8 +141,8 @@
 		2F58B0E625A4B255009EFDE5 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				2FD6E4D0257AC96100B49E41 /* FeaturedCollectionViewCell.swift */,
-				2FD6E4D1257AC96100B49E41 /* FeaturedCollectionViewCell.xib */,
+				2FD6E4D0257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift */,
+				2FD6E4D1257AC96100B49E41 /* FeaturedStickerCollectionViewCell.xib */,
 				2FD6E4DE257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift */,
 				2FD6E4DF257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib */,
 				2FD6E4D8257AC99900B49E41 /* StickerCollectionViewCell.swift */,
@@ -221,8 +221,8 @@
 		2FC8FAEA25A7D97D00A3C7F2 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				2FEAC09725AA0B6400E149CE /* LikedStickersTableViewCell.swift */,
-				2FEAC09825AA0B6400E149CE /* LikedStickersTableViewCell.xib */,
+				2FEAC09725AA0B6400E149CE /* LovedStickersTableViewCell.swift */,
+				2FEAC09825AA0B6400E149CE /* LovedStickersTableViewCell.xib */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -367,7 +367,7 @@
 			files = (
 				2FE99CFA25183D3F002AFFDC /* art.scnassets in Resources */,
 				2FE99D0425183D40002AFFDC /* LaunchScreen.storyboard in Resources */,
-				2FEAC09A25AA0B6400E149CE /* LikedStickersTableViewCell.xib in Resources */,
+				2FEAC09A25AA0B6400E149CE /* LovedStickersTableViewCell.xib in Resources */,
 				2F1125662551AE59004A02B1 /* GoogleService-Info.plist in Resources */,
 				2F3141582594EFC900D47E3F /* ProfileTableViewCell.xib in Resources */,
 				2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */,
@@ -375,7 +375,7 @@
 				2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */,
 				2F402CA6256806DD00666028 /* User.storyboard in Resources */,
 				2FD6E4DB257AC99900B49E41 /* StickerCollectionViewCell.xib in Resources */,
-				2FD6E4D3257AC96100B49E41 /* FeaturedCollectionViewCell.xib in Resources */,
+				2FD6E4D3257AC96100B49E41 /* FeaturedStickerCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,7 +440,7 @@
 				2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */,
 				2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */,
 				2FFB0C4825A84EAC00FAED42 /* ProfileViewController.swift in Sources */,
-				2FD6E4D2257AC96100B49E41 /* FeaturedCollectionViewCell.swift in Sources */,
+				2FD6E4D2257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift in Sources */,
 				2FFB0C4B25A873EC00FAED42 /* ProfileSettingsViewModel.swift in Sources */,
 				2F11255E2551A083004A02B1 /* HomeViewController.swift in Sources */,
 				2F9C40F525AAF52600A7663F /* EditAccountViewController.swift in Sources */,
@@ -456,7 +456,7 @@
 				2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */,
 				2F45D04825B4ABC3005167AE /* LandingPageModel.swift in Sources */,
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
-				2FEAC09925AA0B6400E149CE /* LikedStickersTableViewCell.swift in Sources */,
+				2FEAC09925AA0B6400E149CE /* LovedStickersTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

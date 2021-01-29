@@ -21,7 +21,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var homeHeading1Label: UILabel!
     @IBOutlet weak var homeHeading2Label: UILabel!
     @IBOutlet weak var homeProfilePictureButton: UIButton!
-    @IBOutlet weak var homeFeaturedCollectionView: UICollectionView!
+    @IBOutlet weak var homeFeaturedStickerCollectionView: UICollectionView!
     @IBOutlet weak var homeStickerCategoryCollectionView: UICollectionView!
     @IBOutlet weak var homeStickerCollectionView: UICollectionView!
     @IBOutlet weak var homeLoadingIndicatorView: UIActivityIndicatorView!
@@ -77,7 +77,7 @@ class HomeViewController: UIViewController {
         }
         Utilities.setDesignOn(label: homeHeading1Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeHeading1Text)
         Utilities.setDesignOn(label: homeHeading2Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeHeading2Text)
-        Utilities.setDesignOn(collectionView: homeFeaturedCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
+        Utilities.setDesignOn(collectionView: homeFeaturedStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
@@ -134,7 +134,7 @@ class HomeViewController: UIViewController {
     }
     
     func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
-        homeFeaturedCollectionView.configureForPeekingBehavior(behavior: behavior)
+        homeFeaturedStickerCollectionView.configureForPeekingBehavior(behavior: behavior)
         behavior.cellPeekWidth = 10
         behavior.cellSpacing = 10
     }
@@ -150,16 +150,16 @@ class HomeViewController: UIViewController {
     }
     
     func setDataSourceAndDelegate() {
-        homeFeaturedCollectionView.dataSource = self
+        homeFeaturedStickerCollectionView.dataSource = self
         homeStickerCategoryCollectionView.dataSource = self
         homeStickerCollectionView.dataSource = self
-        homeFeaturedCollectionView.delegate = self
+        homeFeaturedStickerCollectionView.delegate = self
         homeStickerCategoryCollectionView.delegate = self
         homeStickerCollectionView.delegate = self
     }
     
     func registerNib() {
-        homeFeaturedCollectionView.register(UINib(nibName: Strings.featuredStickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.featuredStickerCell)
+        homeFeaturedStickerCollectionView.register(UINib(nibName: Strings.featuredStickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.featuredStickerCell)
         homeStickerCategoryCollectionView.register(UINib(nibName: Strings.stickerCategoryCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCategoryCell)
         homeStickerCollectionView.register(UINib(nibName: Strings.stickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCell)
     }
@@ -179,7 +179,7 @@ class HomeViewController: UIViewController {
             guard let result = result else {return}
             featuredStickerViewModel = result
             DispatchQueue.main.async {
-                homeFeaturedCollectionView.reloadData()
+                homeFeaturedStickerCollectionView.reloadData()
             }
         }
     }
@@ -215,7 +215,7 @@ class HomeViewController: UIViewController {
 extension HomeViewController: SkeletonCollectionViewDataSource {
     
     func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        if skeletonView == homeFeaturedCollectionView {
+        if skeletonView == homeFeaturedStickerCollectionView {
             return Strings.featuredStickerCell
         }
         if skeletonView == homeStickerCollectionView {
@@ -229,7 +229,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == homeFeaturedCollectionView {
+        if collectionView == homeFeaturedStickerCollectionView {
             return featuredStickerViewModel?.count ?? 2
         }
         if collectionView == homeStickerCategoryCollectionView {
@@ -242,10 +242,11 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == homeFeaturedCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedCollectionViewCell
+        if collectionView == homeFeaturedStickerCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedStickerCollectionViewCell
             if featuredStickerViewModel != nil {
                 DispatchQueue.main.async() { [self] in
+                    cell.featuredStickerCellDelegate = self
                     cell.featuredStickerViewModel = featuredStickerViewModel![indexPath.row]
                     cell.prepareFeatureCollectionViewCell()
                 }
@@ -347,6 +348,23 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: 140, height: 140)
         }
         return CGSize()
+    }
+    
+}
+
+
+//MARK: - Featured Sticker Cell Delegate
+
+extension HomeViewController: FeaturedStickerCellDelegate {
+    
+    func getError(using error: Error) {
+        showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+    }
+    
+    func getUserAuthenticationState(with isUserSignedIn: Bool) {
+        if !isUserSignedIn {
+            showNoSignedInUserAlert()
+        }
     }
     
 }
