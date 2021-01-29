@@ -148,20 +148,20 @@ class AccountViewController: UIViewController {
     }
     
     func setData() {
-        heartButtonLogic.showLovedStickers { [self] (error, isUserSignedIn, result) in
-            likedStickerViewModel = result
+        heartButtonLogic.showLovedStickers { [self] (error, isUserSignedIn, likedStickerData) in
+            likedStickerViewModel = likedStickerData
             DispatchQueue.main.async {
                 accountLikedStickersTableView.reloadData()
             }
         }
         
         
-//        fetchStickerData.stickerCollectionView(category: Strings.categoryAllStickers) { [self] (result) in
-//            stickerViewModel = result
-//            DispatchQueue.main.async {
-//                accountLikedStickersTableView.reloadData()
-//            }
-//        }
+        //        fetchStickerData.stickerCollectionView(category: Strings.categoryAllStickers) { [self] (result) in
+        //            stickerViewModel = result
+        //            DispatchQueue.main.async {
+        //                accountLikedStickersTableView.reloadData()
+        //            }
+        //        }
         
         showLoadingSkeletonView()
         getSignedInUserData()
@@ -227,11 +227,13 @@ extension AccountViewController: UITableViewDataSource {
 
 extension AccountViewController: UITableViewDelegate {
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-//        let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
-//        stickerOptionVC.stickerViewModel = likedStickerViewModel![indexPath.item]
-//        present(stickerOptionVC, animated: true)
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+        let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
+        stickerOptionVC.setDesignElements()
+        stickerOptionVC.registerGestures()
+        stickerOptionVC.setStickerData(using: likedStickerViewModel![indexPath.item])
+        present(stickerOptionVC, animated: true)
+    }
     
 }

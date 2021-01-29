@@ -28,19 +28,16 @@ class StickerOptionViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    var stickerViewModel: StickerViewModel!
     private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
+    private var stickerViewModel: StickerViewModel?
+    private var likedStickerViewModel: LikedStickerViewModel?
     
     
     //MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setDesignElements()
-        registerGestures()
-        setStickerData()
         
     }
     
@@ -49,12 +46,12 @@ class StickerOptionViewController: UIViewController {
     
     func setDesignElements() {
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(stackView: stickerStackContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: stickerTopView, backgroundColor: .clear)
         Utilities.setDesignOn(view: stickerMiddleView, backgroundColor: .clear)
         Utilities.setDesignOn(view: stickerBottomView, backgroundColor: .clear)
+        Utilities.setDesignOn(stackView: stickerStackContentView, backgroundColor: .clear)
         Utilities.setDesignOn(navigationBar: stickerNavigationBar, isDarkMode: true)
-        Utilities.setDesignOn(imageView: stickerImageView, image: UIImage(systemName: Strings.unheartStickerImage))
+        Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(label: stickerNameLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(label: stickerCategoryLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(label: stickerTagLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .center, isCircular: true, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
@@ -62,22 +59,55 @@ class StickerOptionViewController: UIViewController {
         Utilities.setDesignOn(button: stickerTryMeButton, title: Strings.tryMeButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
     }
     
-    func getHeartButtonValue() {
-//        heartButtonLogic.checkIfStickerIsLiked(using: stickerViewModel.stickerDocumentID) { [self] (result) in
-//            if result {
-//                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.heartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-//                heartButtonTapped = true
-//            } else {
-//                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.unheartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-//                heartButtonTapped = false
-//            }
-//        }
+    func getHeartButtonValue(using stickerViewModel: StickerViewModel) {
+        heartButtonLogic.checkIfStickerIsLoved(using: stickerViewModel.stickerID) { [self] (error, isUserSignedIn, isStickerLoved) in
+            if error != nil {
+                // Show error
+                return
+            }
+            guard let isUserSignedIn = isUserSignedIn else {return}
+            if !isUserSignedIn {
+                // Show error
+                return
+            }
+            guard let isStickerLoved = isStickerLoved else {return}
+            if isStickerLoved {
+                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                heartButtonTapped = true
+            } else {
+                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                heartButtonTapped = false
+            }
+        }
     }
     
-    func setStickerData() {
+    func getHeartButtonValue(using likedStickerViewModel: LikedStickerViewModel) {
+        heartButtonLogic.checkIfStickerIsLoved(using: likedStickerViewModel.stickerID) { [self] (error, isUserSignedIn, isStickerLoved) in
+            if error != nil {
+                // Show error
+                return
+            }
+            guard let isUserSignedIn = isUserSignedIn else {return}
+            if !isUserSignedIn {
+                // Show error
+                return
+            }
+            guard let isStickerLoved = isStickerLoved else {return}
+            if isStickerLoved {
+                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                heartButtonTapped = true
+            } else {
+                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                heartButtonTapped = false
+            }
+        }
+    }
+    
+    func setStickerData(using stickerViewModel: StickerViewModel) {
+        self.stickerViewModel = stickerViewModel
         stickerImageView.kf.setImage(with: URL(string: stickerViewModel.image))
         stickerNameLabel.text = stickerViewModel.name
-        getHeartButtonValue()
+        getHeartButtonValue(using: stickerViewModel)
         stickerCategoryLabel.text = stickerViewModel.category
         if stickerViewModel.tag != Strings.tagNoStickers {
             stickerTagLabel.text = stickerViewModel.tag
@@ -85,6 +115,20 @@ class StickerOptionViewController: UIViewController {
             stickerTagLabel.isHidden = true
         }
         stickerDescriptionLabel.text = stickerViewModel.description
+    }
+    
+    func setStickerData(using likedStickerViewModel: LikedStickerViewModel) {
+        self.likedStickerViewModel = likedStickerViewModel
+        stickerImageView.kf.setImage(with: URL(string: likedStickerViewModel.image))
+        stickerNameLabel.text = likedStickerViewModel.name
+        getHeartButtonValue(using: likedStickerViewModel)
+        stickerCategoryLabel.text = likedStickerViewModel.category
+        if likedStickerViewModel.tag != Strings.tagNoStickers {
+            stickerTagLabel.text = likedStickerViewModel.tag
+        } else {
+            stickerTagLabel.isHidden = true
+        }
+        stickerDescriptionLabel.text = likedStickerViewModel.description
     }
     
     
@@ -98,9 +142,65 @@ class StickerOptionViewController: UIViewController {
     
     @objc func tapGestureHandler(tap: UITapGestureRecognizer) {
         if heartButtonTapped! {
-//            heartButtonLogic.removeUserData(using: stickerViewModel.stickerDocumentID)
+            if let stickerViewModel = stickerViewModel {
+                untapHeartButton(using: stickerViewModel)
+            }
+            if let likedStickerViewModel = likedStickerViewModel {
+                dismiss(animated: true)
+                untapHeartButton(using: likedStickerViewModel)
+            }
         } else {
-//            heartButtonLogic.saveUserData(using: stickerViewModel.stickerDocumentID)
+            if let stickerViewModel = stickerViewModel {
+                tapHeartButton(using: stickerViewModel)
+            }
+        }
+    }
+    
+    func untapHeartButton(using stickerViewModel: StickerViewModel) {
+        heartButtonLogic.untapHeartButton(using: stickerViewModel.stickerID) { (error, isUserSignedIn) in
+            if error != nil {
+                // Show error
+                return
+            }
+            guard let isUserSignedIn = isUserSignedIn else {return}
+            if !isUserSignedIn {
+                // Show error
+                return
+            }
+        }
+    }
+    
+    func untapHeartButton(using likedStickerViewModel: LikedStickerViewModel) {
+        heartButtonLogic.untapHeartButton(using: likedStickerViewModel.stickerID) { (error, isUserSignedIn) in
+            if error != nil {
+                // Show error
+                return
+            }
+            guard let isUserSignedIn = isUserSignedIn else {return}
+            if !isUserSignedIn {
+                // Show error
+                return
+            }
+        }
+    }
+    
+    func tapHeartButton(using stickerViewModel: StickerViewModel) {
+        let stickerDataDictionary = [Strings.stickerIDField : stickerViewModel.stickerID,
+                                     Strings.stickerNameField : stickerViewModel.name,
+                                     Strings.stickerImageField : stickerViewModel.image,
+                                     Strings.stickerDescriptionField : stickerViewModel.description,
+                                     Strings.stickerCategoryField : stickerViewModel.category,
+                                     Strings.stickerTagField : stickerViewModel.tag]
+        heartButtonLogic.tapHeartButton(using: stickerViewModel.stickerID, with: stickerDataDictionary) { (error, isUserSignedIn) in
+            if error != nil {
+                // Show error
+                return
+            }
+            guard let isUserSignedIn = isUserSignedIn else {return}
+            if !isUserSignedIn {
+                // Show error
+                return
+            }
         }
     }
     

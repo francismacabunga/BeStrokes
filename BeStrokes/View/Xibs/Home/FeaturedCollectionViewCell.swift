@@ -94,10 +94,10 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
             }
             guard let isStickerLoved = isStickerLoved else {return}
             if isStickerLoved {
-                Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.heartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
                 heartButtonTapped = true
             } else {
-                Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.unheartStickerImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                Utilities.setDesignOn(imageView: featuredHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
                 heartButtonTapped = false
             }
         }
@@ -114,21 +114,7 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
     
     @objc func tapGestureHandler() {
         if heartButtonTapped! {
-            heartButtonLogic.removeUserDataToSticker(using: stickerID!) { (error, isUserSignedIn) in
-                if error != nil {
-                    // Show error
-                    return
-                }
-                if !isUserSignedIn {
-                    // Show error
-                    return
-                }
-            }
-            heartButtonLogic.removeStickerToUser(using: stickerID!) { (error, isUserSignedIn) in
-                
-            }
-        } else {
-            heartButtonLogic.saveUserDataToSticker(using: stickerID!) { (error, isUserSignedIn) in
+            heartButtonLogic.untapHeartButton(using: stickerID!) { (error, isUserSignedIn) in
                 if error != nil {
                     // Show error
                     return
@@ -139,16 +125,24 @@ class FeaturedCollectionViewCell: UICollectionViewCell {
                     return
                 }
             }
-            let dictionary = [Strings.stickerIDField : featuredStickerViewModel.stickerID,
-                              Strings.stickerNameField : featuredStickerViewModel.name,
-                              Strings.stickerImageField : featuredStickerViewModel.image,
-                              Strings.stickerDescriptionField : featuredStickerViewModel.description,
-                              Strings.stickerCategoryField : featuredStickerViewModel.category,
-                              Strings.stickerTagField : featuredStickerViewModel.tag]
-            heartButtonLogic.addStickerToUser(using: stickerID!, and: dictionary) { (error, isUserSignedIn) in
-                
+        } else {
+            let stickerDataDictionary = [Strings.stickerIDField : featuredStickerViewModel.stickerID,
+                                         Strings.stickerNameField : featuredStickerViewModel.name,
+                                         Strings.stickerImageField : featuredStickerViewModel.image,
+                                         Strings.stickerDescriptionField : featuredStickerViewModel.description,
+                                         Strings.stickerCategoryField : featuredStickerViewModel.category,
+                                         Strings.stickerTagField : featuredStickerViewModel.tag]
+            heartButtonLogic.tapHeartButton(using: stickerID!, with: stickerDataDictionary) { (error, isUserSignedIn) in
+                if error != nil {
+                    // Show error
+                    return
+                }
+                guard let isUserSignedIn = isUserSignedIn else {return}
+                if !isUserSignedIn {
+                    // Show error
+                    return
+                }
             }
-            
         }
     }
     

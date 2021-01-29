@@ -185,38 +185,6 @@ struct HeartButtonLogic {
         }
     }
     
-    func saveUserDataToSticker(using stickerID: String, completion: @escaping (Error?, Bool?) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if error != nil {
-                completion(error, true)
-                return
-            }
-            guard let isUserSignedIn = isUserSignedIn else {return}
-            if !isUserSignedIn {
-                completion(nil, false)
-                return
-            }
-            guard let userData = userData else {return}
-            let dictionary = [Strings.userIDField : userData.userID, Strings.userFirstNameField : userData.firstName, Strings.userLastNameField : userData.lastname, Strings.userEmailField : userData.email]
-            let documentReference = db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID)
-            documentReference.setData(dictionary)
-        }
-    }
-    
-    func removeUserDataToSticker(using stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
-        guard let signedInUser = user else {
-            completion(nil, false)
-            return
-        }
-        let signedInUserID = signedInUser.uid
-        db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(signedInUserID).delete { (error) in
-            if error != nil {
-                completion(error, true)
-                return
-            }
-        }
-    }
-    
     func showLovedStickers(completion: @escaping (Error?, Bool?, [LikedStickerViewModel]?) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
@@ -247,7 +215,7 @@ struct HeartButtonLogic {
         }
     }
     
-    func addStickerToUser(using stickerID: String, and dictionary: [String : String], completion: @escaping (Error?, Bool?) -> Void) {
+    func tapHeartButton(using stickerID: String, with stickerDataDictionary: [String : String], completion: @escaping (Error?, Bool?) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
                 completion(error, true)
@@ -259,7 +227,19 @@ struct HeartButtonLogic {
                 return
             }
             guard let userData = userData else {return}
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).document(stickerID).setData(dictionary) { (error) in
+            let userDataDictionary = [Strings.userIDField : userData.userID,
+                                      Strings.userFirstNameField : userData.firstName,
+                                      Strings.userLastNameField : userData.lastname,
+                                      Strings.userEmailField : userData.email]
+            // Save User Data to Sticker Collection -- checkIfStickerIsLoved
+            db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).setData(userDataDictionary) { (error) in
+                if error != nil {
+                    completion(error, true)
+                    return
+                }
+            }
+            // Save Sticker Data to User Collection -- showLovedStickers
+            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).document(stickerID).setData(stickerDataDictionary) { (error) in
                 if error != nil {
                     completion(error, true)
                     return
@@ -268,7 +248,7 @@ struct HeartButtonLogic {
         }
     }
     
-    func removeStickerToUser(using stickerID: String, completion: @escaping (Error?, Bool?) -> Void) {
+    func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool?) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
                 completion(error, true)
@@ -280,7 +260,15 @@ struct HeartButtonLogic {
                 return
             }
             guard let userData = userData else {return}
+            // Remove Sticker Data to User Collection
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).document(stickerID).delete { (error) in
+                if error != nil {
+                    completion(error, true)
+                    return
+                }
+            }
+            // Remove User Data to Sticker Collection
+            db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).delete { (error) in
                 if error != nil {
                     completion(error, true)
                     return

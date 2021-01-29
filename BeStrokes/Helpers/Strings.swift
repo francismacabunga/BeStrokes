@@ -129,8 +129,6 @@ struct Strings {
     static let whiteBarImage = "Black_Bar"
     static let blackBarImage = "White_Bar"
     static let optionImage = "Dots"
-    static let unheartStickerImage = "heart"
-    static let heartStickerImage = "heart.fill"
     static let cameraImage = "Camera"
     static let signUpDefaultIcon = "Woman"
     static let loginDefaultIcon = "Avatar"
@@ -149,6 +147,9 @@ struct Strings {
     static let accountEditAccountIcon = "pencil.circle.fill"
     static let accountSearchStickerIcon = "magnifyingglass"
     static let accountArrowUpIcon = "chevron.up.square.fill"
+    
+    static let loveStickerIcon = "heart"
+    static let lovedStickerIcon = "heart.fill"
     
     
     
