@@ -29,10 +29,10 @@ class HomeViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
+    private let user = User()
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
     private var stickerViewModel: [StickerViewModel]?
-    private let user = User()
     private let fetchStickerData = FetchStickerData()
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private var stickerCategorySelected: String?
@@ -164,19 +164,19 @@ class HomeViewController: UIViewController {
     }
     
     func setCollectionViewData() {
-        getFeaturedCollectionViewData()
+        getFeaturedStickerCollectionViewData()
         getStickerCategoryCollectionViewData()
         getStickerCollectionViewData(onCategory: Strings.allStickers)
     }
     
-    func getFeaturedCollectionViewData() {
-        fetchStickerData.featuredCollectionView { [self] (error, result) in
+    func getFeaturedStickerCollectionViewData() {
+        fetchStickerData.featuredStickerCollectionView { [self] (error, featuredStickerData) in
             if error != nil {
                 showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
                 return
             }
-            guard let result = result else {return}
-            featuredStickerViewModel = result
+            guard let featuredStickerData = featuredStickerData else {return}
+            featuredStickerViewModel = featuredStickerData
             DispatchQueue.main.async {
                 homeFeaturedStickerCollectionView.reloadData()
             }
@@ -243,13 +243,11 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == homeFeaturedStickerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedStickerCollectionViewCell
-            if featuredStickerViewModel != nil {
-                DispatchQueue.main.async() { [self] in
-                    cell.featuredStickerCellDelegate = self
-                    cell.featuredStickerViewModel = featuredStickerViewModel![indexPath.row]
-                    cell.prepareFeatureCollectionViewCell()
-                }
-                return cell
+            guard let featuredStickerViewModel = featuredStickerViewModel else {return cell}
+            DispatchQueue.main.async {
+                cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.row]
+                cell.featuredStickerCellDelegate = self
+                cell.prepareFeaturedStickerCell()
             }
             return cell
         }

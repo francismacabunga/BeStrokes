@@ -86,7 +86,7 @@ struct FetchStickerData {
     
     private let db = Firestore.firestore()
     
-    func featuredCollectionView(completion: @escaping (Error?, [FeaturedStickerViewModel]?) -> Void) {
+    func featuredStickerCollectionView(completion: @escaping (Error?, [FeaturedStickerViewModel]?) -> Void) {
         let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: Strings.categoryFeaturedStickers)
         fetchFirebaseData(with: firebaseQuery) { (error, result) in
             if error != nil {

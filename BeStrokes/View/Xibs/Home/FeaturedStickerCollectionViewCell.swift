@@ -1,5 +1,5 @@
 //
-//  FeaturedCollectionViewCell.swift
+//  FeaturedStickerCollectionViewCell.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 12/5/20.
@@ -7,7 +7,6 @@
 
 import UIKit
 import SkeletonView
-import Firebase
 import Kingfisher
 
 class FeaturedStickerCollectionViewCell: UICollectionViewCell {
@@ -24,13 +23,10 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     //MARK: - Constants / Variables
     
     private let heartButtonLogic = HeartButtonLogic()
-    private var stickerID: String?
     private var heartButtonTapped: Bool?
     var featuredStickerCellDelegate: FeaturedStickerCellDelegate?
-    
     var featuredStickerViewModel: FeaturedStickerViewModel! {
         didSet {
-            stickerID = featuredStickerViewModel.stickerID
             featuredStickerLabel.text = featuredStickerViewModel.name
             featuredStickerImageView.kf.setImage(with: URL(string: featuredStickerViewModel.image))
         }
@@ -43,7 +39,6 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         showLoadingSkeletonView()
-        registerGestures()
         
     }
     
@@ -73,16 +68,17 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
         featuredStickerContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
-    func prepareFeatureCollectionViewCell() {
+    func prepareFeaturedStickerCell() {
         hideLoadingSkeletonView()
         setDesignElements()
-        getHeartButtonValue(using: stickerID!)
+        getHeartButtonValue(using: featuredStickerViewModel.stickerID)
+        registerGestures()
     }
     
-    func getHeartButtonValue(using stickerDocumentID: String) {
-        heartButtonLogic.checkIfStickerIsLoved(using: stickerDocumentID) { [self] (error, userAuthenticationState, isStickerLoved) in
+    func getHeartButtonValue(using stickerID: String) {
+        heartButtonLogic.checkIfStickerIsLoved(using: stickerID) { [self] (error, userAuthenticationState, isStickerLoved) in
             if error != nil {
-                //featuredStickerCellDelegate?.getError(using: error!)
+                featuredStickerCellDelegate?.getError(using: error!)
                 return
             }
             if !userAuthenticationState {
@@ -111,7 +107,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     
     @objc func tapGestureHandler() {
         if heartButtonTapped! {
-            heartButtonLogic.untapHeartButton(using: stickerID!) { [self] (error, userAuthenticationState, isProcessDone) in
+            heartButtonLogic.untapHeartButton(using: featuredStickerViewModel.stickerID) { [self] (error, userAuthenticationState, isProcessDone) in
                 if error != nil {
                     featuredStickerCellDelegate?.getError(using: error!)
                     return
@@ -128,7 +124,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
                                          Strings.stickerDescriptionField : featuredStickerViewModel.description,
                                          Strings.stickerCategoryField : featuredStickerViewModel.category,
                                          Strings.stickerTagField : featuredStickerViewModel.tag]
-            heartButtonLogic.tapHeartButton(using: stickerID!, with: stickerDataDictionary) { [self] (error, userAuthenticationState, isProcessDone) in
+            heartButtonLogic.tapHeartButton(using: featuredStickerViewModel.stickerID, with: stickerDataDictionary) { [self] (error, userAuthenticationState, isProcessDone) in
                 if error != nil {
                     featuredStickerCellDelegate?.getError(using: error!)
                     return
