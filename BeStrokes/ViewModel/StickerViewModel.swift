@@ -248,33 +248,33 @@ struct HeartButtonLogic {
         }
     }
     
-    func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool?) -> Void) {
+    func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
-                completion(error, true)
+                completion(error, true, false)
                 return
             }
             guard let isUserSignedIn = isUserSignedIn else {return}
             if !isUserSignedIn {
-                completion(nil, false)
+                completion(nil, false, false)
                 return
             }
             guard let userData = userData else {return}
             // Remove Sticker Data to User Collection
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).document(stickerID).delete { (error) in
-                print("from vm: \(error)")
                 if error != nil {
-                    completion(error, true)
+                    completion(error, true, false)
                     return
                 }
             }
             // Remove User Data to Sticker Collection
             db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).delete { (error) in
                 if error != nil {
-                    completion(error, true)
+                    completion(error, true, false)
                     return
                 }
             }
+            completion(nil, true, true)
         }
     }
     

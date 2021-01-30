@@ -308,7 +308,7 @@ extension HomeViewController: UICollectionViewDelegate {
                 let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
                 stickerOptionVC.setDesignElements()
                 stickerOptionVC.registerGestures()
-                stickerOptionVC.setStickerData(using: stickerViewModel![indexPath.row])
+                stickerOptionVC.setStickerDataUsing(stickerViewModel: stickerViewModel![indexPath.row])
                 present(stickerOptionVC, animated: true)
             }
         }

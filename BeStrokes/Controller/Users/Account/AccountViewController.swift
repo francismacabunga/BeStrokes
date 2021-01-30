@@ -275,7 +275,7 @@ extension AccountViewController: UITableViewDelegate {
         let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
         stickerOptionVC.setDesignElements()
         stickerOptionVC.registerGestures()
-        stickerOptionVC.setStickerData(using: lovedStickerViewModel![indexPath.item])
+        stickerOptionVC.setStickerDataUsing(lovedStickerViewModel: lovedStickerViewModel![indexPath.item])
         present(stickerOptionVC, animated: true)
     }
     
