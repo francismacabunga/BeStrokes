@@ -166,7 +166,6 @@ class AccountViewController: UIViewController {
                 showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
                 return
             }
-            guard let isUserSignedIn = isUserSignedIn else {return}
             if !isUserSignedIn {
                 showNoSignedInUserAlert()
                 return
@@ -187,7 +186,6 @@ class AccountViewController: UIViewController {
                 // Show error
                 return
             }
-            guard let isUserSignedIn = isUserSignedIn else {return}
             if !isUserSignedIn {
                 // Show error
                 return

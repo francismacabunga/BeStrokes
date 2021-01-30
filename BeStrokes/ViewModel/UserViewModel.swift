@@ -47,10 +47,10 @@ struct User {
         }
     }
     
-    func storeData(using userID: String, with dictionary: [String : String], completion: @escaping (Error?, Bool?) -> Void) {
+    func storeData(using userID: String, with dictionary: [String : String], completion: @escaping (Error?, Bool) -> Void) {
         db.collection(Strings.userCollection).document(userID).setData(dictionary) { (error) in
             if error != nil {
-                completion(error, nil)
+                completion(error, false)
                 return
             }
             completion(nil, true)
@@ -91,7 +91,7 @@ struct User {
         }
     }
     
-    func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?, Bool?, Bool?) -> Void) {
+    func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?, Bool, Bool?) -> Void) {
         guard let signedInUser = user else {
             completion(nil, false, nil)
             return
@@ -109,7 +109,7 @@ struct User {
         }
     }
     
-    func getSignedInUserData(completion: @escaping (Error?, Bool?, UserViewModel?) -> Void) {
+    func getSignedInUserData(completion: @escaping (Error?, Bool, UserViewModel?) -> Void) {
         guard let signedInUser = user else {
             completion(nil, false, nil)
             return
@@ -131,7 +131,7 @@ struct User {
         }
     }
     
-    func isEmailVerified(completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+    func isEmailVerified(completion: @escaping (Error?, Bool, Bool?) -> Void) {
         guard let signedInUser = user else {
             completion(nil, false, nil)
             return
@@ -151,7 +151,7 @@ struct User {
         }
     }
     
-    func updateUserData(_ firstName: String, _ lastName: String, _ email: String, _ profilePicURL: String, completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+    func updateUserData(_ firstName: String, _ lastName: String, _ email: String, _ profilePicURL: String, completion: @escaping (Error?, Bool, Bool) -> Void) {
         guard let signedInUser = user else {
             completion(nil, false, false)
             return
@@ -162,25 +162,17 @@ struct User {
                 return
             }
             let signedInUserID = signedInUser.uid
-            db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).getDocuments { (snapshot, error) in
+            signedInUser.updateEmail(to: email) { (error) in
                 if error != nil {
                     completion(error, true, false)
                     return
                 }
-                guard let result = snapshot?.documents.first else {return}
-                let documentID = result[Strings.userDocumentIDField] as! String
-                signedInUser.updateEmail(to: email) { (error) in
-                    if error != nil {
-                        completion(error, true, false)
-                        return
-                    }
-                    db.collection(Strings.userCollection).document(documentID).updateData([Strings.userFirstNameField : firstName,
+                db.collection(Strings.userCollection).document(signedInUserID).updateData([Strings.userFirstNameField : firstName,
                                                                                            Strings.userLastNameField : lastName,
                                                                                            Strings.userEmailField : email,
                                                                                            Strings.userProfilePicField : profilePicURL])
-                    completion(nil, true, true)
-                    return
-                }
+                completion(nil, true, true)
+                return
             }
         }
     }

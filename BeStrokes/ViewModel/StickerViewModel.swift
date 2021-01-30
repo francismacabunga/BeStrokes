@@ -165,7 +165,7 @@ struct HeartButtonLogic {
     private let db = Firestore.firestore()
     private let userViewModel = User()
     
-    func checkIfStickerIsLoved(using stickerID: String, completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+    func checkIfStickerIsLoved(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
         guard let signedInUser = user else {
             completion(nil, false, nil)
             return
@@ -185,13 +185,12 @@ struct HeartButtonLogic {
         }
     }
     
-    func showLovedStickers(completion: @escaping (Error?, Bool?, [LovedStickerViewModel]?) -> Void) {
+    func showLovedStickers(completion: @escaping (Error?, Bool, [LovedStickerViewModel]?) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
                 completion(error, true, nil)
                 return
             }
-            guard let isUserSignedIn = isUserSignedIn else {return}
             if !isUserSignedIn {
                 completion(nil, false, nil)
                 return
@@ -215,13 +214,12 @@ struct HeartButtonLogic {
         }
     }
     
-    func tapHeartButton(using stickerID: String, with stickerDataDictionary: [String : String], completion: @escaping (Error?, Bool?) -> Void) {
+    func tapHeartButton(using stickerID: String, with stickerDataDictionary: [String : String], completion: @escaping (Error?, Bool) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
                 completion(error, true)
                 return
             }
-            guard let isUserSignedIn = isUserSignedIn else {return}
             if !isUserSignedIn {
                 completion(nil, false)
                 return
@@ -254,7 +252,6 @@ struct HeartButtonLogic {
                 completion(error, true, false)
                 return
             }
-            guard let isUserSignedIn = isUserSignedIn else {return}
             if !isUserSignedIn {
                 completion(nil, false, false)
                 return

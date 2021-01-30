@@ -175,7 +175,6 @@ class EditAccountViewController: UIViewController {
                 showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
                 return
             }
-            guard let isUserSignedIn = isUserSignedIn else {return}
             if !isUserSignedIn {
                 showNoSignedInUserAlert()
                 return
@@ -251,7 +250,6 @@ class EditAccountViewController: UIViewController {
                 setEditAccountButtonToOriginalDesign()
                 return
             }
-            guard let isUserSignedIn = isUserSignedIn else {return}
             if !isUserSignedIn {
                 showNoSignedInUserAlert()
                 setEditAccountButtonToOriginalDesign()
@@ -305,13 +303,11 @@ class EditAccountViewController: UIViewController {
                     setEditAccountButtonToOriginalDesign()
                     return
                 }
-                guard let isUserSignedIn = isUserSignedIn else {return}
                 if !isUserSignedIn {
                     showNoSignedInUserAlert()
                     setEditAccountButtonToOriginalDesign()
                     return
                 }
-                guard let isUpdateDataFinished = isUpdateDataFinished else {return}
                 if isUpdateDataFinished {
                     sendEmailVerification(with: Strings.editAccountProcessSuccessfulLabel)
                 }
@@ -323,13 +319,11 @@ class EditAccountViewController: UIViewController {
                     setEditAccountButtonToOriginalDesign()
                     return
                 }
-                guard let isUserSignedIn = isUserSignedIn else {return}
                 if !isUserSignedIn {
                     showNoSignedInUserAlert()
                     setEditAccountButtonToOriginalDesign()
                     return
                 }
-                guard let isUpdateDataFinished = isUpdateDataFinished else {return}
                 if isUpdateDataFinished {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         setEditAccountButtonToOriginalDesign()

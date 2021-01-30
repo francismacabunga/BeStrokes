@@ -79,7 +79,6 @@ class LandingViewController: UIViewController {
     
     func checkIfUserIsSignedIn() {
         user.checkIfUserIsSignedIn { [self] (authErrorCode, isUserSignedIn, isUserInvalid) in
-            guard let isUserSignedIn = isUserSignedIn else {return}
             if isUserSignedIn {
                 print("User is signed in!")
                 guard let authErrorCode = authErrorCode else {

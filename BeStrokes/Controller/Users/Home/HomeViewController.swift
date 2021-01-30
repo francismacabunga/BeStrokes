@@ -119,7 +119,6 @@ class HomeViewController: UIViewController {
                 showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
                 return
             }
-            guard let isUserSignedIn = isUserSignedIn else {return}
             if !isUserSignedIn {
                 showNoSignedInUserAlert()
                 return

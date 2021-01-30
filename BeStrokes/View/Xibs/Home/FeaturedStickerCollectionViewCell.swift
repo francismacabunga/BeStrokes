@@ -85,7 +85,6 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
                 featuredStickerCellDelegate?.getError(using: error!)
                 return
             }
-            guard let userAuthenticationState = userAuthenticationState else {return}
             if !userAuthenticationState {
                 featuredStickerCellDelegate?.getUserAuthenticationState(with: userAuthenticationState)
                 return
@@ -112,6 +111,17 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     
     @objc func tapGestureHandler() {
         if heartButtonTapped! {
+            heartButtonLogic.untapHeartButton(using: stickerID!) { [self] (error, userAuthenticationState, isProcessDone) in
+                if error != nil {
+                    featuredStickerCellDelegate?.getError(using: error!)
+                    return
+                }
+                if !userAuthenticationState {
+                    featuredStickerCellDelegate?.getUserAuthenticationState(with: userAuthenticationState)
+                    return
+                }
+            }
+            
 //            heartButtonLogic.untapHeartButton(using: stickerID!) { [self] (error, userAuthenticationState) in
 //                if error != nil {
 //                    featuredStickerCellDelegate?.getError(using: error!)
@@ -123,6 +133,8 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
 //                    return
 //                }
 //            }
+            
+            
         } else {
             let stickerDataDictionary = [Strings.stickerIDField : featuredStickerViewModel.stickerID,
                                          Strings.stickerNameField : featuredStickerViewModel.name,
@@ -130,6 +142,18 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
                                          Strings.stickerDescriptionField : featuredStickerViewModel.description,
                                          Strings.stickerCategoryField : featuredStickerViewModel.category,
                                          Strings.stickerTagField : featuredStickerViewModel.tag]
+            heartButtonLogic.tapHeartButton(using: stickerID!, with: stickerDataDictionary) { [self] (error, userAuthenticationState) in
+                if error != nil {
+                    featuredStickerCellDelegate?.getError(using: error!)
+                    return
+                }
+                if !userAuthenticationState {
+                    featuredStickerCellDelegate?.getUserAuthenticationState(with: userAuthenticationState)
+                    return
+                }
+            }
+            
+            
 //            heartButtonLogic.tapHeartButton(using: stickerID!, with: stickerDataDictionary) { [self] (error, userAuthenticationState) in
 //                if error != nil {
 //                    featuredStickerCellDelegate?.getError(using: error!)
@@ -141,6 +165,9 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
 //                    return
 //                }
 //            }
+            
+            
+            
         }
     }
     
