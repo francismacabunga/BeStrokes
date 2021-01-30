@@ -233,7 +233,7 @@ class StickerOptionViewController: UIViewController {
                                      Strings.stickerDescriptionField : stickerViewModel.description,
                                      Strings.stickerCategoryField : stickerViewModel.category,
                                      Strings.stickerTagField : stickerViewModel.tag]
-        heartButtonLogic.tapHeartButton(using: stickerViewModel.stickerID, with: stickerDataDictionary) { [self] (error, isUserSignedIn) in
+        heartButtonLogic.tapHeartButton(using: stickerViewModel.stickerID, with: stickerDataDictionary) { [self] (error, isUserSignedIn, isProcessDone) in
             if error != nil {
                 showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
                 return

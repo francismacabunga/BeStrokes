@@ -214,14 +214,14 @@ struct HeartButtonLogic {
         }
     }
     
-    func tapHeartButton(using stickerID: String, with stickerDataDictionary: [String : String], completion: @escaping (Error?, Bool) -> Void) {
+    func tapHeartButton(using stickerID: String, with stickerDataDictionary: [String : String], completion: @escaping (Error?, Bool, Bool) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
-                completion(error, true)
+                completion(error, true, false)
                 return
             }
             if !isUserSignedIn {
-                completion(nil, false)
+                completion(nil, false, false)
                 return
             }
             guard let userData = userData else {return}
@@ -232,17 +232,18 @@ struct HeartButtonLogic {
             // Save User Data to Sticker Collection -- checkIfStickerIsLoved
             db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).setData(userDataDictionary) { (error) in
                 if error != nil {
-                    completion(error, true)
+                    completion(error, true, false)
                     return
                 }
             }
             // Save Sticker Data to User Collection -- showLovedStickers
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).document(stickerID).setData(stickerDataDictionary) { (error) in
                 if error != nil {
-                    completion(error, true)
+                    completion(error, true, false)
                     return
                 }
             }
+            completion(nil, true, true)
         }
     }
     
