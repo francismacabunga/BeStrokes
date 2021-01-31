@@ -1,5 +1,5 @@
 //
-//  LovedStickersTableViewCell.swift
+//  LovedStickerTableViewCell.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 1/10/21.
@@ -9,7 +9,7 @@ import UIKit
 import SkeletonView
 import Kingfisher
 
-class LovedStickersTableViewCell: UITableViewCell {
+class LovedStickerTableViewCell: UITableViewCell {
     
     //MARK: - IBOutlets
     
@@ -67,7 +67,7 @@ class LovedStickersTableViewCell: UITableViewCell {
         lovedStickerView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
-    func prepareLovedStickersCollectionViewCell() {
+    func prepareLovedStickerTableViewCell() {
         hideSkeleton()
         setDesignElements()
     }

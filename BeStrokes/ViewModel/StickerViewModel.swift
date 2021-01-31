@@ -183,7 +183,7 @@ struct HeartButtonLogic {
         }
     }
     
-    func showLovedStickers(completion: @escaping (Error?, Bool, [LovedStickerViewModel]?) -> Void) {
+    func showLovedSticker(completion: @escaping (Error?, Bool, [LovedStickerViewModel]?) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
                 completion(error, true, nil)

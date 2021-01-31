@@ -1,12 +1,11 @@
 //
-//  ProfileController.swift
+//  AccountViewController.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 11/3/20.
 //
 
 import UIKit
-import Firebase
 import Kingfisher
 import SkeletonView
 
@@ -181,13 +180,13 @@ class AccountViewController: UIViewController {
     }
     
     func getLovedStickerViewModel() {
-        heartButtonLogic.showLovedStickers { [self] (error, isUserSignedIn, lovedStickerData) in
+        heartButtonLogic.showLovedSticker { [self] (error, isUserSignedIn, lovedStickerData) in
             if error != nil {
-                // Show error
+                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
                 return
             }
             if !isUserSignedIn {
-                // Show error
+                showNoSignedInUserAlert()
                 return
             }
             lovedStickerViewModel = lovedStickerData
@@ -246,17 +245,15 @@ class AccountViewController: UIViewController {
 extension AccountViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lovedStickerViewModel?.count ?? 2
+        return lovedStickerViewModel?.count ?? 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.lovedStickerCell) as! LovedStickersTableViewCell
-        if lovedStickerViewModel != nil {
-            DispatchQueue.main.async { [self] in
-                cell.lovedStickerViewModel = lovedStickerViewModel![indexPath.item]
-                cell.prepareLovedStickersCollectionViewCell()
-            }
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.lovedStickerCell) as! LovedStickerTableViewCell
+        guard let lovedStickerViewModel = lovedStickerViewModel else {return cell}
+        DispatchQueue.main.async {
+            cell.lovedStickerViewModel = lovedStickerViewModel[indexPath.item]
+            cell.prepareLovedStickerTableViewCell()
         }
         return cell
     }
@@ -271,14 +268,11 @@ extension AccountViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
         let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
-        stickerOptionVC.prepareStickerOptionVC()
-        stickerOptionVC.lovedStickerViewModel = lovedStickerViewModel![indexPath.item]
-        
-//        stickerOptionVC.setDesignElements()
-//        stickerOptionVC.registerGestures()
-//        stickerOptionVC.setStickerDataUsing(lovedStickerViewModel: lovedStickerViewModel![indexPath.item])
-        
-        present(stickerOptionVC, animated: true)
+        DispatchQueue.main.async { [self] in
+            stickerOptionVC.prepareStickerOptionVC()
+            stickerOptionVC.lovedStickerViewModel = lovedStickerViewModel![indexPath.item]
+            present(stickerOptionVC, animated: true)
+        }
     }
     
 }

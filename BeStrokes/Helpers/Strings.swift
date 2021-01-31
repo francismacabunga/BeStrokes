@@ -174,7 +174,7 @@ struct Strings {
     static let stickerCategoryCell = "StickerCategoryCollectionViewCell"
     static let profileCell = "ProfileTableViewCell"
     static let stickerCell = "StickerCollectionViewCell"
-    static let lovedStickerCell = "LovedStickersTableViewCell"
+    static let lovedStickerCell = "LovedStickerTableViewCell"
     
     //MARK: - Segue
     static let unwindToLandingVC = "goBackToLandingVC"

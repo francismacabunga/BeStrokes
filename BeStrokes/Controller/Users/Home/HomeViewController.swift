@@ -305,9 +305,11 @@ extension HomeViewController: UICollectionViewDelegate {
             guard let stickerViewModel = stickerViewModel else {return}
             let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
             let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
-            stickerOptionVC.prepareStickerOptionVC()
-            stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.row]
-            present(stickerOptionVC, animated: true)
+            DispatchQueue.main.async { [self] in
+                stickerOptionVC.prepareStickerOptionVC()
+                stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.row]
+                present(stickerOptionVC, animated: true)
+            }
         }
     }
     
