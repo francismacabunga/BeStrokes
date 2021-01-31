@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CaptureViewController.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 9/21/20.

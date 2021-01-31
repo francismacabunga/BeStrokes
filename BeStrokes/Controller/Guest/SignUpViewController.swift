@@ -1,5 +1,5 @@
 //
-//  SignupController.swift
+//  SignUpViewController.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 11/3/20.

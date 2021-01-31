@@ -1,5 +1,5 @@
 //
-//  Constants.swift
+//  Strings.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 11/4/20.
@@ -70,7 +70,7 @@ struct Strings {
     static let homeAlert2Action = "Dismiss"
     
     //MARK: - Warning Labels
-    static let accountNoLovedStickersLabel = "You don't have any loved stickers yet."
+    static let accountNoLovedStickerLabel = "You don't have any loved stickers yet."
     static let editAccountEmailVerficationErrorLabel = "Account cannot be updated. Kindly tap the resend button below to resend an email verification."
     static let editAccountTextFieldsErrorLabel = "Some fields are incomplete."
     static let editAccountTextFieldErrorLabel = "All fields are required, please fill them out."

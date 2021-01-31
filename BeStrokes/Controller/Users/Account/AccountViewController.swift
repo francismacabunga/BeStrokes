@@ -75,7 +75,7 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(label: accountNameHeadingLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.6)
         Utilities.setDesignOn(label: accountEmailHeadingLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(label: accountHeading2Label, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.accountHeading2Text)
-        Utilities.setDesignOn(label: accountNoLovedStickerLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, text: Strings.accountNoLovedStickersLabel)
+        Utilities.setDesignOn(label: accountNoLovedStickerLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, text: Strings.accountNoLovedStickerLabel)
         Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170)
         Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
     }
@@ -156,7 +156,7 @@ class AccountViewController: UIViewController {
     
     func getData() {
         getSignedInUserData()
-        getLovedStickerViewModel()
+        getLovedStickersViewModel()
     }
     
     func getSignedInUserData() {
@@ -179,7 +179,7 @@ class AccountViewController: UIViewController {
         }
     }
     
-    func getLovedStickerViewModel() {
+    func getLovedStickersViewModel() {
         heartButtonLogic.showLovedSticker { [self] (error, isUserSignedIn, lovedStickerData) in
             if error != nil {
                 showErrorFetchingAlert(usingError: true, withErrorMessage: error!)

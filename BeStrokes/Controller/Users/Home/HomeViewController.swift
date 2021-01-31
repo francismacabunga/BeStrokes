@@ -1,5 +1,5 @@
 //
-//  HomeController.swift
+//  HomeViewController.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 11/3/20.
@@ -183,12 +183,12 @@ class HomeViewController: UIViewController {
     }
     
     func setCollectionViewData() {
-        getFeaturedStickerCollectionViewData()
-        getStickerCategoryCollectionViewData()
-        getStickerCollectionViewData(onCategory: Strings.allStickers)
+        getFeaturedStickersCollectionViewData()
+        getStickersCategoryCollectionViewData()
+        getStickersCollectionViewData(onCategory: Strings.allStickers)
     }
     
-    func getFeaturedStickerCollectionViewData() {
+    func getFeaturedStickersCollectionViewData() {
         fetchStickerData.featuredStickerCollectionView { [self] (error, featuredStickerData) in
             if error != nil {
                 showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
@@ -202,11 +202,11 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func getStickerCategoryCollectionViewData() {
+    func getStickersCategoryCollectionViewData() {
         stickerCategoryViewModel = fetchStickerData.stickerCategory()
     }
     
-    func getStickerCollectionViewData(onCategory stickerCategory: String) {
+    func getStickersCollectionViewData(onCategory stickerCategory: String) {
         fetchStickerData.stickerCollectionView(category: stickerCategory) { [self] (error, stickerData) in
             if error != nil {
                 showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
@@ -298,7 +298,7 @@ extension HomeViewController: UICollectionViewDelegate {
             stickerCategorySelected = stickerCategoryViewModel[indexPath.row].category
             showLoadingStickersDesign()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-                getStickerCollectionViewData(onCategory: stickerCategorySelected!)
+                getStickersCollectionViewData(onCategory: stickerCategorySelected!)
             }
         }
         if collectionView == homeStickerCollectionView {
@@ -341,8 +341,8 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: 100, height: 30)
         }
         if collectionView == homeStickerCollectionView {
-            let stickersCollectionViewLayout = homeStickerCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-            stickersCollectionViewLayout.sectionInset.left = 25
+            let stickerCollectionViewLayout = homeStickerCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+            stickerCollectionViewLayout.sectionInset.left = 25
             return CGSize(width: 140, height: 140)
         }
         return CGSize()

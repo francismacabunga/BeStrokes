@@ -234,7 +234,7 @@ struct HeartButtonLogic {
                     return
                 }
             }
-            // Save Sticker Data to User Collection -- showLovedStickers
+            // Save Sticker Data to User Collection -- showLovedSticker
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).document(stickerID).setData(stickerDataDictionary) { (error) in
                 if error != nil {
                     completion(error, true, false)
