@@ -271,9 +271,13 @@ extension AccountViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
         let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
-        stickerOptionVC.setDesignElements()
-        stickerOptionVC.registerGestures()
-        stickerOptionVC.setStickerDataUsing(lovedStickerViewModel: lovedStickerViewModel![indexPath.item])
+        stickerOptionVC.prepareStickerOptionVC()
+        stickerOptionVC.lovedStickerViewModel = lovedStickerViewModel![indexPath.item]
+        
+//        stickerOptionVC.setDesignElements()
+//        stickerOptionVC.registerGestures()
+//        stickerOptionVC.setStickerDataUsing(lovedStickerViewModel: lovedStickerViewModel![indexPath.item])
+        
         present(stickerOptionVC, animated: true)
     }
     

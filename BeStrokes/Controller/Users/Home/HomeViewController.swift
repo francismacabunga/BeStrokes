@@ -106,6 +106,25 @@ class HomeViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    func showLoadingStickersDesign() {
+        homeStickerCollectionView.isHidden = true
+        homeLoadingIndicatorView.isHidden = false
+        homeLoadingIndicatorView.startAnimating()
+        DispatchQueue.main.async { [self] in
+            homeStickerCollectionView.reloadData()
+        }
+    }
+    
+    func showStickers() {
+        DispatchQueue.main.async { [self] in
+            homeStickerCollectionView.reloadData()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+            homeLoadingIndicatorView.isHidden = true
+            homeStickerCollectionView.isHidden = false
+        }
+    }
+    
     func transitionToLandingVC() {
         let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
         let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
@@ -184,25 +203,18 @@ class HomeViewController: UIViewController {
     }
     
     func getStickerCategoryCollectionViewData() {
-        let stickerCategory = fetchStickerData.stickerCategory()
-        stickerCategoryViewModel = stickerCategory
+        stickerCategoryViewModel = fetchStickerData.stickerCategory()
     }
     
     func getStickerCollectionViewData(onCategory stickerCategory: String) {
-        fetchStickerData.stickerCollectionView(category: stickerCategory) { [self] (error, result) in
+        fetchStickerData.stickerCollectionView(category: stickerCategory) { [self] (error, stickerData) in
             if error != nil {
                 showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
                 return
             }
-            guard let result = result else {return}
-            stickerViewModel = result
-            DispatchQueue.main.async {
-                homeStickerCollectionView.reloadData()
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                homeLoadingIndicatorView.isHidden = true
-                homeStickerCollectionView.isHidden = false
-            }
+            guard let stickerData = stickerData else {return}
+            stickerViewModel = stickerData
+            showStickers()
         }
     }
     
@@ -252,22 +264,19 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             return cell
         }
         if collectionView == homeStickerCategoryCollectionView {
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCategoryCell, for: indexPath) as? StickerCategoryCollectionViewCell {
-                DispatchQueue.main.async { [self] in
-                    cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
-                    cell.setDesignElements()
-                }
-                return cell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCategoryCell, for: indexPath) as! StickerCategoryCollectionViewCell
+            DispatchQueue.main.async { [self] in
+                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
+                cell.setDesignElements()
             }
+            return cell
         }
         if collectionView == homeStickerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCell, for: indexPath) as! StickerCollectionViewCell
-            if stickerViewModel != nil {
-                DispatchQueue.main.async { [self] in
-                    cell.stickerViewModel = stickerViewModel![indexPath.row]
-                    cell.prepareStickerCollectionViewCell()
-                }
-                return cell
+            guard let stickerViewModel = stickerViewModel else {return cell}
+            DispatchQueue.main.async {
+                cell.stickerViewModel = stickerViewModel[indexPath.row]
+                cell.prepareStickerCollectionViewCell()
             }
             return cell
         }
@@ -283,40 +292,30 @@ extension HomeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == homeStickerCategoryCollectionView {
-            stickerCategorySelected = stickerCategoryViewModel[indexPath.row].category
             stickerCategoryViewModel[indexPath.row].isCategorySelected = true
-            stickerCategoryViewModel[0].selectedOnStart = false
-            if let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell {
-                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
-            }
-            homeStickerCollectionView.isHidden = true
-            homeLoadingIndicatorView.isHidden = false
-            homeLoadingIndicatorView.startAnimating()
-            DispatchQueue.main.async { [self] in
-                homeStickerCollectionView.reloadData()
-            }
+            let cell = collectionView.cellForItem(at: indexPath) as! StickerCategoryCollectionViewCell
+            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
+            stickerCategorySelected = stickerCategoryViewModel[indexPath.row].category
+            showLoadingStickersDesign()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
                 getStickerCollectionViewData(onCategory: stickerCategorySelected!)
             }
         }
         if collectionView == homeStickerCollectionView {
-            if stickerViewModel != nil {
-                let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-                let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
-                stickerOptionVC.setDesignElements()
-                stickerOptionVC.registerGestures()
-                stickerOptionVC.setStickerDataUsing(stickerViewModel: stickerViewModel![indexPath.row])
-                present(stickerOptionVC, animated: true)
-            }
+            guard let stickerViewModel = stickerViewModel else {return}
+            let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+            let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
+            stickerOptionVC.prepareStickerOptionVC()
+            stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.row]
+            present(stickerOptionVC, animated: true)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if collectionView == homeStickerCategoryCollectionView {
             stickerCategoryViewModel[indexPath.row].isCategorySelected = false
-            if let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell {
-                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
-            }
+            let cell = collectionView.cellForItem(at: indexPath) as! StickerCategoryCollectionViewCell
+            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
         }
     }
     

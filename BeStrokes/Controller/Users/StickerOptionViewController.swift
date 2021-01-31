@@ -30,15 +30,25 @@ class StickerOptionViewController: UIViewController {
     
     private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
-    private var stickerViewModel: StickerViewModel?
-    private var lovedStickerViewModel: LovedStickerViewModel?
-    
-    
-    //MARK: - View Controller Life Cycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    var stickerViewModel: StickerViewModel! {
+        didSet {
+            getHeartButtonValue(stickerViewModel: stickerViewModel)
+            setStickerData(stickerImageName: stickerViewModel.image,
+                           stickerName: stickerViewModel.name,
+                           stickerCategory: stickerViewModel.category,
+                           stickerTag: stickerViewModel.tag,
+                           stickerDescription: stickerViewModel.description)
+        }
+    }
+    var lovedStickerViewModel: LovedStickerViewModel! {
+        didSet {
+            getHeartButtonValue(lovedStickerViewModel: lovedStickerViewModel)
+            setStickerData(stickerImageName: lovedStickerViewModel.image,
+                           stickerName: lovedStickerViewModel.name,
+                           stickerCategory: lovedStickerViewModel.category,
+                           stickerTag: lovedStickerViewModel.tag,
+                           stickerDescription: lovedStickerViewModel.description)
+        }
     }
     
     
@@ -90,14 +100,11 @@ class StickerOptionViewController: UIViewController {
     }
     
     func getHeartButtonValue(stickerViewModel: StickerViewModel? = nil, lovedStickerViewModel: LovedStickerViewModel? = nil) {
-        var stickerID: String?
         if stickerViewModel != nil {
-            stickerID = stickerViewModel?.stickerID
-            checkIfStickerIsLoved(stickerID!)
+            checkIfStickerIsLoved(stickerViewModel!.stickerID)
         }
         if lovedStickerViewModel != nil {
-            stickerID = lovedStickerViewModel?.stickerID
-            checkIfStickerIsLoved(stickerID!)
+            checkIfStickerIsLoved(lovedStickerViewModel!.stickerID)
         }
     }
     
@@ -122,27 +129,6 @@ class StickerOptionViewController: UIViewController {
         }
     }
     
-    func setStickerDataUsing(stickerViewModel: StickerViewModel? = nil, lovedStickerViewModel: LovedStickerViewModel? = nil) {
-        if stickerViewModel != nil {
-            self.stickerViewModel = stickerViewModel!
-            getHeartButtonValue(stickerViewModel: stickerViewModel!)
-            setStickerData(stickerImageName: stickerViewModel!.image,
-                           stickerName: stickerViewModel!.name,
-                           stickerCategory: stickerViewModel!.category,
-                           stickerTag: stickerViewModel!.tag,
-                           stickerDescription: stickerViewModel!.description)
-        }
-        if lovedStickerViewModel != nil {
-            self.lovedStickerViewModel = lovedStickerViewModel!
-            getHeartButtonValue(lovedStickerViewModel: lovedStickerViewModel!)
-            setStickerData(stickerImageName: lovedStickerViewModel!.image,
-                           stickerName: lovedStickerViewModel!.name,
-                           stickerCategory: lovedStickerViewModel!.category,
-                           stickerTag: lovedStickerViewModel!.tag,
-                           stickerDescription: lovedStickerViewModel!.description)
-        }
-    }
-    
     func setStickerData(stickerImageName: String,
                         stickerName: String,
                         stickerCategory: String,
@@ -160,6 +146,11 @@ class StickerOptionViewController: UIViewController {
         stickerDescriptionLabel.text = stickerDescription
     }
     
+    func prepareStickerOptionVC() {
+        setDesignElements()
+        registerGestures()
+    }
+    
     
     //MARK: - UIGestureHandlers
     
@@ -171,34 +162,24 @@ class StickerOptionViewController: UIViewController {
     
     @objc func tapGestureHandler(tap: UITapGestureRecognizer) {
         if heartButtonTapped! {
-            if let stickerViewModel = stickerViewModel {
-                untapHeartButtonUsing(stickerViewModel: stickerViewModel) { (isErrorPresent) in
-                }
-            }
-            if let lovedStickerViewModel = lovedStickerViewModel {
-                untapHeartButtonUsing(lovedStickerViewModel: lovedStickerViewModel) { (isErrorPresent) in
-                    if !isErrorPresent {
-                        self.dismiss(animated: true)
-                    }
+            untapHeartButtonUsing(stickerViewModel: stickerViewModel) { (isErrorPresent) in}
+            untapHeartButtonUsing(lovedStickerViewModel: lovedStickerViewModel) { (isErrorPresent) in
+                if !isErrorPresent {
+                    self.dismiss(animated: true)
                 }
             }
         } else {
-            if let stickerViewModel = stickerViewModel {
-                tapHeartButton(using: stickerViewModel)
-            }
+            tapHeartButton(using: stickerViewModel)
         }
     }
     
     func untapHeartButtonUsing(stickerViewModel: StickerViewModel? = nil, lovedStickerViewModel: LovedStickerViewModel? = nil, completion: @escaping (Bool) -> Void) {
-        var stickerID: String?
         if stickerViewModel != nil {
-            stickerID = stickerViewModel!.stickerID
-            untapHeartButtonProcess(using: stickerID!) { (isErrorPresent) in
+            untapHeartButtonProcess(using: stickerViewModel!.stickerID) { (isErrorPresent) in
             }
         }
         if lovedStickerViewModel != nil {
-            stickerID = lovedStickerViewModel!.stickerID
-            untapHeartButtonProcess(using: stickerID!) { (isErrorPresent) in
+            untapHeartButtonProcess(using: lovedStickerViewModel!.stickerID) { (isErrorPresent) in
                 if isErrorPresent {
                     completion(true)
                 } else {

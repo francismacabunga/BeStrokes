@@ -18,6 +18,5 @@ struct StickerModel {
 
 struct StickerCategoryModel {
     let category: String
-    var isCategorySelected: Bool?
-    var selectedOnStart: Bool?
+    var isCategorySelected: Bool
 }
