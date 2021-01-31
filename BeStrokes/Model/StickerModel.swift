@@ -1,5 +1,5 @@
 //
-//  Sticker.swift
+//  StickerModel.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 12/29/20.

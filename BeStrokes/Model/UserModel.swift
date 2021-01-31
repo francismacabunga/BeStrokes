@@ -1,5 +1,5 @@
 //
-//  User.swift
+//  UserModel.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 1/5/21.

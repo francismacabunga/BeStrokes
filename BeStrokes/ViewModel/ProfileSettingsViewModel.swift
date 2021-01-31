@@ -1,5 +1,5 @@
 //
-//  ProfileViewModel.swift
+//  ProfileSettingsViewModel.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 1/8/21.
@@ -19,7 +19,7 @@ struct ProfileSettingsViewModel {
 
 struct FetchProfileData {
     
-    func settings() -> [ProfileSettingsViewModel]  {
+    func settings() -> [ProfileSettingsViewModel] {
         let profileSettingsViewModel = [
             ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.settingNotificationIcon, settingLabel: Strings.profileSettingsNotifications)])),
             ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.settingDarkModeIcon, settingLabel: Strings.profileSettingsDarkAppearance)])),

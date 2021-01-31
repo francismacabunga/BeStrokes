@@ -1,5 +1,5 @@
 //
-//  Profile.swift
+//  ProfileSettingsModel.swift
 //  BeStrokes
 //
 //  Created by Francis Norman Macabunga on 1/8/21.

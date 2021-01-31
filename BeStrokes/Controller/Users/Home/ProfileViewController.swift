@@ -94,6 +94,27 @@ class ProfileViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    func showLogoutAlert() {
+        let alert = UIAlertController(title: Strings.logoutAlertTitle, message: nil, preferredStyle: .alert)
+        let noAction = UIAlertAction(title: Strings.logoutNoAction, style: .cancel)
+        let yesAction = UIAlertAction(title: Strings.logoutYesAction, style: .default) { [self] (action) in
+            let signOutUser = user.signOutUser { (isUserSignedIn) in
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+            }
+            if !signOutUser {
+                showErrorFetchingAlert(usingError: false, withCustomizedString: Strings.profileCannotSignOutUserLabel)
+                return
+            }
+            transitionToLandingVC()
+        }
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        present(alert, animated: true)
+    }
+    
     func hideLoadingSkeletonView() {
         profileImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         profileNameLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
@@ -130,8 +151,7 @@ class ProfileViewController: UIViewController {
     }
     
     func setData() {
-        let profileSettingsData = fetchProfileData.settings()
-        profileSettingsViewModel = profileSettingsData
+        profileSettingsViewModel = fetchProfileData.settings()
         showLoadingSkeletonView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
             getSignedInUserData()
@@ -147,7 +167,7 @@ class ProfileViewController: UIViewController {
     }
     
     func registerNib() {
-        profileTableView.register(UINib(nibName: Strings.profileTableViewCell, bundle: nil), forCellReuseIdentifier: Strings.profileTableViewCell)
+        profileTableView.register(UINib(nibName: Strings.profileCell, bundle: nil), forCellReuseIdentifier: Strings.profileCell)
     }
     
 }
@@ -162,13 +182,11 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Strings.profileTableViewCell) as? ProfileTableViewCell {
-            DispatchQueue.main.async { [self] in
-                cell.profileViewModel = profileSettingsViewModel[indexPath.item]
-            }
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.profileCell) as! ProfileTableViewCell
+        DispatchQueue.main.async { [self] in
+            cell.profileSettingsViewModel = profileSettingsViewModel[indexPath.item]
         }
-        return UITableViewCell()
+        return cell
     }
     
 }
@@ -181,24 +199,7 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let clickedCell = profileSettingsViewModel[indexPath.item].profileSettings.first!.settingLabel
         if clickedCell == Strings.profileSettingsLogout {
-            let alert = UIAlertController(title: Strings.logoutAlertTitle, message: nil, preferredStyle: .alert)
-            let noAction = UIAlertAction(title: Strings.logoutNoAction, style: .cancel)
-            let yesAction = UIAlertAction(title: Strings.logoutYesAction, style: .default) { [self] (action) in
-                let signOutUser = user.signOutUser { (isUserSignedIn) in
-                    if !isUserSignedIn {
-                        showNoSignedInUserAlert()
-                        return
-                    }
-                }
-                if signOutUser {
-                    transitionToLandingVC()
-                } else {
-                    showErrorFetchingAlert(usingError: false, withCustomizedString: Strings.profileCannotSignOutUserLabel)
-                }
-            }
-            alert.addAction(yesAction)
-            alert.addAction(noAction)
-            present(alert, animated: true)
+            showLogoutAlert()
         }
     }
     

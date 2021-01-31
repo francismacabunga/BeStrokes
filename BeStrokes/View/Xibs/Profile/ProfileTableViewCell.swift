@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Firebase
 
 class ProfileTableViewCell: UITableViewCell {
     
@@ -20,10 +19,10 @@ class ProfileTableViewCell: UITableViewCell {
     
     //MARK: - Constants / Variables
     
-    var profileViewModel: ProfileSettingsViewModel! {
+    var profileSettingsViewModel: ProfileSettingsViewModel! {
         didSet {
-            let label = profileViewModel.profileSettings.first!.settingLabel
-            let icon = profileViewModel.profileSettings.first!.settingIcon
+            let label = profileSettingsViewModel.profileSettings.first!.settingLabel
+            let icon = profileSettingsViewModel.profileSettings.first!.settingIcon
             if label == Strings.profileSettingsLogout {
                 settingLabel.text = label
                 settingIconImageView.image = UIImage(systemName: icon)
