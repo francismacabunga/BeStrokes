@@ -21,7 +21,6 @@ class StickerCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Constants / Variables
     
-    private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
     var stickerViewModel: StickerViewModel! {
         didSet {
