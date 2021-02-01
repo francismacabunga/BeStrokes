@@ -37,7 +37,6 @@ class HomeViewController: UIViewController {
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private var stickerCategorySelected: String?
     private var featuredHeartButtonTapped: Bool?
-    private var alertControllerErrorMessage: String?
     
     
     //MARK: - View Controller Life Cycle

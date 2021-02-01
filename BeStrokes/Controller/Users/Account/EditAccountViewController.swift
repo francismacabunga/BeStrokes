@@ -8,7 +8,6 @@
 import UIKit
 import CropViewController
 import Kingfisher
-import Firebase
 
 class EditAccountViewController: UIViewController {
     
@@ -40,7 +39,7 @@ class EditAccountViewController: UIViewController {
     private var editedImage: UIImage?
     private lazy var userID = String()
     private lazy var profilePic = String()
-    private lazy var email = String()
+    private lazy var initialUserEmail = String()
     
     
     //MARK: - View Controller Life Cycle
@@ -130,6 +129,13 @@ class EditAccountViewController: UIViewController {
         editAccountLoadingIndicatorView.isHidden = false
     }
     
+    func presentCropViewController(with imagePicked: UIImage) {
+        let cropViewController = CropViewController(croppingStyle: .circular, image: imagePicked)
+        cropViewController.delegate = self
+        dismiss(animated: true)
+        present(cropViewController, animated: true, completion: nil)
+    }
+    
     func setResendButtonDesign() {
         Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
     }
@@ -140,26 +146,10 @@ class EditAccountViewController: UIViewController {
         Utilities.setDesignOn(button: editAccountButton, title: Strings.saveButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
     }
     
-    func presentCropViewController(with imagePicked: UIImage) {
-        let cropViewController = CropViewController(croppingStyle: .circular, image: imagePicked)
-        cropViewController.delegate = self
-        dismiss(animated: true)
-        present(cropViewController, animated: true, completion: nil)
-    }
-    
     func dismissKeyboard() {
         editAccountFirstNameTextField.endEditing(true)
         editAccountLastNameTextField.endEditing(true)
         editAccountEmailTextField.endEditing(true)
-    }
-    
-    func userData() -> [String: String?] {
-        let firstName = editAccountFirstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let lastName = editAccountLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let email = editAccountEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let initialUserEmail = Auth.auth().currentUser?.email
-        let userDataDictionary = [Strings.userFirstNameField: firstName, Strings.userLastNameField: lastName, Strings.userEmailField: email, Strings.userInitialUserEmail: initialUserEmail]
-        return userDataDictionary
     }
     
     func transitionToLandingVC() {
@@ -167,6 +157,17 @@ class EditAccountViewController: UIViewController {
         let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
         view.window?.rootViewController = landingVC
         view.window?.makeKeyAndVisible()
+    }
+    
+    func userData() -> [String: String?] {
+        let firstName = editAccountFirstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastName = editAccountLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let email = editAccountEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let userDataDictionary = [Strings.userFirstNameField: firstName,
+                                  Strings.userLastNameField: lastName,
+                                  Strings.userEmailField: email,
+                                  Strings.userInitialUserEmail: initialUserEmail]
+        return userDataDictionary
     }
     
     func setData() {
@@ -182,7 +183,7 @@ class EditAccountViewController: UIViewController {
             guard let userData = userData else {return}
             userID = userData.userID
             profilePic = userData.profilePic
-            email = userData.email
+            initialUserEmail = userData.email
             DispatchQueue.main.async { [self] in
                 editAccountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
                 editAccountFirstNameTextField.text = userData.firstName
@@ -243,6 +244,20 @@ class EditAccountViewController: UIViewController {
         editAccountEmailTextField.delegate = self
     }
     
+    func sendEmailVerification(with successLabel: String) {
+        user.sendEmailVerification { [self] (error, isEmailVerificationSent) in
+            if error != nil {
+                showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
+                setEditAccountButtonToOriginalDesign()
+                return
+            }
+            if isEmailVerificationSent {
+                showWarningLabel(on: editAccountWarningLabel, customizedWarning: successLabel, isASuccessMessage: true)
+                setEditAccountButtonToOriginalDesign()
+            }
+        }
+    }
+    
     func checkIfEmailIsVerified(using firstName: String, _ lastName: String, _ email: String, _ initialUserEmail: String) {
         user.isEmailVerified { [self] (error, isUserSignedIn, isEmailVerified) in
             if error != nil {
@@ -258,7 +273,7 @@ class EditAccountViewController: UIViewController {
             guard let isEmailVerified = isEmailVerified else {return}
             if isEmailVerified {
                 showLoadingButton()
-                processUpdateAccount(using: firstName, lastName, email, initialUserEmail)
+                updateAccount(using: firstName, lastName, email, initialUserEmail)
             } else {
                 showWarningLabel(on: editAccountWarningLabel, customizedWarning: Strings.editAccountEmailVerficationErrorLabel, isASuccessMessage: false)
                 setResendButtonDesign()
@@ -266,36 +281,22 @@ class EditAccountViewController: UIViewController {
         }
     }
     
-    func sendEmailVerification(with successLabel: String) {
-        user.sendEmailVerification { [self] (error, isEmailVerificationSent) in
-            if error != nil {
-                showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
-                setEditAccountButtonToOriginalDesign()
-                return
-            }
-            if isEmailVerificationSent {
-                showWarningLabel(on: editAccountWarningLabel, customizedWarning: successLabel, isASuccessMessage: true)
-                setEditAccountButtonToOriginalDesign()
-            }
-        }
-    }
-    
-    func processUpdateAccount(using firstName: String, _ lastName: String, _ email: String, _ initialUserEmail: String) {
+    func updateAccount(using firstName: String, _ lastName: String, _ email: String, _ initialUserEmail: String) {
         if editedImage != nil {
-            user.uploadProfilePic(with: editedImage!, using: userID) { [self] (error, imageString) in
+            user.uploadProfilePic(with: editedImage!, using: userID) { [self] (error, chosenPic) in
                 if error != nil {
                     showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
                     return
                 }
-                guard let chosenPic = imageString else {return}
-                updateAccount(using: firstName, lastName, email, chosenPic, initialUserEmail)
+                guard let chosenPic = chosenPic else {return}
+                updateAccountProcess(using: firstName, lastName, email, chosenPic, initialUserEmail)
             }
         } else {
-            updateAccount(using: firstName, lastName, email, profilePic, initialUserEmail)
+            updateAccountProcess(using: firstName, lastName, email, profilePic, initialUserEmail)
         }
     }
     
-    func updateAccount(using firstName: String, _ lastName: String, _ email: String, _ profilePic: String, _ initialUserEmail: String) {
+    func updateAccountProcess(using firstName: String, _ lastName: String, _ email: String, _ profilePic: String, _ initialUserEmail: String) {
         if initialUserEmail != email {
             user.updateUserData(firstName, lastName, email, profilePic) { [self] (error, isUserSignedIn, isUpdateDataFinished) in
                 if error != nil {

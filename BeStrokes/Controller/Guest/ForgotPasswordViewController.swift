@@ -117,7 +117,7 @@ class ForgotPasswordViewController: UIViewController {
     }
     
     func processForgotPassword() {
-        if let email = forgotPasswordEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)  {
+        if let email = forgotPasswordEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
             user.forgotPassword(with: email) { [self] (error, isPasswordResetSent) in
                 if error != nil {
                     showWarningLabel(on: forgotPasswordWarningLabel, with: error!, isASuccessMessage: false)

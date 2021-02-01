@@ -23,7 +23,6 @@ class LandingViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private var alertControllerErrorMessage: String?
     private lazy var user = User()
     
     
@@ -63,7 +62,7 @@ class LandingViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let landingPageVC = segue.destination as? LandingPageViewController {
-            landingPageVC.LandingPageViewControllerDelegate = self
+            landingPageVC.landingPageVCDelegate = self
         }
     }
     
@@ -114,7 +113,7 @@ class LandingViewController: UIViewController {
 
 //MARK: - Landing Page View Controller Delegate
 
-extension LandingViewController: LandingPageViewControllerDelegate {
+extension LandingViewController: LandingPageVCDelegate {
     
     func getValueOf(_ index: Int) {
         landingPageControl.currentPage = index

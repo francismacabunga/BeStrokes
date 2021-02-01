@@ -139,13 +139,9 @@ class ProfileViewController: UIViewController {
                 return
             }
             guard let userData = userData else {return}
-            let profilePic = URL(string: userData.profilePic)!
-            let firstName = userData.firstName
-            let lastName = userData.lastname
-            let email = userData.email
-            profileImageView.kf.setImage(with: profilePic)
-            profileNameLabel.text = "\(firstName) \(lastName)"
-            profileEmailLabel.text = email
+            profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+            profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
+            profileEmailLabel.text = userData.email
             hideLoadingSkeletonView()
         }
     }

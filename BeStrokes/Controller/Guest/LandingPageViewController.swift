@@ -11,7 +11,7 @@ class LandingPageViewController: UIPageViewController {
     
     //MARK: - Constants / Variables
     
-    var LandingPageViewControllerDelegate: LandingPageViewControllerDelegate?
+    var landingPageVCDelegate: LandingPageVCDelegate?
     private var currentIndex = 0
     private let fetchLandingPageData = FetchLandingPageData()
     
@@ -95,7 +95,7 @@ extension LandingPageViewController: UIPageViewControllerDelegate {
         if completed {
             let pageIndex = pageViewController.viewControllers?.first as! LandingPageContentViewController
             currentIndex = pageIndex.index
-            LandingPageViewControllerDelegate?.getValueOf(currentIndex)
+            landingPageVCDelegate?.getValueOf(currentIndex)
         }
     }
     
@@ -104,6 +104,6 @@ extension LandingPageViewController: UIPageViewControllerDelegate {
 
 //MARK: - Protocols
 
-protocol LandingPageViewControllerDelegate {
+protocol LandingPageVCDelegate {
     func getValueOf(_ index: Int)
 }

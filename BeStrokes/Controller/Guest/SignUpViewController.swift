@@ -217,18 +217,18 @@ class SignUpViewController: UIViewController {
                         setSignUpButtonToOriginalDesign()
                         return
                     }
-                    guard let result = authResult else {return}
-                    let userID = result.user.uid
+                    guard let authResult = authResult else {return}
+                    let userID = authResult.user.uid
                     UIView.animate(withDuration: 0.2) { [self] in
                         signUpWarning1Label.isHidden = true
                     }
-                    user.uploadProfilePic(with: editedImage!, using: userID) { (error, imageString) in
+                    user.uploadProfilePic(with: editedImage!, using: userID) { (error, profilePic) in
                         if error != nil {
                             showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
                             setSignUpButtonToOriginalDesign()
                             return
                         }
-                        guard let profilePic = imageString else {return}
+                        guard let profilePic = profilePic else {return}
                         let dictionary = [Strings.userIDField : userID, Strings.userFirstNameField : firstName, Strings.userLastNameField : lastName, Strings.userEmailField : email, Strings.userProfilePicField : profilePic]
                         user.storeData(using: userID, with: dictionary) { (error, isFinishedStoring) in
                             if error != nil {
