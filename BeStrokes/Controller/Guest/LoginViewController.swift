@@ -139,6 +139,9 @@ class LoginViewController: UIViewController {
                     setLoginButtonToOriginalDesign()
                     return
                 }
+                UIView.animate(withDuration: 0.2) {
+                    loginWarningLabel.isHidden = true
+                }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     setLoginButtonToOriginalDesign()
                     transitionToHomeVC()
