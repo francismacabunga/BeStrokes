@@ -171,8 +171,14 @@ struct User {
                                                                                            Strings.userLastNameField : lastName,
                                                                                            Strings.userEmailField : email,
                                                                                            Strings.userProfilePicField : profilePicURL])
-                completion(nil, true, true)
-                return
+                { (error) in
+                    if error != nil {
+                        completion(error, true, false)
+                        return
+                    }
+                    completion(nil, true, true)
+                    return
+                }
             }
         }
     }
