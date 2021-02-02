@@ -86,6 +86,12 @@ class LoginViewController: UIViewController {
         }
     }
     
+    func removeWarningLabel() {
+        UIView.animate(withDuration: 0.2) { [self] in
+            loginWarningLabel.isHidden = true
+        }
+    }
+    
     func setLoginButtonTappedAnimation() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             loginButton.isHidden = true
@@ -132,21 +138,23 @@ class LoginViewController: UIViewController {
     }
     
     func processLogin() {
-        if let email = loginEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), let password = loginPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
-            user.signInUser(with: email, password) { [self] (error, authResult) in
-                if error != nil {
-                    showWarningLabel(on: loginWarningLabel, with: error!, isASuccessMessage: false)
-                    setLoginButtonToOriginalDesign()
-                    return
-                }
-                UIView.animate(withDuration: 0.2) {
-                    loginWarningLabel.isHidden = true
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    setLoginButtonToOriginalDesign()
-                    transitionToHomeVC()
-                }
+        guard let email = loginEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
+        guard let password = loginPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
+        user.signInUser(with: email, password) { [self] (error, authResult) in
+            guard let error = error else {
+                removeWarningLabel()
+                loginSuccessful()
+                return
             }
+            showWarningLabel(on: loginWarningLabel, with: error, isASuccessMessage: false)
+            setLoginButtonToOriginalDesign()
+        }
+    }
+    
+    func loginSuccessful() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
+            setLoginButtonToOriginalDesign()
+            transitionToHomeVC()
         }
     }
     

@@ -231,14 +231,14 @@ class SignUpViewController: UIViewController {
             let userDataDictionary = userData()
             setSignUpButtonTappedAnimation()
             user.createUser(with: userDataDictionary[Strings.userEmailField]!, userDataDictionary[Strings.userPasswordField]!) { [self] (error, authResult) in
-                if error != nil {
-                    showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
-                    setSignUpButtonToOriginalDesign()
+                guard let error = error else {
+                    guard let authResult = authResult else {return}
+                    removeWarning1Label()
+                    uploadUserData(using: authResult, with: userDataDictionary)
                     return
                 }
-                guard let authResult = authResult else {return}
-                removeWarning1Label()
-                uploadUserData(using: authResult, with: userDataDictionary)
+                showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
+                setSignUpButtonToOriginalDesign()
             }
         }
     }
@@ -257,30 +257,30 @@ class SignUpViewController: UIViewController {
                               Strings.userEmailField : userDataDictionary[Strings.userEmailField]!,
                               Strings.userProfilePicField : profilePic]
             user.storeData(using: authResult.user.uid, with: dictionary) { (error, isFinishedStoring) in
-                if error != nil {
-                    showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
-                    setSignUpButtonToOriginalDesign()
+                guard let error = error else {
+                    if isFinishedStoring {
+                        sendEmailVerification()
+                    }
                     return
                 }
-                if isFinishedStoring {
-                    sendEmailVerification()
-                }
+                showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
+                setSignUpButtonToOriginalDesign()
             }
         }
     }
     
     func sendEmailVerification() {
         user.sendEmailVerification { [self] (error, isEmailVerificationSent) in
-            if error != nil {
-                showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
-                setSignUpButtonToOriginalDesign()
+            guard let error = error else {
+                if isEmailVerificationSent {
+                    showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
+                    setSignUpButtonTransitionAnimation()
+                    transitionToHomeVC()
+                }
                 return
             }
-            if isEmailVerificationSent {
-                showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
-                setSignUpButtonTransitionAnimation()
-                transitionToHomeVC()
-            }
+            showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
+            setSignUpButtonToOriginalDesign()
         }
     }
     
