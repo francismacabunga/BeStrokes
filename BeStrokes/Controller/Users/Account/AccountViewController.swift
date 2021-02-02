@@ -161,44 +161,45 @@ class AccountViewController: UIViewController {
     
     func getSignedInUserData() {
         user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            if error != nil {
-                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let userData = userData else {return}
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    accountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                    accountNameHeadingLabel.text = "\(userData.firstName) \(userData.lastname)"
+                    accountEmailHeadingLabel.text = userData.email
+                    hideLoadingSkeletonView()
+                }
                 return
             }
-            if !isUserSignedIn {
-                showNoSignedInUserAlert()
-                return
-            }
-            guard let userData = userData else {return}
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                accountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                accountNameHeadingLabel.text = "\(userData.firstName) \(userData.lastname)"
-                accountEmailHeadingLabel.text = userData.email
-                hideLoadingSkeletonView()
-            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     
     func getLovedStickersViewModel() {
         heartButtonLogic.showLovedSticker { [self] (error, isUserSignedIn, lovedStickerData) in
-            if error != nil {
-                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let lovedStickerData = lovedStickerData else {return}
+                lovedStickerViewModel = lovedStickerData
+                showLoadingIndicator()
+                if lovedStickerViewModel?.count == 0 {
+                    showEmptyLovedStickersLabel()
+                    return
+                }
+                showLovedStickersTableView()
+                DispatchQueue.main.async { [self] in
+                    accountLovedStickerTableView.reloadData()
+                }
                 return
             }
-            if !isUserSignedIn {
-                showNoSignedInUserAlert()
-                return
-            }
-            lovedStickerViewModel = lovedStickerData
-            showLoadingIndicator()
-            if lovedStickerViewModel?.count == 0 {
-                showEmptyLovedStickersLabel()
-                return
-            }
-            showLovedStickersTableView()
-            DispatchQueue.main.async { [self] in
-                accountLovedStickerTableView.reloadData()
-            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     

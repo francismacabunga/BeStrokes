@@ -117,17 +117,16 @@ class ForgotPasswordViewController: UIViewController {
     }
     
     func processForgotPassword() {
-        if let email = forgotPasswordEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
-            user.forgotPassword(with: email) { [self] (error, isPasswordResetSent) in
-                if error != nil {
-                    showWarningLabel(on: forgotPasswordWarningLabel, with: error!, isASuccessMessage: false)
-                    return
-                }
+        guard let email = forgotPasswordEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
+        user.forgotPassword(with: email) { [self] (error, isPasswordResetSent) in
+            guard let error = error else {
                 if isPasswordResetSent {
                     showWarningLabel(on: forgotPasswordWarningLabel, customizedWarning: Strings.forgotPasswordProcessSuccessfulLabel, isASuccessMessage: true)
                     showDismissButton()
                 }
+                return
             }
+            showWarningLabel(on: forgotPasswordWarningLabel, with: error, isASuccessMessage: false)
         }
     }
     

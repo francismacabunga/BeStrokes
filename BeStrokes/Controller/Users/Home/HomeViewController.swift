@@ -133,20 +133,20 @@ class HomeViewController: UIViewController {
     
     func setProfilePicture() {
         user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            if error != nil {
-                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let userData = userData else {return}
+                DispatchQueue.main.async { [self] in
+                    homeProfilePictureButton.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                    Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
+                    homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
+                }
                 return
             }
-            if !isUserSignedIn {
-                showNoSignedInUserAlert()
-                return
-            }
-            guard let userData = userData else {return}
-            DispatchQueue.main.async { [self] in
-                homeProfilePictureButton.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-                Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
-                homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
-            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     
@@ -189,15 +189,15 @@ class HomeViewController: UIViewController {
     
     func getFeaturedStickersCollectionViewData() {
         fetchStickerData.featuredStickerCollectionView { [self] (error, featuredStickerData) in
-            if error != nil {
-                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+            guard let error = error else {
+                guard let featuredStickerData = featuredStickerData else {return}
+                featuredStickerViewModel = featuredStickerData
+                DispatchQueue.main.async {
+                    homeFeaturedStickerCollectionView.reloadData()
+                }
                 return
             }
-            guard let featuredStickerData = featuredStickerData else {return}
-            featuredStickerViewModel = featuredStickerData
-            DispatchQueue.main.async {
-                homeFeaturedStickerCollectionView.reloadData()
-            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     
@@ -207,13 +207,13 @@ class HomeViewController: UIViewController {
     
     func getStickersCollectionViewData(onCategory stickerCategory: String) {
         fetchStickerData.stickerCollectionView(category: stickerCategory) { [self] (error, stickerData) in
-            if error != nil {
-                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+            guard let error = error else {
+                guard let stickerData = stickerData else {return}
+                stickerViewModel = stickerData
+                showStickers()
                 return
             }
-            guard let stickerData = stickerData else {return}
-            stickerViewModel = stickerData
-            showStickers()
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     

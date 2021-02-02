@@ -130,19 +130,19 @@ class ProfileViewController: UIViewController {
     
     func getSignedInUserData() {
         user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            if error != nil {
-                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let userData = userData else {return}
+                profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
+                profileEmailLabel.text = userData.email
+                hideLoadingSkeletonView()
                 return
             }
-            if !isUserSignedIn {
-                showNoSignedInUserAlert()
-                return
-            }
-            guard let userData = userData else {return}
-            profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-            profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
-            profileEmailLabel.text = userData.email
-            hideLoadingSkeletonView()
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     

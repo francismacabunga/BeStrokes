@@ -110,22 +110,22 @@ class StickerOptionViewController: UIViewController {
     
     func checkIfStickerIsLoved(_ stickerID: String) {
         heartButtonLogic.checkIfStickerIsLoved(using: stickerID) { [self] (error, isUserSignedIn, isStickerLoved) in
-            if error != nil {
-                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let isStickerLoved = isStickerLoved else {return}
+                if isStickerLoved {
+                    Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                    heartButtonTapped = true
+                } else {
+                    Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                    heartButtonTapped = false
+                }
                 return
             }
-            if !isUserSignedIn {
-                showNoSignedInUserAlert()
-                return
-            }
-            guard let isStickerLoved = isStickerLoved else {return}
-            if isStickerLoved {
-                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                heartButtonTapped = true
-            } else {
-                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                heartButtonTapped = false
-            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     
@@ -191,19 +191,19 @@ class StickerOptionViewController: UIViewController {
     
     func untapHeartButtonProcess(using stickerID: String, completion: @escaping (Bool) -> Void) {
         heartButtonLogic.untapHeartButton(using: stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
-            if error != nil {
-                completion(true)
-                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+            guard let error = error else {
+                if !isUserSignedIn {
+                    completion(true)
+                    showNoSignedInUserAlert()
+                    return
+                }
+                if isProcessDone {
+                    completion(false)
+                }
                 return
             }
-            if !isUserSignedIn {
-                completion(true)
-                showNoSignedInUserAlert()
-                return
-            }
-            if isProcessDone {
-                completion(false)
-            }
+            completion(true)
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     
@@ -215,14 +215,13 @@ class StickerOptionViewController: UIViewController {
                                      Strings.stickerCategoryField : stickerViewModel.category,
                                      Strings.stickerTagField : stickerViewModel.tag]
         heartButtonLogic.tapHeartButton(using: stickerViewModel.stickerID, with: stickerDataDictionary) { [self] (error, isUserSignedIn, isProcessDone) in
-            if error != nil {
-                showErrorFetchingAlert(usingError: true, withErrorMessage: error!)
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                }
                 return
             }
-            if !isUserSignedIn {
-                showNoSignedInUserAlert()
-                return
-            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     
