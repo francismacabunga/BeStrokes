@@ -38,56 +38,51 @@ struct User {
     
     func createUser(with email: String, _ password: String, completion: @escaping (Error?, AuthDataResult?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
-            if error != nil {
-                completion(error, nil)
+            guard let error = error else {
+                completion(nil, authResult)
                 return
             }
-            completion(nil, authResult)
-            return
+            completion(error, nil)
         }
     }
     
     func storeData(using userID: String, with dictionary: [String : String], completion: @escaping (Error?, Bool) -> Void) {
         db.collection(Strings.userCollection).document(userID).setData(dictionary) { (error) in
-            if error != nil {
-                completion(error, false)
+            guard let error = error else {
+                completion(nil, true)
                 return
             }
-            completion(nil, true)
-            return
+            completion(error, false)
         }
     }
     
     func sendEmailVerification(completion: @escaping (Error?, Bool) -> Void) {
         Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
-            if error != nil {
-                completion(error, false)
+            guard let error = error else {
+                completion(nil, true)
                 return
             }
-            completion(nil, true)
-            return
+            completion(error, false)
         })
     }
     
     func signInUser(with email: String, _ password: String, completion: @escaping (Error?, AuthDataResult?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
-            if error != nil {
-                completion(error, nil)
+            guard let error = error else {
+                completion(nil, authResult)
                 return
             }
-            completion(nil, authResult)
-            return
+            completion(error, nil)
         }
     }
     
     func forgotPassword(with email: String, completion: @escaping (Error?, Bool) -> Void) {
         Auth.auth().sendPasswordReset(withEmail: email) { (error) in
-            if error != nil {
-                completion(error, false)
+            guard let error = error else {
+                completion(nil, true)
                 return
             }
-            completion(nil, true)
-            return
+            completion(error, false)
         }
     }
     
@@ -97,15 +92,13 @@ struct User {
             return
         }
         signedInUser.reload { (error) in
-            if error != nil {
-                guard let NSError = error as NSError? else {return}
-                if let error = AuthErrorCode(rawValue: NSError.code) {
-                    completion(error, true, true)
-                    return
-                }
+            guard let error = error else {
+                completion(nil, true, false)
+                return
             }
-            completion(nil, true, false)
-            return
+            let NSError = error as NSError
+            guard let authError = AuthErrorCode(rawValue: NSError.code) else {return}
+            completion(authError, true, true)
         }
     }
     
@@ -116,18 +109,17 @@ struct User {
         }
         let signedInUserID = signedInUser.uid
         db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
-            if error != nil {
-                completion(error, true, nil)
+            guard let error = error else {
+                guard let result = snapshot?.documents.first else {return}
+                let userViewModel = UserViewModel(UserModel(userID: result[Strings.userIDField] as! String,
+                                                            firstName: result[Strings.userFirstNameField] as! String,
+                                                            lastName: result[Strings.userLastNameField] as! String,
+                                                            email: result[Strings.userEmailField] as! String,
+                                                            profilePic: result[Strings.userProfilePicField] as! String))
+                completion(nil, true, userViewModel)
                 return
             }
-            guard let result = snapshot?.documents.first else {return}
-            let userViewModel = UserViewModel(UserModel(userID: result[Strings.userIDField] as! String,
-                                                        firstName: result[Strings.userFirstNameField] as! String,
-                                                        lastName: result[Strings.userLastNameField] as! String,
-                                                        email: result[Strings.userEmailField] as! String,
-                                                        profilePic: result[Strings.userProfilePicField] as! String))
-            completion(nil, true, userViewModel)
-            return
+            completion(error, true, nil)
         }
     }
     
@@ -137,17 +129,15 @@ struct User {
             return
         }
         signedInUser.reload { (error) in
-            if error != nil {
-                completion(error!, true, nil)
-                return
-            }
-            if signedInUser.isEmailVerified {
-                completion(nil, true, true)
-                return
-            } else {
+            guard let error = error else {
+                if signedInUser.isEmailVerified {
+                    completion(nil, true, true)
+                    return
+                }
                 completion(nil, true, false)
                 return
             }
+            completion(error, true, nil)
         }
     }
     
@@ -170,14 +160,12 @@ struct User {
                 db.collection(Strings.userCollection).document(signedInUserID).updateData([Strings.userFirstNameField : firstName,
                                                                                            Strings.userLastNameField : lastName,
                                                                                            Strings.userEmailField : email,
-                                                                                           Strings.userProfilePicField : profilePicURL])
-                { (error) in
-                    if error != nil {
-                        completion(error, true, false)
+                                                                                           Strings.userProfilePicField : profilePicURL]) { (error) in
+                    guard let error = error else {
+                        completion(nil, true, true)
                         return
                     }
-                    completion(nil, true, true)
-                    return
+                    completion(error, true, false)
                 }
             }
         }
@@ -195,13 +183,12 @@ struct User {
                 return
             }
             profilePicStoragePath.downloadURL { (url, error) in
-                if error != nil {
-                    completion(error, nil)
+                guard let error = error else {
+                    guard let imageString = url?.absoluteString else {return}
+                    completion(nil, imageString)
                     return
                 }
-                guard let imageString = url?.absoluteString else {return}
-                completion(nil, imageString)
-                return
+                completion(error, nil)
             }
         }
     }

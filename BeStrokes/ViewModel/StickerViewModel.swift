@@ -87,14 +87,13 @@ struct FetchStickerData {
     func featuredStickerCollectionView(completion: @escaping (Error?, [FeaturedStickerViewModel]?) -> Void) {
         let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: Strings.categoryFeaturedStickers)
         fetchFirebaseData(with: firebaseQuery) { (error, result) in
-            if error != nil {
-                completion(error, nil)
+            guard let error = error else {
+                guard let result = result else {return}
+                let featuredStickerViewModel = result.map({return FeaturedStickerViewModel($0)})
+                completion(nil, featuredStickerViewModel)
                 return
             }
-            guard let result = result else {return}
-            let featuredStickerViewModel = result.map({return FeaturedStickerViewModel($0)})
-            completion(nil, featuredStickerViewModel)
-            return
+            completion(error, nil)
         }
     }
     
@@ -102,46 +101,43 @@ struct FetchStickerData {
         var firebaseQuery: Query
         if category == Strings.allStickers {
             firebaseQuery = db.collection(Strings.stickerCollection)
-            fetchFirebaseData(with: firebaseQuery) { (error, result) in
-                if error != nil {
-                    completion(error, nil)
+            fetchFirebaseData(with: firebaseQuery) { (error, stickerData) in
+                guard let error = error else {
+                    guard let stickerData = stickerData else {return}
+                    let stickerViewModel = stickerData.map({return StickerViewModel($0)})
+                    completion(nil, stickerViewModel)
                     return
                 }
-                guard let result = result else {return}
-                let stickerViewModel = result.map({return StickerViewModel($0)})
-                completion(nil, stickerViewModel)
-                return
+                completion(error, nil)
             }
         } else {
             firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerCategoryField, isEqualTo: category)
             fetchFirebaseData(with: firebaseQuery) { (error, result) in
-                if error != nil {
-                    completion(error, nil)
+                guard let error = error else {
+                    guard let result = result else {return}
+                    let stickerViewModel = result.map({return StickerViewModel($0)})
+                    completion(nil, stickerViewModel)
                     return
                 }
-                guard let result = result else {return}
-                let stickerViewModel = result.map({return StickerViewModel($0)})
-                completion(nil, stickerViewModel)
-                return
+                completion(error, nil)
             }
         }
     }
     
     func fetchFirebaseData(with query: Query, completion: @escaping (Error?, [StickerModel]?) -> Void) {
         query.getDocuments { (snapshot, error) in
-            if error != nil {
-                completion(error, nil)
+            guard let error = error else {
+                guard let results = snapshot?.documents else {return}
+                let stickerData = results.map({return StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
+                                                                   name: $0[Strings.stickerNameField] as! String,
+                                                                   image: $0[Strings.stickerImageField] as! String,
+                                                                   description: $0[Strings.stickerDescriptionField] as! String,
+                                                                   category: $0[Strings.stickerCategoryField] as! String,
+                                                                   tag: $0[Strings.stickerTagField] as! String)})
+                completion(nil, stickerData)
                 return
             }
-            guard let results = snapshot?.documents else {return}
-            let stickerData = results.map({return StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
-                                                               name: $0[Strings.stickerNameField] as! String,
-                                                               image: $0[Strings.stickerImageField] as! String,
-                                                               description: $0[Strings.stickerDescriptionField] as! String,
-                                                               category: $0[Strings.stickerCategoryField] as! String,
-                                                               tag: $0[Strings.stickerTagField] as! String)})
-            completion(nil, stickerData)
-            return
+            completion(error, nil)
         }
     }
     
@@ -170,16 +166,15 @@ struct HeartButtonLogic {
         }
         let signedInUserID = signedInUser.uid
         db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
-            if error != nil {
-                completion(error, true, nil)
+            guard let error = error else {
+                guard let _ = snapshot?.documents.first else {
+                    completion(nil, true, false)
+                    return
+                }
+                completion(nil, true, true)
                 return
             }
-            guard let _ = snapshot?.documents.first else {
-                completion(nil, true, false)
-                return
-            }
-            completion(nil, true, true)
-            return
+            completion(error, true, nil)
         }
     }
     
@@ -195,19 +190,18 @@ struct HeartButtonLogic {
             }
             guard let userData = userData else {return}
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).addSnapshotListener { (snapshot, error) in
-                if error != nil {
-                    completion(error, true, nil)
+                guard let error = error else {
+                    guard let result = snapshot?.documents else {return}
+                    let lovedStickers = result.map({return LovedStickerViewModel(StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
+                                                                                              name: $0[Strings.stickerNameField] as! String,
+                                                                                              image: $0[Strings.stickerImageField] as! String,
+                                                                                              description: $0[Strings.stickerDescriptionField] as! String,
+                                                                                              category: $0[Strings.stickerCategoryField] as! String,
+                                                                                              tag: $0[Strings.stickerTagField] as! String))})
+                    completion(nil, true, lovedStickers)
                     return
                 }
-                guard let result = snapshot?.documents else {return}
-                let lovedStickers = result.map({return LovedStickerViewModel(StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
-                                                                                          name: $0[Strings.stickerNameField] as! String,
-                                                                                          image: $0[Strings.stickerImageField] as! String,
-                                                                                          description: $0[Strings.stickerDescriptionField] as! String,
-                                                                                          category: $0[Strings.stickerCategoryField] as! String,
-                                                                                          tag: $0[Strings.stickerTagField] as! String))})
-                completion(nil, true, lovedStickers)
-                return
+                completion(error, true, nil)
             }
         }
     }
