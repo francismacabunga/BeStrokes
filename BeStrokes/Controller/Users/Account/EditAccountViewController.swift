@@ -159,7 +159,7 @@ class EditAccountViewController: UIViewController {
         view.window?.makeKeyAndVisible()
     }
     
-    func userData() -> [String: String?] {
+    func userData() -> [String : String?] {
         let firstName = editAccountFirstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let lastName = editAccountLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let email = editAccountEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
