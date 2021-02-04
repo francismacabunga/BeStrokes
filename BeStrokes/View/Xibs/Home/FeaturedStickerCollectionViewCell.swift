@@ -75,6 +75,13 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
         registerGestures()
     }
     
+    func transitionToCaptureVC() {
+        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+        let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
+        captureVC.featuredStickerViewModel = featuredStickerViewModel
+        featuredStickerCellDelegate?.getVC(using: captureVC)
+    }
+    
     func getHeartButtonValue(using stickerID: String) {
         heartButtonLogic.checkIfStickerIsLoved(using: stickerID) { [self] (error, userAuthenticationState, isStickerLoved) in
             if error != nil {
@@ -141,7 +148,8 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     //MARK: - Buttons
     
     @IBAction func featuredTryMeButton(_ sender: UIButton) {
-        
+        Utilities.animateButton(button: sender)
+        transitionToCaptureVC()
     }
     
 }
@@ -152,6 +160,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
 protocol FeaturedStickerCellDelegate {
     func getError(using error: Error)
     func getUserAuthenticationState(with isUserSignedIn: Bool)
+    func getVC(using viewController: UIViewController)
 }
 
 

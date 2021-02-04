@@ -23,6 +23,7 @@ struct Strings {
     static let loginHeadingText = "Welcome Back!"
     static let forgotPasswordHeadingText = "Forgot your password?"
     static let forgotPasswordSubheadingText = "Enter your associated email with your account."
+    static let capture1Label = "Sticker Name"
     
     //MARK: - Button Labels
     static let tryMeButtonText = "Try me"
@@ -68,6 +69,10 @@ struct Strings {
     static let homeAlertMessage = "The user is not signed in."
     static let homeAlert1Action = "Try again"
     static let homeAlert2Action = "Dismiss"
+    static let captureAlert1Title = "Error"
+    static let captureAlert2Title = "Warning"
+    static let captureAlertMessage = "Sticker is already present. You can only add 1 sticker as of the moment."
+    static let captureAlertAction = "Dismiss"
     
     //MARK: - Warning Labels
     static let accountNoLovedStickerLabel = "You don't have any loved stickers yet."
@@ -152,6 +157,10 @@ struct Strings {
     static let loveStickerIcon = "heart"
     static let lovedStickerIcon = "heart.fill"
     
+    static let captureExitIcon = "xmark.circle.fill"
+    static let captureDeleteIcon = "trash.fill"
+    static let captureChooseImageIcon = "camera.fill"
+    
     
     
     
@@ -168,6 +177,7 @@ struct Strings {
     static let editAccountContainerVC = "EditAccountContainerViewController"
     static let profileVC = "ProfileViewController"
     static let landingPageContentVC = "LandingPageContentViewController"
+    static let captureVC = "CaptureViewController"
     
     //MARK: - NIBs Names
     static let featuredStickerCell = "FeaturedStickerCollectionViewCell"

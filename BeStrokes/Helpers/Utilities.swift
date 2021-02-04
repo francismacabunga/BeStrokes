@@ -178,9 +178,16 @@ struct Utilities {
     
     // Stack View
     static func setDesignOn(stackView: UIStackView,
-                            backgroundColor: UIColor)
+                            backgroundColor: UIColor,
+                            isCircular: Bool? = nil)
     {
         stackView.backgroundColor = backgroundColor
+        if isCircular != nil {
+            if isCircular! {
+                stackView.layer.cornerRadius = stackView.frame.size.width / 2
+                stackView.clipsToBounds = true
+            }
+        }
     }
     
     // View

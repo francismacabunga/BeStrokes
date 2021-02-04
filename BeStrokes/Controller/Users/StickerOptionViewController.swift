@@ -99,6 +99,20 @@ class StickerOptionViewController: UIViewController {
         view.window?.makeKeyAndVisible()
     }
     
+    func transitionToCaptureVC() {
+        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+        let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
+        captureVC.stickerViewModel = stickerViewModel
+        captureVC.lovedStickerViewModel = lovedStickerViewModel
+        captureVC.modalPresentationStyle = .fullScreen
+        present(captureVC, animated: true)
+    }
+    
+    func prepareStickerOptionVC() {
+        setDesignElements()
+        registerGestures()
+    }
+    
     func getHeartButtonValue(stickerViewModel: StickerViewModel? = nil, lovedStickerViewModel: LovedStickerViewModel? = nil) {
         if stickerViewModel != nil {
             checkIfStickerIsLoved(stickerViewModel!.stickerID)
@@ -144,11 +158,6 @@ class StickerOptionViewController: UIViewController {
             stickerTagLabel.isHidden = true
         }
         stickerDescriptionLabel.text = stickerDescription
-    }
-    
-    func prepareStickerOptionVC() {
-        setDesignElements()
-        registerGestures()
     }
     
     
@@ -223,6 +232,13 @@ class StickerOptionViewController: UIViewController {
             }
             showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
+    }
+    
+    
+    //MARK: - Buttons
+    
+    @IBAction func stickerOptionTryMeButton(_ sender: UIButton) {
+        transitionToCaptureVC()
     }
     
 }
