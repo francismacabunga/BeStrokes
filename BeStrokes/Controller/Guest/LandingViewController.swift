@@ -66,6 +66,14 @@ class LandingViewController: UIViewController {
         }
     }
     
+    func transitionToCaptureVC() {
+        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+        let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
+        captureVC.isPresentedFromLandingVC = true
+        captureVC.modalPresentationStyle = .fullScreen
+        present(captureVC, animated: true)
+    }
+    
     func transitionToHomeVC() {
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
         let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
@@ -106,6 +114,7 @@ class LandingViewController: UIViewController {
     
     @IBAction func getStartedButton(_ sender: UIButton) {
         Utilities.animateButton(button: sender)
+        transitionToCaptureVC()
     }
     
 }

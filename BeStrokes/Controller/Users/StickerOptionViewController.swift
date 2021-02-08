@@ -104,6 +104,7 @@ class StickerOptionViewController: UIViewController {
         let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
         captureVC.stickerViewModel = stickerViewModel
         captureVC.lovedStickerViewModel = lovedStickerViewModel
+        captureVC.isStickerPicked = true
         captureVC.modalPresentationStyle = .fullScreen
         present(captureVC, animated: true)
     }

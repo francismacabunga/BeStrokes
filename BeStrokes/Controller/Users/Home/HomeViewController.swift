@@ -64,7 +64,6 @@ class HomeViewController: UIViewController {
     }
     
     func setDesignElements() {
-        homeLoadingIndicatorView.isHidden = true
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: homeFeaturedView, backgroundColor: .clear)
         Utilities.setDesignOn(view: homeStickerView, backgroundColor: .clear)
@@ -74,7 +73,7 @@ class HomeViewController: UIViewController {
         Utilities.setDesignOn(collectionView: homeFeaturedStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
-        Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isHidden: true)
         showLoadingProfilePicDesign()
     }
     
@@ -128,13 +127,6 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func transitionToLandingVC() {
-        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
-        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
-        view.window?.rootViewController = landingVC
-        view.window?.makeKeyAndVisible()
-    }
-    
     func setProfilePicture() {
         user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
             guard let error = error else {
@@ -158,6 +150,13 @@ class HomeViewController: UIViewController {
         homeFeaturedStickerCollectionView.configureForPeekingBehavior(behavior: behavior)
         behavior.cellPeekWidth = 10
         behavior.cellSpacing = 10
+    }
+    
+    func transitionToLandingVC() {
+        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
+        view.window?.rootViewController = landingVC
+        view.window?.makeKeyAndVisible()
     }
     
     

@@ -51,8 +51,6 @@ class LoginViewController: UIViewController {
     
     func setDesignElements() {
         UIScrollView.appearance().indicatorStyle = .white
-        loginWarningLabel.isHidden = true
-        loginLoadingIndicatorView.isHidden = true
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: loginContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: loginHeadingStackView, backgroundColor: .clear)
@@ -61,12 +59,13 @@ class LoginViewController: UIViewController {
         Utilities.setDesignOn(view: loginForgotPasswordButtonSpacerView, backgroundColor: .clear)
         Utilities.setDesignOn(navigationBar: loginNavigationBar, isDarkMode: false)
         Utilities.setDesignOn(label: loginHeadingLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.loginHeadingText)
-        Utilities.setDesignOn(imageView: loginImageView, image: UIImage(named: Strings.loginDefaultIcon), isCircular: true)
+        Utilities.setDesignOn(label: loginWarningLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, isHidden: true)
+        Utilities.setDesignOn(imageView: loginImageView, image: UIImage(named: Strings.loginDefaultImage), isCircular: true)
         Utilities.setDesignOn(textField: loginEmailTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(textField: loginPasswordTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.passwordTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: loginForgotPasswordButton, title: Strings.forgotPasswordButtonText, font: Strings.defaultFontMedium, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(button: loginButton, title: Strings.loginButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isHidden: true)
     }
     
     func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {

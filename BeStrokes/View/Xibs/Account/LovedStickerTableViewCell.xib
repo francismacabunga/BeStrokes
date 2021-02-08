@@ -41,6 +41,9 @@
                                     <constraint firstAttribute="height" constant="35" id="3D6-8h-5Dh"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="g7e-xP-U82"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="lovedStickerTryMeButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="wGS-5b-pg6"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

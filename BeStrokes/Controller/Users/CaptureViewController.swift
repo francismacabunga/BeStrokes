@@ -10,33 +10,48 @@ import SceneKit
 import ARKit
 import Kingfisher
 
-class CaptureViewController: UIViewController, ARSCNViewDelegate {
+class CaptureViewController: UIViewController {
     
     //MARK: - IBOutlets
     
     @IBOutlet var captureSceneView: ARSCNView!
+    @IBOutlet weak var captureVisualEffectView: UIVisualEffectView!
     @IBOutlet weak var captureStackView: UIStackView!
+    @IBOutlet weak var captureTutorialContentView: UIView!
+    @IBOutlet weak var captureStickerContentView: UIView!
     @IBOutlet weak var capture1SpacerView: UIView!
     @IBOutlet weak var capture2SpacerView: UIView!
-    @IBOutlet weak var captureContentView: UIView!
     @IBOutlet weak var captureExitButtonImageView: UIImageView!
     @IBOutlet weak var captureDeleteButtonImageView: UIImageView!
     @IBOutlet weak var captureChooseImageButtonImageView: UIImageView!
+    @IBOutlet weak var captureTutorialImageView: UIImageView!
     @IBOutlet weak var captureStickerImageView: UIImageView!
-    @IBOutlet weak var capture1Label: UILabel!
-    @IBOutlet weak var capture2Label: UILabel!
+    @IBOutlet weak var captureTutorial1Label: UILabel!
+    @IBOutlet weak var captureTutorial2Label: UILabel!
+    @IBOutlet weak var captureTutorial3Label: UILabel!
+    @IBOutlet weak var captureStickerLabel: UILabel!
+    @IBOutlet weak var captureStickerNameLabel: UILabel!
+    @IBOutlet weak var captureDontShowAgainButton: UIButton!
+    @IBOutlet weak var captureTutorialContentViewTopConstraint: NSLayoutConstraint!
     
     
     //MARK: - Constants / Variables
     
-    let imagePicker = UIImagePickerController()
-    let material = SCNMaterial()
-    var numberOfNodes: [SCNNode] = []
-    var lastRotation: CGFloat?
-    var originalRotation = CGFloat()
-    var gridArray = [SCNNode]()
-    var raycastResult: ARRaycastResult? = nil
-    var selectedNode: SCNNode? = nil
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    private let trackingConfiguration = ARWorldTrackingConfiguration()
+    private let imagePicker = UIImagePickerController()
+    private let material = SCNMaterial()
+    
+    
+    private var numberOfNodes: [SCNNode] = []
+    private var lastRotation: CGFloat?
+    private var originalRotation = CGFloat()
+    private var gridArray = [SCNNode]()
+    private var raycastResult: ARRaycastResult? = nil
+    private var selectedNode: SCNNode? = nil
+    
+    var isStickerPicked = false
+    var isPresentedFromLandingVC = false
     var featuredStickerViewModel: FeaturedStickerViewModel? {
         didSet {
             guard let stickerData = featuredStickerViewModel else {return}
@@ -66,30 +81,35 @@ class CaptureViewController: UIViewController, ARSCNViewDelegate {
         registerGestures()
         setDataSourceAndDelegate()
         
-       
-        
-        //captureSceneView.showsStatistics = true
-        //sceneView.autoenablesDefaultLighting = true
-        //sceneView.debugOptions = [SCNDebugOptions.showFeaturePoints]
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = [.horizontal,.vertical]
-        
-        // Run the view's session
-        captureSceneView.session.run(configuration)
+        setNoPlaneDetection()
+        if isPresentedFromLandingVC {
+            showCaptureVCTutorial()
+            captureTutorial3Label.isHidden = false
+        }
+        if isPresentedWithTabBar() {
+            if !appDelegate.openedFromCaptureButton {
+                showCaptureVCTutorial()
+            } else {
+                showCaptureVCDefaultDesign()
+            }
+        } else {
+            if !appDelegate.openedFromTryMeButton {
+                showCaptureVCTutorial()
+            } else {
+                showCaptureVCDefaultDesign()
+            }
+        }
         
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        // Pause the view's session
         captureSceneView.session.pause()
         
     }
@@ -98,36 +118,21 @@ class CaptureViewController: UIViewController, ARSCNViewDelegate {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        captureExitButtonImageView.isHidden = true
-        captureContentView.isHidden = true
-        Utilities.setDesignOn(stackView: captureStackView, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(view: captureContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(visualEffectView: captureVisualEffectView, blurEffect: UIBlurEffect(style: .regular), isHidden: true)
+        Utilities.setDesignOn(stackView: captureStackView, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true, isHidden: true)
+        Utilities.setDesignOn(view: captureTutorialContentView, backgroundColor: .clear, isHidden: true)
+        Utilities.setDesignOn(view: captureStickerContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, isHidden: true)
+        Utilities.setDesignOn(imageView: captureTutorialImageView, image: UIImage(named: Strings.tutorialDialogueImage))
+        Utilities.setDesignOn(imageView: captureStickerImageView, image: UIImage(named: "Elephant"))
         Utilities.setDesignOn(imageView: captureExitButtonImageView, image: UIImage(systemName: Strings.captureExitIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(imageView: captureDeleteButtonImageView, image: UIImage(systemName: Strings.captureDeleteIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(imageView: captureChooseImageButtonImageView, image: UIImage(systemName: Strings.captureChooseImageIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(label: capture1Label, font: Strings.defaultFont, fontSize: 12, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.capture1Label)
-        Utilities.setDesignOn(label: capture2Label, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left)
-        showStickerInformation()
-        showExitButton()
-    }
-    
-    func showStickerInformation() {
-        if featuredStickerViewModel != nil {
-            setStickerInformation(stickerImage: featuredStickerViewModel!.image, stickerName: featuredStickerViewModel!.name)
-        }
-        if stickerViewModel != nil {
-            setStickerInformation(stickerImage: stickerViewModel!.image, stickerName: stickerViewModel!.name)
-        }
-        if lovedStickerViewModel != nil {
-            setStickerInformation(stickerImage: lovedStickerViewModel!.image, stickerName: lovedStickerViewModel!.name)
-        }
-    }
-    
-    func showExitButton() {
-        if self.tabBarController?.isBeingPresented == nil {
-            captureExitButtonImageView.isHidden = false
-            captureChooseImageButtonImageView.isHidden = true
-        }
+        Utilities.setDesignOn(label: captureTutorial1Label, font: Strings.defaultFontBold, fontSize: 12, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.captureTutorial1Label)
+        Utilities.setDesignOn(label: captureTutorial2Label, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, text: Strings.captureTutorial2Label)
+        Utilities.setDesignOn(label: captureTutorial3Label, font: Strings.defaultFontBold, fontSize: 12, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: Strings.captureTutorial3Label, isHidden: true)
+        Utilities.setDesignOn(label: captureStickerLabel, font: Strings.defaultFont, fontSize: 12, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.captureStickerLabel)
+        Utilities.setDesignOn(label: captureStickerNameLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: "Elephant")
+        Utilities.setDesignOn(button: captureDontShowAgainButton, title: Strings.dontShowAgainButtonText, font: Strings.defaultFontBold, fontSize: 16, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
     }
     
     func showCustomAlert(withTitle title: String, withMessage message: String? = nil, usingErrorMessage: Bool? = nil, usingError error: Error? = nil) {
@@ -143,7 +148,77 @@ class CaptureViewController: UIViewController, ARSCNViewDelegate {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
+    
+    func showCaptureVCTutorial() {
+        if isPresentedWithTabBar() {
+            setQuickOptionsDesignWithTabBar()
+            captureDeleteButtonImageView.isHidden = true
+            captureTutorialContentView.isHidden = false
+        } else {
+            captureVisualEffectView.isHidden = false
+        }
+    }
+    
+    func showCaptureVCDefaultDesign() {
+        if isPresentedWithTabBar() {
+            setQuickOptionsDesignWithTabBar()
+            captureDeleteButtonImageView.isHidden = false
+            captureTutorialContentView.isHidden = true
+        } else {
+            setPlaneDetection()
+            setQuickOptionsDesignWithoutTabBar()
+            showStickerInformation()
+        }
+    }
+    
+    func showStickerInformation() {
+        if featuredStickerViewModel != nil {
+            setStickerInformationDesign(stickerImage: featuredStickerViewModel!.image, stickerName: featuredStickerViewModel!.name)
+        }
+        if stickerViewModel != nil {
+            setStickerInformationDesign(stickerImage: stickerViewModel!.image, stickerName: stickerViewModel!.name)
+        }
+        if lovedStickerViewModel != nil {
+            setStickerInformationDesign(stickerImage: lovedStickerViewModel!.image, stickerName: lovedStickerViewModel!.name)
+        }
+    }
         
+    func setQuickOptionsDesignWithTabBar() {
+        captureStackView.isHidden = false
+        captureExitButtonImageView.isHidden = true
+    }
+    
+    func setQuickOptionsDesignWithoutTabBar() {
+        captureStackView.isHidden = false
+        captureStickerContentView.isHidden = false
+        captureExitButtonImageView.isHidden = false
+        captureChooseImageButtonImageView.isHidden = true
+    }
+    
+    func setStickerInformationDesign(stickerImage: String, stickerName: String) {
+        captureStickerContentView.isHidden = false
+        captureStickerImageView.kf.setImage(with: URL(string: stickerImage))
+        captureStickerNameLabel.text = stickerName
+    }
+    
+    func setPlaneDetection() {
+        trackingConfiguration.planeDetection = [.horizontal,.vertical]
+        captureSceneView.session.run(trackingConfiguration)
+    }
+    
+    func setNoPlaneDetection() {
+        trackingConfiguration.planeDetection = []
+        captureSceneView.session.run(trackingConfiguration)
+    }
+    
+    func isPresentedWithTabBar() -> Bool {
+        if self.tabBarController?.isBeingPresented == nil {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     func downloadImage(using stickerImage: String) {
         guard let url = URL(string: stickerImage) else {return}
         let session = URLSession(configuration: .default)
@@ -158,12 +233,6 @@ class CaptureViewController: UIViewController, ARSCNViewDelegate {
         dataTask.resume()
     }
     
-    func setStickerInformation(stickerImage: String, stickerName: String) {
-        captureContentView.isHidden = false
-        captureStickerImageView.kf.setImage(with: URL(string: stickerImage))
-        capture2Label.text = stickerName
-    }
-    
     
     //MARK: - UIGestureHandlers
     
@@ -171,33 +240,32 @@ class CaptureViewController: UIViewController, ARSCNViewDelegate {
         let tapExitButton = UITapGestureRecognizer(target: self, action: #selector(tapExitButtonHandler))
         let tapDeleteButton = UITapGestureRecognizer(target: self, action: #selector(tapDeleteButtonHandler))
         let tapChooseImageButton = UITapGestureRecognizer(target: self, action: #selector(tapChooseImageButtonHandler))
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapGestureHandler))
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressGestureHandler(longPress:)))
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(Self.pinchGestureHandler(pinch:)))
-        let rotate = UIRotationGestureRecognizer(target: self, action: #selector(self.rotateGestureHandler(rotate:)))
+        let tapStickerName = UITapGestureRecognizer(target: self, action: #selector(tapStickerNameHandler))
+        let tapSticker = UITapGestureRecognizer(target: self, action: #selector(self.tapGestureHandler))
+        let longPressSticker = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressGestureHandler(longPress:)))
+        let pinchSticker = UIPinchGestureRecognizer(target: self, action: #selector(Self.pinchGestureHandler(pinch:)))
+        let rotateSticker = UIRotationGestureRecognizer(target: self, action: #selector(self.rotateGestureHandler(rotate:)))
         captureExitButtonImageView.addGestureRecognizer(tapExitButton)
         captureDeleteButtonImageView.addGestureRecognizer(tapDeleteButton)
         captureChooseImageButtonImageView.addGestureRecognizer(tapChooseImageButton)
+        captureStickerContentView.addGestureRecognizer(tapStickerName)
+        captureSceneView.addGestureRecognizer(tapSticker)
+        captureSceneView.addGestureRecognizer(longPressSticker)
+        captureSceneView.addGestureRecognizer(pinchSticker)
+        captureSceneView.addGestureRecognizer(rotateSticker)
         captureExitButtonImageView.isUserInteractionEnabled = true
         captureDeleteButtonImageView.isUserInteractionEnabled = true
         captureChooseImageButtonImageView.isUserInteractionEnabled = true
-        captureSceneView.addGestureRecognizer(tap)
-        captureSceneView.addGestureRecognizer(longPress)
-        captureSceneView.addGestureRecognizer(pinch)
-        captureSceneView.addGestureRecognizer(rotate)
     }
     
     @objc func tapExitButtonHandler() {
-        print("Exit button is tapped!")
         dismiss(animated: true)
     }
     
     @objc func tapDeleteButtonHandler() {
-        print("Delete button is tapped!")
         if !numberOfNodes.isEmpty {
             numberOfNodes.removeLast().removeFromParentNode()
         }
-        
         if !gridArray.isEmpty {
             for everyGrid in gridArray {
                 everyGrid.runAction(SCNAction.fadeIn(duration: 0.2))
@@ -206,30 +274,43 @@ class CaptureViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @objc func tapChooseImageButtonHandler() {
-        print("Choose image button is tapped!")
         present(imagePicker, animated: true)
     }
     
-    @objc func tapGestureHandler(tap: UITapGestureRecognizer) {
-        guard let view = tap.view as? ARSCNView else {return}
-        let tapLocation = tap.location(in: view)
-        guard let raycastQuery = view.raycastQuery(from: tapLocation, allowing: .estimatedPlane, alignment: .any) else {return}
-        raycastResult = view.session.raycast(raycastQuery).first
-        if raycastResult != nil {
-            createImageNode(using: raycastResult!)
+    @objc func tapStickerNameHandler() {
+        print("Hey i'm tapped")
+        material.diffuse.contents = UIImage(named: "Elephant")
+        isStickerPicked = true
+        captureTutorialContentView.isHidden = true
+        captureTutorial3Label.isHidden = true
+        
+//        captureStickerContentView.backgroundColor = .red
+        
+        
+        UIView.animate(withDuration: 0.2) { [self] in
+            captureStickerContentView.alpha = 0.4
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            UIView.animate(withDuration: 0.2) { [self] in
+                captureStickerContentView.alpha = 1
+            }
         }
         
-        // This is already commmented before
-        //        if raycastResult != nil {
-        //            if raycastResult!.targetAlignment == .horizontal {
-        //                createHorizontalNode(using: raycastResult!)
-        //            } else if raycastResult?.targetAlignment == .vertical {
-        //                createVerticalNode(using: raycastResult!)
-        //            }
-        //        } else {
-        //            print("No raycast found")
-        //        }
         
+    }
+    
+    @objc func tapGestureHandler(tap: UITapGestureRecognizer) {
+        if isStickerPicked {
+            guard let view = tap.view as? ARSCNView else {return}
+            let tapLocation = tap.location(in: view)
+            guard let raycastQuery = view.raycastQuery(from: tapLocation, allowing: .estimatedPlane, alignment: .any) else {return}
+            raycastResult = view.session.raycast(raycastQuery).first
+            if raycastResult != nil {
+                createImageNode(using: raycastResult!)
+            }
+            return
+        }
+        showCustomAlert(withTitle: Strings.captureAlert1Title, withMessage: "Pili ka muna!")
     }
     
     @objc func longPressGestureHandler(longPress: UILongPressGestureRecognizer) {
@@ -279,11 +360,8 @@ class CaptureViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-   
-    //MARK: - Buttons
     
-    
-    
+    //MARK: - buttons
     
     
     func setDataSourceAndDelegate() {
@@ -294,14 +372,52 @@ class CaptureViewController: UIViewController, ARSCNViewDelegate {
     
     
     
-  
-  
     
     
     
     
     
     
+    
+   
+    
+    
+    @IBAction func captureDontShowAgainButton(_ sender: UIButton) {
+        
+        captureVisualEffectView.isHidden = true
+        setPlaneDetection()
+        
+        
+        
+        
+        
+        if isPresentedWithTabBar() {
+            appDelegate.setOpenedFromCaptureButton()
+            setQuickOptionsDesignWithTabBar()
+            captureDeleteButtonImageView.isHidden = false
+        } else {
+            appDelegate.setOpenedFromTryMeButtonValue()
+            setQuickOptionsDesignWithoutTabBar()
+            showStickerInformation()
+            
+            
+            if isPresentedFromLandingVC {
+                captureChooseImageButtonImageView.isHidden = false
+                captureTutorialContentView.isHidden = false
+                
+                
+                captureTutorialContentViewTopConstraint.constant = 128
+                
+            }
+            
+        }
+        
+        
+        
+        
+        
+        
+    }
     
     
     
@@ -332,20 +448,8 @@ class CaptureViewController: UIViewController, ARSCNViewDelegate {
     }
     
     
-    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-        let gridNode = createBackgroundPlane(with: planeAnchor)
-        node.addChildNode(gridNode)
-    }
     
-    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-        if numberOfNodes.isEmpty {
-            removeNode()
-            let gridNode = createBackgroundPlane(with: planeAnchor)
-            node.addChildNode(gridNode)
-        }
-    }
+    
     
     //MARK: - CRUD Methods
     
@@ -428,7 +532,41 @@ extension CaptureViewController: UINavigationControllerDelegate, UIImagePickerCo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
         material.diffuse.contents = imagePicked
+        isStickerPicked = true
         imagePicker.dismiss(animated: true)
+        captureTutorialContentView.isHidden = true
+        
+        if !isPresentedFromLandingVC {
+            captureVisualEffectView.isHidden = false
+        }
+        
+        
     }
     
 }
+
+
+
+//MARK: - ARSCN View Delegate
+
+extension CaptureViewController: ARSCNViewDelegate {
+    
+    
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
+        let gridNode = createBackgroundPlane(with: planeAnchor)
+        node.addChildNode(gridNode)
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
+        if numberOfNodes.isEmpty {
+            removeNode()
+            let gridNode = createBackgroundPlane(with: planeAnchor)
+            node.addChildNode(gridNode)
+        }
+    }
+    
+}
+
+

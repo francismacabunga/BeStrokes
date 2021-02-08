@@ -24,7 +24,8 @@ struct Utilities {
                             canResize: Bool? = nil,
                             minimumScaleFactor: CGFloat? = nil,
                             isCircular: Bool? = nil,
-                            backgroundColor: UIColor? = nil)
+                            backgroundColor: UIColor? = nil,
+                            isHidden: Bool? = nil)
     {
         label.font = UIFont(name: font, size: fontSize)
         label.textColor = fontColor
@@ -54,6 +55,13 @@ struct Utilities {
         }
         if backgroundColor != nil {
             label.backgroundColor = backgroundColor!
+        }
+        if isHidden != nil {
+            if isHidden! {
+                label.isHidden = true
+            } else {
+                label.isHidden = false
+            }
         }
     }
     
@@ -107,7 +115,8 @@ struct Utilities {
                             tintColor: UIColor? = nil,
                             backgroundColor: UIColor? = nil,
                             isCircular: Bool? = nil,
-                            isSkeletonCircular: Bool? = nil)
+                            isSkeletonCircular: Bool? = nil,
+                            isHidden: Bool? = nil)
     {
         if title != nil {
             button.setTitle(title!, for: .normal)
@@ -138,6 +147,13 @@ struct Utilities {
                 button.skeletonCornerRadius = Float(button.bounds.height / 2)
             }
         }
+        if isHidden != nil {
+            if isHidden! {
+                button.isHidden = true
+            } else {
+                button.isHidden = false
+            }
+        }
     }
     
     // Navigation Bar
@@ -161,10 +177,24 @@ struct Utilities {
     // Loading Indicator
     static func setDesignOn(activityIndicatorView: UIActivityIndicatorView,
                             size: UIActivityIndicatorView.Style,
-                            backgroundColor: UIColor)
+                            backgroundColor: UIColor,
+                            isStartAnimating: Bool? = nil,
+                            isHidden: Bool? = nil)
     {
         activityIndicatorView.style = size
         activityIndicatorView.color = backgroundColor
+        if isStartAnimating != nil {
+            if isStartAnimating! {
+                activityIndicatorView.startAnimating()
+            }
+        }
+        if isHidden != nil {
+            if isHidden! {
+                activityIndicatorView.isHidden = true
+            } else {
+                activityIndicatorView.isHidden = false
+            }
+        }
     }
     
     // Page Control
@@ -179,13 +209,21 @@ struct Utilities {
     // Stack View
     static func setDesignOn(stackView: UIStackView,
                             backgroundColor: UIColor,
-                            isCircular: Bool? = nil)
+                            isCircular: Bool? = nil,
+                            isHidden: Bool? = nil)
     {
         stackView.backgroundColor = backgroundColor
         if isCircular != nil {
             if isCircular! {
                 stackView.layer.cornerRadius = stackView.frame.size.width / 2
                 stackView.clipsToBounds = true
+            }
+        }
+        if isHidden != nil {
+            if isHidden! {
+                stackView.isHidden = true
+            } else {
+                stackView.isHidden = false
             }
         }
     }
@@ -196,7 +234,8 @@ struct Utilities {
                             isCircular: Bool? = nil,
                             setCustomCircleCurve: CGFloat? = nil,
                             isSkeletonCircular: Bool? = nil,
-                            setCustomSkeletonCircleCurve: Float? = nil)
+                            setCustomSkeletonCircleCurve: Float? = nil,
+                            isHidden: Bool? = nil)
     {
         if backgroundColor != nil {
             view.backgroundColor = backgroundColor!
@@ -218,6 +257,28 @@ struct Utilities {
         }
         if setCustomSkeletonCircleCurve != nil {
             view.skeletonCornerRadius = setCustomSkeletonCircleCurve!
+        }
+        if isHidden != nil {
+            if isHidden! {
+                view.isHidden = true
+            } else {
+                view.isHidden = false
+            }
+        }
+    }
+    
+    // Visual Effect View
+    static func setDesignOn(visualEffectView: UIVisualEffectView,
+                            blurEffect: UIBlurEffect,
+                            isHidden: Bool? = nil)
+    {
+        visualEffectView.effect = blurEffect
+        if isHidden != nil {
+            if isHidden! {
+                visualEffectView.isHidden = true
+            } else {
+                visualEffectView.isHidden = false
+            }
         }
     }
     

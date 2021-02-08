@@ -78,6 +78,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     func transitionToCaptureVC() {
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
         let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
+        captureVC.isStickerPicked = true
         captureVC.featuredStickerViewModel = featuredStickerViewModel
         featuredStickerCellDelegate?.getVC(using: captureVC)
     }
@@ -148,7 +149,6 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     //MARK: - Buttons
     
     @IBAction func featuredTryMeButton(_ sender: UIButton) {
-        Utilities.animateButton(button: sender)
         transitionToCaptureVC()
     }
     

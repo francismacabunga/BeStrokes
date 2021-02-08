@@ -57,15 +57,11 @@ class AccountViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        accountBottomStackView.isHidden = true
-        accountNoLovedStickerLabel.isHidden = true
-        accountTextFieldContentView.isHidden = true
-        accountLoadingIndicatorView.startAnimating()
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: accountTopView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), setCustomCircleCurve: 30)
-        Utilities.setDesignOn(stackView: accountBottomStackView, backgroundColor: .clear)
+        Utilities.setDesignOn(stackView: accountBottomStackView, backgroundColor: .clear, isHidden: true)
         Utilities.setDesignOn(view: accountBottomSearchContentView, backgroundColor: .clear)
-        Utilities.setDesignOn(view: accountTextFieldContentView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: accountTextFieldContentView, backgroundColor: .clear, isHidden: true)
         Utilities.setDesignOn(button: accountNotificationButton, backgroundImage: UIImage(systemName: Strings.accountNotificationIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(button: accountEditButton, backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
@@ -75,9 +71,9 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(label: accountNameHeadingLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.6)
         Utilities.setDesignOn(label: accountEmailHeadingLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(label: accountHeading2Label, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.accountHeading2Text)
-        Utilities.setDesignOn(label: accountNoLovedStickerLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, text: Strings.accountNoLovedStickerLabel)
+        Utilities.setDesignOn(label: accountNoLovedStickerLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, text: Strings.accountNoLovedStickerLabel, isHidden: true)
         Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170)
-        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: true)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -254,6 +250,7 @@ extension AccountViewController: UITableViewDataSource {
         guard let lovedStickerViewModel = lovedStickerViewModel else {return cell}
         DispatchQueue.main.async {
             cell.lovedStickerViewModel = lovedStickerViewModel[indexPath.item]
+            cell.lovedStickerCellDelegate = self
             cell.prepareLovedStickerTableViewCell()
         }
         return cell
@@ -274,6 +271,17 @@ extension AccountViewController: UITableViewDelegate {
             stickerOptionVC.lovedStickerViewModel = lovedStickerViewModel![indexPath.item]
             present(stickerOptionVC, animated: true)
         }
+    }
+    
+}
+
+
+//MARK: - Loved Sticker Delegate
+
+extension AccountViewController: LovedStickerCellDelegate {
+    
+    func getVC(using viewController: UIViewController) {
+        present(viewController, animated: true)
     }
     
 }

@@ -23,6 +23,7 @@ class LovedStickerTableViewCell: UITableViewCell {
     
     //MARK: - Constants / Variables
     
+    var lovedStickerCellDelegate: LovedStickerCellDelegate?
     var lovedStickerViewModel: LovedStickerViewModel! {
         didSet {
             lovedStickerHeadingLabel.text = lovedStickerViewModel.name
@@ -72,4 +73,25 @@ class LovedStickerTableViewCell: UITableViewCell {
         setDesignElements()
     }
     
+    func transitionToCaptureVC() {
+        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+        let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
+        captureVC.lovedStickerViewModel = lovedStickerViewModel
+        lovedStickerCellDelegate?.getVC(using: captureVC)
+    }
+    
+    
+    //MARK: - Buttons
+    
+    @IBAction func lovedStickerTryMeButton(_ sender: UIButton) {
+        transitionToCaptureVC()
+    }
+    
+}
+
+
+//MARK: - Protocols
+
+protocol LovedStickerCellDelegate {
+    func getVC(using viewController: UIViewController)
 }

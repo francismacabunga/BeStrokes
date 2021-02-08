@@ -23,7 +23,10 @@ struct Strings {
     static let loginHeadingText = "Welcome Back!"
     static let forgotPasswordHeadingText = "Forgot your password?"
     static let forgotPasswordSubheadingText = "Enter your associated email with your account."
-    static let capture1Label = "Sticker Name"
+    static let captureTutorial1Label = "Choose an image from your photos!"
+    static let captureTutorial2Label = "Point your iPhone to a flat surface and start moving it."
+    static let captureTutorial3Label = "You can tap the sticker to try!"
+    static let captureStickerLabel = "Sticker Name"
     
     //MARK: - Button Labels
     static let tryMeButtonText = "Try me"
@@ -36,6 +39,7 @@ struct Strings {
     static let submitButtonText = "Submit"
     static let dismissButtonText = "Dismiss"
     static let resendButtonText = "Resend"
+    static let dontShowAgainButtonText = "Don't show again"
     
     //MARK: - Tab Bar Labels
     static let homeTabText = "Home"
@@ -136,9 +140,10 @@ struct Strings {
     static let blackBarImage = "White_Bar"
     static let optionImage = "Dots"
     static let cameraImage = "Camera"
-    static let signUpDefaultIcon = "Woman"
-    static let loginDefaultIcon = "Avatar"
+    static let signUpDefaultImage = "Woman"
+    static let loginDefaultImage = "Avatar"
     static let forgotPasswordBackgroundImage = "Keys"
+    static let tutorialDialogueImage = "Dialogue"
     
     //MARK: - SF Symbols Names
     static let settingNotificationIcon = "bell.badge"
@@ -219,6 +224,10 @@ struct Strings {
     static let stickerTagField = "tag"
     static let stickerIsCategorySelected = "isCategorySelected"
     static let stickerSelectedOnStart = "selectedOnStart"
+    
+    //MARK: - User Defaults
+    static let firstTimeLaunchFromTMBKey = "openedFromTryMeButton"
+    static let firstTimeLaunchFromCBKey = "openedFromCaptureButton"
     
     //MARK: - Password Regex
     static let regexFormat = "SELF MATCHES %@"

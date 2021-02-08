@@ -48,8 +48,6 @@ class ForgotPasswordViewController: UIViewController {
     
     func setDesignElements() {
         UIScrollView.appearance().indicatorStyle = .white
-        forgotPasswordWarningLabel.isHidden = true
-        forgotPasswordDismissButton.isHidden = true
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: forgotPasswordContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: forgotPasswordHeadingsStackView, backgroundColor: .clear)
@@ -58,9 +56,10 @@ class ForgotPasswordViewController: UIViewController {
         Utilities.setDesignOn(imageView: forgotPasswordImageView, image: UIImage(named: Strings.forgotPasswordBackgroundImage), alpha: 0.3)
         Utilities.setDesignOn(label: forgotPasswordHeadingLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.forgotPasswordHeadingText)
         Utilities.setDesignOn(label: forgotPasswordSubheadingLabel, font: Strings.defaultFontMedium, fontSize: 17, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.forgotPasswordSubheadingText)
+        Utilities.setDesignOn(label: forgotPasswordWarningLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, isHidden: true)
         Utilities.setDesignOn(textField: forgotPasswordEmailTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: forgotPasswordSubmitButton, title: Strings.submitButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(button: forgotPasswordDismissButton, title: Strings.dismissButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(button: forgotPasswordDismissButton, title: Strings.dismissButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, isHidden: true)
     }
     
     func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {

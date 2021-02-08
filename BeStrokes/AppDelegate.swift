@@ -14,90 +14,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     var window: UIWindow?
+    var openedFromTryMeButton: Bool!
+    var openedFromCaptureButton: Bool!
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
         IQKeyboardManager.shared.enable = true
+        openedFromTryMeButton = UserDefaults.standard.bool(forKey: Strings.firstTimeLaunchFromTMBKey)
+        openedFromCaptureButton = UserDefaults.standard.bool(forKey: Strings.firstTimeLaunchFromCBKey)
         
+        if openedFromTryMeButton {
+            setOpenedFromTryMeButtonValue()
+        } else {
+            UserDefaults.standard.setValue(true, forKey: Strings.firstTimeLaunchFromTMBKey)
+        }
         
-        
-        
-        
-        
-        //        Auth.auth().addStateDidChangeListener { [self] (auth, user) in
-        //            if user == nil {
-        //                // Do nothing
-        //                print("The user is not signed in!")
-        //            } else {
-        //                //There is a user signed in
-        //                Auth.auth().currentUser?.reload(completion: { (error) in
-        //                    if error != nil {
-        //                        if let err = error as NSError? {
-        //                            if let error = AuthErrorCode(rawValue: err.code) {
-        //                                switch error {
-        //                                // You need to prompt the user login interface
-        //                                case .invalidCredential: print("Invalid credentials")
-        //                                case .invalidUserToken: print("Invalid User Token")
-        //                                case .userTokenExpired: print("User Token Expired")
-        //                                case .invalidCustomToken: print("Invalid Custom Token")
-        //                                case .customTokenMismatch: print("Custom token mismatch")
-        //                                case .userDisabled: print("User disabled")
-        //                                case .userNotFound: print("User not found")
-        //                                default: print("call default error")
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                    else {
-        //                        print("Valid Token")
-        //
-        //                        if let accountCreationDate = user?.metadata.creationDate,
-        //                           let lastSignIn = user?.metadata.lastSignInDate {
-        //
-        //                            if accountCreationDate == lastSignIn {
-        //                                Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
-        //                                    if error != nil {
-        //
-        //                                    } else {
-        //
-        ////                                        print("AppDelegate: \(signUpViewController?.indicator)")
-        //
-        //                                        // Successfuly sent an email verification
-        //                                        // Do an if statement and only proceeed to show the homescreen if the boolean is false
-        //
-        //
-        //                                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-        //                                            // Redirect to home
-        //                                            let HomeViewController = Utilities.transitionTo(storyboardName: Strings.userStoryboard, identifier: Strings.tabBarStoryboardID)
-        //                                            window?.rootViewController = HomeViewController
-        //                                            window?.makeKeyAndVisible()
-        //
-        //
-        //                                        }
-        //
-        //
-        //
-        //
-        //                                    }
-        //                                })
-        //                            }
-        //
-        //
-        //
-        //                        } else {
-        //                            print("Can't get creation date and last sign in of user.")
-        //                        }
-        //
-        //
-        //                    }
-        //                })
-        //            }
-        //        }
+        if openedFromCaptureButton {
+            setOpenedFromCaptureButton()
+        } else {
+            UserDefaults.standard.setValue(true, forKey: Strings.firstTimeLaunchFromCBKey)
+        }
         
         return true
         
+    }
+    
+    func setOpenedFromTryMeButtonValue() {
+        openedFromTryMeButton = true
+    }
+    
+    func setOpenedFromCaptureButton() {
+        openedFromCaptureButton = true
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
