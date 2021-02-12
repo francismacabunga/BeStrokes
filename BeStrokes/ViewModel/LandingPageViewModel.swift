@@ -21,14 +21,33 @@ struct LandingPageViewModel {
     
 }
 
-struct FetchLandingPageData {
+struct LandingPage {
     
-    func of() -> LandingPageViewModel {
+    func fetchData() -> LandingPageViewModel {
         let landingPageViewModel = LandingPageViewModel(LandingPageModel(
                                                             imageArray: [Strings.lionImage, Strings.shirtImage, Strings.dancingImage],
                                                             headingArray: [Strings.headingOne, Strings.headingTwo, Strings.headingThree],
                                                             subheadingArray: [Strings.subheadingOne, Strings.subheadingTwo, Strings.subheadingThree]))
         return landingPageViewModel
+    }
+    
+    func checkIfIndexIsValid(index: Int, imagesCount: Int) -> Bool {
+        if index >= imagesCount || index < 0 {
+            return false
+        }
+        return true
+    }
+    
+    func plusOneTo(_ index: Int) -> Int {
+        var newIndex = index
+        newIndex += 1
+        return newIndex
+    }
+    
+    func minusOneTo(_ index: Int) -> Int {
+        var newIndex = index
+        newIndex -= 1
+        return newIndex
     }
     
 }

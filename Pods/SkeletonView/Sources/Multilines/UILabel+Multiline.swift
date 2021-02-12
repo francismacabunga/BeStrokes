@@ -12,13 +12,13 @@ public extension UILabel {
     @IBInspectable
     var linesCornerRadius: Int {
         get { return multilineCornerRadius }
-        set { multilineCornerRadius = min(newValue, 10) }
+        set { multilineCornerRadius = newValue }
     }
     
     @IBInspectable
     var skeletonLineSpacing: CGFloat {
         get { return multilineSpacing }
-        set { multilineSpacing = min(newValue, 10) }
+        set { multilineSpacing = newValue }
     }
     
     var skeletonPaddingInsets: UIEdgeInsets {
@@ -28,10 +28,10 @@ public extension UILabel {
 }
 
 extension UILabel: ContainsMultilineText {
-	var multilineTextFont: UIFont? {
-		return font
-	}
-	
+    var constraintHeight: CGFloat? {
+        backupHeightConstraints.first?.constant
+    }
+
     var numLines: Int {
         return numberOfLines
     }

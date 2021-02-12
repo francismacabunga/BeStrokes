@@ -27,6 +27,7 @@ struct Strings {
     static let captureTutorial2Label = "Point your iPhone to a flat surface and start moving it."
     static let captureTutorial3Label = "You can tap the sticker to try!"
     static let captureStickerLabel = "Sticker Name"
+    static let captureDefaultStickerName = "Elephant"
     
     //MARK: - Button Labels
     static let tryMeButtonText = "Try me"
@@ -144,6 +145,7 @@ struct Strings {
     static let loginDefaultImage = "Avatar"
     static let forgotPasswordBackgroundImage = "Keys"
     static let tutorialDialogueImage = "Dialogue"
+    static let defaultStickerImage = "Elephant"
     
     //MARK: - SF Symbols Names
     static let settingNotificationIcon = "bell.badge"

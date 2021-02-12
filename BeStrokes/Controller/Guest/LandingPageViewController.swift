@@ -13,7 +13,7 @@ class LandingPageViewController: UIPageViewController {
     
     var landingPageVCDelegate: LandingPageVCDelegate?
     private var currentIndex = 0
-    private let fetchLandingPageData = FetchLandingPageData()
+    private let landingPage = LandingPage()
     
     
     //MARK: - View Controller Life Cycle
@@ -48,10 +48,11 @@ class LandingPageViewController: UIPageViewController {
     }
     
     func landingPageContentViewController(at index: Int) -> LandingPageContentViewController? {
-        let images = fetchLandingPageData.of().imageArray
-        let headings = fetchLandingPageData.of().headingArray
-        let subheadings = fetchLandingPageData.of().subheadingArray
-        if index >= images.count || index < 0 {
+        let images = landingPage.fetchData().imageArray
+        let headings = landingPage.fetchData().headingArray
+        let subheadings = landingPage.fetchData().subheadingArray
+        let indexIsValid = landingPage.checkIfIndexIsValid(index: index, imagesCount: images.count)
+        if !indexIsValid {
             return nil
         }
         let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
@@ -71,15 +72,15 @@ class LandingPageViewController: UIPageViewController {
 extension LandingPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        var index = (viewController as! LandingPageContentViewController).index
-        index -= 1
-        return landingPageContentViewController(at: index)
+        let index = (viewController as! LandingPageContentViewController).index
+        let newIndex = landingPage.minusOneTo(index)
+        return landingPageContentViewController(at: newIndex)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        var index = (viewController as! LandingPageContentViewController).index
-        index += 1
-        return landingPageContentViewController(at: index)
+        let index = (viewController as! LandingPageContentViewController).index
+        let newIndex = landingPage.plusOneTo(index)
+        return landingPageContentViewController(at: newIndex)
     }
     
 }

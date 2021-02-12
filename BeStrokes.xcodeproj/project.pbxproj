@@ -25,6 +25,7 @@
 		2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */; };
 		2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */; };
 		2F58B0E125A47CE0009EFDE5 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0E025A47CE0009EFDE5 /* UserModel.swift */; };
+		2F628EB125D2DD7200B9F615 /* CaptureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F628EB025D2DD7200B9F615 /* CaptureViewModel.swift */; };
 		2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */; };
 		2F88A016259B1FBC00AAC82D /* StickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A015259B1FBC00AAC82D /* StickerModel.swift */; };
 		2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A018259B239700AAC82D /* StickerViewModel.swift */; };
@@ -68,6 +69,7 @@
 		2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModel.swift; sourceTree = "<group>"; };
 		2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		2F58B0E025A47CE0009EFDE5 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		2F628EB025D2DD7200B9F615 /* CaptureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewModel.swift; sourceTree = "<group>"; };
 		2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerOptionViewController.swift; sourceTree = "<group>"; };
 		2F88A015259B1FBC00AAC82D /* StickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerModel.swift; sourceTree = "<group>"; };
 		2F88A018259B239700AAC82D /* StickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewModel.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */,
 				2F88A018259B239700AAC82D /* StickerViewModel.swift */,
 				2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */,
+				2F628EB025D2DD7200B9F615 /* CaptureViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -439,6 +442,7 @@
 				2FD6E4E0257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift in Sources */,
 				2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */,
 				2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */,
+				2F628EB125D2DD7200B9F615 /* CaptureViewModel.swift in Sources */,
 				2FFB0C4825A84EAC00FAED42 /* ProfileViewController.swift in Sources */,
 				2FD6E4D2257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift in Sources */,
 				2FFB0C4B25A873EC00FAED42 /* ProfileSettingsViewModel.swift in Sources */,

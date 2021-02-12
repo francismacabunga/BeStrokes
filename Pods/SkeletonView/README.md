@@ -1,8 +1,8 @@
 ![](Assets/header2.jpg)
 
 <p align="center">
-    <a href="https://github.com/Juanpe/SkeletonView/workflows/build">
-      <img src="https://github.com/Juanpe/SkeletonView/workflows/build/badge.svg">
+    <a href="https://github.com/Juanpe/SkeletonView/actions?query=workflow%3ACI">
+      <img src="https://github.com/Juanpe/SkeletonView/workflows/CI/badge.svg">
     </a>
     <a href="https://codebeat.co/projects/github-com-juanpe-skeletonview-master"><img alt="codebeat badge" src="https://codebeat.co/badges/f854fdfd-31e5-4689-ba04-075d83653e60" /></a>
     <img src="http://img.shields.io/badge/dependency%20manager-swiftpm%2Bcocoapods%2Bcarthage-green" />
@@ -19,7 +19,7 @@
   • <a href="#️-contributing">Contributing</a>
 </p>
 
-**🌎 README is available in other languages:  [🇪🇸](https://github.com/Juanpe/SkeletonView/blob/develop/README_es.md) . [🇨🇳](https://github.com/Juanpe/SkeletonView/blob/master/README_zh.md) . [🇧🇷](https://github.com/Juanpe/SkeletonView/blob/master/README_pt-br.md) . [🇰🇷](https://github.com/Juanpe/SkeletonView/blob/master/README_ko.md) . [🇫🇷](https://github.com/Juanpe/SkeletonView/blob/master/README_fr.md)**
+**🌎 README is available in other languages:  [🇪🇸](https://github.com/Juanpe/SkeletonView/blob/main/README_es.md) . [🇨🇳](https://github.com/Juanpe/SkeletonView/blob/master/README_zh.md) . [🇧🇷](https://github.com/Juanpe/SkeletonView/blob/master/README_pt-br.md) . [🇰🇷](https://github.com/Juanpe/SkeletonView/blob/master/README_ko.md) . [🇫🇷](https://github.com/Juanpe/SkeletonView/blob/master/README_fr.md)**
 
 Today almost all apps have async processes, such as API requests, long running processes, etc. While the processes are working, usually developers place a loading view to show users that something is going on.
 
@@ -28,7 +28,7 @@ Today almost all apps have async processes, such as API requests, long running p
 Enjoy it! 🙂
 
 
-## 
+##
 - [🌟 Features](#-features)
 - [🎬 Guides](#-guides)
 - [📲 Installation](#-installation)
@@ -37,10 +37,14 @@ Enjoy it! 🙂
   - [🔠 Texts](#-texts)
   - [🦋 Appearance](#-appearance)
   - [🎨 Custom colors](#-custom-colors)
-  - [ 🏃‍♀️ Animations](#%EF%B8%8F-animations)
+        - [Image captured from website https://flatuicolors.com](#image-captured-from-website-httpsflatuicolorscom)
+  - [🏃‍♀️ Animations](#️-animations)
   - [🏄 Transitions](#-transitions)
 - [✨ Miscellaneous](#-miscellaneous)
 - [❤️ Contributing](#️-contributing)
+- [📢 Mentions](#-mentions)
+- [👨🏻‍💻 Author](#-author)
+- [👮🏻 License](#-license)
 
 
 
@@ -527,7 +531,7 @@ This is an open source project, so feel free to contribute. How?
 
 See [all contributors](https://github.com/Juanpe/SkeletonView/graphs/contributors)
 
-For more information, please read the [contributing guidelines](https://github.com/Juanpe/SkeletonView/blob/develop/CONTRIBUTING.md).
+For more information, please read the [contributing guidelines](https://github.com/Juanpe/SkeletonView/blob/main/CONTRIBUTING.md).
 
 
 ## 📢 Mentions
