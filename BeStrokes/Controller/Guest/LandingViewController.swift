@@ -113,7 +113,7 @@ class LandingViewController: UIViewController {
     //MARK: - Buttons
     
     @IBAction func getStartedButton(_ sender: UIButton) {
-        Utilities.animateButton(button: sender)
+        Utilities.animate(button: sender)
         transitionToCaptureVC()
     }
     

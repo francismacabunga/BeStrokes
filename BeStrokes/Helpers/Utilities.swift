@@ -361,14 +361,26 @@ struct Utilities {
     }
     
     // Animation
-    static func animateButton(button: UIButton)
+    static func animate(button: UIButton? = nil, view: UIView? = nil)
     {
-        UIView.animate(withDuration: 0.2) {
-            button.alpha = 0.4
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        if button != nil {
             UIView.animate(withDuration: 0.2) {
-                button.alpha = 1
+                button!.alpha = 0.4
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                UIView.animate(withDuration: 0.2) {
+                    button!.alpha = 1
+                }
+            }
+        }
+        if view != nil {
+            UIView.animate(withDuration: 0.2) {
+                view!.alpha = 0.4
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                UIView.animate(withDuration: 0.2) {
+                    view!.alpha = 1
+                }
             }
         }
     }

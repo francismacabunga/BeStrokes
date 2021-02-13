@@ -74,9 +74,13 @@ struct Strings {
     static let homeAlertMessage = "The user is not signed in."
     static let homeAlert1Action = "Try again"
     static let homeAlert2Action = "Dismiss"
-    static let captureAlert1Title = "Error"
-    static let captureAlert2Title = "Warning"
-    static let captureAlertMessage = "Sticker is already present. You can only add 1 sticker as of the moment."
+    static let captureAlertErrorTitle = "Error"
+    static let captureAlertWarningTitle = "Warning"
+    static let captureAlertExcessStickerErrorMessage = "Sticker is already present. You can only add 1 sticker as of the moment."
+    static let captureAlertARSCNViewErrorMessage = "Cannot create ARSCNView as of the moment."
+    static let captureAlertRaycastErrorMessage = "Cannot perform a Raycast query as of the moment."
+    static let captureAlertNoStickerErrorMessage = "Please choose a sticker first."
+    static let captureAlertAnchorErrorMessage = "Cannot create a plane anchor as of the moment."
     static let captureAlertAction = "Dismiss"
     
     //MARK: - Warning Labels

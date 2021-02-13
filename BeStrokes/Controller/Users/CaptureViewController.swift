@@ -38,19 +38,26 @@ class CaptureViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    private let trackingConfiguration = ARWorldTrackingConfiguration()
+    private let capture = Capture()
     private let imagePicker = UIImagePickerController()
-    private let material = SCNMaterial()
+    var isStickerPicked = false
+    var isPresentedFromLandingVC = false
+    private let trackingConfiguration = ARWorldTrackingConfiguration()
+    private let stickerMaterial = SCNMaterial()
     
-    private var gridArray = [SCNNode]()
-    private var numberOfNodes: [SCNNode] = []
+    
+    private var planeNodes = [SCNNode]()
+    private var stickerNodes = [SCNNode]()
+    
+    
+    
+    
     private var raycastResult: ARRaycastResult? = nil
     private var selectedNode: SCNNode? = nil
     private var lastRotation: CGFloat?
     private var originalRotation = CGFloat()
     
-    var isStickerPicked = false
-    var isPresentedFromLandingVC = false
+    
     var featuredStickerViewModel: FeaturedStickerViewModel? {
         didSet {
             guard let stickerData = featuredStickerViewModel else {return}
@@ -170,6 +177,11 @@ class CaptureViewController: UIViewController {
         }
     }
     
+    func hideCaptureVCTutorial() {
+        captureTutorialContentView.isHidden = true
+        captureTutorial3Label.isHidden = true
+    }
+    
     func getStickerInformation() {
         if featuredStickerViewModel != nil {
             setStickerInformation(stickerImage: featuredStickerViewModel!.image, stickerName: featuredStickerViewModel!.name)
@@ -188,10 +200,10 @@ class CaptureViewController: UIViewController {
         let dataTask = session.dataTask(with: url) { [self] (data, response, error) in
             guard let error = error else {
                 guard let imageData = data else {return}
-                material.diffuse.contents = UIImage(data: imageData)
+                stickerMaterial.diffuse.contents = UIImage(data: imageData)
                 return
             }
-            showCustomAlert(withTitle: Strings.captureAlert1Title, usingErrorMessage: true, usingError: error)
+            showCustomAlert(withTitle: Strings.captureAlertErrorTitle, usingErrorMessage: true, usingError: error)
         }
         dataTask.resume()
     }
@@ -215,7 +227,7 @@ class CaptureViewController: UIViewController {
     }
     
     func setPlaneDetection() {
-        trackingConfiguration.planeDetection = [.horizontal,.vertical]
+        trackingConfiguration.planeDetection = [.horizontal, .vertical]
         captureSceneView.session.run(trackingConfiguration)
     }
     
@@ -262,11 +274,11 @@ class CaptureViewController: UIViewController {
     }
     
     @objc func tapDeleteButtonGestureHandler() {
-        if !numberOfNodes.isEmpty {
-            numberOfNodes.removeLast().removeFromParentNode()
+        if !stickerNodes.isEmpty {
+            stickerNodes.removeLast().removeFromParentNode()
         }
-        if !gridArray.isEmpty {
-            for everyGrid in gridArray {
+        if !planeNodes.isEmpty {
+            for everyGrid in planeNodes {
                 everyGrid.runAction(SCNAction.fadeIn(duration: 0.2))
             }
         }
@@ -277,42 +289,45 @@ class CaptureViewController: UIViewController {
     }
     
     @objc func tapStickerNameGestureHandler() {
-        material.diffuse.contents = UIImage(named: Strings.defaultStickerImage)
+        Utilities.animate(view: captureStickerContentView)
+        stickerMaterial.diffuse.contents = UIImage(named: Strings.defaultStickerImage)
         isStickerPicked = true
-        captureTutorialContentView.isHidden = true
-        captureTutorial3Label.isHidden = true
-        UIView.animate(withDuration: 0.2) { [self] in
-            captureStickerContentView.alpha = 0.4
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            UIView.animate(withDuration: 0.2) { [self] in
-                captureStickerContentView.alpha = 1
-            }
-        }
+        hideCaptureVCTutorial()
     }
     
-    @objc func tapStickerGestureHandler(tap: UITapGestureRecognizer) {
+    @objc func tapStickerGestureHandler(tapGesture: UITapGestureRecognizer) {
         if isStickerPicked {
-            guard let view = tap.view as? ARSCNView else {return}
-            let tapLocation = tap.location(in: view)
-            guard let raycastQuery = view.raycastQuery(from: tapLocation, allowing: .estimatedPlane, alignment: .any) else {return}
-            raycastResult = view.session.raycast(raycastQuery).first
-            if raycastResult != nil {
-                createImageNode(using: raycastResult!)
+            guard let ARSCNView = capture.createARSCNView(using: tapGesture) else {
+                showCustomAlert(withTitle: Strings.captureAlertErrorTitle, withMessage: Strings.captureAlertARSCNViewErrorMessage)
+                return
             }
+            let tapLocation = capture.getTapLocation(using: tapGesture, from: ARSCNView)
+            guard let raycastResult = capture.performRaycast(on: ARSCNView, tapLocation) else {
+                showCustomAlert(withTitle: Strings.captureAlertErrorTitle, withMessage: Strings.captureAlertRaycastErrorMessage)
+                return
+            }
+            createStickerNode(using: raycastResult)
             return
         }
-        showCustomAlert(withTitle: Strings.captureAlert1Title, withMessage: "Pili ka muna!")
+        showCustomAlert(withTitle: Strings.captureAlertErrorTitle, withMessage: Strings.captureAlertNoStickerErrorMessage)
     }
     
     @objc func longPressStickerGestureHandler(longPress: UILongPressGestureRecognizer) {
         guard let view = longPress.view as? ARSCNView else {return}
         let longPressLocation = longPress.location(in: view)
+        
+        
+        
+        
         let pointSelectedInScreen = captureSceneView.hitTest(longPressLocation, options: nil)
         guard let selectedNode = pointSelectedInScreen.first?.node else {return}
+        
         if longPress.state == .changed {
             guard let raycastQuery = captureSceneView.raycastQuery(from: longPressLocation, allowing: .existingPlaneGeometry, alignment: .any) else {return}
             guard let raycastResult = view.session.raycast(raycastQuery).first else {return}
+            
+            
+            
             selectedNode.position = SCNVector3(
                 raycastResult.worldTransform.columns.3.x,
                 raycastResult.worldTransform.columns.3.y,
@@ -377,73 +392,61 @@ class CaptureViewController: UIViewController {
     
     //MARK: - Random
     
+    func setDataSourceAndDelegate() {
+        captureSceneView.delegate = self
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+    }
     
-   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    func createBackgroundPlane(with planeAnchor: ARPlaneAnchor) -> SCNNode {
-        let plane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
-        let planeNode = SCNNode(geometry: plane)
-        //plane.firstMaterial?.diffuse.contents = UIImage(named: "art.scnassets/grid.png")
-        plane.firstMaterial?.diffuse.contents = UIColor.init(white: 1, alpha: 0.6)
-        planeNode.position = SCNVector3(
-            CGFloat(planeAnchor.center.x),
-            CGFloat(planeAnchor.center.y),
-            CGFloat(planeAnchor.center.z))
-        planeNode.eulerAngles.x = -.pi / 2
-        gridArray.append(planeNode)
+    func createPlaneNode(using anchor: ARAnchor) -> SCNNode? {
+        guard let planeAnchor = capture.createPlaneAnchor(using: anchor) else {
+            showCustomAlert(withTitle: Strings.captureAlertErrorTitle, withMessage: Strings.captureAlertAnchorErrorMessage)
+            return nil
+        }
+        let planeMaterials = SCNMaterial()
+        planeMaterials.diffuse.contents = UIColor(white: 1, alpha: 0.5)
+        let planeNode = capture.createNode(using: planeAnchor,
+                                           material: planeMaterials,
+                                           position: SCNVector3(CGFloat(planeAnchor.center.x),
+                                                                CGFloat(planeAnchor.center.y),
+                                                                CGFloat(planeAnchor.center.z)))
+        planeNodes.append(planeNode)
         return planeNode
     }
     
-    func createImageNode(using raycastResult: ARRaycastResult) {
-        guard let planeAnchor = raycastResult.anchor as? ARPlaneAnchor else {return}
-        if numberOfNodes.count == 0 {
-            let imageNode = createImageNode(with: raycastResult)
-            captureSceneView.scene.rootNode.addChildNode(imageNode)
-            numberOfNodes.append(imageNode)
-            fadeBackgroundPlane()
+    func createStickerNode(using raycastResult: ARRaycastResult) {
+        if stickerNodes.count == 0 {
+            guard let raycastResultTransform = raycastResult.anchor?.transform else {return}
+            let stickerNode = capture.createNode(width: 0.1,
+                                                 height: 0.1,
+                                                 material: stickerMaterial,
+                                                 transform: SCNMatrix4(raycastResultTransform),
+                                                 position: SCNVector3(raycastResult.worldTransform.columns.3.x,
+                                                                      raycastResult.worldTransform.columns.3.y,
+                                                                      raycastResult.worldTransform.columns.3.z))
+            captureSceneView.scene.rootNode.addChildNode(stickerNode)
+            stickerNodes.append(stickerNode)
+            fadePlaneNode()
         } else {
-            showCustomAlert(withTitle: Strings.captureAlert2Title, withMessage: Strings.captureAlertMessage)
+            showCustomAlert(withTitle: Strings.captureAlertWarningTitle, withMessage: Strings.captureAlertExcessStickerErrorMessage)
+        }
+    }
+    
+    func fadePlaneNode() {
+        for planeNode in planeNodes {
+            planeNode.runAction(SCNAction.fadeOut(duration: 0.2))
+        }
+    }
+    
+    func removePlaneNode() {
+        for planeNode in planeNodes {
+            planeNode.removeFromParentNode()
         }
     }
     
     
     
-    func createImageNode(with raycastResult: ARRaycastResult) -> SCNNode {
-        let image = SCNPlane(width: 0.1, height: 0.1)
-        image.materials = [material]
-        let imageNode = SCNNode(geometry: image)
-        imageNode.transform = SCNMatrix4(raycastResult.anchor!.transform)
-        imageNode.eulerAngles = SCNVector3Make(imageNode.eulerAngles.x + (-Float.pi / 2),
-                                               imageNode.eulerAngles.y,
-                                               imageNode.eulerAngles.z)
-        imageNode.position = SCNVector3(
-            raycastResult.worldTransform.columns.3.x,
-            raycastResult.worldTransform.columns.3.y,
-            raycastResult.worldTransform.columns.3.z)
-        return imageNode
-    }
     
-    
-    
-    
-    
-    
-    
-    
-    func setDataSourceAndDelegate() {
-        imagePicker.sourceType = .photoLibrary
-        captureSceneView.delegate = self
-        imagePicker.delegate = self
-    }
     
     
     
@@ -467,17 +470,9 @@ class CaptureViewController: UIViewController {
     
     
     
-    func removeNode() {
-        for everyGrid in gridArray {
-            everyGrid.removeFromParentNode()
-        }
-    }
     
-    func fadeBackgroundPlane() {
-        for everyGrid in gridArray {
-            everyGrid.runAction(SCNAction.fadeOut(duration: 0.2))
-        }
-    }
+    
+    
     
     
     
@@ -502,7 +497,7 @@ extension CaptureViewController: UINavigationControllerDelegate, UIImagePickerCo
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-        material.diffuse.contents = imagePicked
+        stickerMaterial.diffuse.contents = imagePicked
         isStickerPicked = true
         imagePicker.dismiss(animated: true)
         captureTutorialContentView.isHidden = true
@@ -519,17 +514,15 @@ extension CaptureViewController: UINavigationControllerDelegate, UIImagePickerCo
 extension CaptureViewController: ARSCNViewDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-        let gridNode = createBackgroundPlane(with: planeAnchor)
-        node.addChildNode(gridNode)
+        guard let planeNode = createPlaneNode(using: anchor) else {return}
+        node.addChildNode(planeNode)
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-        if numberOfNodes.isEmpty {
-            removeNode()
-            let gridNode = createBackgroundPlane(with: planeAnchor)
-            node.addChildNode(gridNode)
+        if stickerNodes.isEmpty {
+            removePlaneNode()
+            guard let planeNode = createPlaneNode(using: anchor) else {return}
+            node.addChildNode(planeNode)
         }
     }
     

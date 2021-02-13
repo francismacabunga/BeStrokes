@@ -122,7 +122,7 @@ class LoginViewController: UIViewController {
     //MARK: - Buttons
     
     @IBAction func loginButton(_ sender: UIButton) {
-        Utilities.animateButton(button: sender)
+        Utilities.animate(button: sender)
         setLoginButtonTappedAnimation()
         processLogin()
         dismissKeyboard()

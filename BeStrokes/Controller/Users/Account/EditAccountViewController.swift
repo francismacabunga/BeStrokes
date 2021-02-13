@@ -218,7 +218,7 @@ class EditAccountViewController: UIViewController {
     }
     
     @IBAction func editAccountSaveButton(_ sender: UIButton) {
-        Utilities.animateButton(button: sender)
+        Utilities.animate(button: sender)
         let buttonCurrentTitle = sender.currentTitle
         let field = userData()
         if field[Strings.userFirstNameField] != "" &&  field[Strings.userLastNameField] != "" && field[Strings.userEmailField] != "" {

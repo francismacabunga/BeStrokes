@@ -167,7 +167,7 @@ class SignUpViewController: UIViewController {
     //MARK: - Buttons
     
     @IBAction func signUpButton(_ sender: UIButton) {
-        Utilities.animateButton(button: sender)
+        Utilities.animate(button: sender)
         validateProfilePicture()
         validateTextFields()
         signUpAccount()

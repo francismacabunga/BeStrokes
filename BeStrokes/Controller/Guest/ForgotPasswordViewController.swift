@@ -98,13 +98,13 @@ class ForgotPasswordViewController: UIViewController {
     //MARK: - Buttons
     
     @IBAction func forgotPasswordSubmitButton(_ sender: UIButton) {
-        Utilities.animateButton(button: sender)
+        Utilities.animate(button: sender)
         processForgotPassword()
         dismissKeyboard()
     }
     
     @IBAction func forgotPasswordDismissButton(_ sender: UIButton) {
-        Utilities.animateButton(button: sender)
+        Utilities.animate(button: sender)
         performSegue(withIdentifier: Strings.unwindToLandingVC, sender: self)
     }
     
