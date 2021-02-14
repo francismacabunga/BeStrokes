@@ -38,26 +38,15 @@ class CaptureViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    private let capture = Capture()
+    private var capture = Capture()
     private let imagePicker = UIImagePickerController()
     var isStickerPicked = false
     var isPresentedFromLandingVC = false
     private let trackingConfiguration = ARWorldTrackingConfiguration()
     private let stickerMaterial = SCNMaterial()
-    
-    
     private var planeNodes = [SCNNode]()
     private var stickerNodes = [SCNNode]()
-    
-    
-    
-    
-    private var raycastResult: ARRaycastResult? = nil
-    private var selectedNode: SCNNode? = nil
-    private var lastRotation: CGFloat?
-    private var originalRotation = CGFloat()
-    
-    
+    private var raycastTargetAlignment: ARRaycastQuery.TargetAlignment?
     var featuredStickerViewModel: FeaturedStickerViewModel? {
         didSet {
             guard let stickerData = featuredStickerViewModel else {return}
@@ -252,10 +241,10 @@ class CaptureViewController: UIViewController {
         let tapDeleteButton = UITapGestureRecognizer(target: self, action: #selector(tapDeleteButtonGestureHandler))
         let tapChooseImageButton = UITapGestureRecognizer(target: self, action: #selector(tapChooseImageButtonGestureHandler))
         let tapStickerName = UITapGestureRecognizer(target: self, action: #selector(tapStickerNameGestureHandler))
-        let tapSticker = UITapGestureRecognizer(target: self, action: #selector(self.tapStickerGestureHandler))
-        let longPressSticker = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressStickerGestureHandler(longPress:)))
-        let pinchSticker = UIPinchGestureRecognizer(target: self, action: #selector(Self.pinchStickerGestureHandler(pinch:)))
-        let rotateSticker = UIRotationGestureRecognizer(target: self, action: #selector(self.rotateStickerGestureHandler(rotate:)))
+        let tapSticker = UITapGestureRecognizer(target: self, action: #selector(tapStickerGestureHandler(tapGesture:)))
+        let longPressSticker = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressStickerGestureHandler(longPressGesture:)))
+        let pinchSticker = UIPinchGestureRecognizer(target: self, action: #selector(Self.pinchStickerGestureHandler(pinchGesture:)))
+        let rotateSticker = UIRotationGestureRecognizer(target: self, action: #selector(self.rotateStickerGestureHandler(rotateGesture:)))
         captureExitButtonImageView.addGestureRecognizer(tapExitButton)
         captureDeleteButtonImageView.addGestureRecognizer(tapDeleteButton)
         captureChooseImageButtonImageView.addGestureRecognizer(tapChooseImageButton)
@@ -297,75 +286,49 @@ class CaptureViewController: UIViewController {
     
     @objc func tapStickerGestureHandler(tapGesture: UITapGestureRecognizer) {
         if isStickerPicked {
-            guard let ARSCNView = capture.createARSCNView(using: tapGesture) else {
-                showCustomAlert(withTitle: Strings.captureAlertErrorTitle, withMessage: Strings.captureAlertARSCNViewErrorMessage)
-                return
-            }
-            let tapLocation = capture.getTapLocation(using: tapGesture, from: ARSCNView)
+            guard let ARSCNView = tapGesture.view as? ARSCNView else {return}
+            let tapLocation = tapGesture.location(in: ARSCNView)
             guard let raycastResult = capture.performRaycast(on: ARSCNView, tapLocation) else {
                 showCustomAlert(withTitle: Strings.captureAlertErrorTitle, withMessage: Strings.captureAlertRaycastErrorMessage)
                 return
             }
+            raycastTargetAlignment = raycastResult.targetAlignment
             createStickerNode(using: raycastResult)
             return
         }
         showCustomAlert(withTitle: Strings.captureAlertErrorTitle, withMessage: Strings.captureAlertNoStickerErrorMessage)
     }
     
-    @objc func longPressStickerGestureHandler(longPress: UILongPressGestureRecognizer) {
-        guard let view = longPress.view as? ARSCNView else {return}
-        let longPressLocation = longPress.location(in: view)
-        
-        
-        
-        
-        let pointSelectedInScreen = captureSceneView.hitTest(longPressLocation, options: nil)
-        guard let selectedNode = pointSelectedInScreen.first?.node else {return}
-        
-        if longPress.state == .changed {
-            guard let raycastQuery = captureSceneView.raycastQuery(from: longPressLocation, allowing: .existingPlaneGeometry, alignment: .any) else {return}
-            guard let raycastResult = view.session.raycast(raycastQuery).first else {return}
-            
-            
-            
-            selectedNode.position = SCNVector3(
-                raycastResult.worldTransform.columns.3.x,
-                raycastResult.worldTransform.columns.3.y,
-                raycastResult.worldTransform.columns.3.z)
-        }
+    @objc func longPressStickerGestureHandler(longPressGesture: UILongPressGestureRecognizer) {
+        guard let ARSCNView = longPressGesture.view as? ARSCNView else {return}
+        let longPressLocation = longPressGesture.location(in: ARSCNView)
+        let pointSelectedInScreen = capture.performHitTest(using: longPressLocation, from: ARSCNView)
+        guard let selectedNode = capture.getSelectedNode(using: pointSelectedInScreen) else {return}
+        capture.performLongPressGesture(using: longPressGesture, from: ARSCNView, on: selectedNode)
     }
     
-    @objc func pinchStickerGestureHandler(pinch: UIPinchGestureRecognizer) {
-        guard let view = pinch.view as? ARSCNView else {return}
-        let pinchLocation = pinch.location(in: view)
-        let pointSelectedInScreen = captureSceneView.hitTest(pinchLocation, options: nil)
-        guard let selectedNode = pointSelectedInScreen.first?.node else {return}
-        if pinch.state == .changed {
-            selectedNode.scale = SCNVector3Make(
-                Float(pinch.scale) * selectedNode.scale.x,
-                Float(pinch.scale) * selectedNode.scale.y,
-                Float(pinch.scale) * selectedNode.scale.z)
-            pinch.scale = 1
-        }
+    @objc func pinchStickerGestureHandler(pinchGesture: UIPinchGestureRecognizer) {
+        guard let ARSCNView = pinchGesture.view as? ARSCNView else {return}
+        let pinchLocation = pinchGesture.location(in: ARSCNView)
+        let pointSelectedInScreen = capture.performHitTest(using: pinchLocation, from: ARSCNView)
+        guard let selectedNode = capture.getSelectedNode(using: pointSelectedInScreen) else {return}
+        capture.performPinchGesture(using: pinchGesture, on: selectedNode)
     }
     
-    @objc func rotateStickerGestureHandler(rotate: UIRotationGestureRecognizer) {
-        guard let view = rotate.view as? ARSCNView else {return}
-        let rotateLocation = rotate.location(in: view)
-        let pointSelectedInScreen = captureSceneView.hitTest(rotateLocation, options: nil)
-        selectedNode = pointSelectedInScreen.first?.node
-        let rotationGesture = -rotate.rotation
-        if selectedNode != nil {
-            switch rotate.state {
-            case .changed:
-                rotatePosition(using: rotationGesture)
-            case .ended:
-                endRotatePosition()
-            default:
-                break
-            }
-        }
+    @objc func rotateStickerGestureHandler(rotateGesture: UIRotationGestureRecognizer) {
+        guard let ARSCNView = rotateGesture.view as? ARSCNView else {return}
+        let rotateLocation = rotateGesture.location(in: ARSCNView)
+        let pointSelectedInScreen = capture.performHitTest(using: rotateLocation, from: ARSCNView)
+        guard let selectedNode = capture.getSelectedNode(using: pointSelectedInScreen) else {return}
+        capture.performRotationGesture(using: rotateGesture, on: selectedNode, raycastTargetAlignment: raycastTargetAlignment!)
     }
+    
+    
+    
+    
+    
+    
+    
     
     
     //MARK: - Buttons
@@ -450,23 +413,7 @@ class CaptureViewController: UIViewController {
     
     
     
-    func rotatePosition(using rotation: CGFloat) {
-        if lastRotation != nil {
-            if raycastResult?.targetAlignment == .horizontal {
-                selectedNode!.eulerAngles.y = Float(rotation) + Float(lastRotation!)
-            } else if raycastResult?.targetAlignment == .vertical  {
-                selectedNode!.eulerAngles.z = Float(rotation) + Float(lastRotation!)
-            }
-        }
-    }
     
-    func endRotatePosition() {
-        if raycastResult?.targetAlignment == .horizontal {
-            lastRotation = CGFloat(selectedNode!.eulerAngles.y)
-        } else if raycastResult?.targetAlignment == .vertical {
-            lastRotation = CGFloat(selectedNode!.eulerAngles.z)
-        }
-    }
     
     
     
