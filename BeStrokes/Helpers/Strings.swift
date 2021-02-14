@@ -78,7 +78,7 @@ struct Strings {
     static let captureAlertWarningTitle = "Warning"
     static let captureAlertExcessStickerErrorMessage = "Sticker is already present. You can only add 1 sticker as of the moment."
     static let captureAlertNoStickerErrorMessage = "Please choose a sticker first."
-    static let captureAlertRaycastErrorMessage = "Cannot perform a Raycast query as of the moment."
+    static let captureAlertRaycastErrorMessage = "No flat surface has been detected yet."
     static let captureAlertAnchorErrorMessage = "Cannot create a plane anchor as of the moment."
     static let captureAlertAction = "Dismiss"
     
