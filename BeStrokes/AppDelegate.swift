@@ -25,28 +25,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         openedFromTryMeButton = UserDefaults.standard.bool(forKey: Strings.firstTimeLaunchFromTMBKey)
         openedFromCaptureButton = UserDefaults.standard.bool(forKey: Strings.firstTimeLaunchFromCBKey)
         
-        if openedFromTryMeButton {
-            setOpenedFromTryMeButtonValue()
-        } else {
+        if !openedFromTryMeButton {
             UserDefaults.standard.setValue(true, forKey: Strings.firstTimeLaunchFromTMBKey)
         }
         
-        if openedFromCaptureButton {
-            setOpenedFromCaptureButton()
-        } else {
+        if !openedFromCaptureButton {
             UserDefaults.standard.setValue(true, forKey: Strings.firstTimeLaunchFromCBKey)
         }
         
         return true
         
-    }
-    
-    func setOpenedFromTryMeButtonValue() {
-        openedFromTryMeButton = true
-    }
-    
-    func setOpenedFromCaptureButton() {
-        openedFromCaptureButton = true
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

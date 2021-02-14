@@ -85,6 +85,7 @@ class CaptureViewController: UIViewController {
         if isPresentedFromLandingVC {
             showCaptureVCTutorial()
             captureTutorial3Label.isHidden = false
+            return
         }
         if isPresentedWithTabBar() {
             if !appDelegate.openedFromCaptureButton {
@@ -324,42 +325,38 @@ class CaptureViewController: UIViewController {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
     //MARK: - Buttons
     
     @IBAction func captureDontShowAgainButton(_ sender: UIButton) {
         captureVisualEffectView.isHidden = true
         setPlaneDetection()
+        if isPresentedFromLandingVC {
+            setQuickOptionsDesignWithoutTabBar()
+            captureChooseImageButtonImageView.isHidden = false
+            captureTutorialContentView.isHidden = false
+            captureTutorialContentViewTopConstraint.constant = 128
+            return
+        }
         if isPresentedWithTabBar() {
-            appDelegate.setOpenedFromCaptureButton()
             setQuickOptionsDesignWithTabBar()
             captureDeleteButtonImageView.isHidden = false
         } else {
-            appDelegate.setOpenedFromTryMeButtonValue()
             setQuickOptionsDesignWithoutTabBar()
             getStickerInformation()
-            if isPresentedFromLandingVC {
-                captureChooseImageButtonImageView.isHidden = false
-                captureTutorialContentView.isHidden = false
-                captureTutorialContentViewTopConstraint.constant = 128
-            }
         }
     }
     
     
-    //MARK: - Random
+    //MARK: - Data Source And Delegate
     
     func setDataSourceAndDelegate() {
         captureSceneView.delegate = self
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
     }
+    
+    
+    //MARK: - SCNode Process
     
     func createPlaneNode(using anchor: ARAnchor) -> SCNNode? {
         guard let planeAnchor = capture.createPlaneAnchor(using: anchor) else {
@@ -407,35 +404,7 @@ class CaptureViewController: UIViewController {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //MARK: - Image Picker & Navigation Delegate
