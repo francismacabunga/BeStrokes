@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.enableAutoToolbar = false
         openedFromTryMeButton = UserDefaults.standard.bool(forKey: Strings.firstTimeLaunchFromTMBKey)
         openedFromCaptureButton = UserDefaults.standard.bool(forKey: Strings.firstTimeLaunchFromCBKey)
         

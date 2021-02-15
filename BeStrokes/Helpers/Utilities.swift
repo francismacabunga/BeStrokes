@@ -73,6 +73,8 @@ struct Utilities {
                             isSecureTextEntry: Bool,
                             keyboardType: UIKeyboardType,
                             textContentType: UITextContentType? = nil,
+                            capitalization: UITextAutocapitalizationType? = nil,
+                            returnKeyType: UIReturnKeyType? = nil,
                             textColor: UIColor? = nil,
                             backgroundColor: UIColor? = nil,
                             placeholder: String? = nil,
@@ -85,6 +87,12 @@ struct Utilities {
         textField.keyboardType = keyboardType
         if textContentType != nil {
             textField.textContentType = textContentType!
+        }
+        if capitalization != nil {
+            textField.autocapitalizationType = capitalization!
+        }
+        if returnKeyType != nil {
+            textField.returnKeyType = returnKeyType!
         }
         if textColor != nil {
             textField.textColor = textColor!
@@ -347,7 +355,8 @@ struct Utilities {
                             separatorStyle: UITableViewCell.SeparatorStyle,
                             showVerticalScrollIndicator: Bool,
                             separatorColor: UIColor? = nil,
-                            rowHeight: CGFloat? = nil)
+                            rowHeight: CGFloat? = nil,
+                            isHidden: Bool? = nil)
     {
         tableView.backgroundColor = backgroundColor
         tableView.separatorStyle = separatorStyle
@@ -357,6 +366,11 @@ struct Utilities {
         }
         if rowHeight != nil {
             tableView.rowHeight = rowHeight!
+        }
+        if isHidden != nil {
+            if isHidden! {
+                tableView.isHidden = true
+            }
         }
     }
     

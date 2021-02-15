@@ -82,6 +82,7 @@ struct LovedStickerViewModel {
 
 struct FetchStickerData {
     
+    private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
     func featuredStickerCollectionView(completion: @escaping (Error?, [FeaturedStickerViewModel]?) -> Void) {
@@ -149,6 +150,30 @@ struct FetchStickerData {
                                         StickerCategoryViewModel(StickerCategoryModel(category: Strings.coloredStickers, isCategorySelected: false)),
                                         StickerCategoryViewModel(StickerCategoryModel(category: Strings.travelStickers, isCategorySelected: false))]
         return stickerCategoryViewModel
+    }
+    
+    func searchSticker(using searchTextFieldText: String, completion: @escaping (Error?, Bool, Bool?, LovedStickerViewModel?) -> Void) {
+        guard let signedInUser = user else {
+            completion(nil, false, nil, nil)
+            return
+        }
+        db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.lovedStickerCollection).whereField(Strings.stickerNameField, isEqualTo: searchTextFieldText).getDocuments { (snapshot, error) in
+            guard let error = error else {
+                guard let stickerData = snapshot?.documents.first else {
+                    completion(nil, true, false, nil)
+                    return
+                }
+                let searchedSticker = LovedStickerViewModel(StickerModel(stickerID: stickerData[Strings.stickerIDField] as! String,
+                                                                         name: stickerData[Strings.stickerNameField] as! String,
+                                                                         image: stickerData[Strings.stickerImageField] as! String,
+                                                                         description: stickerData[Strings.stickerDescriptionField] as! String,
+                                                                         category: stickerData[Strings.stickerCategoryField] as! String,
+                                                                         tag: stickerData[Strings.stickerTagField] as! String))
+                completion(nil, true, true, searchedSticker)
+                return
+            }
+            completion(error, true, nil, nil)
+        }
     }
     
 }

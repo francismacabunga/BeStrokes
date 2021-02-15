@@ -84,6 +84,7 @@ struct Strings {
     
     //MARK: - Warning Labels
     static let accountNoLovedStickerLabel = "You don't have any loved stickers yet."
+    static let accountInvalidStickerLabel = "No results for this sticker."
     static let editAccountEmailVerficationErrorLabel = "Account cannot be updated. Kindly tap the resend button below to resend an email verification."
     static let editAccountTextFieldsErrorLabel = "Some fields are incomplete."
     static let editAccountTextFieldErrorLabel = "All fields are required, please fill them out."

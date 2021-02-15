@@ -21,7 +21,7 @@ class AccountViewController: UIViewController {
     @IBOutlet weak var accountHeading2Label: UILabel!
     @IBOutlet weak var accountNameHeadingLabel: UILabel!
     @IBOutlet weak var accountEmailHeadingLabel: UILabel!
-    @IBOutlet weak var accountNoLovedStickerLabel: UILabel!
+    @IBOutlet weak var accountWarningLabel: UILabel!
     @IBOutlet weak var accountNotificationButton: UIButton!
     @IBOutlet weak var accountEditButton: UIButton!
     @IBOutlet weak var accountSearchButton: UIButton!
@@ -29,6 +29,7 @@ class AccountViewController: UIViewController {
     @IBOutlet weak var accountImageView: UIImageView!
     @IBOutlet weak var accountLovedStickerTableView: UITableView!
     @IBOutlet weak var accountLoadingIndicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var accountNoLovedStickerLabelConstraint: NSLayoutConstraint!
     
     
     //MARK: - Constants / Variables
@@ -65,14 +66,14 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(button: accountNotificationButton, backgroundImage: UIImage(systemName: Strings.accountNotificationIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(button: accountEditButton, backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(textField: accountSearchTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.searchTextField, placeholderTextColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(textField: accountSearchTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, capitalization: .words, returnKeyType: .search, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.searchTextField, placeholderTextColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(imageView: accountImageView, isCircular: true)
         Utilities.setDesignOn(label: accountHeading1Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: Strings.accountHeading1Text)
         Utilities.setDesignOn(label: accountNameHeadingLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.6)
         Utilities.setDesignOn(label: accountEmailHeadingLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: " ", canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(label: accountHeading2Label, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.accountHeading2Text)
-        Utilities.setDesignOn(label: accountNoLovedStickerLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, text: Strings.accountNoLovedStickerLabel, isHidden: true)
-        Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170)
+        Utilities.setDesignOn(label: accountWarningLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, isHidden: true)
+        Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
         Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: true)
     }
     
@@ -116,31 +117,72 @@ class AccountViewController: UIViewController {
     }
     
     func showLoadingIndicator() {
-        accountNoLovedStickerLabel.isHidden = true
+        accountWarningLabel.isHidden = true
         accountLoadingIndicatorView.isHidden = false
     }
     
     func showEmptyLovedStickersLabel() {
         accountBottomStackView.isHidden = true
+        accountLovedStickerTableView.isHidden = true
         accountLoadingIndicatorView.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
             accountLoadingIndicatorView.isHidden = true
-            accountNoLovedStickerLabel.isHidden = false
+            accountWarningLabel.text = Strings.accountNoLovedStickerLabel
+            accountWarningLabel.isHidden = false
         }
     }
     
-    func showLovedStickersTableView() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
+    func showLovedStickersTableView(withDelay delay: Double) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [self] in
             accountBottomStackView.isHidden = false
+            accountLovedStickerTableView.isHidden = false
             accountLoadingIndicatorView.isHidden = true
-            accountNoLovedStickerLabel.isHidden = true
+            accountWarningLabel.isHidden = true
         }
+    }
+    
+    func showSearchedSticker() {
+        DispatchQueue.main.async { [self] in
+            accountLovedStickerTableView.reloadData()
+        }
+        accountWarningLabel.isHidden = true
+        accountLovedStickerTableView.isHidden = false
+    }
+    
+    func showNoStickerResultLabel() {
+        accountLovedStickerTableView.isHidden = true
+        accountWarningLabel.isHidden = false
+        accountWarningLabel.text = Strings.accountInvalidStickerLabel
+        accountNoLovedStickerLabelConstraint.constant = 115
+    }
+    
+    func showSearchTextField() {
+        accountTextFieldContentView.isHidden = false
+        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountArrowUpIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+    }
+    
+    func hideSearchTextField() {
+        accountTextFieldContentView.isHidden = true
+        accountSearchTextField.text = nil
+        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        getLovedStickersViewModel()
     }
     
     func hideLoadingSkeletonView() {
         accountImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         accountEmailHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+    }
+    
+    func checkIfStickerViewModelIsEmpty(withDelay delay: Double) {
+        if lovedStickerViewModel?.count == 0 {
+            showEmptyLovedStickersLabel()
+        } else {
+            showLovedStickersTableView(withDelay: delay)
+            DispatchQueue.main.async { [self] in
+                accountLovedStickerTableView.reloadData()
+            }
+        }
     }
     
     func transitionToLandingVC() {
@@ -185,14 +227,7 @@ class AccountViewController: UIViewController {
                 guard let lovedStickerData = lovedStickerData else {return}
                 lovedStickerViewModel = lovedStickerData
                 showLoadingIndicator()
-                if lovedStickerViewModel?.count == 0 {
-                    showEmptyLovedStickersLabel()
-                    return
-                }
-                showLovedStickersTableView()
-                DispatchQueue.main.async { [self] in
-                    accountLovedStickerTableView.reloadData()
-                }
+                checkIfStickerViewModelIsEmpty(withDelay: 1.5)
                 return
             }
             showErrorFetchingAlert(usingError: true, withErrorMessage: error)
@@ -214,11 +249,13 @@ class AccountViewController: UIViewController {
     @IBAction func accountSearchButton(_ sender: UIButton) {
         isButtonPressed = !isButtonPressed
         if isButtonPressed {
-            accountTextFieldContentView.isHidden = false
-            Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountArrowUpIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            showSearchTextField()
         } else {
-            accountTextFieldContentView.isHidden = true
-            Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            hideSearchTextField()
+        }
+        if accountLovedStickerTableView.isHidden == true {
+            accountNoLovedStickerLabelConstraint.constant = 100
+            checkIfStickerViewModelIsEmpty(withDelay: 0)
         }
     }
     
@@ -228,6 +265,7 @@ class AccountViewController: UIViewController {
     func setDataSourceAndDelegate() {
         accountLovedStickerTableView.dataSource = self
         accountLovedStickerTableView.delegate = self
+        accountSearchTextField.delegate = self
     }
     
     func registerNib() {
@@ -282,6 +320,36 @@ extension AccountViewController: LovedStickerCellDelegate {
     
     func getVC(using viewController: UIViewController) {
         present(viewController, animated: true)
+    }
+    
+}
+
+
+//MARK: - Text Field Delegate
+
+extension AccountViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        accountSearchTextField.resignFirstResponder()
+        fetchStickerData.searchSticker(using: accountSearchTextField.text!) { [self] (error, isUserSignedIn, isStickerValid, stickerData) in
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let isStickerValid = isStickerValid else {return}
+                if !isStickerValid {
+                    showNoStickerResultLabel()
+                    return
+                }
+                guard let stickerData = stickerData else {return}
+                lovedStickerViewModel = [stickerData]
+                showSearchedSticker()
+                return
+            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+        }
+        return true
     }
     
 }
