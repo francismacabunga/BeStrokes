@@ -338,9 +338,11 @@ class CaptureViewController: UIViewController {
             return
         }
         if isPresentedWithTabBar() {
+            appDelegate.setTrueToOpenedFromCaptureButton()
             setQuickOptionsDesignWithTabBar()
             captureDeleteButtonImageView.isHidden = false
         } else {
+            appDelegate.setTrueToOpenedFromTryMeButton()
             setQuickOptionsDesignWithoutTabBar()
             getStickerInformation()
         }
