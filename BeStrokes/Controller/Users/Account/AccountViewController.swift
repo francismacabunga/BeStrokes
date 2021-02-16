@@ -40,6 +40,7 @@ class AccountViewController: UIViewController {
     private var userViewModel: UserViewModel?
     private let heartButtonLogic = HeartButtonLogic()
     private var isButtonPressed = false
+    private var hasPerformedSearch = false
     
     
     //MARK: - View Controller Life Cycle
@@ -50,7 +51,9 @@ class AccountViewController: UIViewController {
         setDesignElements()
         setDataSourceAndDelegate()
         registerNib()
-        setData()
+        showLoadingSkeletonView()
+        setSignedInUserData()
+        setLovedStickersData()
         
     }
     
@@ -81,18 +84,6 @@ class AccountViewController: UIViewController {
         return .lightContent
     }
     
-    func showLoadingSkeletonView() {
-        DispatchQueue.main.async { [self] in
-            accountImageView.isSkeletonable = true
-            Utilities.setDesignOn(imageView: accountImageView, isSkeletonCircular: true)
-            accountNameHeadingLabel.isSkeletonable = true
-            accountEmailHeadingLabel.isSkeletonable = true
-            accountImageView.showAnimatedSkeleton()
-            accountNameHeadingLabel.showAnimatedSkeleton()
-            accountEmailHeadingLabel.showAnimatedSkeleton()
-        }
-    }
-    
     func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
         var alert = UIAlertController()
         if error {
@@ -116,32 +107,43 @@ class AccountViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    func showLoadingIndicator() {
-        accountWarningLabel.isHidden = true
-        accountLoadingIndicatorView.isHidden = false
-    }
-    
-    func showEmptyLovedStickersLabel() {
-        accountBottomStackView.isHidden = true
-        accountLovedStickerTableView.isHidden = true
-        accountLoadingIndicatorView.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
-            accountLoadingIndicatorView.isHidden = true
-            accountWarningLabel.text = Strings.accountNoLovedStickerLabel
-            accountWarningLabel.isHidden = false
+    func showLoadingSkeletonView() {
+        DispatchQueue.main.async { [self] in
+            accountImageView.isSkeletonable = true
+            Utilities.setDesignOn(imageView: accountImageView, isSkeletonCircular: true)
+            accountNameHeadingLabel.isSkeletonable = true
+            accountEmailHeadingLabel.isSkeletonable = true
+            accountImageView.showAnimatedSkeleton()
+            accountNameHeadingLabel.showAnimatedSkeleton()
+            accountEmailHeadingLabel.showAnimatedSkeleton()
         }
     }
     
-    func showLovedStickersTableView(withDelay delay: Double) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [self] in
-            accountBottomStackView.isHidden = false
-            accountLovedStickerTableView.isHidden = false
-            accountLoadingIndicatorView.isHidden = true
-            accountWarningLabel.isHidden = true
+    func hideLoadingSkeletonView() {
+        accountImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        accountEmailHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+    }
+    
+    func showSearchTextField() {
+        accountTextFieldContentView.isHidden = false
+        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountArrowUpIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+    }
+    
+    func hideSearchTextField() {
+        accountTextFieldContentView.isHidden = true
+        accountSearchTextField.text = nil
+        accountSearchTextField.resignFirstResponder()
+        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        if hasPerformedSearch {
+            setLovedStickersData()
+            hasPerformedSearch = false
         }
     }
     
-    func showSearchedSticker() {
+    func showSearchedSticker(using stickerData: [LovedStickerViewModel]) {
+        hasPerformedSearch = true
+        lovedStickerViewModel = stickerData
         DispatchQueue.main.async { [self] in
             accountLovedStickerTableView.reloadData()
         }
@@ -156,48 +158,7 @@ class AccountViewController: UIViewController {
         accountNoLovedStickerLabelConstraint.constant = 115
     }
     
-    func showSearchTextField() {
-        accountTextFieldContentView.isHidden = false
-        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountArrowUpIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-    }
-    
-    func hideSearchTextField() {
-        accountTextFieldContentView.isHidden = true
-        accountSearchTextField.text = nil
-        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        getLovedStickersViewModel()
-    }
-    
-    func hideLoadingSkeletonView() {
-        accountImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        accountEmailHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-    }
-    
-    func checkIfStickerViewModelIsEmpty(withDelay delay: Double) {
-        if lovedStickerViewModel?.count == 0 {
-            showEmptyLovedStickersLabel()
-        } else {
-            showLovedStickersTableView(withDelay: delay)
-            DispatchQueue.main.async { [self] in
-                accountLovedStickerTableView.reloadData()
-            }
-        }
-    }
-    
-    func transitionToLandingVC() {
-        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
-        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
-        view.window?.rootViewController = landingVC
-        view.window?.makeKeyAndVisible()
-    }
-    
-    func getData() {
-        getSignedInUserData()
-        getLovedStickersViewModel()
-    }
-    
-    func getSignedInUserData() {
+    func setSignedInUserData() {
         user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
             guard let error = error else {
                 if !isUserSignedIn {
@@ -205,7 +166,7 @@ class AccountViewController: UIViewController {
                     return
                 }
                 guard let userData = userData else {return}
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
                     accountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
                     accountNameHeadingLabel.text = "\(userData.firstName) \(userData.lastname)"
                     accountEmailHeadingLabel.text = userData.email
@@ -217,7 +178,7 @@ class AccountViewController: UIViewController {
         }
     }
     
-    func getLovedStickersViewModel() {
+    func setLovedStickersData() {
         heartButtonLogic.showLovedSticker { [self] (error, isUserSignedIn, lovedStickerData) in
             guard let error = error else {
                 if !isUserSignedIn {
@@ -226,17 +187,40 @@ class AccountViewController: UIViewController {
                 }
                 guard let lovedStickerData = lovedStickerData else {return}
                 lovedStickerViewModel = lovedStickerData
-                showLoadingIndicator()
-                checkIfStickerViewModelIsEmpty(withDelay: 1.5)
+                checkIfStickerViewModelIsEmpty(withDelay: 0.5)
                 return
             }
             showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     
-    func setData() {
-        showLoadingSkeletonView()
-        getData()
+    func checkIfStickerViewModelIsEmpty(withDelay delay: Double) {
+        accountBottomStackView.isHidden = true
+        accountWarningLabel.isHidden = true
+        accountLovedStickerTableView.isHidden = true
+        accountLoadingIndicatorView.isHidden = false
+        if lovedStickerViewModel?.count == 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
+                accountLoadingIndicatorView.isHidden = true
+                accountWarningLabel.text = Strings.accountNoLovedStickerLabel
+                accountWarningLabel.isHidden = false
+            }
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [self] in
+                accountBottomStackView.isHidden = false
+                accountLovedStickerTableView.isHidden = false
+                accountLoadingIndicatorView.isHidden = true
+                accountWarningLabel.isHidden = true
+                accountLovedStickerTableView.reloadData()
+            }
+        }
+    }
+    
+    func transitionToLandingVC() {
+        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
+        view.window?.rootViewController = landingVC
+        view.window?.makeKeyAndVisible()
     }
     
     
@@ -343,8 +327,7 @@ extension AccountViewController: UITextFieldDelegate {
                     return
                 }
                 guard let stickerData = stickerData else {return}
-                lovedStickerViewModel = [stickerData]
-                showSearchedSticker()
+                showSearchedSticker(using: [stickerData])
                 return
             }
             showErrorFetchingAlert(usingError: true, withErrorMessage: error)

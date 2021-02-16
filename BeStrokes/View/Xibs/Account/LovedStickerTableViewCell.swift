@@ -42,6 +42,14 @@ class LovedStickerTableViewCell: UITableViewCell {
         
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        lovedStickerHeadingLabel.text = nil
+        lovedStickerImageView.image = nil
+        
+    }
+    
     
     //MARK: - Design Elements
     

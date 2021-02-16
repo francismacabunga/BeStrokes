@@ -173,7 +173,7 @@ class StickerOptionViewController: UIViewController {
     @objc func tapGestureHandler(tap: UITapGestureRecognizer) {
         if heartButtonTapped! {
             untapHeartButtonUsing(stickerViewModel: stickerViewModel) { (isErrorPresent) in}
-            untapHeartButtonUsing(lovedStickerViewModel: lovedStickerViewModel) { (isErrorPresent) in
+            untapHeartButtonUsing(lovedStickerViewModel: lovedStickerViewModel) { [self] (isErrorPresent) in
                 if !isErrorPresent {
                     self.dismiss(animated: true)
                 }
