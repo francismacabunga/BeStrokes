@@ -52,7 +52,7 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     
     func setDesignElements() {
         Utilities.setDesignOn(view: stickerCategoryContentView, isCircular: true)
-        Utilities.setDesignOn(label: stickerCategoryLabel, font: Strings.defaultFontBold, fontSize: 13, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, canResize: true, minimumScaleFactor: 0.9)
+        Utilities.setDesignOn(label: stickerCategoryLabel, font: Strings.defaultFontBold, fontSize: 13, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: true, minimumScaleFactor: 0.9)
     }
     
 }

@@ -12,14 +12,17 @@ struct Utilities {
     
     //MARK: - Design Elements
     
+    static let setLightModeAppearance = Notification.Name(Strings.lightModeNotification)
+    static let setDarkModeAppearance = Notification.Name(Strings.darkModeNotification)
+    
     // Label
     static func setDesignOn(label: UILabel,
                             font: String,
                             fontSize: CGFloat,
-                            fontColor: UIColor,
                             numberofLines: Int,
                             textAlignment: NSTextAlignment? = .none,
                             lineBreakMode: NSLineBreakMode? = .none,
+                            fontColor: UIColor? = nil,
                             text: String? = nil,
                             canResize: Bool? = nil,
                             minimumScaleFactor: CGFloat? = nil,
@@ -28,13 +31,15 @@ struct Utilities {
                             isHidden: Bool? = nil)
     {
         label.font = UIFont(name: font, size: fontSize)
-        label.textColor = fontColor
         label.numberOfLines = numberofLines
         if textAlignment != nil {
             label.textAlignment = textAlignment!
         }
         if lineBreakMode != nil {
             label.lineBreakMode = lineBreakMode!
+        }
+        if fontColor != nil {
+            label.textColor = fontColor!
         }
         if text != nil {
             label.text = text!
@@ -400,11 +405,6 @@ struct Utilities {
     }
     
 }
-
-
-
-
-
 
 
 

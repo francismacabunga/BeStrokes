@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Foundation
 
 class ProfileTableViewCell: UITableViewCell {
     
@@ -19,7 +20,7 @@ class ProfileTableViewCell: UITableViewCell {
     
     //MARK: - Constants / Variables
     
-    private var isLightAppearanceOn = UserDefaults.standard.bool(forKey: "isLightAppearanceOn")
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var profileSettingsViewModel: ProfileSettingsViewModel! {
         didSet {
             let label = profileSettingsViewModel.profileSettings.first!.settingLabel
@@ -32,20 +33,13 @@ class ProfileTableViewCell: UITableViewCell {
                 settingLabel.text = label
                 settingIconImageView.image = UIImage(systemName: icon)
             }
-            
-            
             if settingLabel.text == Strings.profileSettingsDarkAppearance {
-                if isLightAppearanceOn {
+                if appDelegate.isLightModeOn {
                     settingSwitch.isOn = false
                 } else {
                     settingSwitch.isOn = true
                 }
             }
-            
-            
-            
-            
-            
         }
     }
     
@@ -66,41 +60,35 @@ class ProfileTableViewCell: UITableViewCell {
         self.selectionStyle = .none
         Utilities.setDesignOn(view: settingContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(imageView: settingIconImageView, tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(label: settingLabel, font: Strings.defaultFont, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left)
+        Utilities.setDesignOn(label: settingLabel, font: Strings.defaultFont, fontSize: 15, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
     }
     
     
     //MARK: - Switches
     
     @IBAction func profileSwitch(_ sender: UISwitch) {
-        
-        
-        
-        
-
         switch settingLabel.text {
         case Strings.profileSettingsNotifications:
             if sender.isOn {
                 print("Notification is turned on!")
-
             } else {
                 print("Notification is turned off!")
-
             }
         case Strings.profileSettingsDarkAppearance:
             if sender.isOn {
                 print("Dark Appearance is turned on!")
-                UserDefaults.standard.setValue(false, forKey: "isLightAppearanceOn")
+                appDelegate.setValue(forKey: Strings.lightModeKey, value: false, forLightModeSwitch: false)
+                NotificationCenter.default.post(name: Utilities.setDarkModeAppearance, object: nil)
             } else {
                 print("Dark Appearance is turned off!")
-                UserDefaults.standard.setValue(true, forKey: "isLightAppearanceOn")
+                appDelegate.setValue(forKey: Strings.lightModeKey, value: true, forLightModeSwitch: true)
+                NotificationCenter.default.post(name: Utilities.setLightModeAppearance, object: nil)
             }
         default:
             return
         }
-
-        
-        
     }
     
 }
+
+

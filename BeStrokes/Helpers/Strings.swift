@@ -231,12 +231,19 @@ struct Strings {
     static let stickerIsCategorySelected = "isCategorySelected"
     static let stickerSelectedOnStart = "selectedOnStart"
     
-    //MARK: - User Defaults
-    static let firstTimeLaunchFromTMBKey = "openedFromTryMeButton"
-    static let firstTimeLaunchFromCBKey = "openedFromCaptureButton"
-    
     //MARK: - Password Regex
     static let regexFormat = "SELF MATCHES %@"
     static let validationType = "^(?=.*[a-z])(?=.*[$@$#!%*?&])[A-Za-z\\d$@$#!%*?&]{8,}"
+    
+    
+    
+    
+    //MARK: - User Defaults / Notification
+    
+    static let firstTimeLaunchFromTMBKey = "openedFromTryMeButton"
+    static let firstTimeLaunchFromCBKey = "openedFromCaptureButton"
+    static let lightModeKey = "isLightModeOn"
+    static let lightModeNotification = "setLightModeAppearance"
+    static let darkModeNotification = "setDarkModeAppearance"
     
 }

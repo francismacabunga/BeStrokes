@@ -29,6 +29,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private let user = User()
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
@@ -37,6 +38,7 @@ class HomeViewController: UIViewController {
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private var stickerCategorySelected: String?
     private var featuredHeartButtonTapped: Bool?
+    private var isLightMode = false
     
     
     //MARK: - View Controller Life Cycle
@@ -60,21 +62,73 @@ class HomeViewController: UIViewController {
     //MARK: - Design Elements
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        if isLightMode {
+            return .darkContent
+        } else {
+            return .lightContent
+        }
     }
     
     func setDesignElements() {
-        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: homeFeaturedView, backgroundColor: .clear)
         Utilities.setDesignOn(view: homeStickerView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: homeContentStackView, backgroundColor: .clear)
-        Utilities.setDesignOn(label: homeHeading1Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeHeading1Text)
-        Utilities.setDesignOn(label: homeHeading2Label, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.homeHeading2Text)
+        Utilities.setDesignOn(label: homeHeading1Label, font: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.homeHeading1Text)
+        Utilities.setDesignOn(label: homeHeading2Label, font: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.homeHeading2Text)
         Utilities.setDesignOn(collectionView: homeFeaturedStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isHidden: true)
+        checkThemeAppearance()
+        NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
         showLoadingProfilePicDesign()
+    }
+    
+    func checkThemeAppearance() {
+        if appDelegate.isLightModeOn {
+            setLightMode()
+        } else {
+            setDarkMode()
+        }
+    }
+    
+    @objc func setLightMode() {
+        print("Light Mode Activated - HomeVC")
+        UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(view: view, backgroundColor: .white)
+            isLightMode = true
+            setNeedsStatusBarAppearanceUpdate()
+            
+            homeProfilePictureButton.layer.shadowColor = UIColor.red.cgColor
+            homeProfilePictureButton.layer.shadowOpacity = 1
+            homeProfilePictureButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+            homeProfilePictureButton.layer.shadowRadius = 50
+            homeProfilePictureButton.layer.masksToBounds = false
+            Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
+            
+            homeHeading1Label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            homeHeading2Label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        }
+    }
+    
+    @objc func setDarkMode() {
+        print("Dark Mode Activated - HomeVC")
+        UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            isLightMode = false
+            setNeedsStatusBarAppearanceUpdate()
+            
+            homeProfilePictureButton.layer.shadowColor = nil
+            homeProfilePictureButton.layer.shadowOpacity = 0
+            homeProfilePictureButton.layer.shadowOffset = .zero
+            homeProfilePictureButton.layer.shadowRadius = 0
+            homeProfilePictureButton.layer.masksToBounds = true
+            Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
+            
+            homeHeading1Label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            homeHeading2Label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        }
     }
     
     func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {

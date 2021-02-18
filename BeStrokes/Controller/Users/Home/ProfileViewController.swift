@@ -26,6 +26,7 @@ class ProfileViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private var profileSettingsViewModel: [ProfileSettingsViewModel]!
     private let fetchProfileData = FetchProfileData()
     private let user = User()
@@ -48,15 +49,58 @@ class ProfileViewController: UIViewController {
     
     func setDesignElements() {
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(view: profileContentView, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), setCustomCircleCurve: 25)
+        Utilities.setDesignOn(view: profileContentView, setCustomCircleCurve: 25)
         Utilities.setDesignOn(navigationBar: profileNavigationBar, isDarkMode: true)
         Utilities.setDesignOn(imageView: profileImageView, isCircular: true)
-        Utilities.setDesignOn(label: profileNameLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
-        Utilities.setDesignOn(label: profileEmailLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
-        Utilities.setDesignOn(label: profileHeadingLabel, font: Strings.defaultFontBold, fontSize: 30, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.profileSettingsHeadingText)
-        Utilities.setDesignOn(label: profileTrademark1Label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: Strings.profileTrademark1Text)
-        Utilities.setDesignOn(label: profileTrademark2Label, font: Strings.defaultFontMedium, fontSize: 10, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: Strings.profileTrademark2Text)
+        Utilities.setDesignOn(label: profileNameLabel, font: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
+        Utilities.setDesignOn(label: profileEmailLabel, font: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
+        Utilities.setDesignOn(label: profileHeadingLabel, font: Strings.defaultFontBold, fontSize: 30, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileSettingsHeadingText)
+        Utilities.setDesignOn(label: profileTrademark1Label, font: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileTrademark1Text)
+        Utilities.setDesignOn(label: profileTrademark2Label, font: Strings.defaultFontMedium, fontSize: 10, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileTrademark2Text)
         Utilities.setDesignOn(tableView: profileTableView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), separatorStyle: .singleLine, showVerticalScrollIndicator: false, separatorColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), rowHeight: 50)
+        checkThemeAppearance()
+        NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+    }
+    
+    func checkThemeAppearance() {
+        if appDelegate.isLightModeOn {
+            setLightMode()
+        } else {
+            setDarkMode()
+        }
+    }
+    
+    @objc func setLightMode() {
+        print("Light Mode Activated - ProfileVC")
+        UIView.animate(withDuration: 0.3) { [self] in
+            // For shadow
+            profileContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            profileContentView.layer.shadowOpacity = 1
+            profileContentView.layer.shadowOffset = .zero
+            profileContentView.layer.shadowRadius = 5
+            profileContentView.layer.masksToBounds = false
+            
+            profileContentView.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
+            profileNameLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            profileEmailLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        }
+    }
+    
+    @objc func setDarkMode() {
+        print("Dark Mode Activated - ProfileVC")
+        UIView.animate(withDuration: 0.3) { [self] in
+            // For shadow
+            profileContentView.layer.shadowColor = nil
+            profileContentView.layer.shadowOpacity = 0
+            profileContentView.layer.shadowOffset = .zero
+            profileContentView.layer.shadowRadius = 0
+            profileContentView.layer.masksToBounds = true
+            
+            profileContentView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            profileNameLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            profileEmailLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        }
     }
     
     func showLoadingSkeletonView() {

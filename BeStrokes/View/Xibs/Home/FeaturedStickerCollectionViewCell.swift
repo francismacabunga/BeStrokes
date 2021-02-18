@@ -14,6 +14,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     //MARK: - IBOutlets
     
     @IBOutlet weak var featuredStickerContentView: UIView!
+    @IBOutlet weak var featuredStickerView: UIView!
     @IBOutlet weak var featuredStickerLabel: UILabel!
     @IBOutlet weak var featuredStickerHeartButtonImageView: UIImageView!
     @IBOutlet weak var featuredStickerTryMeButton: UIButton!
@@ -22,6 +23,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Constants / Variables
     
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
     var featuredStickerCellDelegate: FeaturedStickerCellDelegate?
@@ -50,10 +52,51 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        Utilities.setDesignOn(view: featuredStickerContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, setCustomCircleCurve: 40)
-        Utilities.setDesignOn(label: featuredStickerLabel, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, lineBreakMode: .byWordWrapping, canResize: false)
+        Utilities.setDesignOn(view: featuredStickerContentView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: featuredStickerView, isCircular: true, setCustomCircleCurve: 40)
+        Utilities.setDesignOn(label: featuredStickerLabel, font: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: false)
         Utilities.setDesignOn(button: featuredStickerTryMeButton, title: Strings.tryMeButtonText, font: Strings.defaultFontBold, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         Utilities.setDesignOn(imageView: featuredStickerImageView)
+        checkThemeAppearance()
+        NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+    }
+    
+    func checkThemeAppearance() {
+        if appDelegate.isLightModeOn {
+            setLightMode()
+        } else {
+            setDarkMode()
+        }
+    }
+    
+    @objc func setLightMode() {
+        print("Light Mode Activated - FeaturedStickerCellVC")
+        UIView.animate(withDuration: 0.3) { [self] in
+            featuredStickerContentView.backgroundColor = .clear
+            featuredStickerView.backgroundColor = .white
+            
+            
+            featuredStickerView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            featuredStickerView.layer.shadowOpacity = 1
+            featuredStickerView.layer.shadowOffset = .zero
+            featuredStickerView.layer.shadowRadius = 4
+            featuredStickerView.layer.masksToBounds = false
+        }
+    }
+    
+    @objc func setDarkMode() {
+        print("Dark Mode Activated - FeaturedStickerCellVC")
+        UIView.animate(withDuration: 0.3) { [self] in
+            featuredStickerContentView.backgroundColor = .clear
+            featuredStickerView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            
+            featuredStickerView.layer.shadowColor = nil
+            featuredStickerView.layer.shadowOpacity = 0
+            featuredStickerView.layer.shadowOffset = .zero
+            featuredStickerView.layer.shadowRadius = 0
+            featuredStickerView.layer.masksToBounds = true
+        }
     }
     
     func showLoadingSkeletonView() {

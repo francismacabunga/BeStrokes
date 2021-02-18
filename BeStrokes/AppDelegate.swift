@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var openedFromTryMeButton: Bool!
     var openedFromCaptureButton: Bool!
+    var isLightModeOn: Bool!
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -25,11 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enableAutoToolbar = false
         openedFromTryMeButton = UserDefaults.standard.bool(forKey: Strings.firstTimeLaunchFromTMBKey)
         openedFromCaptureButton = UserDefaults.standard.bool(forKey: Strings.firstTimeLaunchFromCBKey)
-        
+        isLightModeOn = UserDefaults.standard.bool(forKey: Strings.lightModeKey)
         if !openedFromTryMeButton {
             UserDefaults.standard.setValue(true, forKey: Strings.firstTimeLaunchFromTMBKey)
         }
-        
         if !openedFromCaptureButton {
             UserDefaults.standard.setValue(true, forKey: Strings.firstTimeLaunchFromCBKey)
         }
@@ -38,14 +38,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
-    func setTrueToOpenedFromTryMeButton() {
-        openedFromTryMeButton = true
-        UserDefaults.standard.setValue(true, forKey: Strings.firstTimeLaunchFromTMBKey)
-    }
-    
-    func setTrueToOpenedFromCaptureButton() {
-        openedFromCaptureButton = true
-        UserDefaults.standard.setValue(true, forKey: Strings.firstTimeLaunchFromCBKey)
+    func setValue(forKey key: String, value: Bool, forTryMeButton: Bool? = nil, forCaptureButton: Bool? = nil, forLightModeSwitch: Bool? = nil) {
+        if value {
+            UserDefaults.standard.setValue(true, forKey: key)
+        } else {
+            UserDefaults.standard.setValue(false, forKey: key)
+        }
+        if forTryMeButton != nil {
+            if forTryMeButton! {
+                openedFromTryMeButton = true
+            }
+        }
+        if forCaptureButton != nil {
+            if forCaptureButton! {
+                openedFromCaptureButton = true
+            }
+        }
+        if forLightModeSwitch != nil {
+            if forLightModeSwitch! {
+                isLightModeOn = true
+            } else {
+                isLightModeOn = false
+            }
+        }
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

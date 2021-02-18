@@ -54,9 +54,9 @@ class ForgotPasswordViewController: UIViewController {
         Utilities.setDesignOn(stackView: forgotPasswordTextFieldStackView, backgroundColor: .clear)
         Utilities.setDesignOn(navigationBar: forgotPasswordNavigationBar, isDarkMode: false)
         Utilities.setDesignOn(imageView: forgotPasswordImageView, image: UIImage(named: Strings.forgotPasswordBackgroundImage), alpha: 0.3)
-        Utilities.setDesignOn(label: forgotPasswordHeadingLabel, font: Strings.defaultFontBold, fontSize: 35, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.forgotPasswordHeadingText)
-        Utilities.setDesignOn(label: forgotPasswordSubheadingLabel, font: Strings.defaultFontMedium, fontSize: 17, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.forgotPasswordSubheadingText)
-        Utilities.setDesignOn(label: forgotPasswordWarningLabel, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, isHidden: true)
+        Utilities.setDesignOn(label: forgotPasswordHeadingLabel, font: Strings.defaultFontBold, fontSize: 35, numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.forgotPasswordHeadingText)
+        Utilities.setDesignOn(label: forgotPasswordSubheadingLabel, font: Strings.defaultFontMedium, fontSize: 17, numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.forgotPasswordSubheadingText)
+        Utilities.setDesignOn(label: forgotPasswordWarningLabel, font: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isHidden: true)
         Utilities.setDesignOn(textField: forgotPasswordEmailTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: forgotPasswordSubmitButton, title: Strings.submitButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: forgotPasswordDismissButton, title: Strings.dismissButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, isHidden: true)
@@ -70,9 +70,9 @@ class ForgotPasswordViewController: UIViewController {
             label.text = customizedWarning
         }
         if isASuccessMessage {
-            Utilities.setDesignOn(label: label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1))
+            Utilities.setDesignOn(label: label, font: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1))
         } else {
-            Utilities.setDesignOn(label: label, font: Strings.defaultFontBold, fontSize: 15, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+            Utilities.setDesignOn(label: label, font: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
         }
         UIView.animate(withDuration: 0.2) {
             label.isHidden = false

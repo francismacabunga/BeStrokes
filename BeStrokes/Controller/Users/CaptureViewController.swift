@@ -123,11 +123,11 @@ class CaptureViewController: UIViewController {
         Utilities.setDesignOn(imageView: captureExitButtonImageView, image: UIImage(systemName: Strings.captureExitIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(imageView: captureDeleteButtonImageView, image: UIImage(systemName: Strings.captureDeleteIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(imageView: captureChooseImageButtonImageView, image: UIImage(systemName: Strings.captureChooseImageIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(label: captureTutorial1Label, font: Strings.defaultFontBold, fontSize: 12, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 1, text: Strings.captureTutorial1Label)
-        Utilities.setDesignOn(label: captureTutorial2Label, font: Strings.defaultFontBold, fontSize: 25, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), numberofLines: 0, textAlignment: .center, text: Strings.captureTutorial2Label)
-        Utilities.setDesignOn(label: captureTutorial3Label, font: Strings.defaultFontBold, fontSize: 12, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .center, text: Strings.captureTutorial3Label, isHidden: true)
-        Utilities.setDesignOn(label: captureStickerLabel, font: Strings.defaultFont, fontSize: 12, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.captureStickerLabel)
-        Utilities.setDesignOn(label: captureStickerNameLabel, font: Strings.defaultFontBold, fontSize: 20, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), numberofLines: 1, textAlignment: .left, text: Strings.captureDefaultStickerName)
+        Utilities.setDesignOn(label: captureTutorial1Label, font: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial1Label)
+        Utilities.setDesignOn(label: captureTutorial2Label, font: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, textAlignment: .center, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial2Label)
+        Utilities.setDesignOn(label: captureTutorial3Label, font: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureTutorial3Label, isHidden: true)
+        Utilities.setDesignOn(label: captureStickerLabel, font: Strings.defaultFont, fontSize: 12, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureStickerLabel)
+        Utilities.setDesignOn(label: captureStickerNameLabel, font: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureDefaultStickerName)
         Utilities.setDesignOn(button: captureDontShowAgainButton, title: Strings.dontShowAgainButtonText, font: Strings.defaultFontBold, fontSize: 16, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
     }
     
@@ -338,11 +338,11 @@ class CaptureViewController: UIViewController {
             return
         }
         if isPresentedWithTabBar() {
-            appDelegate.setTrueToOpenedFromCaptureButton()
+            appDelegate.setValue(forKey: Strings.firstTimeLaunchFromCBKey, value: true, forCaptureButton: true)
             setQuickOptionsDesignWithTabBar()
             captureDeleteButtonImageView.isHidden = false
         } else {
-            appDelegate.setTrueToOpenedFromTryMeButton()
+            appDelegate.setValue(forKey: Strings.firstTimeLaunchFromTMBKey, value: true, forTryMeButton: true)
             setQuickOptionsDesignWithoutTabBar()
             getStickerInformation()
         }
