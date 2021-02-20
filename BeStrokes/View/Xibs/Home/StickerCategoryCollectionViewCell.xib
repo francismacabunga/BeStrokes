@@ -10,20 +10,20 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="StickerCategoryCollectionViewCell" id="gTV-IL-0wX" customClass="StickerCategoryCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
+            <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
+                <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X5y-Kg-h7w">
-                        <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
+                        <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PzT-ep-eY2">
-                                <rect key="frame" x="5" y="5" width="100" height="30"/>
+                                <rect key="frame" x="3" y="3" width="99" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SvR-50-oK7">
-                                        <rect key="frame" x="29" y="4.5" width="42" height="21"/>
+                                        <rect key="frame" x="28.5" y="6.5" width="42" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -38,10 +38,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="PzT-ep-eY2" secondAttribute="bottom" constant="5" id="QTZ-av-cXI"/>
-                            <constraint firstAttribute="trailing" secondItem="PzT-ep-eY2" secondAttribute="trailing" constant="5" id="Rhg-cO-lP5"/>
-                            <constraint firstItem="PzT-ep-eY2" firstAttribute="leading" secondItem="X5y-Kg-h7w" secondAttribute="leading" constant="5" id="pHV-xr-BrJ"/>
-                            <constraint firstItem="PzT-ep-eY2" firstAttribute="top" secondItem="X5y-Kg-h7w" secondAttribute="top" constant="5" id="uZ7-J6-WQg"/>
+                            <constraint firstAttribute="width" constant="105" id="7wP-m8-FTw"/>
+                            <constraint firstAttribute="bottom" secondItem="PzT-ep-eY2" secondAttribute="bottom" constant="3" id="QTZ-av-cXI"/>
+                            <constraint firstAttribute="trailing" secondItem="PzT-ep-eY2" secondAttribute="trailing" constant="3" id="Rhg-cO-lP5"/>
+                            <constraint firstAttribute="height" constant="40" id="nJl-2n-deq"/>
+                            <constraint firstItem="PzT-ep-eY2" firstAttribute="leading" secondItem="X5y-Kg-h7w" secondAttribute="leading" constant="3" id="pHV-xr-BrJ"/>
+                            <constraint firstItem="PzT-ep-eY2" firstAttribute="top" secondItem="X5y-Kg-h7w" secondAttribute="top" constant="3" id="uZ7-J6-WQg"/>
                         </constraints>
                     </view>
                 </subviews>

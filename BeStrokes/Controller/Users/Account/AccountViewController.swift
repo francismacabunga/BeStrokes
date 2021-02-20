@@ -77,7 +77,7 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(label: accountHeading2Label, font: Strings.defaultFontBold, fontSize: 25, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.accountHeading2Text)
         Utilities.setDesignOn(label: accountWarningLabel, font: Strings.defaultFontBold, fontSize: 20, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isHidden: true)
         Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
-        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: true)
+        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: true)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

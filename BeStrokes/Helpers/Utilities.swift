@@ -190,12 +190,14 @@ struct Utilities {
     // Loading Indicator
     static func setDesignOn(activityIndicatorView: UIActivityIndicatorView,
                             size: UIActivityIndicatorView.Style,
-                            backgroundColor: UIColor,
+                            color: UIColor? = nil,
                             isStartAnimating: Bool? = nil,
                             isHidden: Bool? = nil)
     {
         activityIndicatorView.style = size
-        activityIndicatorView.color = backgroundColor
+        if color != nil {
+            activityIndicatorView.color = color!
+        }
         if isStartAnimating != nil {
             if isStartAnimating! {
                 activityIndicatorView.startAnimating()

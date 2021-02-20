@@ -41,6 +41,7 @@ class HomeViewController: UIViewController {
     private var isLightMode = false
     private var selectedIndexPath: IndexPath?
     private var shouldReloadStickerCategoryCollectionView = false
+    private var skeletonColor: UIColor?
     
     
     //MARK: - View Controller Life Cycle
@@ -49,7 +50,6 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         setDesignElements()
-        setProfilePicture()
         registerCollectionView()
         setCollectionViewData()
         
@@ -81,11 +81,12 @@ class HomeViewController: UIViewController {
         Utilities.setDesignOn(collectionView: homeFeaturedStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
-        Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isHidden: true)
+        Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
         checkThemeAppearance()
         showLoadingProfilePicDesign()
+        setProfilePicture()
     }
     
     func checkThemeAppearance() {
@@ -117,6 +118,8 @@ class HomeViewController: UIViewController {
             
             homeHeading1Label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             homeHeading2Label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            
+            homeLoadingIndicatorView.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         }
     }
     
@@ -141,6 +144,16 @@ class HomeViewController: UIViewController {
             
             homeHeading1Label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
             homeHeading2Label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            
+            homeLoadingIndicatorView.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        }
+    }
+    
+    func setSkeletonColor() {
+        if appDelegate.isLightModeOn {
+            skeletonColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        } else {
+            skeletonColor = #colorLiteral(red: 0.2006691098, green: 0.200709641, blue: 0.2006634176, alpha: 1)
         }
     }
     
@@ -168,9 +181,11 @@ class HomeViewController: UIViewController {
     }
     
     func showLoadingProfilePicDesign() {
+        setSkeletonColor()
         DispatchQueue.main.async { [self] in
             homeProfilePictureButton.isSkeletonable = true
             Utilities.setDesignOn(button: homeProfilePictureButton, isSkeletonCircular: true)
+            homeProfilePictureButton.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
             homeProfilePictureButton.showAnimatedSkeleton()
         }
     }
@@ -202,7 +217,7 @@ class HomeViewController: UIViewController {
                     return
                 }
                 guard let userData = userData else {return}
-                DispatchQueue.main.async { [self] in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     homeProfilePictureButton.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
                     Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
                     homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
@@ -215,8 +230,8 @@ class HomeViewController: UIViewController {
     
     func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
         homeFeaturedStickerCollectionView.configureForPeekingBehavior(behavior: behavior)
-        behavior.cellPeekWidth = 10
-        behavior.cellSpacing = 10
+        behavior.cellPeekWidth = 15
+        behavior.cellSpacing = 5
     }
     
     func transitionToLandingVC() {
@@ -409,14 +424,14 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
             let stickerCategoryCollectionViewLayout = homeStickerCategoryCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             stickerCategoryCollectionViewLayout.sectionInset.left = 25
             stickerCategoryCollectionViewLayout.sectionInset.right = 10
-            stickerCategoryCollectionViewLayout.minimumLineSpacing = 8
-            return CGSize(width: 110, height: 40)
+            stickerCategoryCollectionViewLayout.minimumLineSpacing = 10
+            return CGSize(width: 105, height: 40)
         }
         if collectionView == homeStickerCollectionView {
             let stickerCollectionViewLayout = homeStickerCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             stickerCollectionViewLayout.sectionInset.left = 25
-            stickerCollectionViewLayout.sectionInset.right = 25
-            return CGSize(width: 140, height: 140)
+            stickerCollectionViewLayout.sectionInset.right = 10
+            return CGSize(width: 145, height: 145)
         }
         return CGSize()
     }

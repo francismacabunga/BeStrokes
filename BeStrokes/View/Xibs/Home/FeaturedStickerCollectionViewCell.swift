@@ -26,6 +26,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
+    private var skeletonColor: UIColor?
     var featuredStickerCellDelegate: FeaturedStickerCellDelegate?
     var featuredStickerViewModel: FeaturedStickerViewModel! {
         didSet {
@@ -40,6 +41,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        setSkeletonColor()
         showLoadingSkeletonView()
         
     }
@@ -72,13 +74,13 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     
     @objc func setLightMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            featuredStickerContentView.backgroundColor = .clear
+            featuredStickerContentView.backgroundColor = .white
             featuredStickerView.backgroundColor = .white
             
             featuredStickerView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
             featuredStickerView.layer.shadowOpacity = 1
             featuredStickerView.layer.shadowOffset = .zero
-            featuredStickerView.layer.shadowRadius = 2.5
+            featuredStickerView.layer.shadowRadius = 2
             featuredStickerView.layer.masksToBounds = false
         }
     }
@@ -96,16 +98,25 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    func setSkeletonColor() {
+        if appDelegate.isLightModeOn {
+            skeletonColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        } else {
+            skeletonColor = #colorLiteral(red: 0.2006691098, green: 0.200709641, blue: 0.2006634176, alpha: 1)
+        }
+    }
+    
     func showLoadingSkeletonView() {
         DispatchQueue.main.async { [self] in
-            featuredStickerContentView.isSkeletonable = true
-            Utilities.setDesignOn(view: featuredStickerContentView, isSkeletonCircular: true, setCustomSkeletonCircleCurve: 40)
-            featuredStickerContentView.showAnimatedSkeleton()
+            featuredStickerView.isSkeletonable = true
+            Utilities.setDesignOn(view: featuredStickerView, isSkeletonCircular: true, setCustomSkeletonCircleCurve: 40)
+            featuredStickerView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+            featuredStickerView.showAnimatedSkeleton()
         }
     }
     
     func hideLoadingSkeletonView() {
-        featuredStickerContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        featuredStickerView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
     func prepareFeaturedStickerCell() {

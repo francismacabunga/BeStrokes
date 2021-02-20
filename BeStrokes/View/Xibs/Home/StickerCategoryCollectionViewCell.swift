@@ -74,7 +74,7 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
             stickerCategoryView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
             stickerCategoryView.layer.shadowOpacity = 1
             stickerCategoryView.layer.shadowOffset = .zero
-            stickerCategoryView.layer.shadowRadius = 2.5
+            stickerCategoryView.layer.shadowRadius = 2
             stickerCategoryView.layer.masksToBounds = false
         }
     }
