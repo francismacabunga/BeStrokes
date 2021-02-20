@@ -39,6 +39,8 @@ class HomeViewController: UIViewController {
     private var stickerCategorySelected: String?
     private var featuredHeartButtonTapped: Bool?
     private var isLightMode = false
+    private var selectedIndexPath: IndexPath?
+    private var shouldReloadStickerCategoryCollectionView = false
     
     
     //MARK: - View Controller Life Cycle
@@ -54,8 +56,9 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let selectedIndexPath = IndexPath(item: 0, section: 0)
+        selectedIndexPath = IndexPath(item: 0, section: 0)
         homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .right)
+        shouldReloadStickerCategoryCollectionView = true
     }
     
     
@@ -79,9 +82,9 @@ class HomeViewController: UIViewController {
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isHidden: true)
-        checkThemeAppearance()
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+        checkThemeAppearance()
         showLoadingProfilePicDesign()
     }
     
@@ -94,7 +97,12 @@ class HomeViewController: UIViewController {
     }
     
     @objc func setLightMode() {
-        print("Light Mode Activated - HomeVC")
+        if shouldReloadStickerCategoryCollectionView {
+            DispatchQueue.main.async { [self] in
+                homeStickerCategoryCollectionView.reloadData()
+                homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath!, animated: false, scrollPosition: .right)
+            }
+        }
         UIView.animate(withDuration: 0.3) { [self] in
             Utilities.setDesignOn(view: view, backgroundColor: .white)
             isLightMode = true
@@ -113,7 +121,12 @@ class HomeViewController: UIViewController {
     }
     
     @objc func setDarkMode() {
-        print("Dark Mode Activated - HomeVC")
+        if shouldReloadStickerCategoryCollectionView {
+            DispatchQueue.main.async { [self] in
+                homeStickerCategoryCollectionView.reloadData()
+                homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath!, animated: false, scrollPosition: .right)
+            }
+        }
         UIView.animate(withDuration: 0.3) { [self] in
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             isLightMode = false
@@ -348,6 +361,7 @@ extension HomeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == homeStickerCategoryCollectionView {
+            selectedIndexPath = indexPath
             stickerCategoryViewModel[indexPath.row].isCategorySelected = true
             let cell = collectionView.cellForItem(at: indexPath) as! StickerCategoryCollectionViewCell
             cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
@@ -372,7 +386,7 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if collectionView == homeStickerCategoryCollectionView {
             stickerCategoryViewModel[indexPath.row].isCategorySelected = false
-            let cell = collectionView.cellForItem(at: indexPath) as! StickerCategoryCollectionViewCell
+            guard let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell else {return}
             cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
         }
     }
@@ -394,11 +408,14 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         if collectionView == homeStickerCategoryCollectionView {
             let stickerCategoryCollectionViewLayout = homeStickerCategoryCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             stickerCategoryCollectionViewLayout.sectionInset.left = 25
-            return CGSize(width: 100, height: 30)
+            stickerCategoryCollectionViewLayout.sectionInset.right = 10
+            stickerCategoryCollectionViewLayout.minimumLineSpacing = 8
+            return CGSize(width: 110, height: 40)
         }
         if collectionView == homeStickerCollectionView {
             let stickerCollectionViewLayout = homeStickerCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
             stickerCollectionViewLayout.sectionInset.left = 25
+            stickerCollectionViewLayout.sectionInset.right = 25
             return CGSize(width: 140, height: 140)
         }
         return CGSize()

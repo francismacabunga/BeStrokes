@@ -10,30 +10,38 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="StickerCategoryCollectionViewCell" id="gTV-IL-0wX" customClass="StickerCategoryCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="100" height="30"/>
+            <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="100" height="30"/>
+                <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mqc-TK-amr">
-                        <rect key="frame" x="0.0" y="0.0" width="100" height="30"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X5y-Kg-h7w">
+                        <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyQ-gU-4F2">
-                                <rect key="frame" x="0.0" y="0.0" width="100" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PzT-ep-eY2">
+                                <rect key="frame" x="5" y="5" width="100" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SvR-50-oK7">
+                                        <rect key="frame" x="29" y="4.5" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="SvR-50-oK7" firstAttribute="centerY" secondItem="PzT-ep-eY2" secondAttribute="centerY" id="VSu-0p-6dW"/>
+                                    <constraint firstItem="SvR-50-oK7" firstAttribute="centerX" secondItem="PzT-ep-eY2" secondAttribute="centerX" id="ou3-WO-nGJ"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="pyQ-gU-4F2" firstAttribute="top" secondItem="mqc-TK-amr" secondAttribute="top" id="1N8-1A-cEg"/>
-                            <constraint firstItem="pyQ-gU-4F2" firstAttribute="leading" secondItem="mqc-TK-amr" secondAttribute="leading" id="6vO-Pe-ySb"/>
-                            <constraint firstAttribute="width" constant="100" id="Cby-BL-w0q"/>
-                            <constraint firstAttribute="trailing" secondItem="pyQ-gU-4F2" secondAttribute="trailing" id="IWl-Hp-zDM"/>
-                            <constraint firstAttribute="height" constant="30" id="K7R-rL-3Vs"/>
-                            <constraint firstAttribute="bottom" secondItem="pyQ-gU-4F2" secondAttribute="bottom" id="OLU-uY-dgd"/>
+                            <constraint firstAttribute="bottom" secondItem="PzT-ep-eY2" secondAttribute="bottom" constant="5" id="QTZ-av-cXI"/>
+                            <constraint firstAttribute="trailing" secondItem="PzT-ep-eY2" secondAttribute="trailing" constant="5" id="Rhg-cO-lP5"/>
+                            <constraint firstItem="PzT-ep-eY2" firstAttribute="leading" secondItem="X5y-Kg-h7w" secondAttribute="leading" constant="5" id="pHV-xr-BrJ"/>
+                            <constraint firstItem="PzT-ep-eY2" firstAttribute="top" secondItem="X5y-Kg-h7w" secondAttribute="top" constant="5" id="uZ7-J6-WQg"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -41,15 +49,16 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="mqc-TK-amr" secondAttribute="bottom" id="1sf-D4-rSU"/>
-                <constraint firstAttribute="trailing" secondItem="mqc-TK-amr" secondAttribute="trailing" id="GcQ-R3-jsO"/>
-                <constraint firstItem="mqc-TK-amr" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="KN7-9M-oH5"/>
-                <constraint firstItem="mqc-TK-amr" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="U6B-r8-cZf"/>
+                <constraint firstItem="X5y-Kg-h7w" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="6VQ-Z6-eHk"/>
+                <constraint firstAttribute="bottom" secondItem="X5y-Kg-h7w" secondAttribute="bottom" id="JJi-J1-7ar"/>
+                <constraint firstItem="X5y-Kg-h7w" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="XVI-1s-nR3"/>
+                <constraint firstAttribute="trailing" secondItem="X5y-Kg-h7w" secondAttribute="trailing" id="iMc-r9-Y8p"/>
             </constraints>
             <size key="customSize" width="151" height="50"/>
             <connections>
-                <outlet property="stickerCategoryContentView" destination="mqc-TK-amr" id="ta8-D0-L7J"/>
-                <outlet property="stickerCategoryLabel" destination="pyQ-gU-4F2" id="XDb-I9-xKw"/>
+                <outlet property="stickerCategoryContentView" destination="X5y-Kg-h7w" id="i2f-nf-ewl"/>
+                <outlet property="stickerCategoryLabel" destination="SvR-50-oK7" id="V73-gu-N7G"/>
+                <outlet property="stickerCategoryView" destination="PzT-ep-eY2" id="7eN-YL-6w3"/>
             </connections>
             <point key="canvasLocation" x="-124.6376811594203" y="88.392857142857139"/>
         </collectionViewCell>

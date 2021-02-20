@@ -58,9 +58,9 @@ class ProfileViewController: UIViewController {
         Utilities.setDesignOn(label: profileTrademark1Label, font: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileTrademark1Text)
         Utilities.setDesignOn(label: profileTrademark2Label, font: Strings.defaultFontMedium, fontSize: 10, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileTrademark2Text)
         Utilities.setDesignOn(tableView: profileTableView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), separatorStyle: .singleLine, showVerticalScrollIndicator: false, separatorColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), rowHeight: 50)
-        checkThemeAppearance()
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+        checkThemeAppearance()
     }
     
     func checkThemeAppearance() {
@@ -72,7 +72,6 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func setLightMode() {
-        print("Light Mode Activated - ProfileVC")
         UIView.animate(withDuration: 0.3) { [self] in
             // For shadow
             profileContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
@@ -88,7 +87,6 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func setDarkMode() {
-        print("Dark Mode Activated - ProfileVC")
         UIView.animate(withDuration: 0.3) { [self] in
             // For shadow
             profileContentView.layer.shadowColor = nil

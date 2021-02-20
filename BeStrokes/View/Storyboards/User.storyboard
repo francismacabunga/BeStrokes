@@ -898,7 +898,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="RzP-lS-pUj" userLabel="Home Content Stack View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="785.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="795.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxT-Hi-qDl" userLabel="Home Featured View">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
@@ -916,7 +916,7 @@
                                                             <constraint firstAttribute="width" constant="60" id="zmr-nr-68y"/>
                                                         </constraints>
                                                         <connections>
-                                                            <segue destination="Kur-RJ-RnG" kind="show" id="67R-Ka-JeO"/>
+                                                            <segue destination="Kur-RJ-RnG" kind="show" id="0zL-PS-f3h"/>
                                                         </connections>
                                                     </button>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="u41-Cg-gon">
@@ -956,7 +956,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nqf-9D-brb">
-                                                <rect key="frame" x="0.0" y="395" width="375" height="390.5"/>
+                                                <rect key="frame" x="0.0" y="395" width="375" height="400.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E3s-b8-c5Q">
                                                         <rect key="frame" x="30" y="0.0" width="41.5" height="20.5"/>
@@ -965,30 +965,30 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="inL-9d-L1f">
-                                                        <rect key="frame" x="0.0" y="30.5" width="375" height="30"/>
+                                                        <rect key="frame" x="0.0" y="30.5" width="375" height="40"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="30" id="K3h-hK-5as"/>
+                                                            <constraint firstAttribute="height" constant="40" id="K3h-hK-5as"/>
                                                         </constraints>
                                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Utw-KJ-Rgy">
-                                                            <size key="itemSize" width="100" height="30"/>
+                                                            <size key="itemSize" width="110" height="40"/>
                                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells>
                                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="SLd-2g-wjZ" customClass="StickerCategoryCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="100" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="vaT-fZ-Sdy">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="30"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                 </collectionViewCellContentView>
                                                             </collectionViewCell>
                                                         </cells>
                                                     </collectionView>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4jC-9x-OB5">
-                                                        <rect key="frame" x="0.0" y="80.5" width="375" height="300"/>
+                                                        <rect key="frame" x="0.0" y="90.5" width="375" height="300"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="300" id="ZVz-Qh-OnR"/>
@@ -1011,7 +1011,7 @@
                                                         </cells>
                                                     </collectionView>
                                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="B3K-Yn-yge">
-                                                        <rect key="frame" x="177.5" y="110.5" width="20" height="20"/>
+                                                        <rect key="frame" x="177.5" y="120.5" width="20" height="20"/>
                                                     </activityIndicatorView>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>

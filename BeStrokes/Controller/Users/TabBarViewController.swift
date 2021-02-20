@@ -35,9 +35,9 @@ class TabBarViewController: UITabBarController {
         items[1].image = UIImage(systemName: Strings.tabCaptureIcon)
         items[2].title = Strings.accountTabText
         items[2].image = UIImage(systemName: Strings.tabAccountIcon)
-        checkThemeAppearance()
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+        checkThemeAppearance()
     }
     
     func checkThemeAppearance() {
@@ -49,14 +49,12 @@ class TabBarViewController: UITabBarController {
     }
     
     @objc func setLightMode() {
-        print("Light Mode Activated - TabBarVC")
         UIView.animate(withDuration: 0.3) {
             UITabBar.appearance().barTintColor = .white
         }
     }
     
     @objc func setDarkMode() {
-        print("Dark Mode Activated - TabBarVC")
         UIView.animate(withDuration: 0.3) {
             UITabBar.appearance().barTintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         }

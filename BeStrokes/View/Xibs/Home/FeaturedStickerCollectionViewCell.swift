@@ -57,9 +57,9 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
         Utilities.setDesignOn(label: featuredStickerLabel, font: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: false)
         Utilities.setDesignOn(button: featuredStickerTryMeButton, title: Strings.tryMeButtonText, font: Strings.defaultFontBold, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         Utilities.setDesignOn(imageView: featuredStickerImageView)
-        checkThemeAppearance()
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+        checkThemeAppearance()
     }
     
     func checkThemeAppearance() {
@@ -71,22 +71,19 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func setLightMode() {
-        print("Light Mode Activated - FeaturedStickerCellVC")
         UIView.animate(withDuration: 0.3) { [self] in
             featuredStickerContentView.backgroundColor = .clear
             featuredStickerView.backgroundColor = .white
             
-            
             featuredStickerView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
             featuredStickerView.layer.shadowOpacity = 1
             featuredStickerView.layer.shadowOffset = .zero
-            featuredStickerView.layer.shadowRadius = 4
+            featuredStickerView.layer.shadowRadius = 2.5
             featuredStickerView.layer.masksToBounds = false
         }
     }
     
     @objc func setDarkMode() {
-        print("Dark Mode Activated - FeaturedStickerCellVC")
         UIView.animate(withDuration: 0.3) { [self] in
             featuredStickerContentView.backgroundColor = .clear
             featuredStickerView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)

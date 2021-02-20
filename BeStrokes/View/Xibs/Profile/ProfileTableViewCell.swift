@@ -76,11 +76,9 @@ class ProfileTableViewCell: UITableViewCell {
             }
         case Strings.profileSettingsDarkAppearance:
             if sender.isOn {
-                print("Dark Appearance is turned on!")
                 appDelegate.setValue(forKey: Strings.lightModeKey, value: false, forLightModeSwitch: false)
                 NotificationCenter.default.post(name: Utilities.setDarkModeAppearance, object: nil)
             } else {
-                print("Dark Appearance is turned off!")
                 appDelegate.setValue(forKey: Strings.lightModeKey, value: true, forLightModeSwitch: true)
                 NotificationCenter.default.post(name: Utilities.setLightModeAppearance, object: nil)
             }
@@ -90,5 +88,3 @@ class ProfileTableViewCell: UITableViewCell {
     }
     
 }
-
-
