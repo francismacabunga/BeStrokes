@@ -53,7 +53,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     func setDesignElements() {
         Utilities.setDesignOn(view: stickerContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: stickerView, setCustomCircleCurve: 30)
-        Utilities.setDesignOn(label: stickerLabel, font: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(label: stickerLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(imageView: stickerOptionImageView, image: UIImage(named: Strings.optionImage))
         Utilities.setDesignOn(imageView: stickerImageView)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)

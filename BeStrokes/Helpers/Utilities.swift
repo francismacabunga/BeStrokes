@@ -17,7 +17,7 @@ struct Utilities {
     
     // Label
     static func setDesignOn(label: UILabel,
-                            font: String,
+                            fontName: String,
                             fontSize: CGFloat,
                             numberofLines: Int,
                             textAlignment: NSTextAlignment? = .none,
@@ -30,7 +30,7 @@ struct Utilities {
                             backgroundColor: UIColor? = nil,
                             isHidden: Bool? = nil)
     {
-        label.font = UIFont(name: font, size: fontSize)
+        label.font = UIFont(name: fontName, size: fontSize)
         label.numberOfLines = numberofLines
         if textAlignment != nil {
             label.textAlignment = textAlignment!
@@ -223,11 +223,13 @@ struct Utilities {
     
     // Stack View
     static func setDesignOn(stackView: UIStackView,
-                            backgroundColor: UIColor,
+                            backgroundColor: UIColor? = nil,
                             isCircular: Bool? = nil,
                             isHidden: Bool? = nil)
     {
-        stackView.backgroundColor = backgroundColor
+        if backgroundColor != nil {
+            stackView.backgroundColor = backgroundColor!
+        }
         if isCircular != nil {
             if isCircular! {
                 stackView.layer.cornerRadius = stackView.frame.size.width / 2

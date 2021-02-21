@@ -45,7 +45,7 @@ class LandingViewController: UIViewController {
         Utilities.setDesignOn(button: landingGetStartedButton, title: Strings.getStartedButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: landingLoginButton, title: Strings.loginButtonText, font: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: landingSignUpButton, title: Strings.signUpButtonText, font: Strings.defaultFontBold, fontSize: 13, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(label: landingSignUpLabel, font: Strings.defaultFontMedium, fontSize: 13, numberofLines: 1, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.landingSignupText)
+        Utilities.setDesignOn(label: landingSignUpLabel, fontName: Strings.defaultFontMedium, fontSize: 13, numberofLines: 1, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.landingSignupText)
         Utilities.setDesign(pageControl: landingPageControl, pageIndicatorColor: #colorLiteral(red: 0.8, green: 0.8039215686, blue: 0.8196078431, alpha: 1), currentPageColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
     }
     

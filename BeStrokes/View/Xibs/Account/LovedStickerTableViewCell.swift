@@ -57,7 +57,7 @@ class LovedStickerTableViewCell: UITableViewCell {
         self.selectionStyle = .none
         Utilities.setDesignOn(view: lovedStickerContentView, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: lovedStickerView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), setCustomCircleCurve: 30)
-        Utilities.setDesignOn(label: lovedStickerHeadingLabel, font: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: true, minimumScaleFactor: 0.8)
+        Utilities.setDesignOn(label: lovedStickerHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(button: lovedStickerTryMeButton, title: Strings.tryMeButtonText, font: Strings.defaultFontBold, fontSize: 14, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         Utilities.setDesignOn(imageView: lovedStickerOptionImageView, image: UIImage(named: Strings.optionImage), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(imageView: lovedStickerImageView)

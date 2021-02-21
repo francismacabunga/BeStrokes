@@ -115,20 +115,75 @@ class CaptureViewController: UIViewController {
     
     func setDesignElements() {
         Utilities.setDesignOn(visualEffectView: captureVisualEffectView, blurEffect: UIBlurEffect(style: .regular), isHidden: true)
-        Utilities.setDesignOn(stackView: captureStackView, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true, isHidden: true)
+        Utilities.setDesignOn(stackView: captureStackView, isCircular: true, isHidden: true)
         Utilities.setDesignOn(view: captureTutorialContentView, backgroundColor: .clear, isHidden: true)
-        Utilities.setDesignOn(view: captureStickerContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true, isHidden: true)
+        Utilities.setDesignOn(view: captureStickerContentView, isCircular: true, isHidden: true)
         Utilities.setDesignOn(imageView: captureTutorialImageView, image: UIImage(named: Strings.tutorialDialogueImage))
         Utilities.setDesignOn(imageView: captureStickerImageView, image: UIImage(named: Strings.defaultStickerImage))
-        Utilities.setDesignOn(imageView: captureExitButtonImageView, image: UIImage(systemName: Strings.captureExitIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(imageView: captureDeleteButtonImageView, image: UIImage(systemName: Strings.captureDeleteIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(imageView: captureChooseImageButtonImageView, image: UIImage(systemName: Strings.captureChooseImageIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(label: captureTutorial1Label, font: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial1Label)
-        Utilities.setDesignOn(label: captureTutorial2Label, font: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, textAlignment: .center, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial2Label)
-        Utilities.setDesignOn(label: captureTutorial3Label, font: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureTutorial3Label, isHidden: true)
-        Utilities.setDesignOn(label: captureStickerLabel, font: Strings.defaultFont, fontSize: 12, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureStickerLabel)
-        Utilities.setDesignOn(label: captureStickerNameLabel, font: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureDefaultStickerName)
+        Utilities.setDesignOn(imageView: captureExitButtonImageView, image: UIImage(systemName: Strings.captureExitIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(imageView: captureDeleteButtonImageView, image: UIImage(systemName: Strings.captureDeleteIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(imageView: captureChooseImageButtonImageView, image: UIImage(systemName: Strings.captureChooseImageIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(label: captureTutorial1Label, fontName: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial1Label)
+        Utilities.setDesignOn(label: captureTutorial2Label, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, textAlignment: .center, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial2Label)
+        Utilities.setDesignOn(label: captureTutorial3Label, fontName: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureTutorial3Label, isHidden: true)
+        Utilities.setDesignOn(label: captureStickerLabel, fontName: Strings.defaultFont, fontSize: 12, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureStickerLabel)
+        Utilities.setDesignOn(label: captureStickerNameLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureDefaultStickerName)
         Utilities.setDesignOn(button: captureDontShowAgainButton, title: Strings.dontShowAgainButtonText, font: Strings.defaultFontBold, fontSize: 16, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+        checkThemeAppearance()
+    }
+    
+    func checkThemeAppearance() {
+        if appDelegate.isLightModeOn {
+            setLightMode()
+        } else {
+            setDarkMode()
+        }
+    }
+    
+    @objc func setLightMode() {
+        UIView.animate(withDuration: 0.3) { [self] in
+            captureStackView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            captureExitButtonImageView.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            captureDeleteButtonImageView.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            captureChooseImageButtonImageView.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            captureStickerContentView.backgroundColor = .white
+            
+            captureStackView.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            captureStackView.layer.shadowOpacity = 1
+            captureStackView.layer.shadowOffset = .zero
+            captureStackView.layer.shadowRadius = 2
+            captureStackView.layer.masksToBounds = false
+            
+            captureStickerContentView.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            captureStickerContentView.layer.shadowOpacity = 1
+            captureStickerContentView.layer.shadowOffset = .zero
+            captureStickerContentView.layer.shadowRadius = 2
+            captureStickerContentView.layer.masksToBounds = false
+        }
+    }
+    
+    @objc func setDarkMode() {
+        UIView.animate(withDuration: 0.3) { [self] in
+            captureStackView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            captureExitButtonImageView.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            captureDeleteButtonImageView.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            captureChooseImageButtonImageView.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            captureStickerContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            
+            captureStackView.layer.shadowColor = nil
+            captureStackView.layer.shadowOpacity = 0
+            captureStackView.layer.shadowOffset = .zero
+            captureStackView.layer.shadowRadius = 0
+            captureStackView.layer.masksToBounds = true
+            
+            captureStickerContentView.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            captureStickerContentView.layer.shadowOpacity = 1
+            captureStickerContentView.layer.shadowOffset = .zero
+            captureStickerContentView.layer.shadowRadius = 2
+            captureStickerContentView.layer.masksToBounds = false
+        }
     }
     
     func showCustomAlert(withTitle title: String, withMessage message: String? = nil, usingErrorMessage: Bool? = nil, usingError error: Error? = nil) {

@@ -52,11 +52,11 @@ class ProfileViewController: UIViewController {
         Utilities.setDesignOn(view: profileContentView, setCustomCircleCurve: 25)
         Utilities.setDesignOn(navigationBar: profileNavigationBar, isDarkMode: true)
         Utilities.setDesignOn(imageView: profileImageView, isCircular: true)
-        Utilities.setDesignOn(label: profileNameLabel, font: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
-        Utilities.setDesignOn(label: profileEmailLabel, font: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
-        Utilities.setDesignOn(label: profileHeadingLabel, font: Strings.defaultFontBold, fontSize: 30, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileSettingsHeadingText)
-        Utilities.setDesignOn(label: profileTrademark1Label, font: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileTrademark1Text)
-        Utilities.setDesignOn(label: profileTrademark2Label, font: Strings.defaultFontMedium, fontSize: 10, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileTrademark2Text)
+        Utilities.setDesignOn(label: profileNameLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
+        Utilities.setDesignOn(label: profileEmailLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
+        Utilities.setDesignOn(label: profileHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 30, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileSettingsHeadingText)
+        Utilities.setDesignOn(label: profileTrademark1Label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileTrademark1Text)
+        Utilities.setDesignOn(label: profileTrademark2Label, fontName: Strings.defaultFontMedium, fontSize: 10, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.profileTrademark2Text)
         Utilities.setDesignOn(tableView: profileTableView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), separatorStyle: .singleLine, showVerticalScrollIndicator: false, separatorColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), rowHeight: 50)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
@@ -73,11 +73,10 @@ class ProfileViewController: UIViewController {
     
     @objc func setLightMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            // For shadow
             profileContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
             profileContentView.layer.shadowOpacity = 1
             profileContentView.layer.shadowOffset = .zero
-            profileContentView.layer.shadowRadius = 5
+            profileContentView.layer.shadowRadius = 2
             profileContentView.layer.masksToBounds = false
             
             profileContentView.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
@@ -88,7 +87,6 @@ class ProfileViewController: UIViewController {
     
     @objc func setDarkMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            // For shadow
             profileContentView.layer.shadowColor = nil
             profileContentView.layer.shadowOpacity = 0
             profileContentView.layer.shadowOffset = .zero
