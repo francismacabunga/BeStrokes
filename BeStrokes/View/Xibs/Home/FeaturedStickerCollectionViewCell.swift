@@ -57,7 +57,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
         Utilities.setDesignOn(view: featuredStickerContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: featuredStickerView, isCircular: true, setCustomCircleCurve: 40)
         Utilities.setDesignOn(label: featuredStickerLabel, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: false)
-        Utilities.setDesignOn(button: featuredStickerTryMeButton, title: Strings.tryMeButtonText, font: Strings.defaultFontBold, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(button: featuredStickerTryMeButton, title: Strings.tryMeButtonText, font: Strings.defaultFontBold, fontSize: 15, isCircular: true)
         Utilities.setDesignOn(imageView: featuredStickerImageView)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
@@ -82,6 +82,14 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
             featuredStickerView.layer.shadowOffset = .zero
             featuredStickerView.layer.shadowRadius = 2
             featuredStickerView.layer.masksToBounds = false
+            
+            featuredStickerTryMeButton.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            featuredStickerTryMeButton.layer.shadowOpacity = 1
+            featuredStickerTryMeButton.layer.shadowOffset = .zero
+            featuredStickerTryMeButton.layer.shadowRadius = 2
+            featuredStickerTryMeButton.layer.masksToBounds = false
+            
+            Utilities.setDesignOn(button: featuredStickerTryMeButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
         }
     }
     
@@ -95,6 +103,14 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
             featuredStickerView.layer.shadowOffset = .zero
             featuredStickerView.layer.shadowRadius = 0
             featuredStickerView.layer.masksToBounds = true
+            
+            featuredStickerTryMeButton.layer.shadowColor = nil
+            featuredStickerTryMeButton.layer.shadowOpacity = 0
+            featuredStickerTryMeButton.layer.shadowOffset = .zero
+            featuredStickerTryMeButton.layer.shadowRadius = 0
+            featuredStickerTryMeButton.layer.masksToBounds = true
+            
+            Utilities.setDesignOn(button: featuredStickerTryMeButton, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         }
     }
     

@@ -34,6 +34,7 @@ class AccountViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private let user = User()
     private let fetchStickerData = FetchStickerData()
     private var lovedStickerViewModel: [LovedStickerViewModel]?
@@ -41,6 +42,8 @@ class AccountViewController: UIViewController {
     private let heartButtonLogic = HeartButtonLogic()
     private var isButtonPressed = false
     private var hasPerformedSearch = false
+    private var isLightMode = false
+    private var skeletonColor: UIColor?
     
     
     //MARK: - View Controller Life Cycle
@@ -61,27 +64,100 @@ class AccountViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(view: accountTopView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), setCustomCircleCurve: 30)
+        Utilities.setDesignOn(view: accountTopView, setCustomCircleCurve: 30)
         Utilities.setDesignOn(stackView: accountBottomStackView, backgroundColor: .clear, isHidden: true)
         Utilities.setDesignOn(view: accountBottomSearchContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: accountTextFieldContentView, backgroundColor: .clear, isHidden: true)
         Utilities.setDesignOn(button: accountNotificationButton, backgroundImage: UIImage(systemName: Strings.accountNotificationIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(button: accountEditButton, backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(textField: accountSearchTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, capitalization: .words, returnKeyType: .search, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.searchTextField, placeholderTextColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon))
+        Utilities.setDesignOn(textField: accountSearchTextField, font: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, capitalization: .words, returnKeyType: .search, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholder: Strings.searchTextField, placeholderTextColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         Utilities.setDesignOn(imageView: accountImageView, isCircular: true)
         Utilities.setDesignOn(label: accountHeading1Label, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.accountHeading1Text)
         Utilities.setDesignOn(label: accountNameHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: " ", canResize: true, minimumScaleFactor: 0.6)
         Utilities.setDesignOn(label: accountEmailHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: " ", canResize: true, minimumScaleFactor: 0.8)
-        Utilities.setDesignOn(label: accountHeading2Label, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.accountHeading2Text)
+        Utilities.setDesignOn(label: accountHeading2Label, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 1, textAlignment: .left, text: Strings.accountHeading2Text)
         Utilities.setDesignOn(label: accountWarningLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isHidden: true)
         Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
-        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: true)
+        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, isStartAnimating: true)
+        NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+        checkThemeAppearance()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        if isLightMode {
+            return .darkContent
+        } else {
+            return .lightContent
+        }
+    }
+    
+    func checkThemeAppearance() {
+        if appDelegate.isLightModeOn {
+            setLightMode()
+        } else {
+            setDarkMode()
+        }
+    }
+    
+    @objc func setLightMode() {
+        UIView.animate(withDuration: 0.3) { [self] in
+            isLightMode = true
+            Utilities.setDesignOn(view: view, backgroundColor: .white)
+            accountTopView.backgroundColor = .white
+            accountHeading2Label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            accountSearchButton.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            accountSearchTextField.backgroundColor = .white
+            accountWarningLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            
+            accountTopView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            accountTopView.layer.shadowOpacity = 1
+            accountTopView.layer.shadowOffset = .zero
+            accountTopView.layer.shadowRadius = 2
+            accountTopView.layer.masksToBounds = false
+            
+            accountSearchTextField.borderStyle = .none
+            accountSearchTextField.layer.shadowOpacity = 1
+            accountSearchTextField.layer.shadowRadius = 2
+            accountSearchTextField.layer.shadowOffset = .zero
+            accountSearchTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            
+            accountLoadingIndicatorView.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        }
+    }
+    
+    @objc func setDarkMode() {
+        UIView.animate(withDuration: 0.3) { [self] in
+            isLightMode = false
+            Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            accountTopView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            accountHeading2Label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            accountSearchButton.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            accountSearchTextField.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            accountWarningLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            
+            accountTopView.layer.shadowColor = nil
+            accountTopView.layer.shadowOpacity = 0
+            accountTopView.layer.shadowOffset = .zero
+            accountTopView.layer.shadowRadius = 0
+            accountTopView.layer.masksToBounds = true
+            
+            accountSearchTextField.layer.shadowOpacity = 0
+            accountSearchTextField.layer.shadowRadius = 0
+            accountSearchTextField.layer.shadowOffset = .zero
+            accountSearchTextField.layer.shadowColor = nil
+            
+            accountLoadingIndicatorView.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        }
+    }
+    
+    func setSkeletonColor() {
+        if appDelegate.isLightModeOn {
+            skeletonColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        } else {
+            skeletonColor = #colorLiteral(red: 0.2006691098, green: 0.200709641, blue: 0.2006634176, alpha: 1)
+        }
     }
     
     func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
@@ -108,11 +184,15 @@ class AccountViewController: UIViewController {
     }
     
     func showLoadingSkeletonView() {
+        setSkeletonColor()
         DispatchQueue.main.async { [self] in
             accountImageView.isSkeletonable = true
             Utilities.setDesignOn(imageView: accountImageView, isSkeletonCircular: true)
             accountNameHeadingLabel.isSkeletonable = true
             accountEmailHeadingLabel.isSkeletonable = true
+            accountImageView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+            accountNameHeadingLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+            accountEmailHeadingLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
             accountImageView.showAnimatedSkeleton()
             accountNameHeadingLabel.showAnimatedSkeleton()
             accountEmailHeadingLabel.showAnimatedSkeleton()
@@ -127,14 +207,14 @@ class AccountViewController: UIViewController {
     
     func showSearchTextField() {
         accountTextFieldContentView.isHidden = false
-        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountArrowUpIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountArrowUpIcon))
     }
     
     func hideSearchTextField() {
         accountTextFieldContentView.isHidden = true
         accountSearchTextField.text = nil
         accountSearchTextField.resignFirstResponder()
-        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon), tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon))
         if hasPerformedSearch {
             setLovedStickersData()
             hasPerformedSearch = false
@@ -273,7 +353,7 @@ extension AccountViewController: UITableViewDataSource {
         DispatchQueue.main.async {
             cell.lovedStickerViewModel = lovedStickerViewModel[indexPath.item]
             cell.lovedStickerCellDelegate = self
-            cell.prepareLovedStickerTableViewCell()
+            cell.setDesignElements()
         }
         return cell
     }

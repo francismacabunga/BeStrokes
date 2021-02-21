@@ -90,6 +90,8 @@ struct Utilities {
         textField.autocorrectionType = autocorrectionType
         textField.isSecureTextEntry = isSecureTextEntry
         textField.keyboardType = keyboardType
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
+        textField.leftViewMode = .always
         if textContentType != nil {
             textField.textContentType = textContentType!
         }

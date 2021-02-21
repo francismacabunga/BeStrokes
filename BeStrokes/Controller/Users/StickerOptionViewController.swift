@@ -20,11 +20,11 @@ class StickerOptionViewController: UIViewController {
     @IBOutlet weak var stickerTagView: UIView!
     @IBOutlet weak var stickerBottomView: UIView!
     @IBOutlet weak var stickerImageView: UIImageView!
+    @IBOutlet weak var stickerHeartButtonImageView: UIImageView!
     @IBOutlet weak var stickerNameLabel: UILabel!
     @IBOutlet weak var stickerCategoryLabel: UILabel!
     @IBOutlet weak var stickerTagLabel: UILabel!
     @IBOutlet weak var stickerDescriptionLabel: UILabel!
-    @IBOutlet weak var stickerHeartButtonImageView: UIImageView!
     @IBOutlet weak var stickerTryMeButton: UIButton!
     
     

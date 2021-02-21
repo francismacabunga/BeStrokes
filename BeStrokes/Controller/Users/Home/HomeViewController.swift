@@ -64,14 +64,6 @@ class HomeViewController: UIViewController {
     
     //MARK: - Design Elements
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        if isLightMode {
-            return .darkContent
-        } else {
-            return .lightContent
-        }
-    }
-    
     func setDesignElements() {
         Utilities.setDesignOn(view: homeFeaturedView, backgroundColor: .clear)
         Utilities.setDesignOn(view: homeStickerView, backgroundColor: .clear)
@@ -87,6 +79,14 @@ class HomeViewController: UIViewController {
         checkThemeAppearance()
         showLoadingProfilePicDesign()
         setProfilePicture()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if isLightMode {
+            return .darkContent
+        } else {
+            return .lightContent
+        }
     }
     
     func checkThemeAppearance() {
