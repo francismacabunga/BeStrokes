@@ -72,11 +72,11 @@ struct Utilities {
     
     // Text Field
     static func setDesignOn(textField: UITextField,
-                            font: String,
-                            fontSize: CGFloat,
-                            autocorrectionType: UITextAutocorrectionType,
-                            isSecureTextEntry: Bool,
-                            keyboardType: UIKeyboardType,
+                            fontName: String? = nil,
+                            fontSize: CGFloat? = nil,
+                            autocorrectionType: UITextAutocorrectionType? = nil,
+                            isSecureTextEntry: Bool? = nil,
+                            keyboardType: UIKeyboardType? = nil,
                             textContentType: UITextContentType? = nil,
                             capitalization: UITextAutocapitalizationType? = nil,
                             returnKeyType: UIReturnKeyType? = nil,
@@ -86,12 +86,22 @@ struct Utilities {
                             placeholderTextColor: UIColor? = nil,
                             isCircular: Bool? = nil)
     {
-        textField.font = UIFont(name: font, size: fontSize)
-        textField.autocorrectionType = autocorrectionType
-        textField.isSecureTextEntry = isSecureTextEntry
-        textField.keyboardType = keyboardType
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
         textField.leftViewMode = .always
+        if fontName != nil && fontSize != nil {
+            textField.font = UIFont(name: fontName!, size: fontSize!)
+        }
+        if autocorrectionType != nil {
+            textField.autocorrectionType = autocorrectionType!
+        }
+        if isSecureTextEntry != nil {
+            if isSecureTextEntry! {
+                textField.isSecureTextEntry = isSecureTextEntry!
+            }
+        }
+        if keyboardType != nil {
+            textField.keyboardType = keyboardType!
+        }
         if textContentType != nil {
             textField.textContentType = textContentType!
         }
@@ -107,10 +117,10 @@ struct Utilities {
         if backgroundColor != nil {
             textField.backgroundColor = backgroundColor!
         }
-        if placeholder != nil && placeholderTextColor != nil {
+        if placeholder != nil && placeholderTextColor != nil && fontName != nil && fontSize != nil {
             textField.attributedPlaceholder = NSAttributedString(string: placeholder!, attributes: [
                                                                     .foregroundColor: placeholderTextColor!,
-                                                                    .font: UIFont(name: font, size: fontSize)!])
+                                                                    .font: UIFont(name: fontName!, size: fontSize!)!])
         }
         if isCircular != nil {
             if isCircular! {
@@ -123,7 +133,7 @@ struct Utilities {
     // Button
     static func setDesignOn(button: UIButton,
                             title: String? = nil,
-                            font: String? = nil,
+                            fontName: String? = nil,
                             fontSize: CGFloat? = nil,
                             backgroundImage: UIImage? = nil,
                             titleColor: UIColor? = nil,
@@ -136,8 +146,8 @@ struct Utilities {
         if title != nil {
             button.setTitle(title!, for: .normal)
         }
-        if font != nil, fontSize != nil {
-            button.titleLabel?.font = UIFont(name: font!, size: fontSize!)
+        if fontName != nil, fontSize != nil {
+            button.titleLabel?.font = UIFont(name: fontName!, size: fontSize!)
         }
         if backgroundImage != nil {
             button.setBackgroundImage(backgroundImage!, for: .normal)

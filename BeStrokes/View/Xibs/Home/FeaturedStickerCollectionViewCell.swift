@@ -57,7 +57,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
         Utilities.setDesignOn(view: featuredStickerContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: featuredStickerView, isCircular: true, setCustomCircleCurve: 40)
         Utilities.setDesignOn(label: featuredStickerLabel, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: false)
-        Utilities.setDesignOn(button: featuredStickerTryMeButton, title: Strings.tryMeButtonText, font: Strings.defaultFontBold, fontSize: 15, isCircular: true)
+        Utilities.setDesignOn(button: featuredStickerTryMeButton, title: Strings.tryMeButtonText, fontName: Strings.defaultFontBold, fontSize: 15, isCircular: true)
         Utilities.setDesignOn(imageView: featuredStickerImageView)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
