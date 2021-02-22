@@ -17,6 +17,7 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var homeContentStackView: UIStackView!
     @IBOutlet weak var homeFeaturedView: UIView!
+    @IBOutlet weak var homeProfilePicContentView: UIView!
     @IBOutlet weak var homeStickerView: UIView!
     @IBOutlet weak var homeHeading1Label: UILabel!
     @IBOutlet weak var homeHeading2Label: UILabel!
@@ -42,6 +43,7 @@ class HomeViewController: UIViewController {
     private var selectedIndexPath: IndexPath?
     private var shouldReloadStickerCategoryCollectionView = false
     private var skeletonColor: UIColor?
+    private var hasProfilePicLoaded = false
     
     
     //MARK: - View Controller Life Cycle
@@ -66,6 +68,7 @@ class HomeViewController: UIViewController {
     
     func setDesignElements() {
         Utilities.setDesignOn(view: homeFeaturedView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: homeProfilePicContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: homeStickerView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: homeContentStackView, backgroundColor: .clear)
         Utilities.setDesignOn(label: homeHeading1Label, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.homeHeading1Text)
@@ -105,16 +108,17 @@ class HomeViewController: UIViewController {
             }
         }
         UIView.animate(withDuration: 0.3) { [self] in
+            if hasProfilePicLoaded {
+                homeProfilePicContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+                homeProfilePicContentView.layer.shadowOpacity = 1
+                homeProfilePicContentView.layer.shadowOffset = .zero
+                homeProfilePicContentView.layer.shadowRadius = 5
+                homeProfilePicContentView.layer.masksToBounds = false
+            }
+            
             Utilities.setDesignOn(view: view, backgroundColor: .white)
             isLightMode = true
             setNeedsStatusBarAppearanceUpdate()
-            
-            homeProfilePictureButton.layer.shadowColor = UIColor.red.cgColor
-            homeProfilePictureButton.layer.shadowOpacity = 1
-            homeProfilePictureButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-            homeProfilePictureButton.layer.shadowRadius = 50
-            homeProfilePictureButton.layer.masksToBounds = false
-            Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
             
             homeHeading1Label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             homeHeading2Label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -135,12 +139,11 @@ class HomeViewController: UIViewController {
             isLightMode = false
             setNeedsStatusBarAppearanceUpdate()
             
-            homeProfilePictureButton.layer.shadowColor = nil
-            homeProfilePictureButton.layer.shadowOpacity = 0
-            homeProfilePictureButton.layer.shadowOffset = .zero
-            homeProfilePictureButton.layer.shadowRadius = 0
-            homeProfilePictureButton.layer.masksToBounds = true
-            Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
+            homeProfilePicContentView.layer.shadowColor = nil
+            homeProfilePicContentView.layer.shadowOpacity = 0
+            homeProfilePicContentView.layer.shadowOffset = .zero
+            homeProfilePicContentView.layer.shadowRadius = 0
+            homeProfilePicContentView.layer.masksToBounds = true
             
             homeHeading1Label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
             homeHeading2Label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
@@ -183,9 +186,9 @@ class HomeViewController: UIViewController {
     func showLoadingProfilePicDesign() {
         setSkeletonColor()
         DispatchQueue.main.async { [self] in
-            homeProfilePictureButton.isSkeletonable = true
-            Utilities.setDesignOn(button: homeProfilePictureButton, isSkeletonCircular: true)
-            homeProfilePictureButton.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+            homeProfilePicContentView.isSkeletonable = true
+            Utilities.setDesignOn(view: homeProfilePicContentView, isSkeletonCircular: true)
+            homeProfilePicContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
             homeProfilePictureButton.showAnimatedSkeleton()
         }
     }
@@ -218,9 +221,17 @@ class HomeViewController: UIViewController {
                 }
                 guard let userData = userData else {return}
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    homeProfilePictureButton.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                    homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
                     Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
                     homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
+                    hasProfilePicLoaded = true
+                    if appDelegate.isLightModeOn {
+                        homeProfilePicContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+                        homeProfilePicContentView.layer.shadowOpacity = 1
+                        homeProfilePicContentView.layer.shadowOffset = .zero
+                        homeProfilePicContentView.layer.shadowRadius = 5
+                        homeProfilePicContentView.layer.masksToBounds = false
+                    }
                 }
                 return
             }

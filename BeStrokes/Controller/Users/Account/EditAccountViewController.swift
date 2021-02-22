@@ -16,6 +16,7 @@ class EditAccountViewController: UIViewController {
     @IBOutlet weak var editAccountNavigationBar: UINavigationBar!
     @IBOutlet weak var editAccountStackView: UIStackView!
     @IBOutlet weak var editAccountHeadingContentView: UIView!
+    @IBOutlet weak var editAccountImageContentView: UIView!
     @IBOutlet weak var editAccountSaveButtonContentView: UIView!
     @IBOutlet weak var editAccountHeadingLabel: UILabel!
     @IBOutlet weak var editAccountImageView: UIImageView!
@@ -61,11 +62,17 @@ class EditAccountViewController: UIViewController {
     func setDesignElements() {
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(view: editAccountHeadingContentView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: editAccountImageContentView, backgroundColor: .clear)
+        editAccountImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+        editAccountImageContentView.layer.shadowOpacity = 1
+        editAccountImageContentView.layer.shadowOffset = .zero
+        editAccountImageContentView.layer.shadowRadius = 5
+        editAccountImageContentView.layer.masksToBounds = false
         Utilities.setDesignOn(view: editAccountSaveButtonContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: editAccountStackView, backgroundColor: .clear)
         Utilities.setDesignOn(navigationBar: editAccountNavigationBar, isDarkMode: true)
         Utilities.setDesignOn(imageView: editAccountImageView, isCircular: true)
-        Utilities.setDesignOn(imageView: editAccountCameraIconImageView, image: UIImage(named: Strings.cameraImage))
+        Utilities.setDesignOn(imageView: editAccountCameraIconImageView, image: UIImage(named: Strings.cameraImage), isCircular: true)
         Utilities.setDesignOn(label: editAccountHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.editAccountHeadingText)
         Utilities.setDesignOn(label: editAccountWarningLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isHidden: true)
         Utilities.setDesignOn(label: editAccountFirstNameLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.firstNameTextField)
@@ -118,12 +125,6 @@ class EditAccountViewController: UIViewController {
             editAccountButton.layer.shadowOffset = .zero
             editAccountButton.layer.shadowRadius = 2
             editAccountButton.layer.masksToBounds = false
-            
-            //editAccountCameraIconImageView.borderStyle = .none
-            editAccountCameraIconImageView.layer.shadowOpacity = 1
-            editAccountCameraIconImageView.layer.shadowRadius = 2
-            editAccountCameraIconImageView.layer.shadowOffset = .zero
-            editAccountCameraIconImageView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
             
             Utilities.setDesignOn(button: editAccountButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
         }

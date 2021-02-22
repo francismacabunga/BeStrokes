@@ -332,8 +332,8 @@ struct Utilities {
         if isCircular != nil {
             if isCircular! {
                 imageView.layer.cornerRadius = imageView.frame.size.height / 2
-                imageView.clipsToBounds = true
                 imageView.contentMode = .scaleAspectFit
+                imageView.clipsToBounds = true
             }
         }
         if isSkeletonCircular != nil {

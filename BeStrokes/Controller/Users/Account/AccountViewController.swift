@@ -14,6 +14,7 @@ class AccountViewController: UIViewController {
     //MARK: - IBOutlets
     
     @IBOutlet weak var accountTopView: UIView!
+    @IBOutlet weak var accountImageContentView: UIView!
     @IBOutlet weak var accountBottomStackView: UIStackView!
     @IBOutlet weak var accountBottomSearchContentView: UIView!
     @IBOutlet weak var accountTextFieldContentView: UIView!
@@ -25,8 +26,8 @@ class AccountViewController: UIViewController {
     @IBOutlet weak var accountNotificationButton: UIButton!
     @IBOutlet weak var accountEditButton: UIButton!
     @IBOutlet weak var accountSearchButton: UIButton!
-    @IBOutlet weak var accountSearchTextField: UITextField!
     @IBOutlet weak var accountImageView: UIImageView!
+    @IBOutlet weak var accountSearchTextField: UITextField!
     @IBOutlet weak var accountLovedStickerTableView: UITableView!
     @IBOutlet weak var accountLoadingIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var accountNoLovedStickerLabelConstraint: NSLayoutConstraint!
@@ -65,6 +66,7 @@ class AccountViewController: UIViewController {
     
     func setDesignElements() {
         Utilities.setDesignOn(view: accountTopView, setCustomCircleCurve: 30)
+        Utilities.setDesignOn(view: accountImageContentView, backgroundColor: .clear, isCircular: true)
         Utilities.setDesignOn(stackView: accountBottomStackView, backgroundColor: .clear, isHidden: true)
         Utilities.setDesignOn(view: accountBottomSearchContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: accountTextFieldContentView, backgroundColor: .clear, isHidden: true)
@@ -186,23 +188,28 @@ class AccountViewController: UIViewController {
     func showLoadingSkeletonView() {
         setSkeletonColor()
         DispatchQueue.main.async { [self] in
-            accountImageView.isSkeletonable = true
-            Utilities.setDesignOn(imageView: accountImageView, isSkeletonCircular: true)
+            accountImageContentView.isSkeletonable = true
+            Utilities.setDesignOn(view: accountImageContentView, isSkeletonCircular: true)
             accountNameHeadingLabel.isSkeletonable = true
             accountEmailHeadingLabel.isSkeletonable = true
-            accountImageView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+            accountImageContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
             accountNameHeadingLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
             accountEmailHeadingLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            accountImageView.showAnimatedSkeleton()
+            accountImageContentView.showAnimatedSkeleton()
             accountNameHeadingLabel.showAnimatedSkeleton()
             accountEmailHeadingLabel.showAnimatedSkeleton()
         }
     }
     
     func hideLoadingSkeletonView() {
-        accountImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        accountImageContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         accountEmailHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        accountImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+        accountImageContentView.layer.shadowOpacity = 1
+        accountImageContentView.layer.shadowOffset = .zero
+        accountImageContentView.layer.shadowRadius = 5
+        accountImageContentView.layer.masksToBounds = false
     }
     
     func showSearchTextField() {

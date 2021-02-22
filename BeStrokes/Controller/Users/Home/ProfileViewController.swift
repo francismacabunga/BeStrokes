@@ -15,6 +15,7 @@ class ProfileViewController: UIViewController {
     
     @IBOutlet weak var profileNavigationBar: UINavigationBar!
     @IBOutlet weak var profileContentView: UIView!
+    @IBOutlet weak var profileImageContentView: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var profileNameLabel: UILabel!
     @IBOutlet weak var profileEmailLabel: UILabel!
@@ -30,6 +31,8 @@ class ProfileViewController: UIViewController {
     private var profileSettingsViewModel: [ProfileSettingsViewModel]!
     private let fetchProfileData = FetchProfileData()
     private let user = User()
+    private var skeletonColor: UIColor?
+    private var hasProfilePicLoaded = false
     
     
     //MARK: - View Controller Life Cycle
@@ -50,6 +53,7 @@ class ProfileViewController: UIViewController {
     func setDesignElements() {
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(view: profileContentView, setCustomCircleCurve: 25)
+        Utilities.setDesignOn(view: profileImageContentView, backgroundColor: .clear, isCircular: true)
         Utilities.setDesignOn(navigationBar: profileNavigationBar, isDarkMode: true)
         Utilities.setDesignOn(imageView: profileImageView, isCircular: true)
         Utilities.setDesignOn(label: profileNameLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, canResize: true, minimumScaleFactor: 0.7)
@@ -73,6 +77,14 @@ class ProfileViewController: UIViewController {
     
     @objc func setLightMode() {
         UIView.animate(withDuration: 0.3) { [self] in
+            if hasProfilePicLoaded {
+                profileImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+                profileImageContentView.layer.shadowOpacity = 1
+                profileImageContentView.layer.shadowOffset = .zero
+                profileImageContentView.layer.shadowRadius = 5
+                profileImageContentView.layer.masksToBounds = false
+            }
+            
             profileContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
             profileContentView.layer.shadowOpacity = 1
             profileContentView.layer.shadowOffset = .zero
@@ -93,20 +105,38 @@ class ProfileViewController: UIViewController {
             profileContentView.layer.shadowRadius = 0
             profileContentView.layer.masksToBounds = true
             
+            profileImageContentView.layer.shadowColor = nil
+            profileImageContentView.layer.shadowOpacity = 0
+            profileImageContentView.layer.shadowOffset = .zero
+            profileImageContentView.layer.shadowRadius = 0
+            profileImageContentView.layer.masksToBounds = true
+            
             profileContentView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             profileNameLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
             profileEmailLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         }
     }
     
+    func setSkeletonColor() {
+        if appDelegate.isLightModeOn {
+            skeletonColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        } else {
+            skeletonColor = #colorLiteral(red: 0.2006691098, green: 0.200709641, blue: 0.2006634176, alpha: 1)
+        }
+    }
+    
     func showLoadingSkeletonView() {
+        setSkeletonColor()
         DispatchQueue.main.async { [self] in
-            profileImageView.isSkeletonable = true
-            Utilities.setDesignOn(imageView: profileImageView, isSkeletonCircular: true)
-            profileImageView.showAnimatedSkeleton()
+            profileImageContentView.isSkeletonable = true
+            Utilities.setDesignOn(view: profileImageContentView, isSkeletonCircular: true)
             profileNameLabel.isSkeletonable = true
-            profileNameLabel.showAnimatedSkeleton()
             profileEmailLabel.isSkeletonable = true
+            profileImageContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+            profileNameLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+            profileEmailLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+            profileImageContentView.showAnimatedSkeleton()
+            profileNameLabel.showAnimatedSkeleton()
             profileEmailLabel.showAnimatedSkeleton()
         }
     }
@@ -156,9 +186,16 @@ class ProfileViewController: UIViewController {
     }
     
     func hideLoadingSkeletonView() {
-        profileImageView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        profileImageContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         profileNameLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         profileEmailLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        if appDelegate.isLightModeOn {
+            profileImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            profileImageContentView.layer.shadowOpacity = 1
+            profileImageContentView.layer.shadowOffset = .zero
+            profileImageContentView.layer.shadowRadius = 5
+            profileImageContentView.layer.masksToBounds = false
+        }
     }
     
     func transitionToLandingVC() {
@@ -179,6 +216,7 @@ class ProfileViewController: UIViewController {
                 profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
                 profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
                 profileEmailLabel.text = userData.email
+                hasProfilePicLoaded = true
                 hideLoadingSkeletonView()
                 return
             }
