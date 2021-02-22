@@ -14,6 +14,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginNavigationBar: UINavigationBar!
     @IBOutlet weak var loginContentView: UIView!
     @IBOutlet weak var loginHeadingStackView: UIStackView!
+    @IBOutlet weak var loginImageContentView: UIView!
     @IBOutlet weak var loginTextFieldsStackView: UIStackView!
     @IBOutlet weak var loginForgotPasswordButtonStackView: UIStackView!
     @IBOutlet weak var loginForgotPasswordButtonSpacerView: UIView!
@@ -29,6 +30,7 @@ class LoginViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private let user = User()
     
     
@@ -51,21 +53,105 @@ class LoginViewController: UIViewController {
     
     func setDesignElements() {
         UIScrollView.appearance().indicatorStyle = .white
-        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: loginContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: loginHeadingStackView, backgroundColor: .clear)
+        Utilities.setDesignOn(view: loginImageContentView, backgroundColor: .clear, isCircular: true)
         Utilities.setDesignOn(stackView: loginTextFieldsStackView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: loginForgotPasswordButtonStackView, backgroundColor: .clear)
         Utilities.setDesignOn(view: loginForgotPasswordButtonSpacerView, backgroundColor: .clear)
-        Utilities.setDesignOn(navigationBar: loginNavigationBar, isDarkMode: false)
-        Utilities.setDesignOn(label: loginHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.loginHeadingText)
+        Utilities.setDesignOn(label: loginHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, text: Strings.loginHeadingText)
         Utilities.setDesignOn(label: loginWarningLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isHidden: true)
         Utilities.setDesignOn(imageView: loginImageView, image: UIImage(named: Strings.loginDefaultImage), isCircular: true)
-        Utilities.setDesignOn(textField: loginEmailTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(textField: loginPasswordTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), placeholder: Strings.passwordTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(button: loginForgotPasswordButton, title: Strings.forgotPasswordButtonText, fontName: Strings.defaultFontMedium, fontSize: 15, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(button: loginButton, title: Strings.loginButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, size: .medium, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isHidden: true)
+        Utilities.setDesignOn(textField: loginEmailTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(textField: loginPasswordTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, placeholder: Strings.passwordTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(button: loginForgotPasswordButton, title: Strings.forgotPasswordButtonText, fontName: Strings.defaultFontMedium, fontSize: 15)
+        Utilities.setDesignOn(button: loginButton, title: Strings.loginButtonText, fontName: Strings.defaultFontBold, fontSize: 20, isCircular: true)
+        Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, size: .medium, isHidden: true)
+        NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+        checkThemeAppearance()
+    }
+    
+    func checkThemeAppearance() {
+        if appDelegate.isLightModeOn {
+            setLightMode()
+        } else {
+            setDarkMode()
+        }
+    }
+    
+    @objc func setLightMode() {
+        UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(navigationBar: loginNavigationBar, isDarkMode: true)
+            Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            loginHeadingLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            Utilities.setDesignOn(button: loginForgotPasswordButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(button: loginButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
+            Utilities.setDesignOn(textField: loginEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
+            Utilities.setDesignOn(textField: loginPasswordTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
+            
+            loginButton.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            loginButton.layer.shadowOpacity = 1
+            loginButton.layer.shadowOffset = .zero
+            loginButton.layer.shadowRadius = 2
+            loginButton.layer.masksToBounds = false
+            
+            loginEmailTextField.borderStyle = .none
+            loginEmailTextField.layer.shadowOpacity = 1
+            loginEmailTextField.layer.shadowRadius = 2
+            loginEmailTextField.layer.shadowOffset = .zero
+            loginEmailTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            
+            loginPasswordTextField.borderStyle = .none
+            loginPasswordTextField.layer.shadowOpacity = 1
+            loginPasswordTextField.layer.shadowRadius = 2
+            loginPasswordTextField.layer.shadowOffset = .zero
+            loginPasswordTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            
+            loginImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            loginImageContentView.layer.shadowOpacity = 1
+            loginImageContentView.layer.shadowOffset = .zero
+            loginImageContentView.layer.shadowRadius = 2
+            loginImageContentView.layer.masksToBounds = false
+            
+            loginLoadingIndicatorView.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        }
+    }
+    
+    @objc func setDarkMode() {
+        UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(navigationBar: loginNavigationBar, isDarkMode: false)
+            Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            loginHeadingLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            Utilities.setDesignOn(button: loginForgotPasswordButton, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(button: loginButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(textField: loginEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(textField: loginPasswordTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            
+            loginButton.layer.shadowColor = nil
+            loginButton.layer.shadowOpacity = 0
+            loginButton.layer.shadowOffset = .zero
+            loginButton.layer.shadowRadius = 0
+            loginButton.layer.masksToBounds = true
+            
+            loginEmailTextField.layer.shadowOpacity = 0
+            loginEmailTextField.layer.shadowRadius = 0
+            loginEmailTextField.layer.shadowOffset = .zero
+            loginEmailTextField.layer.shadowColor = nil
+            
+            loginPasswordTextField.layer.shadowOpacity = 0
+            loginPasswordTextField.layer.shadowRadius = 0
+            loginPasswordTextField.layer.shadowOffset = .zero
+            loginPasswordTextField.layer.shadowColor = nil
+            
+            loginImageContentView.layer.shadowColor = nil
+            loginImageContentView.layer.shadowOpacity = 0
+            loginImageContentView.layer.shadowOffset = .zero
+            loginImageContentView.layer.shadowRadius = 0
+            loginImageContentView.layer.masksToBounds = true
+        
+            loginLoadingIndicatorView.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+        }
     }
     
     func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
