@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Keys@1x.png",
+      "filename" : "Black_Keys.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Keys@2x.png",
+      "filename" : "Black_Keys@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Keys@3x.png",
+      "filename" : "Black_Keys@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

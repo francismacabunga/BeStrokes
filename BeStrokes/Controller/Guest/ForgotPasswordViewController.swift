@@ -53,7 +53,7 @@ class ForgotPasswordViewController: UIViewController {
         Utilities.setDesignOn(stackView: forgotPasswordHeadingsStackView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: forgotPasswordTextFieldStackView, backgroundColor: .clear)
         Utilities.setDesignOn(navigationBar: forgotPasswordNavigationBar, isDarkMode: false)
-        Utilities.setDesignOn(imageView: forgotPasswordImageView, image: UIImage(named: Strings.forgotPasswordBackgroundImage), alpha: 0.3)
+        Utilities.setDesignOn(imageView: forgotPasswordImageView, image: UIImage(named: Strings.whiteKeys), alpha: 0.3)
         Utilities.setDesignOn(label: forgotPasswordHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.forgotPasswordHeadingText)
         Utilities.setDesignOn(label: forgotPasswordSubheadingLabel, fontName: Strings.defaultFontMedium, fontSize: 17, numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.forgotPasswordSubheadingText)
         Utilities.setDesignOn(label: forgotPasswordWarningLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isHidden: true)

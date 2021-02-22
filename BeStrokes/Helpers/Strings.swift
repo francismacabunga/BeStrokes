@@ -147,7 +147,8 @@ struct Strings {
     static let cameraImage = "Camera"
     static let signUpDefaultImage = "Woman"
     static let loginDefaultImage = "Avatar"
-    static let forgotPasswordBackgroundImage = "Keys"
+    static let blackKeys = "Black_Keys"
+    static let whiteKeys = "White_Keys"
     static let tutorialDialogueImage = "Dialogue"
     static let defaultStickerImage = "Elephant"
     
