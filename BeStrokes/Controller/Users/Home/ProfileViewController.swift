@@ -141,6 +141,46 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    func hideLoadingSkeletonView() {
+        profileImageContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        profileNameLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        profileEmailLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        if appDelegate.isLightModeOn {
+            profileImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
+            profileImageContentView.layer.shadowOpacity = 1
+            profileImageContentView.layer.shadowOffset = .zero
+            profileImageContentView.layer.shadowRadius = 5
+            profileImageContentView.layer.masksToBounds = false
+        }
+    }
+    
+    func getSignedInUserData() {
+        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let userData = userData else {return}
+                profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
+                profileEmailLabel.text = userData.email
+                hasProfilePicLoaded = true
+                hideLoadingSkeletonView()
+                return
+            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+        }
+    }
+    
+    func setData() {
+        profileSettingsViewModel = fetchProfileData.settings()
+        showLoadingSkeletonView()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+            getSignedInUserData()
+        }
+    }
+    
     func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
         var alert = UIAlertController()
         if error {
@@ -185,51 +225,11 @@ class ProfileViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    func hideLoadingSkeletonView() {
-        profileImageContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        profileNameLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        profileEmailLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        if appDelegate.isLightModeOn {
-            profileImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            profileImageContentView.layer.shadowOpacity = 1
-            profileImageContentView.layer.shadowOffset = .zero
-            profileImageContentView.layer.shadowRadius = 5
-            profileImageContentView.layer.masksToBounds = false
-        }
-    }
-    
     func transitionToLandingVC() {
         let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
         let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
         view.window?.rootViewController = landingVC
         view.window?.makeKeyAndVisible()
-    }
-    
-    func getSignedInUserData() {
-        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            guard let error = error else {
-                if !isUserSignedIn {
-                    showNoSignedInUserAlert()
-                    return
-                }
-                guard let userData = userData else {return}
-                profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
-                profileEmailLabel.text = userData.email
-                hasProfilePicLoaded = true
-                hideLoadingSkeletonView()
-                return
-            }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
-        }
-    }
-    
-    func setData() {
-        profileSettingsViewModel = fetchProfileData.settings()
-        showLoadingSkeletonView()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-            getSignedInUserData()
-        }
     }
     
     

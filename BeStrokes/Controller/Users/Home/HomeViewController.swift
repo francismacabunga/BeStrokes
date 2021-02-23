@@ -72,8 +72,8 @@ class HomeViewController: UIViewController {
         Utilities.setDesignOn(view: homeProfilePicContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: homeStickerView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: homeContentStackView, backgroundColor: .clear)
-        Utilities.setDesignOn(label: homeHeading1Label, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.homeHeading1Text)
-        Utilities.setDesignOn(label: homeHeading2Label, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.homeHeading2Text)
+        Utilities.setDesignOn(label: homeHeading1Label, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, text: Strings.homeHeading1Text)
+        Utilities.setDesignOn(label: homeHeading2Label, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, text: Strings.homeHeading2Text)
         Utilities.setDesignOn(collectionView: homeFeaturedStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
@@ -102,56 +102,36 @@ class HomeViewController: UIViewController {
     }
     
     @objc func setLightMode() {
-        homeScrollView.indicatorStyle = .black
+        isLightMode = true
+        setNeedsStatusBarAppearanceUpdate()
         if shouldReloadStickerCategoryCollectionView {
-            DispatchQueue.main.async { [self] in
-                homeStickerCategoryCollectionView.reloadData()
-                homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath!, animated: false, scrollPosition: .right)
-            }
+            reloadStickerCategoryCollection()
         }
         UIView.animate(withDuration: 0.3) { [self] in
             if hasProfilePicLoaded {
-                homeProfilePicContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-                homeProfilePicContentView.layer.shadowOpacity = 1
-                homeProfilePicContentView.layer.shadowOffset = .zero
-                homeProfilePicContentView.layer.shadowRadius = 5
-                homeProfilePicContentView.layer.masksToBounds = false
+                Utilities.setShadowOn(view: homeProfilePicContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
             }
-            
+            Utilities.setDesignOn(scrollView: homeScrollView, indicatorColor: .black)
             Utilities.setDesignOn(view: view, backgroundColor: .white)
-            isLightMode = true
-            setNeedsStatusBarAppearanceUpdate()
-            
-            homeHeading1Label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            homeHeading2Label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            
-            homeLoadingIndicatorView.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            Utilities.setDesignOn(label: homeHeading1Label, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(label: homeHeading2Label, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         }
     }
     
     @objc func setDarkMode() {
-        homeScrollView.indicatorStyle = .white
+        isLightMode = false
+        setNeedsStatusBarAppearanceUpdate()
         if shouldReloadStickerCategoryCollectionView {
-            DispatchQueue.main.async { [self] in
-                homeStickerCategoryCollectionView.reloadData()
-                homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath!, animated: false, scrollPosition: .right)
-            }
+            reloadStickerCategoryCollection()
         }
         UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(scrollView: homeScrollView, indicatorColor: .white)
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-            isLightMode = false
-            setNeedsStatusBarAppearanceUpdate()
-            
-            homeProfilePicContentView.layer.shadowColor = nil
-            homeProfilePicContentView.layer.shadowOpacity = 0
-            homeProfilePicContentView.layer.shadowOffset = .zero
-            homeProfilePicContentView.layer.shadowRadius = 0
-            homeProfilePicContentView.layer.masksToBounds = true
-            
-            homeHeading1Label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            homeHeading2Label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            
-            homeLoadingIndicatorView.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            Utilities.setShadowOn(view: homeProfilePicContentView, isHidden: true)
+            Utilities.setDesignOn(label: homeHeading1Label, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(label: homeHeading2Label, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         }
     }
     
@@ -161,6 +141,71 @@ class HomeViewController: UIViewController {
         } else {
             skeletonColor = #colorLiteral(red: 0.2006691098, green: 0.200709641, blue: 0.2006634176, alpha: 1)
         }
+    }
+    
+    func showLoadingProfilePicDesign() {
+        setSkeletonColor()
+        DispatchQueue.main.async { [self] in
+            homeProfilePicContentView.isSkeletonable = true
+            Utilities.setDesignOn(view: homeProfilePicContentView, isSkeletonCircular: true)
+            homeProfilePicContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+            homeProfilePictureButton.showAnimatedSkeleton()
+        }
+    }
+    
+    func setProfilePicture() {
+        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let userData = userData else {return}
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                    Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
+                    homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
+                    hasProfilePicLoaded = true
+                    if appDelegate.isLightModeOn {
+                        Utilities.setShadowOn(view: homeProfilePicContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
+                    }
+                }
+                return
+            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+        }
+    }
+    
+    func showLoadingStickersDesign() {
+        homeStickerCollectionView.isHidden = true
+        homeLoadingIndicatorView.isHidden = false
+        homeLoadingIndicatorView.startAnimating()
+        DispatchQueue.main.async { [self] in
+            homeStickerCollectionView.reloadData()
+        }
+    }
+    
+    func showStickers() {
+        DispatchQueue.main.async { [self] in
+            homeStickerCollectionView.reloadData()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+            homeLoadingIndicatorView.isHidden = true
+            homeStickerCollectionView.isHidden = false
+        }
+    }
+    
+    func reloadStickerCategoryCollection() {
+        DispatchQueue.main.async { [self] in
+            homeStickerCategoryCollectionView.reloadData()
+            homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath!, animated: false, scrollPosition: .right)
+        }
+    }
+    
+    func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
+        homeFeaturedStickerCollectionView.configureForPeekingBehavior(behavior: behavior)
+        behavior.cellPeekWidth = 15
+        behavior.cellSpacing = 5
     }
     
     func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
@@ -184,68 +229,6 @@ class HomeViewController: UIViewController {
         }
         alert.addAction(dismissAction)
         present(alert, animated: true)
-    }
-    
-    func showLoadingProfilePicDesign() {
-        setSkeletonColor()
-        DispatchQueue.main.async { [self] in
-            homeProfilePicContentView.isSkeletonable = true
-            Utilities.setDesignOn(view: homeProfilePicContentView, isSkeletonCircular: true)
-            homeProfilePicContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            homeProfilePictureButton.showAnimatedSkeleton()
-        }
-    }
-    
-    func showLoadingStickersDesign() {
-        homeStickerCollectionView.isHidden = true
-        homeLoadingIndicatorView.isHidden = false
-        homeLoadingIndicatorView.startAnimating()
-        DispatchQueue.main.async { [self] in
-            homeStickerCollectionView.reloadData()
-        }
-    }
-    
-    func showStickers() {
-        DispatchQueue.main.async { [self] in
-            homeStickerCollectionView.reloadData()
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-            homeLoadingIndicatorView.isHidden = true
-            homeStickerCollectionView.isHidden = false
-        }
-    }
-    
-    func setProfilePicture() {
-        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            guard let error = error else {
-                if !isUserSignedIn {
-                    showNoSignedInUserAlert()
-                    return
-                }
-                guard let userData = userData else {return}
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-                    Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
-                    homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
-                    hasProfilePicLoaded = true
-                    if appDelegate.isLightModeOn {
-                        homeProfilePicContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-                        homeProfilePicContentView.layer.shadowOpacity = 1
-                        homeProfilePicContentView.layer.shadowOffset = .zero
-                        homeProfilePicContentView.layer.shadowRadius = 5
-                        homeProfilePicContentView.layer.masksToBounds = false
-                    }
-                }
-                return
-            }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
-        }
-    }
-    
-    func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
-        homeFeaturedStickerCollectionView.configureForPeekingBehavior(behavior: behavior)
-        behavior.cellPeekWidth = 15
-        behavior.cellSpacing = 5
     }
     
     func transitionToLandingVC() {

@@ -17,9 +17,9 @@ struct Utilities {
     
     // Label
     static func setDesignOn(label: UILabel,
-                            fontName: String,
-                            fontSize: CGFloat,
-                            numberofLines: Int,
+                            fontName: String? = nil,
+                            fontSize: CGFloat? = nil,
+                            numberofLines: Int? = nil,
                             textAlignment: NSTextAlignment? = .none,
                             lineBreakMode: NSLineBreakMode? = .none,
                             fontColor: UIColor? = nil,
@@ -30,8 +30,12 @@ struct Utilities {
                             backgroundColor: UIColor? = nil,
                             isHidden: Bool? = nil)
     {
-        label.font = UIFont(name: fontName, size: fontSize)
-        label.numberOfLines = numberofLines
+        if fontName != nil && fontSize != nil {
+            label.font = UIFont(name: fontName!, size: fontSize!)
+        }
+        if numberofLines != nil {
+            label.numberOfLines = numberofLines!
+        }
         if textAlignment != nil {
             label.textAlignment = textAlignment!
         }
@@ -199,23 +203,23 @@ struct Utilities {
         navigationBar.topItem?.titleView = imageView
     }
     
-    // Tab Bar
-    static func setDesignOn(tabBar: UITabBar,
-                            backgroundColor: UIColor,
-                            iconColor: UIColor)
+    // Scroll View
+    static func setDesignOn(scrollView: UIScrollView,
+                            indicatorColor: UIScrollView.IndicatorStyle)
     {
-        tabBar.barTintColor = backgroundColor
-        tabBar.tintColor = iconColor
+        scrollView.indicatorStyle = indicatorColor
     }
     
     // Loading Indicator
     static func setDesignOn(activityIndicatorView: UIActivityIndicatorView,
-                            size: UIActivityIndicatorView.Style,
+                            size: UIActivityIndicatorView.Style? = nil,
                             color: UIColor? = nil,
                             isStartAnimating: Bool? = nil,
                             isHidden: Bool? = nil)
     {
-        activityIndicatorView.style = size
+        if size != nil {
+            activityIndicatorView.style = size!
+        }
         if color != nil {
             activityIndicatorView.color = color!
         }
@@ -240,6 +244,15 @@ struct Utilities {
     {
         pageControl.pageIndicatorTintColor = pageIndicatorColor
         pageControl.currentPageIndicatorTintColor = currentPageColor
+    }
+    
+    // Tab Bar
+    static func setDesignOn(tabBar: UITabBar,
+                            backgroundColor: UIColor,
+                            iconColor: UIColor)
+    {
+        tabBar.barTintColor = backgroundColor
+        tabBar.tintColor = iconColor
     }
     
     // Stack View
@@ -302,6 +315,29 @@ struct Utilities {
             } else {
                 view.isHidden = false
             }
+        }
+    }
+    
+    // Shadow on View
+    static func setShadowOn(view: UIView,
+                            isHidden: Bool,
+                            shadowColor: CGColor? = nil,
+                            shadowOpacity: Float? = nil,
+                            shadowOffset: CGSize? = nil,
+                            shadowRadius: CGFloat? = nil)
+    {
+        if !isHidden && shadowColor != nil && shadowOpacity != nil && shadowOffset != nil && shadowRadius != nil {
+            view.layer.shadowColor = shadowColor!
+            view.layer.shadowOpacity = shadowOpacity!
+            view.layer.shadowOffset = shadowOffset!
+            view.layer.shadowRadius = shadowRadius!
+            view.layer.masksToBounds = false
+        } else {
+            view.layer.shadowColor = nil
+            view.layer.shadowOpacity = 0
+            view.layer.shadowOffset = .zero
+            view.layer.shadowRadius = 0
+            view.layer.masksToBounds = true
         }
     }
     
