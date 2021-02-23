@@ -104,13 +104,25 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zZ3-cP-vmj">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmG-o9-bSr">
                                                         <rect key="frame" x="215" y="0.0" width="100" height="100"/>
+                                                        <subviews>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zZ3-cP-vmj">
+                                                                <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="100" id="01r-bX-ft5"/>
+                                                                    <constraint firstAttribute="width" constant="100" id="9uW-eC-HTf"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                        </subviews>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="100" id="01r-bX-ft5"/>
-                                                            <constraint firstAttribute="width" constant="100" id="9uW-eC-HTf"/>
+                                                            <constraint firstAttribute="trailing" secondItem="zZ3-cP-vmj" secondAttribute="trailing" id="6kX-W4-Axf"/>
+                                                            <constraint firstItem="zZ3-cP-vmj" firstAttribute="top" secondItem="BmG-o9-bSr" secondAttribute="top" id="Cau-Bh-eKC"/>
+                                                            <constraint firstAttribute="bottom" secondItem="zZ3-cP-vmj" secondAttribute="bottom" id="v8J-b1-KDU"/>
+                                                            <constraint firstItem="zZ3-cP-vmj" firstAttribute="leading" secondItem="BmG-o9-bSr" secondAttribute="leading" id="zMi-YW-Q1U"/>
                                                         </constraints>
-                                                    </imageView>
+                                                    </view>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="315" id="poj-co-j0M"/>
@@ -233,6 +245,7 @@
                         <outlet property="signUpFirstNameTextField" destination="QEk-os-TLG" id="PhM-v5-Huv"/>
                         <outlet property="signUpHeadingLabel" destination="hRK-UZ-jze" id="HrF-nB-ngu"/>
                         <outlet property="signUpHeadingStackView" destination="Wki-jL-ntx" id="iu8-Ot-AzT"/>
+                        <outlet property="signUpImageContentView" destination="BmG-o9-bSr" id="JMF-bv-4l6"/>
                         <outlet property="signUpImageView" destination="zZ3-cP-vmj" id="yx4-nW-8iI"/>
                         <outlet property="signUpLastNameTextField" destination="TpQ-Ch-1Hi" id="Nk7-tE-Cqh"/>
                         <outlet property="signUpLoadingIndicatorView" destination="ifq-Yb-fPx" id="NuC-a3-cKb"/>
