@@ -15,6 +15,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var homeScrollView: UIScrollView!
     @IBOutlet weak var homeContentStackView: UIStackView!
     @IBOutlet weak var homeFeaturedView: UIView!
     @IBOutlet weak var homeProfilePicContentView: UIView!
@@ -101,6 +102,7 @@ class HomeViewController: UIViewController {
     }
     
     @objc func setLightMode() {
+        homeScrollView.indicatorStyle = .black
         if shouldReloadStickerCategoryCollectionView {
             DispatchQueue.main.async { [self] in
                 homeStickerCategoryCollectionView.reloadData()
@@ -128,6 +130,7 @@ class HomeViewController: UIViewController {
     }
     
     @objc func setDarkMode() {
+        homeScrollView.indicatorStyle = .white
         if shouldReloadStickerCategoryCollectionView {
             DispatchQueue.main.async { [self] in
                 homeStickerCategoryCollectionView.reloadData()

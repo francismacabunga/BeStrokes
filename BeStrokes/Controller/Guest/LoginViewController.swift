@@ -11,6 +11,7 @@ class LoginViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var loginScrollView: UIScrollView!
     @IBOutlet weak var loginNavigationBar: UINavigationBar!
     @IBOutlet weak var loginContentView: UIView!
     @IBOutlet weak var loginHeadingStackView: UIStackView!
@@ -52,7 +53,6 @@ class LoginViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        UIScrollView.appearance().indicatorStyle = .white
         Utilities.setDesignOn(view: loginContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: loginHeadingStackView, backgroundColor: .clear)
         Utilities.setDesignOn(view: loginImageContentView, backgroundColor: .clear, isCircular: true)
@@ -81,6 +81,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc func setLightMode() {
+        loginScrollView.indicatorStyle = .black
         UIView.animate(withDuration: 0.3) { [self] in
             Utilities.setDesignOn(navigationBar: loginNavigationBar, isDarkMode: true)
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
@@ -119,6 +120,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc func setDarkMode() {
+        loginScrollView.indicatorStyle = .white
         UIView.animate(withDuration: 0.3) { [self] in
             Utilities.setDesignOn(navigationBar: loginNavigationBar, isDarkMode: false)
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
@@ -209,7 +211,6 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginButton(_ sender: UIButton) {
         Utilities.animate(button: sender)
-        setLoginButtonTappedAnimation()
         processLogin()
         dismissKeyboard()
     }
@@ -228,6 +229,7 @@ class LoginViewController: UIViewController {
         user.signInUser(with: email, password) { [self] (error, authResult) in
             guard let error = error else {
                 removeWarningLabel()
+                setLoginButtonTappedAnimation()
                 loginSuccessful()
                 return
             }

@@ -948,6 +948,7 @@
                         <outlet property="editAccountLoadingIndicatorView" destination="ylW-AE-SGf" id="tmH-th-Lvz"/>
                         <outlet property="editAccountNavigationBar" destination="L9n-wS-Gh2" id="a4e-p6-CFq"/>
                         <outlet property="editAccountSaveButtonContentView" destination="gnp-B6-5QR" id="9AV-4R-lOo"/>
+                        <outlet property="editAccountScrollView" destination="hDf-MX-MMG" id="dC2-J3-i8A"/>
                         <outlet property="editAccountStackView" destination="HrH-Xg-qs0" id="iBi-ao-qP0"/>
                         <outlet property="editAccountWarningLabel" destination="240-4T-RTT" id="n6m-wp-mt0"/>
                     </connections>
@@ -1145,6 +1146,7 @@
                         <outlet property="homeLoadingIndicatorView" destination="B3K-Yn-yge" id="YsA-Bm-Y49"/>
                         <outlet property="homeProfilePicContentView" destination="hNZ-nb-2b2" id="Mu2-j0-TRc"/>
                         <outlet property="homeProfilePictureButton" destination="Brh-r2-fJi" id="w1z-kh-rbs"/>
+                        <outlet property="homeScrollView" destination="jbP-We-H7c" id="ofc-PS-HU6"/>
                         <outlet property="homeStickerCategoryCollectionView" destination="inL-9d-L1f" id="YRg-PH-KTS"/>
                         <outlet property="homeStickerCollectionView" destination="4jC-9x-OB5" id="6eu-Kg-HeC"/>
                         <outlet property="homeStickerView" destination="nqf-9D-brb" id="B3S-uz-8EA"/>

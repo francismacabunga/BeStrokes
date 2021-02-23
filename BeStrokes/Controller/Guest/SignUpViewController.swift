@@ -13,6 +13,7 @@ class SignUpViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var signUpScrollView: UIScrollView!
     @IBOutlet weak var signUpNavigationBar: UINavigationBar!
     @IBOutlet weak var signUpContentView: UIView!
     @IBOutlet weak var signUpHeadingStackView: UIStackView!
@@ -56,7 +57,6 @@ class SignUpViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        UIScrollView.appearance().indicatorStyle = .white
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(view: signUpContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: signUpHeadingStackView, backgroundColor: .clear)

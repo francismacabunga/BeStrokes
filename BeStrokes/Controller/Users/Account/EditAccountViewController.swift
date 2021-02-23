@@ -13,6 +13,7 @@ class EditAccountViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var editAccountScrollView: UIScrollView!
     @IBOutlet weak var editAccountNavigationBar: UINavigationBar!
     @IBOutlet weak var editAccountStackView: UIStackView!
     @IBOutlet weak var editAccountHeadingContentView: UIView!
@@ -60,6 +61,7 @@ class EditAccountViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
+        editAccountScrollView.indicatorStyle = .black
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(view: editAccountHeadingContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: editAccountImageContentView, backgroundColor: .clear)
