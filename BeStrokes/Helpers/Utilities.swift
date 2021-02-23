@@ -199,6 +199,15 @@ struct Utilities {
         navigationBar.topItem?.titleView = imageView
     }
     
+    // Tab Bar
+    static func setDesignOn(tabBar: UITabBar,
+                            backgroundColor: UIColor,
+                            iconColor: UIColor)
+    {
+        tabBar.barTintColor = backgroundColor
+        tabBar.tintColor = iconColor
+    }
+    
     // Loading Indicator
     static func setDesignOn(activityIndicatorView: UIActivityIndicatorView,
                             size: UIActivityIndicatorView.Style,
