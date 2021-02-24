@@ -66,7 +66,7 @@ class StickerOptionViewController: UIViewController {
         Utilities.setDesignOn(view: stickerBottomView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: stickerStackContentView, backgroundColor: .clear)
         Utilities.setDesignOn(navigationBar: stickerNavigationBar, isDarkMode: true)
-        Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(imageView: stickerHeartButtonImageView, tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(label: stickerNameLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(label: stickerCategoryLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .center)
         Utilities.setDesignOn(label: stickerTagLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .center)
@@ -87,107 +87,28 @@ class StickerOptionViewController: UIViewController {
     
     @objc func setLightMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            stickerCategoryView.backgroundColor = .white
-            stickerTagView.backgroundColor = .white
-            
-            stickerCategoryLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            stickerTagLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            
-            stickerCategoryView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            stickerCategoryView.layer.shadowOpacity = 1
-            stickerCategoryView.layer.shadowOffset = .zero
-            stickerCategoryView.layer.shadowRadius = 2
-            stickerCategoryView.layer.masksToBounds = false
-            
-            stickerTagView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            stickerTagView.layer.shadowOpacity = 1
-            stickerTagView.layer.shadowOffset = .zero
-            stickerTagView.layer.shadowRadius = 2
-            stickerTagView.layer.masksToBounds = false
-            
-            stickerTryMeButton.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            stickerTryMeButton.layer.shadowOpacity = 1
-            stickerTryMeButton.layer.shadowOffset = .zero
-            stickerTryMeButton.layer.shadowRadius = 2
-            stickerTryMeButton.layer.masksToBounds = false
-            
+            Utilities.setDesignOn(view: stickerCategoryView, backgroundColor: .white)
+            Utilities.setDesignOn(view: stickerTagView, backgroundColor: .white)
+            Utilities.setDesignOn(label: stickerCategoryLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(label: stickerTagLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setShadowOn(view: stickerCategoryView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(view: stickerTagView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(button: stickerTryMeButton, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
             Utilities.setDesignOn(button: stickerTryMeButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
         }
     }
     
     @objc func setDarkMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            stickerCategoryView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            stickerTagView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            
-            stickerCategoryLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            stickerTagLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            
-            stickerCategoryView.layer.shadowColor = nil
-            stickerCategoryView.layer.shadowOpacity = 0
-            stickerCategoryView.layer.shadowOffset = .zero
-            stickerCategoryView.layer.shadowRadius = 0
-            stickerCategoryView.layer.masksToBounds = true
-            
-            stickerTagView.layer.shadowColor = nil
-            stickerTagView.layer.shadowOpacity = 0
-            stickerTagView.layer.shadowOffset = .zero
-            stickerTagView.layer.shadowRadius = 0
-            stickerTagView.layer.masksToBounds = true
-            
-            stickerTryMeButton.layer.shadowColor = nil
-            stickerTryMeButton.layer.shadowOpacity = 0
-            stickerTryMeButton.layer.shadowOffset = .zero
-            stickerTryMeButton.layer.shadowRadius = 0
-            stickerTryMeButton.layer.masksToBounds = true
-            
+            Utilities.setDesignOn(view: stickerCategoryView, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(view: stickerTagView, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(label: stickerCategoryLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(label: stickerTagLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setShadowOn(view: stickerCategoryView, isHidden: true)
+            Utilities.setShadowOn(view: stickerTagView, isHidden: true)
+            Utilities.setShadowOn(button: stickerTryMeButton, isHidden: true)
             Utilities.setDesignOn(button: stickerTryMeButton, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         }
-    }
-    
-    func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
-        var alert = UIAlertController()
-        if error {
-            alert = UIAlertController(title: Strings.homeAlertTitle, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
-        } else {
-            alert = UIAlertController(title: Strings.homeAlertTitle, message: withCustomizedString, preferredStyle: .alert)
-        }
-        let tryAgainAction = UIAlertAction(title: Strings.homeAlert1Action, style: .default) { [self] (alertAction) in
-            dismiss(animated: true)
-        }
-        alert.addAction(tryAgainAction)
-        present(alert, animated: true)
-    }
-    
-    func showNoSignedInUserAlert() {
-        let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { [self] (alertAction) in
-            transitionToLandingVC()
-        }
-        alert.addAction(dismissAction)
-        present(alert, animated: true)
-    }
-    
-    func transitionToLandingVC() {
-        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
-        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
-        view.window?.rootViewController = landingVC
-        view.window?.makeKeyAndVisible()
-    }
-    
-    func transitionToCaptureVC() {
-        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
-        captureVC.stickerViewModel = stickerViewModel
-        captureVC.lovedStickerViewModel = lovedStickerViewModel
-        captureVC.isStickerPicked = true
-        captureVC.modalPresentationStyle = .fullScreen
-        present(captureVC, animated: true)
-    }
-    
-    func prepareStickerOptionVC() {
-        setDesignElements()
-        registerGestures()
     }
     
     func getHeartButtonValue(stickerViewModel: StickerViewModel? = nil, lovedStickerViewModel: LovedStickerViewModel? = nil) {
@@ -235,6 +156,51 @@ class StickerOptionViewController: UIViewController {
             stickerTagView.isHidden = true
         }
         stickerDescriptionLabel.text = stickerDescription
+    }
+    
+    func prepareStickerOptionVC() {
+        setDesignElements()
+        registerGestures()
+    }
+    
+    func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
+        var alert = UIAlertController()
+        if error {
+            alert = UIAlertController(title: Strings.homeAlertTitle, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
+        } else {
+            alert = UIAlertController(title: Strings.homeAlertTitle, message: withCustomizedString, preferredStyle: .alert)
+        }
+        let tryAgainAction = UIAlertAction(title: Strings.homeAlert1Action, style: .default) { [self] (alertAction) in
+            dismiss(animated: true)
+        }
+        alert.addAction(tryAgainAction)
+        present(alert, animated: true)
+    }
+    
+    func showNoSignedInUserAlert() {
+        let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { [self] (alertAction) in
+            transitionToLandingVC()
+        }
+        alert.addAction(dismissAction)
+        present(alert, animated: true)
+    }
+    
+    func transitionToCaptureVC() {
+        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+        let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
+        captureVC.stickerViewModel = stickerViewModel
+        captureVC.lovedStickerViewModel = lovedStickerViewModel
+        captureVC.isStickerPicked = true
+        captureVC.modalPresentationStyle = .fullScreen
+        present(captureVC, animated: true)
+    }
+    
+    func transitionToLandingVC() {
+        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
+        view.window?.rootViewController = landingVC
+        view.window?.makeKeyAndVisible()
     }
     
     

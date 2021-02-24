@@ -185,6 +185,29 @@ struct Utilities {
         }
     }
     
+    // Shadow on Button
+    static func setShadowOn(button: UIButton,
+                            isHidden: Bool,
+                            shadowColor: CGColor? = nil,
+                            shadowOpacity: Float? = nil,
+                            shadowOffset: CGSize? = nil,
+                            shadowRadius: CGFloat? = nil)
+    {
+        if !isHidden && shadowColor != nil && shadowOpacity != nil && shadowOffset != nil && shadowRadius != nil {
+            button.layer.shadowColor = shadowColor!
+            button.layer.shadowOpacity = shadowOpacity!
+            button.layer.shadowOffset = shadowOffset!
+            button.layer.shadowRadius = shadowRadius!
+            button.layer.masksToBounds = false
+        } else {
+            button.layer.shadowColor = nil
+            button.layer.shadowOpacity = 0
+            button.layer.shadowOffset = .zero
+            button.layer.shadowRadius = 0
+            button.layer.masksToBounds = true
+        }
+    }
+    
     // Navigation Bar
     static func setDesignOn(navigationBar: UINavigationBar,
                             isDarkMode: Bool)
