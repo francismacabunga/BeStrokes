@@ -20,9 +20,9 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var signUpImageContentView: UIView!
     @IBOutlet weak var signUpTextFieldsStackView: UIStackView!
     @IBOutlet weak var signUpHeadingLabel: UILabel!
-    @IBOutlet weak var signUpImageView: UIImageView!
     @IBOutlet weak var signUpWarning1Label: UILabel!
     @IBOutlet weak var signUpWarning2Label: UILabel!
+    @IBOutlet weak var signUpImageView: UIImageView!
     @IBOutlet weak var signUpFirstNameTextField: UITextField!
     @IBOutlet weak var signUpLastNameTextField: UITextField!
     @IBOutlet weak var signUpEmailTextField: UITextField!

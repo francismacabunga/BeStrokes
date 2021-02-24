@@ -11,8 +11,8 @@ class LoginViewController: UIViewController {
     
     //MARK: - IBOutlets
     
-    @IBOutlet weak var loginScrollView: UIScrollView!
     @IBOutlet weak var loginNavigationBar: UINavigationBar!
+    @IBOutlet weak var loginScrollView: UIScrollView!
     @IBOutlet weak var loginContentView: UIView!
     @IBOutlet weak var loginHeadingStackView: UIStackView!
     @IBOutlet weak var loginImageContentView: UIView!
@@ -20,8 +20,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginForgotPasswordButtonStackView: UIStackView!
     @IBOutlet weak var loginForgotPasswordButtonSpacerView: UIView!
     @IBOutlet weak var loginHeadingLabel: UILabel!
-    @IBOutlet weak var loginImageView: UIImageView!
     @IBOutlet weak var loginWarningLabel: UILabel!
+    @IBOutlet weak var loginImageView: UIImageView!
     @IBOutlet weak var loginEmailTextField: UITextField!
     @IBOutlet weak var loginPasswordTextField: UITextField!
     @IBOutlet weak var loginForgotPasswordButton: UIButton!

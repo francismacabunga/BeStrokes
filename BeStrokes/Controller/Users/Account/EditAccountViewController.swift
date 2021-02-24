@@ -13,19 +13,19 @@ class EditAccountViewController: UIViewController {
     
     //MARK: - IBOutlets
     
-    @IBOutlet weak var editAccountScrollView: UIScrollView!
     @IBOutlet weak var editAccountNavigationBar: UINavigationBar!
+    @IBOutlet weak var editAccountScrollView: UIScrollView!
     @IBOutlet weak var editAccountStackView: UIStackView!
     @IBOutlet weak var editAccountHeadingContentView: UIView!
     @IBOutlet weak var editAccountImageContentView: UIView!
     @IBOutlet weak var editAccountSaveButtonContentView: UIView!
     @IBOutlet weak var editAccountHeadingLabel: UILabel!
-    @IBOutlet weak var editAccountImageView: UIImageView!
-    @IBOutlet weak var editAccountCameraIconImageView: UIImageView!
     @IBOutlet weak var editAccountWarningLabel: UILabel!
     @IBOutlet weak var editAccountFirstNameLabel: UILabel!
     @IBOutlet weak var editAccountLastNameLabel: UILabel!
     @IBOutlet weak var editAccountEmailLabel: UILabel!
+    @IBOutlet weak var editAccountImageView: UIImageView!
+    @IBOutlet weak var editAccountCameraIconImageView: UIImageView!
     @IBOutlet weak var editAccountFirstNameTextField: UITextField!
     @IBOutlet weak var editAccountLastNameTextField: UITextField!
     @IBOutlet weak var editAccountEmailTextField: UITextField!

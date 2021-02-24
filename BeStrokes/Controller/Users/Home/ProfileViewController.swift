@@ -20,9 +20,9 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var profileNameLabel: UILabel!
     @IBOutlet weak var profileEmailLabel: UILabel!
     @IBOutlet weak var profileHeadingLabel: UILabel!
-    @IBOutlet weak var profileTableView: UITableView!
     @IBOutlet weak var profileTrademark1Label: UILabel!
     @IBOutlet weak var profileTrademark2Label: UILabel!
+    @IBOutlet weak var profileTableView: UITableView!
     
     
     //MARK: - Constants / Variables

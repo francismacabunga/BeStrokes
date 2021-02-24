@@ -11,8 +11,8 @@ class ForgotPasswordViewController: UIViewController {
     
     //MARK: - IBOutlets
     
-    @IBOutlet weak var forgotPasswordScrollView: UIScrollView!
     @IBOutlet weak var forgotPasswordNavigationBar: UINavigationBar!
+    @IBOutlet weak var forgotPasswordScrollView: UIScrollView!
     @IBOutlet weak var forgotPasswordContentView: UIView!
     @IBOutlet weak var forgotPasswordHeadingsStackView: UIStackView!
     @IBOutlet weak var forgotPasswordTextFieldStackView: UIStackView!

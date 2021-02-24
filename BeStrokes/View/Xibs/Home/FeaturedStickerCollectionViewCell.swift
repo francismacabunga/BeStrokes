@@ -17,8 +17,8 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var featuredStickerView: UIView!
     @IBOutlet weak var featuredStickerLabel: UILabel!
     @IBOutlet weak var featuredStickerHeartButtonImageView: UIImageView!
-    @IBOutlet weak var featuredStickerTryMeButton: UIButton!
     @IBOutlet weak var featuredStickerImageView: UIImageView!
+    @IBOutlet weak var featuredStickerTryMeButton: UIButton!
     
     
     //MARK: - Constants / Variables
