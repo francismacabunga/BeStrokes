@@ -78,42 +78,22 @@ class ProfileViewController: UIViewController {
     @objc func setLightMode() {
         UIView.animate(withDuration: 0.3) { [self] in
             if hasProfilePicLoaded {
-                profileImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-                profileImageContentView.layer.shadowOpacity = 1
-                profileImageContentView.layer.shadowOffset = .zero
-                profileImageContentView.layer.shadowRadius = 5
-                profileImageContentView.layer.masksToBounds = false
+                Utilities.setShadowOn(view: profileImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
             }
-            
-            profileContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            profileContentView.layer.shadowOpacity = 1
-            profileContentView.layer.shadowOffset = .zero
-            profileContentView.layer.shadowRadius = 2
-            profileContentView.layer.masksToBounds = false
-            
-            profileContentView.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
-            profileNameLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            profileEmailLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            Utilities.setShadowOn(view: profileContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setDesignOn(view: profileContentView, backgroundColor: #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1))
+            Utilities.setDesignOn(label: profileNameLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(label: profileEmailLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         }
     }
     
     @objc func setDarkMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            profileContentView.layer.shadowColor = nil
-            profileContentView.layer.shadowOpacity = 0
-            profileContentView.layer.shadowOffset = .zero
-            profileContentView.layer.shadowRadius = 0
-            profileContentView.layer.masksToBounds = true
-            
-            profileImageContentView.layer.shadowColor = nil
-            profileImageContentView.layer.shadowOpacity = 0
-            profileImageContentView.layer.shadowOffset = .zero
-            profileImageContentView.layer.shadowRadius = 0
-            profileImageContentView.layer.masksToBounds = true
-            
-            profileContentView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            profileNameLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            profileEmailLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            Utilities.setShadowOn(view: profileContentView, isHidden: true)
+            Utilities.setShadowOn(view: profileImageContentView, isHidden: true)
+            Utilities.setDesignOn(view: profileContentView, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(label: profileNameLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(label: profileEmailLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         }
     }
     
@@ -146,11 +126,7 @@ class ProfileViewController: UIViewController {
         profileNameLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         profileEmailLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         if appDelegate.isLightModeOn {
-            profileImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            profileImageContentView.layer.shadowOpacity = 1
-            profileImageContentView.layer.shadowOffset = .zero
-            profileImageContentView.layer.shadowRadius = 5
-            profileImageContentView.layer.masksToBounds = false
+            Utilities.setShadowOn(view: profileImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
         }
     }
     

@@ -118,6 +118,7 @@ class CaptureViewController: UIViewController {
         Utilities.setDesignOn(stackView: captureStackView, isCircular: true, isHidden: true)
         Utilities.setDesignOn(view: captureTutorialContentView, backgroundColor: .clear, isHidden: true)
         Utilities.setDesignOn(view: captureStickerContentView, isCircular: true, isHidden: true)
+        Utilities.setShadowOn(view: captureStickerContentView, isHidden: false, shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
         Utilities.setDesignOn(imageView: captureTutorialImageView, image: UIImage(named: Strings.tutorialDialogueImage))
         Utilities.setDesignOn(imageView: captureStickerImageView, image: UIImage(named: Strings.defaultStickerImage))
         Utilities.setDesignOn(imageView: captureExitButtonImageView, image: UIImage(systemName: Strings.captureExitIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
@@ -144,60 +145,24 @@ class CaptureViewController: UIViewController {
     
     @objc func setLightMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            captureStackView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            captureExitButtonImageView.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            captureDeleteButtonImageView.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            captureChooseImageButtonImageView.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            captureStickerContentView.backgroundColor = .white
-            
-            captureStackView.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            captureStackView.layer.shadowOpacity = 1
-            captureStackView.layer.shadowOffset = .zero
-            captureStackView.layer.shadowRadius = 2
-            captureStackView.layer.masksToBounds = false
-            
-            captureStickerContentView.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            captureStickerContentView.layer.shadowOpacity = 1
-            captureStickerContentView.layer.shadowOffset = .zero
-            captureStickerContentView.layer.shadowRadius = 2
-            captureStickerContentView.layer.masksToBounds = false
+            Utilities.setDesignOn(stackView: captureStackView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(imageView: captureExitButtonImageView, tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(imageView: captureDeleteButtonImageView, tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(imageView: captureChooseImageButtonImageView, tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(view: captureStickerContentView, backgroundColor: .white)
+            Utilities.setShadowOn(view: captureStackView, isHidden: false, shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
         }
     }
     
     @objc func setDarkMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            captureStackView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            captureExitButtonImageView.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            captureDeleteButtonImageView.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            captureChooseImageButtonImageView.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            captureStickerContentView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            
-            captureStackView.layer.shadowColor = nil
-            captureStackView.layer.shadowOpacity = 0
-            captureStackView.layer.shadowOffset = .zero
-            captureStackView.layer.shadowRadius = 0
-            captureStackView.layer.masksToBounds = true
-            
-            captureStickerContentView.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            captureStickerContentView.layer.shadowOpacity = 1
-            captureStickerContentView.layer.shadowOffset = .zero
-            captureStickerContentView.layer.shadowRadius = 2
-            captureStickerContentView.layer.masksToBounds = false
+            Utilities.setDesignOn(stackView: captureStackView, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(imageView: captureExitButtonImageView, tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(imageView: captureDeleteButtonImageView, tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(imageView: captureChooseImageButtonImageView, tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(view: captureStickerContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setShadowOn(view: captureStackView, isHidden: true)
         }
-    }
-    
-    func showCustomAlert(withTitle title: String, withMessage message: String? = nil, usingErrorMessage: Bool? = nil, usingError error: Error? = nil) {
-        var alert = UIAlertController()
-        if usingErrorMessage != nil {
-            if usingErrorMessage! {
-                alert = UIAlertController(title: title, message: error!.localizedDescription, preferredStyle: .alert)
-            }
-        } else {
-            alert = UIAlertController(title: title, message: message!, preferredStyle: .alert)
-        }
-        let action = UIAlertAction(title: Strings.captureAlertAction, style: .cancel)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
     }
     
     func showCaptureVCTutorial() {
@@ -287,6 +252,20 @@ class CaptureViewController: UIViewController {
         } else {
             return true
         }
+    }
+    
+    func showCustomAlert(withTitle title: String, withMessage message: String? = nil, usingErrorMessage: Bool? = nil, usingError error: Error? = nil) {
+        var alert = UIAlertController()
+        if usingErrorMessage != nil {
+            if usingErrorMessage! {
+                alert = UIAlertController(title: title, message: error!.localizedDescription, preferredStyle: .alert)
+            }
+        } else {
+            alert = UIAlertController(title: title, message: message!, preferredStyle: .alert)
+        }
+        let action = UIAlertAction(title: Strings.captureAlertAction, style: .cancel)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
     
     
