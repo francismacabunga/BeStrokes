@@ -61,15 +61,11 @@ class EditAccountViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        editAccountScrollView.indicatorStyle = .black
+        Utilities.setDesignOn(scrollView: editAccountScrollView, indicatorColor: .black)
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(view: editAccountHeadingContentView, backgroundColor: .clear)
-        Utilities.setDesignOn(view: editAccountImageContentView, backgroundColor: .clear)
-        editAccountImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-        editAccountImageContentView.layer.shadowOpacity = 1
-        editAccountImageContentView.layer.shadowOffset = .zero
-        editAccountImageContentView.layer.shadowRadius = 5
-        editAccountImageContentView.layer.masksToBounds = false
+        Utilities.setDesignOn(view: editAccountImageContentView, backgroundColor: .clear, isCircular: true)
+        Utilities.setShadowOn(view: editAccountImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
         Utilities.setDesignOn(view: editAccountSaveButtonContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: editAccountStackView, backgroundColor: .clear)
         Utilities.setDesignOn(navigationBar: editAccountNavigationBar, isDarkMode: true)
@@ -83,7 +79,7 @@ class EditAccountViewController: UIViewController {
         Utilities.setDesignOn(textField: editAccountFirstNameTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, capitalization: .words, isCircular: true)
         Utilities.setDesignOn(textField: editAccountLastNameTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, capitalization: .words, isCircular: true)
         Utilities.setDesignOn(textField: editAccountEmailTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, isCircular: true)
-        Utilities.setDesignOn(button: editAccountButton, title: Strings.saveButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(button: editAccountButton, title: Strings.saveButtonText, fontName: Strings.defaultFontBold, fontSize: 20, isCircular: true)
         Utilities.setDesignOn(activityIndicatorView: editAccountLoadingIndicatorView, size: .medium, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
@@ -103,31 +99,10 @@ class EditAccountViewController: UIViewController {
             Utilities.setDesignOn(textField: editAccountFirstNameTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), placeholderTextColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             Utilities.setDesignOn(textField: editAccountLastNameTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), placeholderTextColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             Utilities.setDesignOn(textField: editAccountEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), placeholderTextColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-            
-            editAccountFirstNameTextField.borderStyle = .none
-            editAccountFirstNameTextField.layer.shadowOpacity = 1
-            editAccountFirstNameTextField.layer.shadowRadius = 2
-            editAccountFirstNameTextField.layer.shadowOffset = .zero
-            editAccountFirstNameTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            editAccountLastNameTextField.borderStyle = .none
-            editAccountLastNameTextField.layer.shadowOpacity = 1
-            editAccountLastNameTextField.layer.shadowRadius = 2
-            editAccountLastNameTextField.layer.shadowOffset = .zero
-            editAccountLastNameTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            editAccountEmailTextField.borderStyle = .none
-            editAccountEmailTextField.layer.shadowOpacity = 1
-            editAccountEmailTextField.layer.shadowRadius = 2
-            editAccountEmailTextField.layer.shadowOffset = .zero
-            editAccountEmailTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            editAccountButton.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            editAccountButton.layer.shadowOpacity = 1
-            editAccountButton.layer.shadowOffset = .zero
-            editAccountButton.layer.shadowRadius = 2
-            editAccountButton.layer.masksToBounds = false
-            
+            Utilities.setShadowOn(textField: editAccountFirstNameTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(textField: editAccountLastNameTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(textField: editAccountEmailTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(button: editAccountButton, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
             Utilities.setDesignOn(button: editAccountButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
         }
     }
@@ -137,30 +112,64 @@ class EditAccountViewController: UIViewController {
             Utilities.setDesignOn(textField: editAccountFirstNameTextField, textColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
             Utilities.setDesignOn(textField: editAccountLastNameTextField, textColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
             Utilities.setDesignOn(textField: editAccountEmailTextField, textColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholderTextColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-            
-            editAccountFirstNameTextField.layer.shadowOpacity = 0
-            editAccountFirstNameTextField.layer.shadowRadius = 0
-            editAccountFirstNameTextField.layer.shadowOffset = .zero
-            editAccountFirstNameTextField.layer.shadowColor = nil
-            
-            editAccountLastNameTextField.layer.shadowOpacity = 0
-            editAccountLastNameTextField.layer.shadowRadius = 0
-            editAccountLastNameTextField.layer.shadowOffset = .zero
-            editAccountLastNameTextField.layer.shadowColor = nil
-            
-            editAccountEmailTextField.layer.shadowOpacity = 0
-            editAccountEmailTextField.layer.shadowRadius = 0
-            editAccountEmailTextField.layer.shadowOffset = .zero
-            editAccountEmailTextField.layer.shadowColor = nil
-            
-            editAccountButton.layer.shadowColor = nil
-            editAccountButton.layer.shadowOpacity = 0
-            editAccountButton.layer.shadowOffset = .zero
-            editAccountButton.layer.shadowRadius = 0
-            editAccountButton.layer.masksToBounds = true
-            
+            Utilities.setShadowOn(textField: editAccountFirstNameTextField, isHidden: true)
+            Utilities.setShadowOn(textField: editAccountLastNameTextField, isHidden: true)
+            Utilities.setShadowOn(textField: editAccountEmailTextField, isHidden: true)
+            Utilities.setShadowOn(button: editAccountButton, isHidden: true)
             Utilities.setDesignOn(button: editAccountButton, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         }
+    }
+    
+    func setData() {
+        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let userData = userData else {return}
+                userID = userData.userID
+                profilePic = userData.profilePic
+                initialUserEmail = userData.email
+                DispatchQueue.main.async { [self] in
+                    editAccountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                    editAccountFirstNameTextField.text = userData.firstName
+                    editAccountLastNameTextField.text = userData.lastname
+                    editAccountEmailTextField.text = userData.email
+                }
+                return
+            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+        }
+    }
+    
+    func userData() -> [String : String?] {
+        let firstName = editAccountFirstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastName = editAccountLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let email = editAccountEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let userDataDictionary = [Strings.userFirstNameField: firstName,
+                                  Strings.userLastNameField: lastName,
+                                  Strings.userEmailField: email,
+                                  Strings.userInitialUserEmail: initialUserEmail]
+        return userDataDictionary
+    }
+    
+    func showLoadingButton() {
+        editAccountButton.isHidden = true
+        editAccountLoadingIndicatorView.startAnimating()
+        editAccountLoadingIndicatorView.isHidden = false
+    }
+    
+    func setEditAccountButtonToOriginalDesign() {
+        editAccountLoadingIndicatorView.isHidden = true
+        editAccountButton.isHidden = false
+        Utilities.setDesignOn(button: editAccountButton, title: Strings.saveButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+    }
+    
+    func dismissKeyboard() {
+        editAccountFirstNameTextField.endEditing(true)
+        editAccountLastNameTextField.endEditing(true)
+        editAccountEmailTextField.endEditing(true)
     }
     
     func showSuccessfullyEditedAccountAlert() {
@@ -208,12 +217,6 @@ class EditAccountViewController: UIViewController {
         }
     }
     
-    func showLoadingButton() {
-        editAccountButton.isHidden = true
-        editAccountLoadingIndicatorView.startAnimating()
-        editAccountLoadingIndicatorView.isHidden = false
-    }
-    
     func presentCropViewController(with imagePicked: UIImage) {
         let cropViewController = CropViewController(croppingStyle: .circular, image: imagePicked)
         cropViewController.delegate = self
@@ -221,61 +224,11 @@ class EditAccountViewController: UIViewController {
         present(cropViewController, animated: true, completion: nil)
     }
     
-    func setResendButtonDesign() {
-        Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
-    }
-    
-    func setEditAccountButtonToOriginalDesign() {
-        editAccountLoadingIndicatorView.isHidden = true
-        editAccountButton.isHidden = false
-        Utilities.setDesignOn(button: editAccountButton, title: Strings.saveButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
-    }
-    
-    func dismissKeyboard() {
-        editAccountFirstNameTextField.endEditing(true)
-        editAccountLastNameTextField.endEditing(true)
-        editAccountEmailTextField.endEditing(true)
-    }
-    
     func transitionToLandingVC() {
         let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
         let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
         view.window?.rootViewController = landingVC
         view.window?.makeKeyAndVisible()
-    }
-    
-    func userData() -> [String : String?] {
-        let firstName = editAccountFirstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let lastName = editAccountLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let email = editAccountEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let userDataDictionary = [Strings.userFirstNameField: firstName,
-                                  Strings.userLastNameField: lastName,
-                                  Strings.userEmailField: email,
-                                  Strings.userInitialUserEmail: initialUserEmail]
-        return userDataDictionary
-    }
-    
-    func setData() {
-        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            guard let error = error else {
-                if !isUserSignedIn {
-                    showNoSignedInUserAlert()
-                    return
-                }
-                guard let userData = userData else {return}
-                userID = userData.userID
-                profilePic = userData.profilePic
-                initialUserEmail = userData.email
-                DispatchQueue.main.async { [self] in
-                    editAccountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                    editAccountFirstNameTextField.text = userData.firstName
-                    editAccountLastNameTextField.text = userData.lastname
-                    editAccountEmailTextField.text = userData.email
-                }
-                return
-            }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
-        }
     }
     
     
@@ -339,7 +292,7 @@ class EditAccountViewController: UIViewController {
                 return
             }
             showWarningLabel(on: editAccountWarningLabel, with: error, isASuccessMessage: false)
-            setResendButtonDesign()
+            Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
         }
     }
     
@@ -357,7 +310,7 @@ class EditAccountViewController: UIViewController {
                     updateAccount(using: firstName, lastName, email, initialUserEmail)
                 } else {
                     showWarningLabel(on: editAccountWarningLabel, customizedWarning: Strings.editAccountEmailVerficationErrorLabel, isASuccessMessage: false)
-                    setResendButtonDesign()
+                    Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
                 }
                 return
             }
