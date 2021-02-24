@@ -134,6 +134,29 @@ struct Utilities {
         }
     }
     
+    // Shadow on Text Field
+    static func setShadowOn(textField: UITextField,
+                            isHidden: Bool,
+                            borderStyle: UITextField.BorderStyle? = nil,
+                            shadowColor: CGColor? = nil,
+                            shadowOpacity: Float? = nil,
+                            shadowOffset: CGSize? = nil,
+                            shadowRadius: CGFloat? = nil)
+    {
+        if !isHidden && borderStyle != nil && shadowColor != nil && shadowOpacity != nil && shadowOffset != nil && shadowRadius != nil {
+            textField.borderStyle = borderStyle!
+            textField.layer.shadowColor = shadowColor!
+            textField.layer.shadowOpacity = shadowOpacity!
+            textField.layer.shadowOffset = shadowOffset!
+            textField.layer.shadowRadius = shadowRadius!
+        } else {
+            textField.layer.shadowColor = nil
+            textField.layer.shadowOpacity = 0
+            textField.layer.shadowOffset = .zero
+            textField.layer.shadowRadius = 0
+        }
+    }
+    
     // Button
     static func setDesignOn(button: UIButton,
                             title: String? = nil,

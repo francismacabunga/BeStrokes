@@ -73,13 +73,13 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(button: accountNotificationButton, backgroundImage: UIImage(systemName: Strings.accountNotificationIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(button: accountEditButton, backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon))
-        Utilities.setDesignOn(textField: accountSearchTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, capitalization: .words, returnKeyType: .search, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholder: Strings.searchTextField, placeholderTextColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
+        Utilities.setDesignOn(textField: accountSearchTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, capitalization: .words, returnKeyType: .search, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholder: Strings.searchTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(imageView: accountImageView, isCircular: true)
         Utilities.setDesignOn(label: accountHeading1Label, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.accountHeading1Text)
         Utilities.setDesignOn(label: accountNameHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: " ", canResize: true, minimumScaleFactor: 0.6)
         Utilities.setDesignOn(label: accountEmailHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: " ", canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(label: accountHeading2Label, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 1, textAlignment: .left, text: Strings.accountHeading2Text)
-        Utilities.setDesignOn(label: accountWarningLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isHidden: true)
+        Utilities.setDesignOn(label: accountWarningLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, isHidden: true)
         Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
         Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, isStartAnimating: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
@@ -104,53 +104,34 @@ class AccountViewController: UIViewController {
     }
     
     @objc func setLightMode() {
+        isLightMode = true
+        setNeedsStatusBarAppearanceUpdate()
         UIView.animate(withDuration: 0.3) { [self] in
-            isLightMode = true
             Utilities.setDesignOn(view: view, backgroundColor: .white)
-            accountTopView.backgroundColor = .white
-            accountHeading2Label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            accountSearchButton.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            accountSearchTextField.backgroundColor = .white
-            accountWarningLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            
-            accountTopView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            accountTopView.layer.shadowOpacity = 1
-            accountTopView.layer.shadowOffset = .zero
-            accountTopView.layer.shadowRadius = 2
-            accountTopView.layer.masksToBounds = false
-            
-            accountSearchTextField.borderStyle = .none
-            accountSearchTextField.layer.shadowOpacity = 1
-            accountSearchTextField.layer.shadowRadius = 2
-            accountSearchTextField.layer.shadowOffset = .zero
-            accountSearchTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            accountLoadingIndicatorView.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            Utilities.setDesignOn(view: accountTopView, backgroundColor: .white)
+            Utilities.setDesignOn(label: accountHeading2Label, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(button: accountSearchButton, tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(textField: accountSearchTextField, backgroundColor: .white)
+            Utilities.setDesignOn(label: accountWarningLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setShadowOn(view: accountTopView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(textField: accountSearchTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         }
     }
     
     @objc func setDarkMode() {
+        isLightMode = false
+        setNeedsStatusBarAppearanceUpdate()
         UIView.animate(withDuration: 0.3) { [self] in
-            isLightMode = false
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-            accountTopView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            accountHeading2Label.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            accountSearchButton.tintColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            accountSearchTextField.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            accountWarningLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            
-            accountTopView.layer.shadowColor = nil
-            accountTopView.layer.shadowOpacity = 0
-            accountTopView.layer.shadowOffset = .zero
-            accountTopView.layer.shadowRadius = 0
-            accountTopView.layer.masksToBounds = true
-            
-            accountSearchTextField.layer.shadowOpacity = 0
-            accountSearchTextField.layer.shadowRadius = 0
-            accountSearchTextField.layer.shadowOffset = .zero
-            accountSearchTextField.layer.shadowColor = nil
-            
-            accountLoadingIndicatorView.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            Utilities.setDesignOn(view: accountTopView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(label: accountHeading2Label, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(button: accountSearchButton, tintColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(textField: accountSearchTextField, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(label: accountWarningLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setShadowOn(view: accountTopView, isHidden: true)
+            Utilities.setShadowOn(textField: accountSearchTextField, isHidden: true)
+            Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         }
     }
     
@@ -160,29 +141,6 @@ class AccountViewController: UIViewController {
         } else {
             skeletonColor = #colorLiteral(red: 0.2006691098, green: 0.200709641, blue: 0.2006634176, alpha: 1)
         }
-    }
-    
-    func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
-        var alert = UIAlertController()
-        if error {
-            alert = UIAlertController(title: Strings.homeAlertTitle, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
-        } else {
-            alert = UIAlertController(title: Strings.homeAlertTitle, message: withCustomizedString, preferredStyle: .alert)
-        }
-        let tryAgainAction = UIAlertAction(title: Strings.homeAlert1Action, style: .default) { [self] (alertAction) in
-            dismiss(animated: true)
-        }
-        alert.addAction(tryAgainAction)
-        present(alert, animated: true)
-    }
-    
-    func showNoSignedInUserAlert() {
-        let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { [self] (alertAction) in
-            transitionToLandingVC()
-        }
-        alert.addAction(dismissAction)
-        present(alert, animated: true)
     }
     
     func showLoadingSkeletonView() {
@@ -205,11 +163,7 @@ class AccountViewController: UIViewController {
         accountImageContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
         accountEmailHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        accountImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-        accountImageContentView.layer.shadowOpacity = 1
-        accountImageContentView.layer.shadowOffset = .zero
-        accountImageContentView.layer.shadowRadius = 5
-        accountImageContentView.layer.masksToBounds = false
+        Utilities.setShadowOn(view: accountImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
     }
     
     func showSearchTextField() {
@@ -301,6 +255,29 @@ class AccountViewController: UIViewController {
                 accountLovedStickerTableView.reloadData()
             }
         }
+    }
+    
+    func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
+        var alert = UIAlertController()
+        if error {
+            alert = UIAlertController(title: Strings.homeAlertTitle, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
+        } else {
+            alert = UIAlertController(title: Strings.homeAlertTitle, message: withCustomizedString, preferredStyle: .alert)
+        }
+        let tryAgainAction = UIAlertAction(title: Strings.homeAlert1Action, style: .default) { [self] (alertAction) in
+            dismiss(animated: true)
+        }
+        alert.addAction(tryAgainAction)
+        present(alert, animated: true)
+    }
+    
+    func showNoSignedInUserAlert() {
+        let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { [self] (alertAction) in
+            transitionToLandingVC()
+        }
+        alert.addAction(dismissAction)
+        present(alert, animated: true)
     }
     
     func transitionToLandingVC() {
