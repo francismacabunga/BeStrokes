@@ -55,10 +55,9 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     
     func setDesignElements() {
         Utilities.setDesignOn(view: featuredStickerContentView, backgroundColor: .clear)
-        Utilities.setDesignOn(view: featuredStickerView, isCircular: true, setCustomCircleCurve: 40)
+        Utilities.setDesignOn(view: featuredStickerView, backgroundColor: .clear, isCircular: true, setCustomCircleCurve: 40)
         Utilities.setDesignOn(label: featuredStickerLabel, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: false)
         Utilities.setDesignOn(button: featuredStickerTryMeButton, title: Strings.tryMeButtonText, fontName: Strings.defaultFontBold, fontSize: 15, isCircular: true)
-        Utilities.setDesignOn(imageView: featuredStickerImageView)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
         checkThemeAppearance()
@@ -74,42 +73,18 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     
     @objc func setLightMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            featuredStickerContentView.backgroundColor = .white
-            featuredStickerView.backgroundColor = .white
-            
-            featuredStickerView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            featuredStickerView.layer.shadowOpacity = 1
-            featuredStickerView.layer.shadowOffset = .zero
-            featuredStickerView.layer.shadowRadius = 2
-            featuredStickerView.layer.masksToBounds = false
-            
-            featuredStickerTryMeButton.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            featuredStickerTryMeButton.layer.shadowOpacity = 1
-            featuredStickerTryMeButton.layer.shadowOffset = .zero
-            featuredStickerTryMeButton.layer.shadowRadius = 2
-            featuredStickerTryMeButton.layer.masksToBounds = false
-            
+            Utilities.setDesignOn(view: featuredStickerView, backgroundColor: .white)
+            Utilities.setShadowOn(view: featuredStickerView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(button: featuredStickerTryMeButton, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
             Utilities.setDesignOn(button: featuredStickerTryMeButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
         }
     }
     
     @objc func setDarkMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            featuredStickerContentView.backgroundColor = .clear
-            featuredStickerView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            
-            featuredStickerView.layer.shadowColor = nil
-            featuredStickerView.layer.shadowOpacity = 0
-            featuredStickerView.layer.shadowOffset = .zero
-            featuredStickerView.layer.shadowRadius = 0
-            featuredStickerView.layer.masksToBounds = true
-            
-            featuredStickerTryMeButton.layer.shadowColor = nil
-            featuredStickerTryMeButton.layer.shadowOpacity = 0
-            featuredStickerTryMeButton.layer.shadowOffset = .zero
-            featuredStickerTryMeButton.layer.shadowRadius = 0
-            featuredStickerTryMeButton.layer.masksToBounds = true
-            
+            Utilities.setDesignOn(view: featuredStickerView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setShadowOn(view: featuredStickerView, isHidden: true)
+            Utilities.setShadowOn(button: featuredStickerTryMeButton, isHidden: true)
             Utilities.setDesignOn(button: featuredStickerTryMeButton, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         }
     }
@@ -135,21 +110,6 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
         featuredStickerView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
-    func prepareFeaturedStickerCell() {
-        hideLoadingSkeletonView()
-        setDesignElements()
-        getHeartButtonValue(using: featuredStickerViewModel.stickerID)
-        registerGestures()
-    }
-    
-    func transitionToCaptureVC() {
-        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
-        captureVC.isStickerPicked = true
-        captureVC.featuredStickerViewModel = featuredStickerViewModel
-        featuredStickerCellDelegate?.getVC(using: captureVC)
-    }
-    
     func getHeartButtonValue(using stickerID: String) {
         heartButtonLogic.checkIfStickerIsLoved(using: stickerID) { [self] (error, userAuthenticationState, isStickerLoved) in
             if error != nil {
@@ -169,6 +129,21 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
                 heartButtonTapped = false
             }
         }
+    }
+    
+    func prepareFeaturedStickerCell() {
+        hideLoadingSkeletonView()
+        setDesignElements()
+        getHeartButtonValue(using: featuredStickerViewModel.stickerID)
+        registerGestures()
+    }
+    
+    func transitionToCaptureVC() {
+        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
+        let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
+        captureVC.isStickerPicked = true
+        captureVC.featuredStickerViewModel = featuredStickerViewModel
+        featuredStickerCellDelegate?.getVC(using: captureVC)
     }
     
     

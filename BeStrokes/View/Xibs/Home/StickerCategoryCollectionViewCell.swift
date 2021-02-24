@@ -71,21 +71,13 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     
     @objc func setLightMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            stickerCategoryView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            stickerCategoryView.layer.shadowOpacity = 1
-            stickerCategoryView.layer.shadowOffset = .zero
-            stickerCategoryView.layer.shadowRadius = 2
-            stickerCategoryView.layer.masksToBounds = false
+            Utilities.setShadowOn(view: stickerCategoryView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
         }
     }
     
     @objc func setDarkMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            stickerCategoryView.layer.shadowColor = nil
-            stickerCategoryView.layer.shadowOpacity = 0
-            stickerCategoryView.layer.shadowOffset = .zero
-            stickerCategoryView.layer.shadowRadius = 0
-            stickerCategoryView.layer.masksToBounds = true
+            Utilities.setShadowOn(view: stickerCategoryView, isHidden: true)
         }
     }
     

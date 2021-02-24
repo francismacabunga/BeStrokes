@@ -55,7 +55,6 @@ class StickerCollectionViewCell: UICollectionViewCell {
         Utilities.setDesignOn(view: stickerView, setCustomCircleCurve: 30)
         Utilities.setDesignOn(label: stickerLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(imageView: stickerOptionImageView, image: UIImage(named: Strings.optionImage))
-        Utilities.setDesignOn(imageView: stickerImageView)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
         checkThemeAppearance()
@@ -71,25 +70,15 @@ class StickerCollectionViewCell: UICollectionViewCell {
     
     @objc func setLightMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            stickerView.backgroundColor = .white
-            
-            stickerView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            stickerView.layer.shadowOpacity = 1
-            stickerView.layer.shadowOffset = .zero
-            stickerView.layer.shadowRadius = 2
-            stickerView.layer.masksToBounds = false
+            Utilities.setDesignOn(view: stickerView, backgroundColor: .white)
+            Utilities.setShadowOn(view: stickerView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
         }
     }
     
     @objc func setDarkMode() {
         UIView.animate(withDuration: 0.3) { [self] in
-            stickerView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            
-            stickerView.layer.shadowColor = nil
-            stickerView.layer.shadowOpacity = 0
-            stickerView.layer.shadowOffset = .zero
-            stickerView.layer.shadowRadius = 0
-            stickerView.layer.masksToBounds = true
+            Utilities.setDesignOn(view: stickerView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setShadowOn(view: stickerView, isHidden: true)
         }
     }
     
