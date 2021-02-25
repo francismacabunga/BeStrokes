@@ -81,79 +81,57 @@ class LoginViewController: UIViewController {
     }
     
     @objc func setLightMode() {
-        loginScrollView.indicatorStyle = .black
         UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(scrollView: loginScrollView, indicatorColor: .black)
             Utilities.setDesignOn(navigationBar: loginNavigationBar, isDarkMode: true)
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-            loginHeadingLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            Utilities.setDesignOn(label: loginHeadingLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             Utilities.setDesignOn(button: loginForgotPasswordButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             Utilities.setDesignOn(button: loginButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setDesignOn(textField: loginEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setDesignOn(textField: loginPasswordTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
-            
-            loginButton.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            loginButton.layer.shadowOpacity = 1
-            loginButton.layer.shadowOffset = .zero
-            loginButton.layer.shadowRadius = 2
-            loginButton.layer.masksToBounds = false
-            
-            loginEmailTextField.borderStyle = .none
-            loginEmailTextField.layer.shadowOpacity = 1
-            loginEmailTextField.layer.shadowRadius = 2
-            loginEmailTextField.layer.shadowOffset = .zero
-            loginEmailTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            loginPasswordTextField.borderStyle = .none
-            loginPasswordTextField.layer.shadowOpacity = 1
-            loginPasswordTextField.layer.shadowRadius = 2
-            loginPasswordTextField.layer.shadowOffset = .zero
-            loginPasswordTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            loginImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            loginImageContentView.layer.shadowOpacity = 1
-            loginImageContentView.layer.shadowOffset = .zero
-            loginImageContentView.layer.shadowRadius = 2
-            loginImageContentView.layer.masksToBounds = false
-            
-            loginLoadingIndicatorView.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            Utilities.setShadowOn(view: loginImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(textField: loginEmailTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(textField: loginPasswordTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(button: loginButton, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         }
     }
     
     @objc func setDarkMode() {
-        loginScrollView.indicatorStyle = .white
         UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(scrollView: loginScrollView, indicatorColor: .white)
             Utilities.setDesignOn(navigationBar: loginNavigationBar, isDarkMode: false)
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-            loginHeadingLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            Utilities.setDesignOn(label: loginHeadingLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(button: loginForgotPasswordButton, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(button: loginButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(textField: loginEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(textField: loginPasswordTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-            
-            loginButton.layer.shadowColor = nil
-            loginButton.layer.shadowOpacity = 0
-            loginButton.layer.shadowOffset = .zero
-            loginButton.layer.shadowRadius = 0
-            loginButton.layer.masksToBounds = true
-            
-            loginEmailTextField.layer.shadowOpacity = 0
-            loginEmailTextField.layer.shadowRadius = 0
-            loginEmailTextField.layer.shadowOffset = .zero
-            loginEmailTextField.layer.shadowColor = nil
-            
-            loginPasswordTextField.layer.shadowOpacity = 0
-            loginPasswordTextField.layer.shadowRadius = 0
-            loginPasswordTextField.layer.shadowOffset = .zero
-            loginPasswordTextField.layer.shadowColor = nil
-            
-            loginImageContentView.layer.shadowColor = nil
-            loginImageContentView.layer.shadowOpacity = 0
-            loginImageContentView.layer.shadowOffset = .zero
-            loginImageContentView.layer.shadowRadius = 0
-            loginImageContentView.layer.masksToBounds = true
-        
-            loginLoadingIndicatorView.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            Utilities.setShadowOn(view: loginImageContentView, isHidden: true)
+            Utilities.setShadowOn(textField: loginEmailTextField, isHidden: true)
+            Utilities.setShadowOn(textField: loginPasswordTextField, isHidden: true)
+            Utilities.setShadowOn(button: loginButton, isHidden: true)
+            Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         }
+    }
+    
+    func setLoginButtonTappedAnimation() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+            loginButton.isHidden = true
+            loginLoadingIndicatorView.isHidden = false
+            loginLoadingIndicatorView.startAnimating()
+        }
+    }
+    
+    func setLoginButtonToOriginalDesign() {
+        loginLoadingIndicatorView.isHidden = true
+        loginButton.isHidden = false
+    }
+    
+    func dismissKeyboard() {
+        loginEmailTextField.endEditing(true)
+        loginPasswordTextField.endEditing(true)
     }
     
     func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
@@ -177,24 +155,6 @@ class LoginViewController: UIViewController {
         UIView.animate(withDuration: 0.2) { [self] in
             loginWarningLabel.isHidden = true
         }
-    }
-    
-    func setLoginButtonTappedAnimation() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
-            loginButton.isHidden = true
-            loginLoadingIndicatorView.isHidden = false
-            loginLoadingIndicatorView.startAnimating()
-        }
-    }
-    
-    func setLoginButtonToOriginalDesign() {
-        loginLoadingIndicatorView.isHidden = true
-        loginButton.isHidden = false
-    }
-    
-    func dismissKeyboard() {
-        loginEmailTextField.endEditing(true)
-        loginPasswordTextField.endEditing(true)
     }
     
     func transitionToHomeVC() {

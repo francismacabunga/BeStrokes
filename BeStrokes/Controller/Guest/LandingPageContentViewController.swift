@@ -46,7 +46,7 @@ class LandingPageContentViewController: UIViewController {
         Utilities.setDesignOn(label: landingPageContentHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(label: landingPageContentSubheadingLabel, fontName: Strings.defaultFontMedium, fontSize: 17, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
     }
-     
+    
     func setData() {
         landingPageContentImageView.image = UIImage(named: imageFileName)
         landingPageContentHeadingLabel.text = headingLabelText

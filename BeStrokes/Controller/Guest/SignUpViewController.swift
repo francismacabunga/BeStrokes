@@ -90,50 +90,20 @@ class SignUpViewController: UIViewController {
         UIView.animate(withDuration: 0.3) { [self] in
             Utilities.setDesignOn(navigationBar: signUpNavigationBar, isDarkMode: true)
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-            signUpScrollView.indicatorStyle = .black
-            signUpHeadingLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            Utilities.setDesignOn(scrollView: signUpScrollView, indicatorColor: .black)
+            Utilities.setDesignOn(label: signUpHeadingLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             Utilities.setDesignOn(textField: signUpFirstNameTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setDesignOn(textField: signUpLastNameTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setDesignOn(textField: signUpEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setDesignOn(textField: signUpPasswordTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setDesignOn(button: signUpButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
-            signUpLoadingIndicatorView.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            
-            signUpImageContentView.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            signUpImageContentView.layer.shadowOpacity = 1
-            signUpImageContentView.layer.shadowOffset = .zero
-            signUpImageContentView.layer.shadowRadius = 2
-            signUpImageContentView.layer.masksToBounds = false
-            
-            signUpFirstNameTextField.borderStyle = .none
-            signUpFirstNameTextField.layer.shadowOpacity = 1
-            signUpFirstNameTextField.layer.shadowRadius = 2
-            signUpFirstNameTextField.layer.shadowOffset = .zero
-            signUpFirstNameTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            signUpLastNameTextField.borderStyle = .none
-            signUpLastNameTextField.layer.shadowOpacity = 1
-            signUpLastNameTextField.layer.shadowRadius = 2
-            signUpLastNameTextField.layer.shadowOffset = .zero
-            signUpLastNameTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            signUpEmailTextField.borderStyle = .none
-            signUpEmailTextField.layer.shadowOpacity = 1
-            signUpEmailTextField.layer.shadowRadius = 2
-            signUpEmailTextField.layer.shadowOffset = .zero
-            signUpEmailTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            signUpPasswordTextField.borderStyle = .none
-            signUpPasswordTextField.layer.shadowOpacity = 1
-            signUpPasswordTextField.layer.shadowRadius = 2
-            signUpPasswordTextField.layer.shadowOffset = .zero
-            signUpPasswordTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            signUpButton.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            signUpButton.layer.shadowOpacity = 1
-            signUpButton.layer.shadowOffset = .zero
-            signUpButton.layer.shadowRadius = 2
-            signUpButton.layer.masksToBounds = false
+            Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setShadowOn(view: signUpImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(textField: signUpFirstNameTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(textField: signUpLastNameTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(textField: signUpEmailTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(textField: signUpPasswordTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(button: signUpButton, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
         }
     }
     
@@ -141,84 +111,21 @@ class SignUpViewController: UIViewController {
         UIView.animate(withDuration: 0.3) { [self] in
             Utilities.setDesignOn(navigationBar: signUpNavigationBar, isDarkMode: false)
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-            signUpScrollView.indicatorStyle = .white
-            signUpHeadingLabel.textColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
+            Utilities.setDesignOn(scrollView: signUpScrollView, indicatorColor: .white)
+            Utilities.setDesignOn(label: signUpHeadingLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(textField: signUpFirstNameTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(textField: signUpLastNameTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(textField: signUpEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(textField: signUpPasswordTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(button: signUpButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-            signUpLoadingIndicatorView.color = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-            
-            signUpImageContentView.layer.shadowColor = nil
-            signUpImageContentView.layer.shadowOpacity = 0
-            signUpImageContentView.layer.shadowOffset = .zero
-            signUpImageContentView.layer.shadowRadius = 0
-            signUpImageContentView.layer.masksToBounds = true
-            
-            signUpFirstNameTextField.layer.shadowOpacity = 0
-            signUpFirstNameTextField.layer.shadowRadius = 0
-            signUpFirstNameTextField.layer.shadowOffset = .zero
-            signUpFirstNameTextField.layer.shadowColor = nil
-            
-            signUpLastNameTextField.layer.shadowOpacity = 0
-            signUpLastNameTextField.layer.shadowRadius = 0
-            signUpLastNameTextField.layer.shadowOffset = .zero
-            signUpLastNameTextField.layer.shadowColor = nil
-            
-            signUpEmailTextField.layer.shadowOpacity = 0
-            signUpEmailTextField.layer.shadowRadius = 0
-            signUpEmailTextField.layer.shadowOffset = .zero
-            signUpEmailTextField.layer.shadowColor = nil
-            
-            signUpPasswordTextField.layer.shadowOpacity = 0
-            signUpPasswordTextField.layer.shadowRadius = 0
-            signUpPasswordTextField.layer.shadowOffset = .zero
-            signUpPasswordTextField.layer.shadowColor = nil
-            
-            signUpButton.layer.shadowColor = nil
-            signUpButton.layer.shadowOpacity = 0
-            signUpButton.layer.shadowOffset = .zero
-            signUpButton.layer.shadowRadius = 0
-            signUpButton.layer.masksToBounds = true
+            Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setShadowOn(view: signUpImageContentView, isHidden: true)
+            Utilities.setShadowOn(textField: signUpFirstNameTextField, isHidden: true)
+            Utilities.setShadowOn(textField: signUpLastNameTextField, isHidden: true)
+            Utilities.setShadowOn(textField: signUpEmailTextField, isHidden: true)
+            Utilities.setShadowOn(textField: signUpPasswordTextField, isHidden: true)
+            Utilities.setShadowOn(button: signUpButton, isHidden: true)
         }
-    }
-    
-    func presentCropViewController(_ imagePicked: UIImage) {
-        let cropViewController = CropViewController(croppingStyle: .circular, image: imagePicked)
-        cropViewController.delegate = self
-        dismiss(animated: true)
-        present(cropViewController, animated: true, completion: nil)
-    }
-    
-    func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
-        if error != nil {
-            label.text = error!.localizedDescription
-        }
-        if customizedWarning != nil {
-            label.text = customizedWarning
-        }
-        if isASuccessMessage {
-            Utilities.setDesignOn(label: label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1))
-        } else {
-            Utilities.setDesignOn(label: label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        }
-        UIView.animate(withDuration: 0.2) {
-            label.isHidden = false
-        }
-    }
-    
-    func removeWarning1Label() {
-        UIView.animate(withDuration: 0.2) { [self] in
-            signUpWarning1Label.isHidden = true
-        }
-    }
-    
-    func setPlaceholderErrorDesign(on firstName: UITextField, _ lastName: UITextField, _ email: UITextField, _ password: UITextField) {
-        Utilities.setDesignOn(textField: firstName, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpFirstNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        Utilities.setDesignOn(textField: lastName, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpLastNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        Utilities.setDesignOn(textField: email, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, placeholder: Strings.signUpEmailTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        Utilities.setDesignOn(textField: password, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, placeholder: Strings.signUpPasswordTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
     }
     
     func setSignUpButtonTappedAnimation() {
@@ -248,6 +155,37 @@ class SignUpViewController: UIViewController {
         signUpLastNameTextField.endEditing(true)
         signUpEmailTextField.endEditing(true)
         signUpPasswordTextField.endEditing(true)
+    }
+    
+    func setPlaceholderErrorDesign(on firstName: UITextField, _ lastName: UITextField, _ email: UITextField, _ password: UITextField) {
+        Utilities.setDesignOn(textField: firstName, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpFirstNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+        Utilities.setDesignOn(textField: lastName, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpLastNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+        Utilities.setDesignOn(textField: email, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, placeholder: Strings.signUpEmailTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+        Utilities.setDesignOn(textField: password, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, placeholder: Strings.signUpPasswordTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+    }
+    
+    func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
+        if error != nil {
+            label.text = error!.localizedDescription
+        }
+        if customizedWarning != nil {
+            label.text = customizedWarning
+        }
+        if isASuccessMessage {
+            Utilities.setDesignOn(label: label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1))
+        } else {
+            Utilities.setDesignOn(label: label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+        }
+        UIView.animate(withDuration: 0.2) {
+            label.isHidden = false
+        }
+    }
+    
+    func presentCropViewController(_ imagePicked: UIImage) {
+        let cropViewController = CropViewController(croppingStyle: .circular, image: imagePicked)
+        cropViewController.delegate = self
+        dismiss(animated: true)
+        present(cropViewController, animated: true, completion: nil)
     }
     
     func transitionToHomeVC() {
@@ -314,6 +252,7 @@ class SignUpViewController: UIViewController {
             guard let password = signUpPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return false}
             let passwordValid = user.isPasswordValid(password)
             if passwordValid {
+                signUpWarning1Label.isHidden = true
                 return true
             } else {
                 showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpPasswordErrorLabel, isASuccessMessage: false)
@@ -342,7 +281,9 @@ class SignUpViewController: UIViewController {
             user.createUser(with: userDataDictionary[Strings.userEmailField]!, userDataDictionary[Strings.userPasswordField]!) { [self] (error, authResult) in
                 guard let error = error else {
                     guard let authResult = authResult else {return}
-                    removeWarning1Label()
+                    UIView.animate(withDuration: 0.2) { [self] in
+                        signUpWarning1Label.isHidden = true
+                    }
                     uploadUserData(using: authResult, with: userDataDictionary)
                     return
                 }

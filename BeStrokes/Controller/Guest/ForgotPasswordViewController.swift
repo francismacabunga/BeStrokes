@@ -72,66 +72,52 @@ class ForgotPasswordViewController: UIViewController {
     }
     
     @objc func setLightMode() {
-        forgotPasswordScrollView.indicatorStyle = .black
         UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(scrollView: forgotPasswordScrollView, indicatorColor: .black)
             Utilities.setDesignOn(navigationBar: forgotPasswordNavigationBar, isDarkMode: true)
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-            forgotPasswordHeadingLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            forgotPasswordSubheadingLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            Utilities.setDesignOn(label: forgotPasswordHeadingLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(label: forgotPasswordSubheadingLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             Utilities.setDesignOn(imageView: forgotPasswordImageView, image: UIImage(named: Strings.blackKeys), alpha: 0.3)
             Utilities.setDesignOn(textField: forgotPasswordEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setDesignOn(button: forgotPasswordSubmitButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setDesignOn(button: forgotPasswordDismissButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
-            
-            forgotPasswordEmailTextField.borderStyle = .none
-            forgotPasswordEmailTextField.layer.shadowOpacity = 1
-            forgotPasswordEmailTextField.layer.shadowRadius = 2
-            forgotPasswordEmailTextField.layer.shadowOffset = .zero
-            forgotPasswordEmailTextField.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            
-            forgotPasswordSubmitButton.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            forgotPasswordSubmitButton.layer.shadowOpacity = 1
-            forgotPasswordSubmitButton.layer.shadowOffset = .zero
-            forgotPasswordSubmitButton.layer.shadowRadius = 2
-            forgotPasswordSubmitButton.layer.masksToBounds = false
-            
-            forgotPasswordDismissButton.layer.shadowColor = #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1)
-            forgotPasswordDismissButton.layer.shadowOpacity = 1
-            forgotPasswordDismissButton.layer.shadowOffset = .zero
-            forgotPasswordDismissButton.layer.shadowRadius = 2
-            forgotPasswordDismissButton.layer.masksToBounds = false
+            Utilities.setShadowOn(textField: forgotPasswordEmailTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(button: forgotPasswordSubmitButton, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
+            Utilities.setShadowOn(button: forgotPasswordDismissButton, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
         }
     }
     
     @objc func setDarkMode() {
-        forgotPasswordScrollView.indicatorStyle = .white
         UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(scrollView: forgotPasswordScrollView, indicatorColor: .white)
             Utilities.setDesignOn(navigationBar: forgotPasswordNavigationBar, isDarkMode: false)
             Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-            forgotPasswordHeadingLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-            forgotPasswordSubheadingLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+            Utilities.setDesignOn(label: forgotPasswordHeadingLabel, fontColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+            Utilities.setDesignOn(label: forgotPasswordSubheadingLabel, fontColor: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
             Utilities.setDesignOn(imageView: forgotPasswordImageView, image: UIImage(named: Strings.whiteKeys), alpha: 0.3)
             Utilities.setDesignOn(textField: forgotPasswordEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(button: forgotPasswordSubmitButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(button: forgotPasswordDismissButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-            
-            forgotPasswordEmailTextField.layer.shadowOpacity = 0
-            forgotPasswordEmailTextField.layer.shadowRadius = 0
-            forgotPasswordEmailTextField.layer.shadowOffset = .zero
-            forgotPasswordEmailTextField.layer.shadowColor = nil
-            
-            forgotPasswordSubmitButton.layer.shadowColor = nil
-            forgotPasswordSubmitButton.layer.shadowOpacity = 0
-            forgotPasswordSubmitButton.layer.shadowOffset = .zero
-            forgotPasswordSubmitButton.layer.shadowRadius = 0
-            forgotPasswordSubmitButton.layer.masksToBounds = true
-            
-            forgotPasswordDismissButton.layer.shadowColor = nil
-            forgotPasswordDismissButton.layer.shadowOpacity = 0
-            forgotPasswordDismissButton.layer.shadowOffset = .zero
-            forgotPasswordDismissButton.layer.shadowRadius = 0
-            forgotPasswordDismissButton.layer.masksToBounds = true
+            Utilities.setShadowOn(textField: forgotPasswordEmailTextField, isHidden: true)
+            Utilities.setShadowOn(button: forgotPasswordSubmitButton, isHidden: true)
+            Utilities.setShadowOn(button: forgotPasswordDismissButton, isHidden: true)
         }
+    }
+    
+    func showDismissButton() {
+        UIView.animate(withDuration: 0.3) { [self] in
+            forgotPasswordSubmitButton.isHidden = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            UIView.animate(withDuration: 0.2) { [self] in
+                forgotPasswordDismissButton.isHidden = false
+            }
+        }
+    }
+    
+    func dismissKeyboard() {
+        forgotPasswordEmailTextField.endEditing(true)
     }
     
     func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
@@ -149,21 +135,6 @@ class ForgotPasswordViewController: UIViewController {
         UIView.animate(withDuration: 0.2) {
             label.isHidden = false
         }
-    }
-    
-    func showDismissButton() {
-        UIView.animate(withDuration: 0.3) { [self] in
-            forgotPasswordSubmitButton.isHidden = true
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            UIView.animate(withDuration: 0.2) { [self] in
-                forgotPasswordDismissButton.isHidden = false
-            }
-        }
-    }
-    
-    func dismissKeyboard() {
-        forgotPasswordEmailTextField.endEditing(true)
     }
     
     
