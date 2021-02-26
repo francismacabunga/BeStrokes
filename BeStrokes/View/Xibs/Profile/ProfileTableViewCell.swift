@@ -20,26 +20,13 @@ class ProfileTableViewCell: UITableViewCell {
     
     //MARK: - Constants / Variables
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var profileSettingsViewModel: ProfileSettingsViewModel! {
         didSet {
             let label = profileSettingsViewModel.profileSettings.first!.settingLabel
             let icon = profileSettingsViewModel.profileSettings.first!.settingIcon
-            if label == Strings.profileSettingsLogout {
-                settingLabel.text = label
-                settingIconImageView.image = UIImage(systemName: icon)
-                settingSwitch.isHidden = true
-            } else {
-                settingLabel.text = label
-                settingIconImageView.image = UIImage(systemName: icon)
-            }
-            if settingLabel.text == Strings.profileSettingsDarkAppearance {
-                if appDelegate.isLightModeOn {
-                    settingSwitch.isOn = false
-                } else {
-                    settingSwitch.isOn = true
-                }
-            }
+            setSettingData(using: label, and: icon)
+            setThemeAppearance()
+            setNotificationState()
         }
     }
     
@@ -63,6 +50,37 @@ class ProfileTableViewCell: UITableViewCell {
         Utilities.setDesignOn(label: settingLabel, fontName: Strings.defaultFont, fontSize: 15, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
     }
     
+    func setSettingData(using label: String, and icon: String) {
+        if label == Strings.profileSettingsLogout {
+            settingLabel.text = label
+            settingIconImageView.image = UIImage(systemName: icon)
+            settingSwitch.isHidden = true
+        } else {
+            settingLabel.text = label
+            settingIconImageView.image = UIImage(systemName: icon)
+        }
+    }
+    
+    func setThemeAppearance() {
+        if settingLabel.text == Strings.profileSettingsDarkAppearance {
+            if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
+                settingSwitch.isOn = false
+            } else {
+                settingSwitch.isOn = true
+            }
+        }
+    }
+    
+    func setNotificationState() {
+        //        if settingLabel.text == Strings.profileSettingsNotifications {
+        //            if appDelegate.notificationAuthorization {
+        //                settingSwitch.isOn = true
+        //            } else {
+        //                settingSwitch.isOn = false
+        //            }
+        //        }
+    }
+    
     
     //MARK: - Switches
     
@@ -76,10 +94,10 @@ class ProfileTableViewCell: UITableViewCell {
             }
         case Strings.profileSettingsDarkAppearance:
             if sender.isOn {
-                appDelegate.setValue(forKey: Strings.lightModeKey, value: false, forLightModeSwitch: false)
+                UserDefaults.standard.setValue(false, forKey: Strings.lightModeKey)
                 NotificationCenter.default.post(name: Utilities.setDarkModeAppearance, object: nil)
             } else {
-                appDelegate.setValue(forKey: Strings.lightModeKey, value: true, forLightModeSwitch: true)
+                UserDefaults.standard.setValue(true, forKey: Strings.lightModeKey)
                 NotificationCenter.default.post(name: Utilities.setLightModeAppearance, object: nil)
             }
         default:

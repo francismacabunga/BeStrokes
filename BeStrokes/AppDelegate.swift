@@ -8,15 +8,15 @@
 import UIKit
 import Firebase
 import IQKeyboardManagerSwift
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     var window: UIWindow?
-    var openedFromTryMeButton: Bool!
-    var openedFromCaptureButton: Bool!
-    var isLightModeOn: Bool!
+    var notificationCenter = UNUserNotificationCenter.current()
+    var notificationAuthorization: Bool!
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -24,43 +24,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
-        openedFromTryMeButton = UserDefaults.standard.bool(forKey: Strings.firstTimeLaunchFromTMBKey)
-        openedFromCaptureButton = UserDefaults.standard.bool(forKey: Strings.firstTimeLaunchFromCBKey)
-        isLightModeOn = UserDefaults.standard.bool(forKey: Strings.lightModeKey)
-        if !openedFromTryMeButton {
-            UserDefaults.standard.setValue(true, forKey: Strings.firstTimeLaunchFromTMBKey)
+        
+        let options: UNAuthorizationOptions = [.alert, .sound, .badge]
+        notificationCenter.requestAuthorization(options: options) { [self] (didAllow, error) in
+            if didAllow {
+                notificationAuthorization = true
+            } else {
+                notificationAuthorization = false
+            }
         }
-        if !openedFromCaptureButton {
-            UserDefaults.standard.setValue(true, forKey: Strings.firstTimeLaunchFromCBKey)
+        notificationCenter.getNotificationSettings { [self] (settings) in
+            if settings.authorizationStatus == .authorized {
+                notificationAuthorization = true
+            } else {
+                notificationAuthorization = false
+            }
         }
         
         return true
         
-    }
-    
-    func setValue(forKey key: String, value: Bool, forTryMeButton: Bool? = nil, forCaptureButton: Bool? = nil, forLightModeSwitch: Bool? = nil) {
-        if value {
-            UserDefaults.standard.setValue(true, forKey: key)
-        } else {
-            UserDefaults.standard.setValue(false, forKey: key)
-        }
-        if forTryMeButton != nil {
-            if forTryMeButton! {
-                openedFromTryMeButton = true
-            }
-        }
-        if forCaptureButton != nil {
-            if forCaptureButton! {
-                openedFromCaptureButton = true
-            }
-        }
-        if forLightModeSwitch != nil {
-            if forLightModeSwitch! {
-                isLightModeOn = true
-            } else {
-                isLightModeOn = false
-            }
-        }
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

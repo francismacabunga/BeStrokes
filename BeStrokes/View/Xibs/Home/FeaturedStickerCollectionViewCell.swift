@@ -23,7 +23,6 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Constants / Variables
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
     private var skeletonColor: UIColor?
@@ -64,7 +63,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     }
     
     func checkThemeAppearance() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             setLightMode()
         } else {
             setDarkMode()
@@ -90,7 +89,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     }
     
     func setSkeletonColor() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             skeletonColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         } else {
             skeletonColor = #colorLiteral(red: 0.2006691098, green: 0.200709641, blue: 0.2006634176, alpha: 1)

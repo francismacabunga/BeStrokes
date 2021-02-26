@@ -31,7 +31,6 @@ class LoginViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private let user = User()
     
     
@@ -73,7 +72,7 @@ class LoginViewController: UIViewController {
     }
     
     func checkThemeAppearance() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             setLightMode()
         } else {
             setDarkMode()

@@ -11,7 +11,6 @@ class TabBarViewController: UITabBarController {
     
     //MARK: - Constants / Variables
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private var userTabBar: UITabBar?
     
     
@@ -36,7 +35,7 @@ class TabBarViewController: UITabBarController {
     }
     
     func checkThemeAppearance() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             setLightMode()
         } else {
             setDarkMode()

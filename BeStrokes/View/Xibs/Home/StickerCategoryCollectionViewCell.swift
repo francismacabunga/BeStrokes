@@ -18,12 +18,11 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Constants / Variables
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var stickerCategoryViewModel: StickerCategoryViewModel! {
         didSet {
             stickerCategoryLabel.text = stickerCategoryViewModel.category
             let isCategorySelected = stickerCategoryViewModel.isCategorySelected
-            if appDelegate.isLightModeOn {
+            if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
                 setLightMode()
                 if isCategorySelected {
                     Utilities.setDesignOn(view: stickerCategoryView, backgroundColor: #colorLiteral(red: 0.9944363236, green: 0.9993038774, blue: 0, alpha: 1))
@@ -42,14 +41,6 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     }
     
     
-    //MARK: - NIB Functions
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-    }
-    
-    
     //MARK: - Design Elements
     
     func setDesignElements() {
@@ -62,7 +53,7 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     }
     
     func checkThemeAppearance() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             setLightMode()
         } else {
             setDarkMode()

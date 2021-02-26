@@ -37,7 +37,6 @@ class CaptureViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private var capture = Capture()
     private let imagePicker = UIImagePickerController()
     var isStickerPicked = false
@@ -88,13 +87,13 @@ class CaptureViewController: UIViewController {
             return
         }
         if isPresentedWithTabBar() {
-            if !appDelegate.openedFromCaptureButton {
+            if UserDefaults.standard.bool(forKey: Strings.captureButtonKey) == false {
                 showCaptureVCTutorial()
             } else {
                 showCaptureVCDefaultDesign()
             }
         } else {
-            if !appDelegate.openedFromTryMeButton {
+            if UserDefaults.standard.bool(forKey: Strings.tryMeButtonKey) == false {
                 showCaptureVCTutorial()
             } else {
                 showCaptureVCDefaultDesign()
@@ -136,7 +135,7 @@ class CaptureViewController: UIViewController {
     }
     
     func checkThemeAppearance() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             setLightMode()
         } else {
             setDarkMode()
@@ -372,11 +371,11 @@ class CaptureViewController: UIViewController {
             return
         }
         if isPresentedWithTabBar() {
-            appDelegate.setValue(forKey: Strings.firstTimeLaunchFromCBKey, value: true, forCaptureButton: true)
+            UserDefaults.standard.setValue(true, forKey: Strings.captureButtonKey)
             setQuickOptionsDesignWithTabBar()
             captureDeleteButtonImageView.isHidden = false
         } else {
-            appDelegate.setValue(forKey: Strings.firstTimeLaunchFromTMBKey, value: true, forTryMeButton: true)
+            UserDefaults.standard.setValue(true, forKey: Strings.tryMeButtonKey)
             setQuickOptionsDesignWithoutTabBar()
             getStickerInformation()
         }

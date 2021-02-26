@@ -241,8 +241,8 @@ struct Strings {
     
     //MARK: - User Defaults / Notification
     
-    static let firstTimeLaunchFromTMBKey = "openedFromTryMeButton"
-    static let firstTimeLaunchFromCBKey = "openedFromCaptureButton"
+    static let tryMeButtonKey = "openedFromTryMeButton"
+    static let captureButtonKey = "openedFromCaptureButton"
     static let lightModeKey = "isLightModeOn"
     static let lightModeNotification = "setLightModeAppearance"
     static let darkModeNotification = "setDarkModeAppearance"

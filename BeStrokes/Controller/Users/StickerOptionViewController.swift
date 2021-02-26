@@ -30,7 +30,6 @@ class StickerOptionViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
     var stickerViewModel: StickerViewModel! {
@@ -78,7 +77,7 @@ class StickerOptionViewController: UIViewController {
     }
     
     func checkThemeAppearance() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             setLightMode()
         } else {
             setDarkMode()

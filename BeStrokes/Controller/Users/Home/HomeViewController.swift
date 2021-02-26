@@ -31,7 +31,6 @@ class HomeViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private let user = User()
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
@@ -40,7 +39,6 @@ class HomeViewController: UIViewController {
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private var stickerCategorySelected: String?
     private var featuredHeartButtonTapped: Bool?
-    private var isLightMode = false
     private var selectedIndexPath: IndexPath?
     private var shouldReloadStickerCategoryCollectionView = false
     private var skeletonColor: UIColor?
@@ -86,7 +84,7 @@ class HomeViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if isLightMode {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             return .darkContent
         } else {
             return .lightContent
@@ -94,7 +92,7 @@ class HomeViewController: UIViewController {
     }
     
     func checkThemeAppearance() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             setLightMode()
         } else {
             setDarkMode()
@@ -102,7 +100,6 @@ class HomeViewController: UIViewController {
     }
     
     @objc func setLightMode() {
-        isLightMode = true
         setNeedsStatusBarAppearanceUpdate()
         if shouldReloadStickerCategoryCollectionView {
             reloadStickerCategoryCollection()
@@ -120,7 +117,6 @@ class HomeViewController: UIViewController {
     }
     
     @objc func setDarkMode() {
-        isLightMode = false
         setNeedsStatusBarAppearanceUpdate()
         if shouldReloadStickerCategoryCollectionView {
             reloadStickerCategoryCollection()
@@ -136,7 +132,7 @@ class HomeViewController: UIViewController {
     }
     
     func setSkeletonColor() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             skeletonColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         } else {
             skeletonColor = #colorLiteral(red: 0.2006691098, green: 0.200709641, blue: 0.2006634176, alpha: 1)
@@ -166,7 +162,7 @@ class HomeViewController: UIViewController {
                     Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
                     homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
                     hasProfilePicLoaded = true
-                    if appDelegate.isLightModeOn {
+                    if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
                         Utilities.setShadowOn(view: homeProfilePicContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
                     }
                 }

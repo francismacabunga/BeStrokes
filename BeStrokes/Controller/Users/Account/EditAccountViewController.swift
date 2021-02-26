@@ -35,7 +35,6 @@ class EditAccountViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private var userViewModel: UserViewModel?
     private let user = User()
     private let imagePicker = UIImagePickerController()
@@ -87,7 +86,7 @@ class EditAccountViewController: UIViewController {
     }
     
     func checkThemeAppearance() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             setLightMode()
         } else {
             setDarkMode()

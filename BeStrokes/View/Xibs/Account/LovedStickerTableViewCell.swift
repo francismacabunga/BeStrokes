@@ -23,7 +23,6 @@ class LovedStickerTableViewCell: UITableViewCell {
     
     //MARK: - Constants / Variables
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var lovedStickerCellDelegate: LovedStickerCellDelegate?
     var lovedStickerViewModel: LovedStickerViewModel! {
         didSet {
@@ -66,7 +65,7 @@ class LovedStickerTableViewCell: UITableViewCell {
     }
     
     func checkThemeAppearance() {
-        if appDelegate.isLightModeOn {
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             setLightMode()
         } else {
             setDarkMode()
