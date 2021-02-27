@@ -161,7 +161,7 @@ struct Strings {
     static let tabCaptureIcon = "camera.fill"
     static let tabAccountIcon = "person.crop.circle.fill"
     
-    static let accountNotificationIcon = "bell.badge.fill"
+    static let accountNotificationIcon = "bell.fill"
     static let accountEditAccountIcon = "pencil.circle.fill"
     static let accountSearchStickerIcon = "magnifyingglass"
     static let accountArrowUpIcon = "chevron.up.square.fill"
