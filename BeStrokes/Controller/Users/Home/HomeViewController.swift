@@ -10,6 +10,7 @@ import Firebase
 import MSPeekCollectionViewDelegateImplementation
 import SkeletonView
 import Kingfisher
+import UserNotifications
 
 class HomeViewController: UIViewController {
     
@@ -43,6 +44,10 @@ class HomeViewController: UIViewController {
     private var shouldReloadStickerCategoryCollectionView = false
     private var skeletonColor: UIColor?
     private var hasProfilePicLoaded = false
+    private var initialStickerCount: Int?
+    private var currentStickerCount: Int?
+    private var gotInitialStickerCount: Bool?
+    private var notificationCenter = UNUserNotificationCenter.current()
     
     
     //MARK: - View Controller Life Cycle
@@ -50,6 +55,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        checkIfNotificationIsPermitted()
         setDesignElements()
         registerCollectionView()
         setCollectionViewData()
@@ -158,9 +164,9 @@ class HomeViewController: UIViewController {
                 }
                 guard let userData = userData else {return}
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-                    Utilities.setDesignOn(button: homeProfilePictureButton, isCircular: true)
                     homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
+                    Utilities.setDesignOn(button: homeProfilePictureButton, backgroundColor: .clear, isCircular: true)
+                    homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
                     hasProfilePicLoaded = true
                     if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
                         Utilities.setShadowOn(view: homeProfilePicContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
@@ -202,6 +208,21 @@ class HomeViewController: UIViewController {
         homeFeaturedStickerCollectionView.configureForPeekingBehavior(behavior: behavior)
         behavior.cellPeekWidth = 15
         behavior.cellSpacing = 5
+    }
+    
+    func checkIfNotificationIsPermitted() {
+        notificationCenter.getNotificationSettings { [self] (permission) in
+            if permission.authorizationStatus == .notDetermined {
+                let options: UNAuthorizationOptions = [.badge]
+                notificationCenter.requestAuthorization(options: options) { (isPermissionGranted, error) in
+                    if isPermissionGranted {
+                        UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
+                    } else {
+                        UserDefaults.standard.setValue(false, forKey: Strings.notificationKey)
+                    }
+                }
+            }
+        }
     }
     
     func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
@@ -289,10 +310,40 @@ class HomeViewController: UIViewController {
                 guard let stickerData = stickerData else {return}
                 stickerViewModel = stickerData
                 showStickers()
+                getStickerCount()
                 return
             }
             showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
+    }
+    
+    func getStickerCount() {
+        
+        if gotInitialStickerCount != nil {
+            if gotInitialStickerCount! {
+                fetchStickerData.stickerCount { [self] (error, stickerData) in
+                    currentStickerCount = stickerData?.count
+                    //print("Current Count: \(currentStickerCount!)")
+                    
+                    let difference = currentStickerCount! - initialStickerCount!
+                    let value = difference.signum()
+                    
+                    if value == 1 {
+                        print("Trigger notifications")
+                    }
+                    
+                    
+                    
+                }
+                return
+            }
+        }
+        
+        
+        initialStickerCount = stickerViewModel?.count
+        gotInitialStickerCount = true
+        //print("Initial Count: \(initialStickerCount!)")
+        
     }
     
 }

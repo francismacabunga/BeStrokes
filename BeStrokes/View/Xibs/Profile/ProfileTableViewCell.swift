@@ -25,8 +25,8 @@ class ProfileTableViewCell: UITableViewCell {
             let label = profileSettingsViewModel.profileSettings.first!.settingLabel
             let icon = profileSettingsViewModel.profileSettings.first!.settingIcon
             setSettingData(using: label, and: icon)
-            setThemeAppearance()
-            setNotificationState()
+            setNotificationSetting()
+            setThemeSetting()
         }
     }
     
@@ -61,7 +61,19 @@ class ProfileTableViewCell: UITableViewCell {
         }
     }
     
-    func setThemeAppearance() {
+    func setNotificationSetting() {
+        if settingLabel.text == Strings.profileSettingsNotifications {
+            self.isUserInteractionEnabled = false
+            Utilities.setDesignOn(switchIndicator: settingSwitch, alpha: 0.5)
+            if UserDefaults.standard.bool(forKey: Strings.notificationKey) {
+                settingSwitch.isOn = true
+            } else {
+                settingSwitch.isOn = false
+            }
+        }
+    }
+    
+    func setThemeSetting() {
         if settingLabel.text == Strings.profileSettingsDarkAppearance {
             if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
                 settingSwitch.isOn = false
@@ -71,27 +83,11 @@ class ProfileTableViewCell: UITableViewCell {
         }
     }
     
-    func setNotificationState() {
-        //        if settingLabel.text == Strings.profileSettingsNotifications {
-        //            if appDelegate.notificationAuthorization {
-        //                settingSwitch.isOn = true
-        //            } else {
-        //                settingSwitch.isOn = false
-        //            }
-        //        }
-    }
-    
     
     //MARK: - Switches
     
     @IBAction func profileSwitch(_ sender: UISwitch) {
         switch settingLabel.text {
-        case Strings.profileSettingsNotifications:
-            if sender.isOn {
-                print("Notification is turned on!")
-            } else {
-                print("Notification is turned off!")
-            }
         case Strings.profileSettingsDarkAppearance:
             if sender.isOn {
                 UserDefaults.standard.setValue(false, forKey: Strings.lightModeKey)

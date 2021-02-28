@@ -284,12 +284,19 @@ struct Utilities {
     }
     
     // Page Control
-    static func setDesign(pageControl: UIPageControl,
+    static func setDesignOn(pageControl: UIPageControl,
                           pageIndicatorColor: UIColor,
                           currentPageColor: UIColor)
     {
         pageControl.pageIndicatorTintColor = pageIndicatorColor
         pageControl.currentPageIndicatorTintColor = currentPageColor
+    }
+    
+    // Switch
+    static func setDesignOn(switchIndicator: UISwitch,
+                            alpha: CGFloat)
+    {
+        switchIndicator.alpha = alpha
     }
     
     // Tab Bar

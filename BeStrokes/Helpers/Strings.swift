@@ -41,6 +41,7 @@ struct Strings {
     static let dismissButtonText = "Dismiss"
     static let resendButtonText = "Resend"
     static let dontShowAgainButtonText = "Don't show again"
+    static let clickHereButtonText = "click here."
     
     //MARK: - Tab Bar Labels
     static let homeTabText = "Home"
@@ -83,6 +84,7 @@ struct Strings {
     static let captureAlertAction = "Dismiss"
     
     //MARK: - Warning Labels
+    static let profileWarningLabel = "To change the notification settings,"
     static let accountNoLovedStickerLabel = "You don't have any loved stickers yet."
     static let accountInvalidStickerLabel = "No results for this sticker."
     static let editAccountEmailVerficationErrorLabel = "Account cannot be updated. Kindly tap the resend button below to resend an email verification."
@@ -106,7 +108,7 @@ struct Strings {
     //MARK: - Sticker Category/Tag Title
     static let categoryAllStickers = "All"
     static let categoryFeaturedStickers = "Featured"
-    static let tagNoStickers = "none"
+    static let tagNoStickers = "None"
     
     //MARK: - Sticker Category Array
     static let allStickers = "All"
@@ -244,6 +246,7 @@ struct Strings {
     static let tryMeButtonKey = "openedFromTryMeButton"
     static let captureButtonKey = "openedFromCaptureButton"
     static let lightModeKey = "isLightModeOn"
+    static let notificationKey = "notificationAuthorization"
     static let lightModeNotification = "setLightModeAppearance"
     static let darkModeNotification = "setDarkModeAppearance"
     

@@ -15,8 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     var window: UIWindow?
-    var notificationCenter = UNUserNotificationCenter.current()
-    var notificationAuthorization: Bool!
+    let notificationCenter = UNUserNotificationCenter.current()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -24,23 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
-        
-        let options: UNAuthorizationOptions = [.alert, .sound, .badge]
-        notificationCenter.requestAuthorization(options: options) { [self] (didAllow, error) in
-            if didAllow {
-                notificationAuthorization = true
-            } else {
-                notificationAuthorization = false
-            }
-        }
-        notificationCenter.getNotificationSettings { [self] (settings) in
-            if settings.authorizationStatus == .authorized {
-                notificationAuthorization = true
-            } else {
-                notificationAuthorization = false
-            }
-        }
-        
+                
         return true
         
     }
@@ -56,6 +39,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        notificationCenter.getNotificationSettings { (permission) in
+            if permission.authorizationStatus == .authorized {
+                UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
+            } else {
+                UserDefaults.standard.setValue(false, forKey: Strings.notificationKey)
+            }
+        }
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

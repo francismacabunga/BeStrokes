@@ -87,10 +87,10 @@ struct FetchStickerData {
     
     func featuredStickerCollectionView(completion: @escaping (Error?, [FeaturedStickerViewModel]?) -> Void) {
         let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: Strings.categoryFeaturedStickers)
-        fetchFirebaseData(with: firebaseQuery) { (error, result) in
+        fetchFirebaseData(with: firebaseQuery) { (error, stickerData) in
             guard let error = error else {
-                guard let result = result else {return}
-                let featuredStickerViewModel = result.map({return FeaturedStickerViewModel($0)})
+                guard let stickerData = stickerData else {return}
+                let featuredStickerViewModel = stickerData.map({return FeaturedStickerViewModel($0)})
                 completion(nil, featuredStickerViewModel)
                 return
             }
@@ -113,10 +113,10 @@ struct FetchStickerData {
             }
         } else {
             firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerCategoryField, isEqualTo: category)
-            fetchFirebaseData(with: firebaseQuery) { (error, result) in
+            fetchFirebaseData(with: firebaseQuery) { (error, stickerData) in
                 guard let error = error else {
-                    guard let result = result else {return}
-                    let stickerViewModel = result.map({return StickerViewModel($0)})
+                    guard let stickerData = stickerData else {return}
+                    let stickerViewModel = stickerData.map({return StickerViewModel($0)})
                     completion(nil, stickerViewModel)
                     return
                 }
@@ -126,16 +126,16 @@ struct FetchStickerData {
     }
     
     func fetchFirebaseData(with query: Query, completion: @escaping (Error?, [StickerModel]?) -> Void) {
-        query.getDocuments { (snapshot, error) in
+        query.addSnapshotListener { (snapshot, error) in
             guard let error = error else {
-                guard let results = snapshot?.documents else {return}
-                let stickerData = results.map({return StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
-                                                                   name: $0[Strings.stickerNameField] as! String,
-                                                                   image: $0[Strings.stickerImageField] as! String,
-                                                                   description: $0[Strings.stickerDescriptionField] as! String,
-                                                                   category: $0[Strings.stickerCategoryField] as! String,
-                                                                   tag: $0[Strings.stickerTagField] as! String)})
-                completion(nil, stickerData)
+                guard let stickerData = snapshot?.documents else {return}
+                let stickerModel = stickerData.map({return StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
+                                                                        name: $0[Strings.stickerNameField] as! String,
+                                                                        image: $0[Strings.stickerImageField] as! String,
+                                                                        description: $0[Strings.stickerDescriptionField] as! String,
+                                                                        category: $0[Strings.stickerCategoryField] as! String,
+                                                                        tag: $0[Strings.stickerTagField] as! String)})
+                completion(nil, stickerModel)
                 return
             }
             completion(error, nil)
@@ -150,6 +150,23 @@ struct FetchStickerData {
                                         StickerCategoryViewModel(StickerCategoryModel(category: Strings.coloredStickers, isCategorySelected: false)),
                                         StickerCategoryViewModel(StickerCategoryModel(category: Strings.travelStickers, isCategorySelected: false))]
         return stickerCategoryViewModel
+    }
+    
+    func stickerCount(completion: @escaping (Error?, [StickerViewModel]?) -> Void) {
+        db.collection(Strings.stickerCollection).getDocuments { (snapshot, error) in
+            guard let error = error else {
+                guard let stickerData = snapshot?.documents else {return}
+                let stickerViewModel = stickerData.map({return StickerViewModel(StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
+                                                                                             name: $0[Strings.stickerNameField] as! String,
+                                                                                             image: $0[Strings.stickerImageField] as! String,
+                                                                                             description: $0[Strings.stickerDescriptionField] as! String,
+                                                                                             category: $0[Strings.stickerCategoryField] as! String,
+                                                                                             tag: $0[Strings.stickerTagField] as! String))})
+                completion(nil, stickerViewModel)
+                return
+            }
+            completion(error, nil)
+        }
     }
     
     func searchSticker(using searchTextFieldText: String, completion: @escaping (Error?, Bool, Bool?, LovedStickerViewModel?) -> Void) {
