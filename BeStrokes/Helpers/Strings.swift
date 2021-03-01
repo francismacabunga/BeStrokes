@@ -249,5 +249,6 @@ struct Strings {
     static let notificationKey = "notificationAuthorization"
     static let lightModeNotification = "setLightModeAppearance"
     static let darkModeNotification = "setDarkModeAppearance"
+    static let accountIconNotification = "setBadgeToAccountIcon"
     
 }

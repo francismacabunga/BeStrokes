@@ -12,6 +12,7 @@ class TabBarViewController: UITabBarController {
     //MARK: - Constants / Variables
     
     private var userTabBar: UITabBar?
+    private var items = [UITabBarItem]()
     
     
     //MARK: - View Controller Life Cycle
@@ -20,6 +21,8 @@ class TabBarViewController: UITabBarController {
         super.viewDidLoad()
         
         userTabBar = self.tabBar
+        items = (userTabBar?.items)!
+        self.delegate = self
         setDesignElements()
         setIconData()
         
@@ -31,6 +34,7 @@ class TabBarViewController: UITabBarController {
     func setDesignElements() {
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setBadge), name: Utilities.setBadgeToAccountIcon, object: nil)
         checkThemeAppearance()
     }
     
@@ -54,8 +58,11 @@ class TabBarViewController: UITabBarController {
         }
     }
     
+    @objc func setBadge() {
+        print("Change icon color to red!")
+    }
+    
     func setIconData() {
-        guard let items = tabBar.items else {return}
         items[0].title = Strings.homeTabText
         items[0].image = UIImage(systemName: Strings.tabHomeIcon)
         items[1].title = Strings.captureTabText
@@ -65,3 +72,15 @@ class TabBarViewController: UITabBarController {
     }
     
 }
+
+
+//MARK: - Tab Bar Controller Delegate
+
+extension TabBarViewController: UITabBarControllerDelegate {
+    
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        print("Im selected!")
+    }
+    
+}
+

@@ -47,7 +47,7 @@ class HomeViewController: UIViewController {
     private var initialStickerCount: Int?
     private var currentStickerCount: Int?
     private var gotInitialStickerCount: Bool?
-    private var notificationCenter = UNUserNotificationCenter.current()
+    private let notificationCenter = UNUserNotificationCenter.current()
     
     
     //MARK: - View Controller Life Cycle
@@ -174,7 +174,7 @@ class HomeViewController: UIViewController {
                 }
                 return
             }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+            showErrorAlert(usingError: true, withErrorMessage: error)
         }
     }
     
@@ -213,7 +213,7 @@ class HomeViewController: UIViewController {
     func checkIfNotificationIsPermitted() {
         notificationCenter.getNotificationSettings { [self] (permission) in
             if permission.authorizationStatus == .notDetermined {
-                let options: UNAuthorizationOptions = [.badge]
+                let options: UNAuthorizationOptions = [.alert, .sound]
                 notificationCenter.requestAuthorization(options: options) { (isPermissionGranted, error) in
                     if isPermissionGranted {
                         UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
@@ -225,7 +225,20 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
+    func triggerNotification() {
+        let notificationIdentifier = "Sticker Notification"
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.title = "New Sticker Alert"
+        notificationContent.body = "A brand new sticker has been uploaded. Check it out on your notifications tab!"
+        let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let notificationRequest = UNNotificationRequest(identifier: notificationIdentifier, content: notificationContent, trigger: notificationTrigger)
+        notificationCenter.add(notificationRequest) { [self] (error) in
+            guard let error = error else {return}
+            showErrorAlert(usingError: true, withErrorMessage: error)
+        }
+    }
+    
+    func showErrorAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
         var alert = UIAlertController()
         if error {
             alert = UIAlertController(title: Strings.homeAlertTitle, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
@@ -272,6 +285,7 @@ class HomeViewController: UIViewController {
         homeFeaturedStickerCollectionView.delegate = self
         homeStickerCategoryCollectionView.delegate = self
         homeStickerCollectionView.delegate = self
+        notificationCenter.delegate = self
     }
     
     func registerNib() {
@@ -296,7 +310,7 @@ class HomeViewController: UIViewController {
                 }
                 return
             }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+            showErrorAlert(usingError: true, withErrorMessage: error)
         }
     }
     
@@ -313,37 +327,32 @@ class HomeViewController: UIViewController {
                 getStickerCount()
                 return
             }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+            showErrorAlert(usingError: true, withErrorMessage: error)
         }
     }
     
     func getStickerCount() {
-        
         if gotInitialStickerCount != nil {
             if gotInitialStickerCount! {
                 fetchStickerData.stickerCount { [self] (error, stickerData) in
                     currentStickerCount = stickerData?.count
-                    //print("Current Count: \(currentStickerCount!)")
-                    
                     let difference = currentStickerCount! - initialStickerCount!
                     let value = difference.signum()
-                    
                     if value == 1 {
-                        print("Trigger notifications")
+                        triggerNotification()
+                        NotificationCenter.default.post(name: Utilities.setBadgeToAccountIcon, object: nil)
+                        return
                     }
-                    
-                    
-                    
+                    if value == -1 {
+                        initialStickerCount = currentStickerCount
+                        return
+                    }
                 }
                 return
             }
         }
-        
-        
         initialStickerCount = stickerViewModel?.count
         gotInitialStickerCount = true
-        //print("Initial Count: \(initialStickerCount!)")
-        
     }
     
 }
@@ -488,7 +497,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 extension HomeViewController: FeaturedStickerCellDelegate {
     
     func getError(using error: Error) {
-        showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+        showErrorAlert(usingError: true, withErrorMessage: error)
     }
     
     func getUserAuthenticationState(with isUserSignedIn: Bool) {
@@ -500,6 +509,17 @@ extension HomeViewController: FeaturedStickerCellDelegate {
     func getVC(using viewController: UIViewController) {
         viewController.modalPresentationStyle = .fullScreen
         present(viewController, animated: true)
+    }
+    
+}
+
+
+//MARK: - Notifications
+
+extension HomeViewController: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
     }
     
 }
