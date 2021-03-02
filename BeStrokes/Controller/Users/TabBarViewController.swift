@@ -12,7 +12,7 @@ class TabBarViewController: UITabBarController {
     //MARK: - Constants / Variables
     
     private var userTabBar: UITabBar?
-    private var items = [UITabBarItem]()
+    private var userTabBarItem = [UITabBarItem]()
     
     
     //MARK: - View Controller Life Cycle
@@ -20,9 +20,8 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        userTabBar = self.tabBar
-        items = (userTabBar?.items)!
-        self.delegate = self
+        setTabBar()
+        setDelegate()
         setDesignElements()
         setIconData()
         
@@ -34,7 +33,7 @@ class TabBarViewController: UITabBarController {
     func setDesignElements() {
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(setBadge), name: Utilities.setBadgeToAccountIcon, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setBadgeCounter), name: Utilities.setBadgeToAccountIcon, object: nil)
         checkThemeAppearance()
     }
     
@@ -58,17 +57,32 @@ class TabBarViewController: UITabBarController {
         }
     }
     
-    @objc func setBadge() {
-        print("Change icon color to red!")
+    @objc func setBadgeCounter() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
+            userTabBarItem[2].badgeValue = "\(UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey))"
+        }
     }
     
     func setIconData() {
-        items[0].title = Strings.homeTabText
-        items[0].image = UIImage(systemName: Strings.tabHomeIcon)
-        items[1].title = Strings.captureTabText
-        items[1].image = UIImage(systemName: Strings.tabCaptureIcon)
-        items[2].title = Strings.accountTabText
-        items[2].image = UIImage(systemName: Strings.tabAccountIcon)
+        userTabBarItem[0].image = UIImage(systemName: Strings.tabHomeIcon)
+        userTabBarItem[1].image = UIImage(systemName: Strings.tabCaptureIcon)
+        userTabBarItem[2].image = UIImage(systemName: Strings.tabNotificationIcon)
+        userTabBarItem[3].image = UIImage(systemName: Strings.tabAccountIcon)
+        if UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey) != 0 {
+            userTabBarItem[2].badgeValue = "\(UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey))"
+        }
+    }
+    
+    
+    //MARK: - Tab Bar Process
+    
+    func setTabBar() {
+        userTabBar = self.tabBar
+        userTabBarItem = (userTabBar?.items)!
+    }
+    
+    func setDelegate() {
+        self.delegate = self
     }
     
 }
@@ -79,7 +93,10 @@ class TabBarViewController: UITabBarController {
 extension TabBarViewController: UITabBarControllerDelegate {
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        print("Im selected!")
+        if tabBar.selectedItem?.badgeValue != nil {
+            userTabBarItem[2].badgeValue = nil
+            UserDefaults.standard.removeObject(forKey: Strings.notificationBadgeCounterKey)
+        }
     }
     
 }

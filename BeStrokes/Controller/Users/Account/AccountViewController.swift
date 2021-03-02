@@ -23,7 +23,6 @@ class AccountViewController: UIViewController {
     @IBOutlet weak var accountNameHeadingLabel: UILabel!
     @IBOutlet weak var accountEmailHeadingLabel: UILabel!
     @IBOutlet weak var accountWarningLabel: UILabel!
-    @IBOutlet weak var accountNotificationButton: UIButton!
     @IBOutlet weak var accountEditButton: UIButton!
     @IBOutlet weak var accountSearchButton: UIButton!
     @IBOutlet weak var accountImageView: UIImageView!
@@ -68,7 +67,6 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(stackView: accountBottomStackView, backgroundColor: .clear, isHidden: true)
         Utilities.setDesignOn(view: accountBottomSearchContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: accountTextFieldContentView, backgroundColor: .clear, isHidden: true)
-        Utilities.setDesignOn(button: accountNotificationButton, backgroundImage: UIImage(systemName: Strings.accountNotificationIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(button: accountEditButton, backgroundImage: UIImage(systemName: Strings.accountEditAccountIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon))
         Utilities.setDesignOn(textField: accountSearchTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, capitalization: .words, returnKeyType: .search, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), placeholder: Strings.searchTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
@@ -285,10 +283,6 @@ class AccountViewController: UIViewController {
     
     
     //MARK: - Buttons
-    
-    @IBAction func accountNotificationButton(_ sender: UIButton) {
-        
-    }
     
     @IBAction func accountSearchButton(_ sender: UIButton) {
         isButtonPressed = !isButtonPressed

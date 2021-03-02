@@ -153,7 +153,7 @@ struct FetchStickerData {
     }
     
     func stickerCount(completion: @escaping (Error?, [StickerViewModel]?) -> Void) {
-        db.collection(Strings.stickerCollection).getDocuments { (snapshot, error) in
+        db.collection(Strings.stickerCollection).addSnapshotListener { (snapshot, error) in
             guard let error = error else {
                 guard let stickerData = snapshot?.documents else {return}
                 let stickerViewModel = stickerData.map({return StickerViewModel(StickerModel(stickerID: $0[Strings.stickerIDField] as! String,

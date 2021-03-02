@@ -44,10 +44,11 @@ class HomeViewController: UIViewController {
     private var shouldReloadStickerCategoryCollectionView = false
     private var skeletonColor: UIColor?
     private var hasProfilePicLoaded = false
-    private var initialStickerCount: Int?
-    private var currentStickerCount: Int?
+    private var initialStickerCount = UserDefaults.standard.integer(forKey: "initialStickerCountKey")
+    private var currentStickerCount = UserDefaults.standard.integer(forKey: "currentStickerCountKey")
     private var gotInitialStickerCount: Bool?
     private let notificationCenter = UNUserNotificationCenter.current()
+    private var badgeCounter = UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey)
     
     
     //MARK: - View Controller Life Cycle
@@ -59,13 +60,8 @@ class HomeViewController: UIViewController {
         setDesignElements()
         registerCollectionView()
         setCollectionViewData()
+        setInitalSelectedCategoryCell()
         
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        selectedIndexPath = IndexPath(item: 0, section: 0)
-        homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .right)
-        shouldReloadStickerCategoryCollectionView = true
     }
     
     
@@ -143,6 +139,12 @@ class HomeViewController: UIViewController {
         } else {
             skeletonColor = #colorLiteral(red: 0.2006691098, green: 0.200709641, blue: 0.2006634176, alpha: 1)
         }
+    }
+    
+    func setInitalSelectedCategoryCell() {
+        selectedIndexPath = IndexPath(item: 0, section: 0)
+        homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .right)
+        shouldReloadStickerCategoryCollectionView = true
     }
     
     func showLoadingProfilePicDesign() {
@@ -226,11 +228,13 @@ class HomeViewController: UIViewController {
     }
     
     func triggerNotification() {
-        let notificationIdentifier = "Sticker Notification"
+        let notificationIdentifier = Strings.notificationIdentifier
         let notificationContent = UNMutableNotificationContent()
-        notificationContent.title = "New Sticker Alert"
-        notificationContent.body = "A brand new sticker has been uploaded. Check it out on your notifications tab!"
-        let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        notificationContent.title = Strings.notificationTitle
+        notificationContent.body = Strings.notificationBody
+        badgeCounter += 1
+        UserDefaults.standard.setValue(badgeCounter, forKey: Strings.notificationBadgeCounterKey)
+        let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 3, repeats: false)
         let notificationRequest = UNNotificationRequest(identifier: notificationIdentifier, content: notificationContent, trigger: notificationTrigger)
         notificationCenter.add(notificationRequest) { [self] (error) in
             guard let error = error else {return}
@@ -325,6 +329,7 @@ class HomeViewController: UIViewController {
                 stickerViewModel = stickerData
                 showStickers()
                 getStickerCount()
+                //print("Initial: \(UserDefaults.standard.integer(forKey: "initialStickerCountKey"))")
                 return
             }
             showErrorAlert(usingError: true, withErrorMessage: error)
@@ -335,8 +340,10 @@ class HomeViewController: UIViewController {
         if gotInitialStickerCount != nil {
             if gotInitialStickerCount! {
                 fetchStickerData.stickerCount { [self] (error, stickerData) in
-                    currentStickerCount = stickerData?.count
-                    let difference = currentStickerCount! - initialStickerCount!
+                    UserDefaults.standard.setValue(stickerData?.count, forKey: "currentStickerCountKey")
+                    //                    currentStickerCount = stickerData?.count
+                    //print("Current: \(UserDefaults.standard.integer(forKey: "currentStickerCountKey"))")
+                    let difference = UserDefaults.standard.integer(forKey: "currentStickerCountKey") - UserDefaults.standard.integer(forKey: "initialStickerCountKey")
                     let value = difference.signum()
                     if value == 1 {
                         triggerNotification()
@@ -344,14 +351,16 @@ class HomeViewController: UIViewController {
                         return
                     }
                     if value == -1 {
-                        initialStickerCount = currentStickerCount
+                        UserDefaults.standard.setValue(UserDefaults.standard.integer(forKey: "currentStickerCountKey"), forKey: "initialStickerCountKey")
+                        //                        initialStickerCount = currentStickerCount
                         return
                     }
                 }
                 return
             }
         }
-        initialStickerCount = stickerViewModel?.count
+        UserDefaults.standard.setValue(stickerViewModel?.count, forKey: "initialStickerCountKey")
+        //initialStickerCount = stickerViewModel?.count
         gotInitialStickerCount = true
     }
     
@@ -454,7 +463,13 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if collectionView == homeStickerCategoryCollectionView {
             stickerCategoryViewModel[indexPath.row].isCategorySelected = false
-            guard let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell else {return}
+            guard let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell else {
+                DispatchQueue.main.async { [self] in
+                    homeStickerCategoryCollectionView.reloadData()
+                    homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .right)
+                }
+                return
+            }
             cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
         }
     }

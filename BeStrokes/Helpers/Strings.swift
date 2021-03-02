@@ -43,11 +43,6 @@ struct Strings {
     static let dontShowAgainButtonText = "Don't show again"
     static let clickHereButtonText = "click here."
     
-    //MARK: - Tab Bar Labels
-    static let homeTabText = "Home"
-    static let captureTabText = "Capture"
-    static let accountTabText = "Account"
-    
     //MARK: - Text Fields Labels
     static let firstNameTextField = "First Name"
     static let lastNameTextField = "Last Name"
@@ -156,12 +151,14 @@ struct Strings {
     
     //MARK: - SF Symbols Names
     static let settingNotificationIcon = "bell.badge"
+    static let settingNotificationWithBadgeIcon = "bell.badge.fill"
     static let settingDarkModeIcon = "moon"
     static let settingLogoutIcon = "power"
     
     static let tabHomeIcon = "house.fill"
     static let tabCaptureIcon = "camera.fill"
-    static let tabAccountIcon = "person.crop.circle.fill"
+    static let tabNotificationIcon = "bell.fill"
+    static let tabAccountIcon = "person.circle.fill"
     
     static let accountNotificationIcon = "bell.fill"
     static let accountEditAccountIcon = "pencil.circle.fill"
@@ -241,14 +238,21 @@ struct Strings {
     
     
     
-    //MARK: - User Defaults / Notification
+    //MARK: - User Defaults
     
     static let tryMeButtonKey = "openedFromTryMeButton"
     static let captureButtonKey = "openedFromCaptureButton"
     static let lightModeKey = "isLightModeOn"
     static let notificationKey = "notificationAuthorization"
+    static let notificationBadgeCounterKey = "notificationBadgeCounter"
+    
+    //MARK: - Notification
+    
     static let lightModeNotification = "setLightModeAppearance"
     static let darkModeNotification = "setDarkModeAppearance"
     static let accountIconNotification = "setBadgeToAccountIcon"
+    static let notificationIdentifier = "Sticker Notification"
+    static let notificationTitle = "New Sticker Alert"
+    static let notificationBody = "A brand new sticker has been uploaded. Check it out on your notifications tab!"
     
 }

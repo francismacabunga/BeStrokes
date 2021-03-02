@@ -13,6 +13,7 @@
 		2F11255E2551A083004A02B1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F11255D2551A083004A02B1 /* HomeViewController.swift */; };
 		2F1125622551A097004A02B1 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1125612551A097004A02B1 /* AccountViewController.swift */; };
 		2F1125662551AE59004A02B1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1125652551AE59004A02B1 /* GoogleService-Info.plist */; };
+		2F148BBF25ED81690087FF4C /* StickerCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F148BBE25ED81690087FF4C /* StickerCounter.swift */; };
 		2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */; };
 		2F3141582594EFC900D47E3F /* ProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F3141562594EFC900D47E3F /* ProfileTableViewCell.xib */; };
 		2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F382FC52562E3CD00D3A125 /* Utilities.swift */; };
@@ -59,6 +60,7 @@
 		2F11255D2551A083004A02B1 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		2F1125612551A097004A02B1 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		2F1125652551AE59004A02B1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2F148BBE25ED81690087FF4C /* StickerCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCounter.swift; sourceTree = "<group>"; };
 		2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		2F3141562594EFC900D47E3F /* ProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileTableViewCell.xib; sourceTree = "<group>"; };
 		2F382FC52562E3CD00D3A125 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 			children = (
 				2FB1ABE42552ED8C0076A8FD /* Strings.swift */,
 				2F382FC52562E3CD00D3A125 /* Utilities.swift */,
+				2F148BBE25ED81690087FF4C /* StickerCounter.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -438,6 +441,7 @@
 				2F11255B2551A03E004A02B1 /* ForgotPasswordViewController.swift in Sources */,
 				2F393A13255AEB57006CDBDE /* LandingViewController.swift in Sources */,
 				2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */,
+				2F148BBF25ED81690087FF4C /* StickerCounter.swift in Sources */,
 				2F58B0E125A47CE0009EFDE5 /* UserModel.swift in Sources */,
 				2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */,
 				2F88A016259B1FBC00AAC82D /* StickerModel.swift in Sources */,
