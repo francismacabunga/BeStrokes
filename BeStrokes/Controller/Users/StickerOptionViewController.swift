@@ -259,12 +259,13 @@ class StickerOptionViewController: UIViewController {
     }
     
     func tapHeartButton(using stickerViewModel: StickerViewModel) {
-        let stickerDataDictionary = [Strings.stickerIDField : stickerViewModel.stickerID,
+        let stickerDataDictionary: [String : Any] = [Strings.stickerIDField : stickerViewModel.stickerID,
                                      Strings.stickerNameField : stickerViewModel.name,
                                      Strings.stickerImageField : stickerViewModel.image,
                                      Strings.stickerDescriptionField : stickerViewModel.description,
                                      Strings.stickerCategoryField : stickerViewModel.category,
-                                     Strings.stickerTagField : stickerViewModel.tag]
+                                     Strings.stickerTagField : stickerViewModel.tag,
+                                     Strings.stickerIsNewField : stickerViewModel.isNew]
         heartButtonLogic.tapHeartButton(using: stickerViewModel.stickerID, with: stickerDataDictionary) { [self] (error, isUserSignedIn, isProcessDone) in
             guard let error = error else {
                 if !isUserSignedIn {

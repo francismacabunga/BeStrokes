@@ -16,6 +16,7 @@ struct FeaturedStickerViewModel {
     let description: String
     let category: String
     let tag: String
+    let isNew: Bool
     
     init(_ featuredSticker: StickerModel) {
         self.stickerID = featuredSticker.stickerID
@@ -24,6 +25,7 @@ struct FeaturedStickerViewModel {
         self.description = featuredSticker.description
         self.category = featuredSticker.category
         self.tag = featuredSticker.tag
+        self.isNew = featuredSticker.isNew
     }
     
 }
@@ -48,6 +50,7 @@ struct StickerViewModel {
     let description: String
     let category: String
     let tag: String
+    let isNew: Bool
     
     init(_ sticker: StickerModel) {
         self.stickerID = sticker.stickerID
@@ -56,6 +59,7 @@ struct StickerViewModel {
         self.description = sticker.description
         self.category = sticker.category
         self.tag = sticker.tag
+        self.isNew = sticker.isNew
     }
     
 }
@@ -68,6 +72,7 @@ struct LovedStickerViewModel {
     let description: String
     let category: String
     let tag: String
+    let isNew: Bool
     
     init(_ sticker: StickerModel) {
         self.stickerID = sticker.stickerID
@@ -76,16 +81,17 @@ struct LovedStickerViewModel {
         self.description = sticker.description
         self.category = sticker.category
         self.tag = sticker.tag
+        self.isNew = sticker.isNew
     }
     
 }
 
-struct FetchStickerData {
+struct StickerData {
     
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
     
-    func featuredStickerCollectionView(completion: @escaping (Error?, [FeaturedStickerViewModel]?) -> Void) {
+    func fetchFeaturedStickerCollectionView(completion: @escaping (Error?, [FeaturedStickerViewModel]?) -> Void) {
         let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: Strings.categoryFeaturedStickers)
         fetchFirebaseData(with: firebaseQuery) { (error, stickerData) in
             guard let error = error else {
@@ -98,7 +104,7 @@ struct FetchStickerData {
         }
     }
     
-    func stickerCollectionView(category: String, completion: @escaping (Error?, [StickerViewModel]?) -> Void) {
+    func fetchStickerCollectionView(category: String, completion: @escaping (Error?, [StickerViewModel]?) -> Void) {
         var firebaseQuery: Query
         if category == Strings.allStickers {
             firebaseQuery = db.collection(Strings.stickerCollection)
@@ -134,7 +140,8 @@ struct FetchStickerData {
                                                                         image: $0[Strings.stickerImageField] as! String,
                                                                         description: $0[Strings.stickerDescriptionField] as! String,
                                                                         category: $0[Strings.stickerCategoryField] as! String,
-                                                                        tag: $0[Strings.stickerTagField] as! String)})
+                                                                        tag: $0[Strings.stickerTagField] as! String,
+                                                                        isNew: $0[Strings.stickerIsNewField] as! Bool)})
                 completion(nil, stickerModel)
                 return
             }
@@ -142,7 +149,7 @@ struct FetchStickerData {
         }
     }
     
-    func stickerCategory() -> [StickerCategoryViewModel] {
+    func fetchStickerCategory() -> [StickerCategoryViewModel] {
         let stickerCategoryViewModel = [StickerCategoryViewModel(StickerCategoryModel(category: Strings.allStickers, isCategorySelected: true)),
                                         StickerCategoryViewModel(StickerCategoryModel(category: Strings.animalStickers, isCategorySelected: false)),
                                         StickerCategoryViewModel(StickerCategoryModel(category: Strings.foodStickers, isCategorySelected: false)),
@@ -152,20 +159,34 @@ struct FetchStickerData {
         return stickerCategoryViewModel
     }
     
-    func stickerCount(completion: @escaping (Error?, [StickerViewModel]?) -> Void) {
-        db.collection(Strings.stickerCollection).addSnapshotListener { (snapshot, error) in
+    func fetchNewStickers() {
+        fetchFirebaseData(with: db.collection(Strings.stickerCollection).whereField(<#T##field: String##String#>, isEqualTo: <#T##Any#>), completion: <#T##(Error?, [StickerModel]?) -> Void#>)
+    }
+    
+    func fetchNumberOfNewStickers(completion: @escaping (Error?, Int?) -> Void) {
+        db.collection(Strings.stickerCollection).whereField(Strings.stickerIsNewField, isEqualTo: true).addSnapshotListener { (snapshot, error) in
             guard let error = error else {
                 guard let stickerData = snapshot?.documents else {return}
-                let stickerViewModel = stickerData.map({return StickerViewModel(StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
-                                                                                             name: $0[Strings.stickerNameField] as! String,
-                                                                                             image: $0[Strings.stickerImageField] as! String,
-                                                                                             description: $0[Strings.stickerDescriptionField] as! String,
-                                                                                             category: $0[Strings.stickerCategoryField] as! String,
-                                                                                             tag: $0[Strings.stickerTagField] as! String))})
-                completion(nil, stickerViewModel)
+                completion(nil, stickerData.count)
                 return
             }
             completion(error, nil)
+        }
+    }
+    
+    func setStickerStatusToOld(completion: @escaping (Error?) -> Void) {
+        db.collection(Strings.stickerCollection).getDocuments { (snapshot, error) in
+            if error != nil {
+                completion(error)
+                return
+            }
+            guard let stickerData = snapshot?.documents else {return}
+            for sticker in stickerData {
+                db.collection(Strings.stickerCollection).document(sticker[Strings.stickerIDField] as! String).updateData([Strings.stickerIsNewField : false]) { (error) in
+                    guard let error = error else {return}
+                    completion(error)
+                }
+            }
         }
     }
     
@@ -185,7 +206,8 @@ struct FetchStickerData {
                                                                          image: stickerData[Strings.stickerImageField] as! String,
                                                                          description: stickerData[Strings.stickerDescriptionField] as! String,
                                                                          category: stickerData[Strings.stickerCategoryField] as! String,
-                                                                         tag: stickerData[Strings.stickerTagField] as! String))
+                                                                         tag: stickerData[Strings.stickerTagField] as! String,
+                                                                         isNew: stickerData[Strings.stickerIsNewField] as! Bool))
                 completion(nil, true, true, searchedSticker)
                 return
             }
@@ -239,7 +261,8 @@ struct HeartButtonLogic {
                                                                                               image: $0[Strings.stickerImageField] as! String,
                                                                                               description: $0[Strings.stickerDescriptionField] as! String,
                                                                                               category: $0[Strings.stickerCategoryField] as! String,
-                                                                                              tag: $0[Strings.stickerTagField] as! String))})
+                                                                                              tag: $0[Strings.stickerTagField] as! String,
+                                                                                              isNew: $0[Strings.stickerIsNewField] as! Bool))})
                     completion(nil, true, lovedStickers)
                     return
                 }
@@ -248,7 +271,7 @@ struct HeartButtonLogic {
         }
     }
     
-    func tapHeartButton(using stickerID: String, with stickerDataDictionary: [String : String], completion: @escaping (Error?, Bool, Bool) -> Void) {
+    func tapHeartButton(using stickerID: String, with stickerDataDictionary: [String : Any], completion: @escaping (Error?, Bool, Bool) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
                 completion(error, true, false)

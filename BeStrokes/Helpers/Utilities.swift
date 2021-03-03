@@ -14,7 +14,7 @@ struct Utilities {
     
     static let setLightModeAppearance = Notification.Name(Strings.lightModeNotification)
     static let setDarkModeAppearance = Notification.Name(Strings.darkModeNotification)
-    static let setBadgeToAccountIcon = Notification.Name(Strings.accountIconNotification)
+    static let setBadgeToNotificationIcon = Notification.Name(Strings.badgeIconNotification)
     
     // Label
     static func setDesignOn(label: UILabel,

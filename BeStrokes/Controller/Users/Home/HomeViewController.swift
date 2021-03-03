@@ -36,19 +36,14 @@ class HomeViewController: UIViewController {
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
     private var stickerViewModel: [StickerViewModel]?
-    private let fetchStickerData = FetchStickerData()
+    private let stickerData = StickerData()
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private var stickerCategorySelected: String?
-    private var featuredHeartButtonTapped: Bool?
     private var selectedIndexPath: IndexPath?
     private var shouldReloadStickerCategoryCollectionView = false
     private var skeletonColor: UIColor?
     private var hasProfilePicLoaded = false
-    private var initialStickerCount = UserDefaults.standard.integer(forKey: "initialStickerCountKey")
-    private var currentStickerCount = UserDefaults.standard.integer(forKey: "currentStickerCountKey")
-    private var gotInitialStickerCount: Bool?
     private let notificationCenter = UNUserNotificationCenter.current()
-    private var badgeCounter = UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey)
     
     
     //MARK: - View Controller Life Cycle
@@ -232,14 +227,13 @@ class HomeViewController: UIViewController {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = Strings.notificationTitle
         notificationContent.body = Strings.notificationBody
-        badgeCounter += 1
-        UserDefaults.standard.setValue(badgeCounter, forKey: Strings.notificationBadgeCounterKey)
-        let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 3, repeats: false)
+        let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let notificationRequest = UNNotificationRequest(identifier: notificationIdentifier, content: notificationContent, trigger: notificationTrigger)
         notificationCenter.add(notificationRequest) { [self] (error) in
             guard let error = error else {return}
             showErrorAlert(usingError: true, withErrorMessage: error)
         }
+        NotificationCenter.default.post(name: Utilities.setBadgeToNotificationIcon, object: nil)
     }
     
     func showErrorAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
@@ -304,8 +298,18 @@ class HomeViewController: UIViewController {
         getStickersCollectionViewData(onCategory: Strings.allStickers)
     }
     
+    func changeStickerStatusOnUserFirstTimeLogin() {
+        if UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
+            stickerData.setStickerStatusToOld { [self] (error) in
+                guard let error = error else {return}
+                showErrorAlert(usingError: true, withErrorMessage: error)
+            }
+        }
+    }
+    
     func getFeaturedStickersCollectionViewData() {
-        fetchStickerData.featuredStickerCollectionView { [self] (error, featuredStickerData) in
+        stickerData.fetchFeaturedStickerCollectionView { [self] (error, featuredStickerData) in
             guard let error = error else {
                 guard let featuredStickerData = featuredStickerData else {return}
                 featuredStickerViewModel = featuredStickerData
@@ -319,49 +323,33 @@ class HomeViewController: UIViewController {
     }
     
     func getStickersCategoryCollectionViewData() {
-        stickerCategoryViewModel = fetchStickerData.stickerCategory()
+        stickerCategoryViewModel = stickerData.fetchStickerCategory()
     }
     
     func getStickersCollectionViewData(onCategory stickerCategory: String) {
-        fetchStickerData.stickerCollectionView(category: stickerCategory) { [self] (error, stickerData) in
+        stickerData.fetchStickerCollectionView(category: stickerCategory) { [self] (error, stickerData) in
             guard let error = error else {
                 guard let stickerData = stickerData else {return}
                 stickerViewModel = stickerData
+                changeStickerStatusOnUserFirstTimeLogin()
+                getNumberOfNewStickers()
                 showStickers()
-                getStickerCount()
-                //print("Initial: \(UserDefaults.standard.integer(forKey: "initialStickerCountKey"))")
                 return
             }
             showErrorAlert(usingError: true, withErrorMessage: error)
         }
     }
     
-    func getStickerCount() {
-        if gotInitialStickerCount != nil {
-            if gotInitialStickerCount! {
-                fetchStickerData.stickerCount { [self] (error, stickerData) in
-                    UserDefaults.standard.setValue(stickerData?.count, forKey: "currentStickerCountKey")
-                    //                    currentStickerCount = stickerData?.count
-                    //print("Current: \(UserDefaults.standard.integer(forKey: "currentStickerCountKey"))")
-                    let difference = UserDefaults.standard.integer(forKey: "currentStickerCountKey") - UserDefaults.standard.integer(forKey: "initialStickerCountKey")
-                    let value = difference.signum()
-                    if value == 1 {
-                        triggerNotification()
-                        NotificationCenter.default.post(name: Utilities.setBadgeToAccountIcon, object: nil)
-                        return
-                    }
-                    if value == -1 {
-                        UserDefaults.standard.setValue(UserDefaults.standard.integer(forKey: "currentStickerCountKey"), forKey: "initialStickerCountKey")
-                        //                        initialStickerCount = currentStickerCount
-                        return
-                    }
-                }
+    func getNumberOfNewStickers() {
+        stickerData.fetchNumberOfNewStickers { [self] (error, newStickers) in
+            guard let error = error else {
+                guard let newStickersCount = newStickers else {return}
+                UserDefaults.standard.setValue(newStickersCount, forKey: Strings.notificationBadgeCounterKey)
+                NotificationCenter.default.post(name: Utilities.setBadgeToNotificationIcon, object: nil)
                 return
             }
+            showErrorAlert(usingError: true, withErrorMessage: error)
         }
-        UserDefaults.standard.setValue(stickerViewModel?.count, forKey: "initialStickerCountKey")
-        //initialStickerCount = stickerViewModel?.count
-        gotInitialStickerCount = true
     }
     
 }

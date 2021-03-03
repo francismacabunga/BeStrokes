@@ -228,6 +228,7 @@ struct Strings {
     static let stickerDescriptionField = "description"
     static let stickerCategoryField = "category"
     static let stickerTagField = "tag"
+    static let stickerIsNewField = "isNew"
     static let stickerIsCategorySelected = "isCategorySelected"
     static let stickerSelectedOnStart = "selectedOnStart"
     
@@ -245,12 +246,13 @@ struct Strings {
     static let lightModeKey = "isLightModeOn"
     static let notificationKey = "notificationAuthorization"
     static let notificationBadgeCounterKey = "notificationBadgeCounter"
+    static let userFirstTimeLoginKey = "userFirstTimeLogin"
     
     //MARK: - Notification
     
     static let lightModeNotification = "setLightModeAppearance"
     static let darkModeNotification = "setDarkModeAppearance"
-    static let accountIconNotification = "setBadgeToAccountIcon"
+    static let badgeIconNotification = "setBadgeToAccountIcon"
     static let notificationIdentifier = "Sticker Notification"
     static let notificationTitle = "New Sticker Alert"
     static let notificationBody = "A brand new sticker has been uploaded. Check it out on your notifications tab!"

@@ -35,7 +35,7 @@ class AccountViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let user = User()
-    private let fetchStickerData = FetchStickerData()
+    private let stickerData = StickerData()
     private var lovedStickerViewModel: [LovedStickerViewModel]?
     private var userViewModel: UserViewModel?
     private let heartButtonLogic = HeartButtonLogic()
@@ -369,7 +369,7 @@ extension AccountViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         accountSearchTextField.resignFirstResponder()
-        fetchStickerData.searchSticker(using: accountSearchTextField.text!) { [self] (error, isUserSignedIn, isStickerValid, stickerData) in
+        stickerData.searchSticker(using: accountSearchTextField.text!) { [self] (error, isUserSignedIn, isStickerValid, stickerData) in
             guard let error = error else {
                 if !isUserSignedIn {
                     showNoSignedInUserAlert()

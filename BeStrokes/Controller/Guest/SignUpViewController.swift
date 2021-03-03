@@ -325,6 +325,7 @@ class SignUpViewController: UIViewController {
                     showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
                     setSignUpButtonTransitionAnimation()
                     transitionToHomeVC()
+                    UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
                 }
                 return
             }

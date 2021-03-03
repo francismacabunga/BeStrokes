@@ -13,6 +13,7 @@ class TabBarViewController: UITabBarController {
     
     private var userTabBar: UITabBar?
     private var userTabBarItem = [UITabBarItem]()
+    private let stickerData = StickerData()
     
     
     //MARK: - View Controller Life Cycle
@@ -33,7 +34,7 @@ class TabBarViewController: UITabBarController {
     func setDesignElements() {
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(setBadgeCounter), name: Utilities.setBadgeToAccountIcon, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateBadgeCounter), name: Utilities.setBadgeToNotificationIcon, object: nil)
         checkThemeAppearance()
     }
     
@@ -57,9 +58,15 @@ class TabBarViewController: UITabBarController {
         }
     }
     
-    @objc func setBadgeCounter() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
+    @objc func updateBadgeCounter() {
+        setBadgeCounterValue()
+    }
+    
+    func setBadgeCounterValue() {
+        if UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey) > 0 {
             userTabBarItem[2].badgeValue = "\(UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey))"
+        } else {
+            userTabBarItem[2].badgeValue = nil
         }
     }
     
@@ -68,9 +75,7 @@ class TabBarViewController: UITabBarController {
         userTabBarItem[1].image = UIImage(systemName: Strings.tabCaptureIcon)
         userTabBarItem[2].image = UIImage(systemName: Strings.tabNotificationIcon)
         userTabBarItem[3].image = UIImage(systemName: Strings.tabAccountIcon)
-        if UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey) != 0 {
-            userTabBarItem[2].badgeValue = "\(UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey))"
-        }
+        setBadgeCounterValue()
     }
     
     
@@ -96,6 +101,10 @@ extension TabBarViewController: UITabBarControllerDelegate {
         if tabBar.selectedItem?.badgeValue != nil {
             userTabBarItem[2].badgeValue = nil
             UserDefaults.standard.removeObject(forKey: Strings.notificationBadgeCounterKey)
+            stickerData.setStickerStatusToOld { [self] (error) in
+//                guard let error = error else {return}
+//                showErrorAlert(usingError: true, withErrorMessage: error)
+            }
         }
     }
     
