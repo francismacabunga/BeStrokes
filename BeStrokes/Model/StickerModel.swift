@@ -15,6 +15,7 @@ struct StickerModel {
     let category: String
     let tag: String
     let isNew: Bool
+    let hasBeenOpened: Bool
 }
 
 struct StickerCategoryModel {

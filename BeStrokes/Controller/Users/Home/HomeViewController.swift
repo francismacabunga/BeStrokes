@@ -222,6 +222,18 @@ class HomeViewController: UIViewController {
         }
     }
     
+    func checkIfNotificationHasBeenOpened(on stickerData: [StickerViewModel]) {
+        for sticker in stickerData {
+            if !sticker.hasBeenOpened {
+                triggerNotification()
+                self.stickerData.setStickerStatusToOpened(on: sticker.stickerID) { [self] (error) in
+                    guard let error = error else {return}
+                    showErrorAlert(usingError: true, withErrorMessage: error)
+                }
+            }
+        }
+    }
+    
     func triggerNotification() {
         let notificationIdentifier = Strings.notificationIdentifier
         let notificationContent = UNMutableNotificationContent()
@@ -233,7 +245,7 @@ class HomeViewController: UIViewController {
             guard let error = error else {return}
             showErrorAlert(usingError: true, withErrorMessage: error)
         }
-        NotificationCenter.default.post(name: Utilities.setBadgeToNotificationIcon, object: nil)
+        NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
     }
     
     func showErrorAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
@@ -271,7 +283,7 @@ class HomeViewController: UIViewController {
     
     func registerCollectionView() {
         setDataSourceAndDelegate()
-        registerNib()
+        registerNIB()
         viewPeekingBehavior = MSCollectionViewPeekingBehavior()
         setViewPeekingBehavior(using: viewPeekingBehavior)
     }
@@ -286,10 +298,10 @@ class HomeViewController: UIViewController {
         notificationCenter.delegate = self
     }
     
-    func registerNib() {
+    func registerNIB() {
         homeFeaturedStickerCollectionView.register(UINib(nibName: Strings.featuredStickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.featuredStickerCell)
         homeStickerCategoryCollectionView.register(UINib(nibName: Strings.stickerCategoryCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCategoryCell)
-        homeStickerCollectionView.register(UINib(nibName: Strings.stickerCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCell)
+        homeStickerCollectionView.register(UINib(nibName: Strings.stickerCollectionViewCell, bundle: nil), forCellWithReuseIdentifier: Strings.stickerCollectionViewCell)
     }
     
     func setCollectionViewData() {
@@ -301,7 +313,7 @@ class HomeViewController: UIViewController {
     func changeStickerStatusOnUserFirstTimeLogin() {
         if UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
             UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
-            stickerData.setStickerStatusToOld { [self] (error) in
+            stickerData.setStickerStatusToOld(toAll: true) { [self] (error) in
                 guard let error = error else {return}
                 showErrorAlert(usingError: true, withErrorMessage: error)
             }
@@ -333,6 +345,7 @@ class HomeViewController: UIViewController {
                 stickerViewModel = stickerData
                 changeStickerStatusOnUserFirstTimeLogin()
                 getNumberOfNewStickers()
+                checkIfNotificationHasBeenOpened(on: stickerViewModel!)
                 showStickers()
                 return
             }
@@ -341,11 +354,11 @@ class HomeViewController: UIViewController {
     }
     
     func getNumberOfNewStickers() {
-        stickerData.fetchNumberOfNewStickers { [self] (error, newStickers) in
+        stickerData.fetchStickerStatus { [self] (error, newStickersCount, stickerData) in
             guard let error = error else {
-                guard let newStickersCount = newStickers else {return}
+                guard let newStickersCount = newStickersCount else {return}
                 UserDefaults.standard.setValue(newStickersCount, forKey: Strings.notificationBadgeCounterKey)
-                NotificationCenter.default.post(name: Utilities.setBadgeToNotificationIcon, object: nil)
+                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
                 return
             }
             showErrorAlert(usingError: true, withErrorMessage: error)
@@ -364,7 +377,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             return Strings.featuredStickerCell
         }
         if skeletonView == homeStickerCollectionView {
-            return Strings.stickerCell
+            return Strings.stickerCollectionViewCell
         }
         return ReusableCellIdentifier()
     }
@@ -406,7 +419,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             return cell
         }
         if collectionView == homeStickerCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCell, for: indexPath) as! StickerCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCollectionViewCell, for: indexPath) as! StickerCollectionViewCell
             guard let stickerViewModel = stickerViewModel else {return cell}
             DispatchQueue.main.async {
                 cell.stickerViewModel = stickerViewModel[indexPath.row]

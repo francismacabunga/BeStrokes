@@ -43,7 +43,7 @@ class ProfileViewController: UIViewController {
         
         setDesignElements()
         setDataSourceAndDelegate()
-        registerNib()
+        registerNIB()
         setData()
         
     }
@@ -229,7 +229,7 @@ class ProfileViewController: UIViewController {
         profileTableView.delegate = self
     }
     
-    func registerNib() {
+    func registerNIB() {
         profileTableView.register(UINib(nibName: Strings.profileCell, bundle: nil), forCellReuseIdentifier: Strings.profileCell)
     }
     

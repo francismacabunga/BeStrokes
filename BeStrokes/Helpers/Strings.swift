@@ -194,8 +194,8 @@ struct Strings {
     static let featuredStickerCell = "FeaturedStickerCollectionViewCell"
     static let stickerCategoryCell = "StickerCategoryCollectionViewCell"
     static let profileCell = "ProfileTableViewCell"
-    static let stickerCell = "StickerCollectionViewCell"
-    static let lovedStickerCell = "LovedStickerTableViewCell"
+    static let stickerCollectionViewCell = "StickerCollectionViewCell"
+    static let stickerTableViewCell = "StickerTableViewCell"
     
     //MARK: - Segue
     static let unwindToLandingVC = "goBackToLandingVC"
@@ -229,6 +229,7 @@ struct Strings {
     static let stickerCategoryField = "category"
     static let stickerTagField = "tag"
     static let stickerIsNewField = "isNew"
+    static let stickerHasBeenOpenedField = "hasBeenOpened"
     static let stickerIsCategorySelected = "isCategorySelected"
     static let stickerSelectedOnStart = "selectedOnStart"
     
@@ -250,9 +251,9 @@ struct Strings {
     
     //MARK: - Notification
     
-    static let lightModeNotification = "setLightModeAppearance"
-    static let darkModeNotification = "setDarkModeAppearance"
-    static let badgeIconNotification = "setBadgeToAccountIcon"
+    static let lightModeAppearanceNotificationName = "setLightModeAppearance"
+    static let darkModeAppearanceNotificationName = "setDarkModeAppearance"
+    static let badgeCounterToNotificationName = "setBadgeCounterToNotificationIcon"
     static let notificationIdentifier = "Sticker Notification"
     static let notificationTitle = "New Sticker Alert"
     static let notificationBody = "A brand new sticker has been uploaded. Check it out on your notifications tab!"

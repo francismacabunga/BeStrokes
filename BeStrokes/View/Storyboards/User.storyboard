@@ -216,21 +216,61 @@
             </objects>
             <point key="canvasLocation" x="12960.799999999999" y="79.610194902548727"/>
         </scene>
-        <!--View Controller-->
+        <!--Notification View Controller-->
         <scene sceneID="Pzr-ps-7ZM">
             <objects>
-                <viewController id="Y2W-5s-p0H" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NotificationViewController" id="Y2W-5s-p0H" customClass="NotificationViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ywt-5I-gKz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ga-ho-YN8">
+                                <rect key="frame" x="30" y="10" width="315" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8b2-F6-rSm">
+                                <rect key="frame" x="166.5" y="323" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Zgp-NB-ZYM">
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="spM-Rz-sgP">
+                                <rect key="frame" x="0.0" y="41" width="375" height="577"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="I40-bB-cCf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="I40-bB-cCf" firstAttribute="trailing" secondItem="9Ga-ho-YN8" secondAttribute="trailing" constant="30" id="3fI-zH-Dc7"/>
+                            <constraint firstItem="8b2-F6-rSm" firstAttribute="centerX" secondItem="ywt-5I-gKz" secondAttribute="centerX" id="AA8-XR-ubu"/>
+                            <constraint firstItem="9Ga-ho-YN8" firstAttribute="leading" secondItem="I40-bB-cCf" secondAttribute="leading" constant="30" id="NZY-hJ-yqc"/>
+                            <constraint firstItem="I40-bB-cCf" firstAttribute="trailing" secondItem="spM-Rz-sgP" secondAttribute="trailing" id="VJU-aj-dkR"/>
+                            <constraint firstItem="I40-bB-cCf" firstAttribute="bottom" secondItem="spM-Rz-sgP" secondAttribute="bottom" id="WTe-Uo-Kba"/>
+                            <constraint firstItem="9Ga-ho-YN8" firstAttribute="top" secondItem="I40-bB-cCf" secondAttribute="top" constant="10" id="Y0V-gU-oIS"/>
+                            <constraint firstItem="spM-Rz-sgP" firstAttribute="leading" secondItem="I40-bB-cCf" secondAttribute="leading" id="eAa-3L-eqM"/>
+                            <constraint firstItem="8b2-F6-rSm" firstAttribute="centerY" secondItem="ywt-5I-gKz" secondAttribute="centerY" id="oih-ZK-sf0"/>
+                            <constraint firstItem="Zgp-NB-ZYM" firstAttribute="centerX" secondItem="ywt-5I-gKz" secondAttribute="centerX" id="qRU-y8-tNH"/>
+                            <constraint firstItem="spM-Rz-sgP" firstAttribute="top" secondItem="9Ga-ho-YN8" secondAttribute="bottom" constant="10" id="tMm-1Z-fFk"/>
+                            <constraint firstItem="Zgp-NB-ZYM" firstAttribute="centerY" secondItem="ywt-5I-gKz" secondAttribute="centerY" id="uaV-kx-Ob4"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" id="pJn-IQ-3VO"/>
+                    <connections>
+                        <outlet property="notificationHeadingLabel" destination="9Ga-ho-YN8" id="ciJ-wB-U7Y"/>
+                        <outlet property="notificationLoadingIndicatorView" destination="Zgp-NB-ZYM" id="mqa-Yt-8GA"/>
+                        <outlet property="notificationTableView" destination="spM-Rz-sgP" id="GVr-ZF-4yM"/>
+                        <outlet property="notificationWarningLabel" destination="8b2-F6-rSm" id="BbH-F0-zso"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T8d-2j-KVB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="13844" y="80"/>
+            <point key="canvasLocation" x="13844" y="79.610194902548727"/>
         </scene>
         <!--Account View Controller-->
         <scene sceneID="50A-wy-zOE">

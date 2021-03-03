@@ -13,7 +13,6 @@
 		2F11255E2551A083004A02B1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F11255D2551A083004A02B1 /* HomeViewController.swift */; };
 		2F1125622551A097004A02B1 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1125612551A097004A02B1 /* AccountViewController.swift */; };
 		2F1125662551AE59004A02B1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1125652551AE59004A02B1 /* GoogleService-Info.plist */; };
-		2F148BBF25ED81690087FF4C /* StickerCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F148BBE25ED81690087FF4C /* StickerCounter.swift */; };
 		2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */; };
 		2F3141582594EFC900D47E3F /* ProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F3141562594EFC900D47E3F /* ProfileTableViewCell.xib */; };
 		2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F382FC52562E3CD00D3A125 /* Utilities.swift */; };
@@ -30,6 +29,9 @@
 		2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */; };
 		2F88A016259B1FBC00AAC82D /* StickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A015259B1FBC00AAC82D /* StickerModel.swift */; };
 		2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A018259B239700AAC82D /* StickerViewModel.swift */; };
+		2F94B5F225EFD4FA00417982 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F94B5F125EFD4FA00417982 /* NotificationViewController.swift */; };
+		2F94B5F725EFDA8000417982 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F94B5F525EFDA8000417982 /* NotificationTableViewCell.swift */; };
+		2F94B5F825EFDA8000417982 /* NotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F94B5F625EFDA8000417982 /* NotificationTableViewCell.xib */; };
 		2F9C40F525AAF52600A7663F /* EditAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9C40F425AAF52600A7663F /* EditAccountViewController.swift */; };
 		2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1ABE42552ED8C0076A8FD /* Strings.swift */; };
 		2FD6E4D2257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D0257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift */; };
@@ -43,8 +45,8 @@
 		2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */; };
 		2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99CFD25183D3F002AFFDC /* Main.storyboard */; };
 		2FE99D0425183D40002AFFDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99D0225183D40002AFFDC /* LaunchScreen.storyboard */; };
-		2FEAC09925AA0B6400E149CE /* LovedStickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEAC09725AA0B6400E149CE /* LovedStickerTableViewCell.swift */; };
-		2FEAC09A25AA0B6400E149CE /* LovedStickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FEAC09825AA0B6400E149CE /* LovedStickerTableViewCell.xib */; };
+		2FEAC09925AA0B6400E149CE /* StickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEAC09725AA0B6400E149CE /* StickerTableViewCell.swift */; };
+		2FEAC09A25AA0B6400E149CE /* StickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FEAC09825AA0B6400E149CE /* StickerTableViewCell.xib */; };
 		2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF328302580FEF4001E6E1E /* TabBarViewController.swift */; };
 		2FFB0C4825A84EAC00FAED42 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */; };
 		2FFB0C4B25A873EC00FAED42 /* ProfileSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */; };
@@ -59,7 +61,6 @@
 		2F11255D2551A083004A02B1 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		2F1125612551A097004A02B1 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		2F1125652551AE59004A02B1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		2F148BBE25ED81690087FF4C /* StickerCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCounter.swift; sourceTree = "<group>"; };
 		2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		2F3141562594EFC900D47E3F /* ProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileTableViewCell.xib; sourceTree = "<group>"; };
 		2F382FC52562E3CD00D3A125 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -75,6 +76,9 @@
 		2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerOptionViewController.swift; sourceTree = "<group>"; };
 		2F88A015259B1FBC00AAC82D /* StickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerModel.swift; sourceTree = "<group>"; };
 		2F88A018259B239700AAC82D /* StickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewModel.swift; sourceTree = "<group>"; };
+		2F94B5F125EFD4FA00417982 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		2F94B5F525EFDA8000417982 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		2F94B5F625EFDA8000417982 /* NotificationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationTableViewCell.xib; sourceTree = "<group>"; };
 		2F9C40F425AAF52600A7663F /* EditAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewController.swift; sourceTree = "<group>"; };
 		2FB1ABE42552ED8C0076A8FD /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		2FD6E4D0257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedStickerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -91,8 +95,8 @@
 		2FE99CFE25183D3F002AFFDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2FE99D0325183D40002AFFDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2FE99D0525183D40002AFFDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2FEAC09725AA0B6400E149CE /* LovedStickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LovedStickerTableViewCell.swift; sourceTree = "<group>"; };
-		2FEAC09825AA0B6400E149CE /* LovedStickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LovedStickerTableViewCell.xib; sourceTree = "<group>"; };
+		2FEAC09725AA0B6400E149CE /* StickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerTableViewCell.swift; sourceTree = "<group>"; };
+		2FEAC09825AA0B6400E149CE /* StickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StickerTableViewCell.xib; sourceTree = "<group>"; };
 		2FF328302580FEF4001E6E1E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -137,6 +141,7 @@
 			children = (
 				2F58B0E625A4B255009EFDE5 /* Home */,
 				2FC8FAED25A7D98E00A3C7F2 /* Profile */,
+				2F94B5FB25EFDA9900417982 /* Notification */,
 				2FC8FAEA25A7D97D00A3C7F2 /* Account */,
 			);
 			path = Xibs;
@@ -196,6 +201,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		2F94B5FB25EFDA9900417982 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				2F94B5F525EFDA8000417982 /* NotificationTableViewCell.swift */,
+				2F94B5F625EFDA8000417982 /* NotificationTableViewCell.xib */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 		2F9C40F825AAF53200A7663F /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,7 +233,6 @@
 			children = (
 				2FB1ABE42552ED8C0076A8FD /* Strings.swift */,
 				2F382FC52562E3CD00D3A125 /* Utilities.swift */,
-				2F148BBE25ED81690087FF4C /* StickerCounter.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -227,8 +240,8 @@
 		2FC8FAEA25A7D97D00A3C7F2 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				2FEAC09725AA0B6400E149CE /* LovedStickerTableViewCell.swift */,
-				2FEAC09825AA0B6400E149CE /* LovedStickerTableViewCell.xib */,
+				2FEAC09725AA0B6400E149CE /* StickerTableViewCell.swift */,
+				2FEAC09825AA0B6400E149CE /* StickerTableViewCell.xib */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -261,6 +274,7 @@
 				2F9C40F825AAF53200A7663F /* Home */,
 				2F9C40FA25AAF54D00A7663F /* Account */,
 				2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */,
+				2F94B5F125EFD4FA00417982 /* NotificationViewController.swift */,
 				2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */,
 				2FF328302580FEF4001E6E1E /* TabBarViewController.swift */,
 			);
@@ -373,12 +387,13 @@
 			files = (
 				2FE99CFA25183D3F002AFFDC /* art.scnassets in Resources */,
 				2FE99D0425183D40002AFFDC /* LaunchScreen.storyboard in Resources */,
-				2FEAC09A25AA0B6400E149CE /* LovedStickerTableViewCell.xib in Resources */,
+				2FEAC09A25AA0B6400E149CE /* StickerTableViewCell.xib in Resources */,
 				2F1125662551AE59004A02B1 /* GoogleService-Info.plist in Resources */,
 				2F3141582594EFC900D47E3F /* ProfileTableViewCell.xib in Resources */,
 				2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */,
 				2FD6E4E1257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib in Resources */,
 				2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */,
+				2F94B5F825EFDA8000417982 /* NotificationTableViewCell.xib in Resources */,
 				2F402CA6256806DD00666028 /* User.storyboard in Resources */,
 				2FD6E4DB257AC99900B49E41 /* StickerCollectionViewCell.xib in Resources */,
 				2FD6E4D3257AC96100B49E41 /* FeaturedStickerCollectionViewCell.xib in Resources */,
@@ -436,9 +451,9 @@
 			files = (
 				2F1125622551A097004A02B1 /* AccountViewController.swift in Sources */,
 				2F11255B2551A03E004A02B1 /* ForgotPasswordViewController.swift in Sources */,
+				2F94B5F225EFD4FA00417982 /* NotificationViewController.swift in Sources */,
 				2F393A13255AEB57006CDBDE /* LandingViewController.swift in Sources */,
 				2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */,
-				2F148BBF25ED81690087FF4C /* StickerCounter.swift in Sources */,
 				2F58B0E125A47CE0009EFDE5 /* UserModel.swift in Sources */,
 				2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */,
 				2F88A016259B1FBC00AAC82D /* StickerModel.swift in Sources */,
@@ -454,6 +469,7 @@
 				2F9C40F525AAF52600A7663F /* EditAccountViewController.swift in Sources */,
 				2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */,
 				2FFB0C4E25A8740400FAED42 /* ProfileSettingsModel.swift in Sources */,
+				2F94B5F725EFDA8000417982 /* NotificationTableViewCell.swift in Sources */,
 				2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */,
 				2F45D04B25B4ACAA005167AE /* LandingPageViewModel.swift in Sources */,
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
@@ -464,7 +480,7 @@
 				2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */,
 				2F45D04825B4ABC3005167AE /* LandingPageModel.swift in Sources */,
 				2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */,
-				2FEAC09925AA0B6400E149CE /* LovedStickerTableViewCell.swift in Sources */,
+				2FEAC09925AA0B6400E149CE /* StickerTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

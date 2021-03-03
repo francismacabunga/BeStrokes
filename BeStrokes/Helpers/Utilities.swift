@@ -12,9 +12,9 @@ struct Utilities {
     
     //MARK: - Design Elements
     
-    static let setLightModeAppearance = Notification.Name(Strings.lightModeNotification)
-    static let setDarkModeAppearance = Notification.Name(Strings.darkModeNotification)
-    static let setBadgeToNotificationIcon = Notification.Name(Strings.badgeIconNotification)
+    static let setLightModeAppearance = Notification.Name(Strings.lightModeAppearanceNotificationName)
+    static let setDarkModeAppearance = Notification.Name(Strings.darkModeAppearanceNotificationName)
+    static let setBadgeCounterToNotificationIcon = Notification.Name(Strings.badgeCounterToNotificationName)
     
     // Label
     static func setDesignOn(label: UILabel,

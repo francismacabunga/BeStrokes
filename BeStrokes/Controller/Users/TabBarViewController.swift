@@ -22,19 +22,19 @@ class TabBarViewController: UITabBarController {
         super.viewDidLoad()
         
         setTabBar()
-        setDelegate()
+//        setDelegate()
         setDesignElements()
         setIconData()
         
     }
-    
+
     
     //MARK: - Design Elements
     
     func setDesignElements() {
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateBadgeCounter), name: Utilities.setBadgeToNotificationIcon, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateBadgeCounter), name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
         checkThemeAppearance()
     }
     
@@ -86,9 +86,9 @@ class TabBarViewController: UITabBarController {
         userTabBarItem = (userTabBar?.items)!
     }
     
-    func setDelegate() {
-        self.delegate = self
-    }
+//    func setDelegate() {
+//        self.delegate = self
+//    }
     
 }
 
@@ -97,16 +97,13 @@ class TabBarViewController: UITabBarController {
 
 extension TabBarViewController: UITabBarControllerDelegate {
     
-    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        if tabBar.selectedItem?.badgeValue != nil {
-            userTabBarItem[2].badgeValue = nil
-            UserDefaults.standard.removeObject(forKey: Strings.notificationBadgeCounterKey)
-            stickerData.setStickerStatusToOld { [self] (error) in
-//                guard let error = error else {return}
-//                showErrorAlert(usingError: true, withErrorMessage: error)
-            }
-        }
-    }
+//    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+//        if tabBar.selectedItem?.badgeValue != nil {
+//            userTabBarItem[2].badgeValue = nil
+//            UserDefaults.standard.removeObject(forKey: Strings.notificationBadgeCounterKey)
+//            NotificationCenter.default.post(name: Utilities.resetBadgeCounterToNotificationIcon, object: nil)
+//        }
+//    }
     
 }
 

@@ -30,6 +30,7 @@ class StickerOptionViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
+    private let sticker = StickerData()
     private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
     var stickerViewModel: StickerViewModel! {
@@ -50,6 +51,29 @@ class StickerOptionViewController: UIViewController {
                            stickerCategory: lovedStickerViewModel.category,
                            stickerTag: lovedStickerViewModel.tag,
                            stickerDescription: lovedStickerViewModel.description)
+        }
+    }
+    var newStickerViewModel: NewStickerViewModel! {
+        didSet {
+            getHeartButtonValue(newStickerViewModel: newStickerViewModel)
+            setStickerData(stickerImageName: newStickerViewModel.image,
+                           stickerName: newStickerViewModel.name,
+                           stickerCategory: newStickerViewModel.category,
+                           stickerTag: newStickerViewModel.tag,
+                           stickerDescription: newStickerViewModel.description)
+        }
+    }
+    
+    
+    //MARK: - View Controller Life Cycle
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if newStickerViewModel != nil {
+            print("Closed from notifications")
+            sticker.setStickerStatusToOld(toSpecificStickerID: true, on: newStickerViewModel!.stickerID) { [self] (error) in
+                guard let error = error else {return}
+                showErrorAlert(usingError: true, withErrorMessage: error)
+            }
         }
     }
     
@@ -110,12 +134,17 @@ class StickerOptionViewController: UIViewController {
         }
     }
     
-    func getHeartButtonValue(stickerViewModel: StickerViewModel? = nil, lovedStickerViewModel: LovedStickerViewModel? = nil) {
+    func getHeartButtonValue(stickerViewModel: StickerViewModel? = nil,
+                             lovedStickerViewModel: LovedStickerViewModel? = nil,
+                             newStickerViewModel: NewStickerViewModel? = nil) {
         if stickerViewModel != nil {
             checkIfStickerIsLoved(stickerViewModel!.stickerID)
         }
         if lovedStickerViewModel != nil {
             checkIfStickerIsLoved(lovedStickerViewModel!.stickerID)
+        }
+        if newStickerViewModel != nil {
+            checkIfStickerIsLoved(newStickerViewModel!.stickerID)
         }
     }
     
@@ -136,7 +165,7 @@ class StickerOptionViewController: UIViewController {
                 }
                 return
             }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+            showErrorAlert(usingError: true, withErrorMessage: error)
         }
     }
     
@@ -162,7 +191,7 @@ class StickerOptionViewController: UIViewController {
         registerGestures()
     }
     
-    func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
+    func showErrorAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
         var alert = UIAlertController()
         if error {
             alert = UIAlertController(title: Strings.homeAlertTitle, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
@@ -219,18 +248,38 @@ class StickerOptionViewController: UIViewController {
                     self.dismiss(animated: true)
                 }
             }
+            untapHeartButtonUsing(newStickerViewModel: newStickerViewModel) { (isErrorPresent) in}
         } else {
-            tapHeartButton(using: stickerViewModel)
+            if stickerViewModel != nil {
+                tapHeartButton(using: stickerViewModel)
+                return
+            }
+            if newStickerViewModel != nil {
+                tapHeartButton(using: newStickerViewModel)
+                return
+            }
         }
     }
     
-    func untapHeartButtonUsing(stickerViewModel: StickerViewModel? = nil, lovedStickerViewModel: LovedStickerViewModel? = nil, completion: @escaping (Bool) -> Void) {
+    func untapHeartButtonUsing(stickerViewModel: StickerViewModel? = nil,
+                               lovedStickerViewModel: LovedStickerViewModel? = nil,
+                               newStickerViewModel: NewStickerViewModel? = nil,
+                               completion: @escaping (Bool) -> Void) {
         if stickerViewModel != nil {
             untapHeartButtonProcess(using: stickerViewModel!.stickerID) { (isErrorPresent) in
             }
         }
         if lovedStickerViewModel != nil {
             untapHeartButtonProcess(using: lovedStickerViewModel!.stickerID) { (isErrorPresent) in
+                if isErrorPresent {
+                    completion(true)
+                } else {
+                    completion(false)
+                }
+            }
+        }
+        if newStickerViewModel != nil {
+            untapHeartButtonProcess(using: newStickerViewModel!.stickerID) { (isErrorPresent) in
                 if isErrorPresent {
                     completion(true)
                 } else {
@@ -254,18 +303,19 @@ class StickerOptionViewController: UIViewController {
                 return
             }
             completion(true)
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+            showErrorAlert(usingError: true, withErrorMessage: error)
         }
     }
     
     func tapHeartButton(using stickerViewModel: StickerViewModel) {
         let stickerDataDictionary: [String : Any] = [Strings.stickerIDField : stickerViewModel.stickerID,
-                                     Strings.stickerNameField : stickerViewModel.name,
-                                     Strings.stickerImageField : stickerViewModel.image,
-                                     Strings.stickerDescriptionField : stickerViewModel.description,
-                                     Strings.stickerCategoryField : stickerViewModel.category,
-                                     Strings.stickerTagField : stickerViewModel.tag,
-                                     Strings.stickerIsNewField : stickerViewModel.isNew]
+                                                     Strings.stickerNameField : stickerViewModel.name,
+                                                     Strings.stickerImageField : stickerViewModel.image,
+                                                     Strings.stickerDescriptionField : stickerViewModel.description,
+                                                     Strings.stickerCategoryField : stickerViewModel.category,
+                                                     Strings.stickerTagField : stickerViewModel.tag,
+                                                     Strings.stickerIsNewField : stickerViewModel.isNew,
+                                                     Strings.stickerHasBeenOpenedField : stickerViewModel.hasBeenOpened]
         heartButtonLogic.tapHeartButton(using: stickerViewModel.stickerID, with: stickerDataDictionary) { [self] (error, isUserSignedIn, isProcessDone) in
             guard let error = error else {
                 if !isUserSignedIn {
@@ -273,7 +323,27 @@ class StickerOptionViewController: UIViewController {
                 }
                 return
             }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+            showErrorAlert(usingError: true, withErrorMessage: error)
+        }
+    }
+    
+    func tapHeartButton(using newStickerViewModel: NewStickerViewModel) {
+        let stickerDataDictionary: [String : Any] = [Strings.stickerIDField : newStickerViewModel.stickerID,
+                                                     Strings.stickerNameField : newStickerViewModel.name,
+                                                     Strings.stickerImageField : newStickerViewModel.image,
+                                                     Strings.stickerDescriptionField : newStickerViewModel.description,
+                                                     Strings.stickerCategoryField : newStickerViewModel.category,
+                                                     Strings.stickerTagField : newStickerViewModel.tag,
+                                                     Strings.stickerIsNewField : newStickerViewModel.isNew,
+                                                     Strings.stickerHasBeenOpenedField : newStickerViewModel.hasBeenOpened]
+        heartButtonLogic.tapHeartButton(using: newStickerViewModel.stickerID, with: stickerDataDictionary) { [self] (error, isUserSignedIn, isProcessDone) in
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                }
+                return
+            }
+            showErrorAlert(usingError: true, withErrorMessage: error)
         }
     }
     

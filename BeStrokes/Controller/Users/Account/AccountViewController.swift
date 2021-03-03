@@ -51,7 +51,7 @@ class AccountViewController: UIViewController {
         
         setDesignElements()
         setDataSourceAndDelegate()
-        registerNib()
+        registerNIB()
         showLoadingSkeletonView()
         setSignedInUserData()
         setLovedStickersData()
@@ -306,8 +306,8 @@ class AccountViewController: UIViewController {
         accountSearchTextField.delegate = self
     }
     
-    func registerNib() {
-        accountLovedStickerTableView.register(UINib(nibName: Strings.lovedStickerCell, bundle: nil), forCellReuseIdentifier: Strings.lovedStickerCell)
+    func registerNIB() {
+        accountLovedStickerTableView.register(UINib(nibName: Strings.stickerTableViewCell, bundle: nil), forCellReuseIdentifier: Strings.stickerTableViewCell)
     }
     
 }
@@ -322,12 +322,12 @@ extension AccountViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.lovedStickerCell) as! LovedStickerTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.stickerTableViewCell) as! StickerTableViewCell
         guard let lovedStickerViewModel = lovedStickerViewModel else {return cell}
         DispatchQueue.main.async {
             cell.lovedStickerViewModel = lovedStickerViewModel[indexPath.item]
-            cell.lovedStickerCellDelegate = self
-            cell.setDesignElements()
+            cell.stickerCellDelegate = self
+            cell.prepareStickerTableViewCell()
         }
         return cell
     }
@@ -354,7 +354,7 @@ extension AccountViewController: UITableViewDelegate {
 
 //MARK: - Loved Sticker Delegate
 
-extension AccountViewController: LovedStickerCellDelegate {
+extension AccountViewController: StickerTableViewCellDelegate {
     
     func getVC(using viewController: UIViewController) {
         present(viewController, animated: true)
