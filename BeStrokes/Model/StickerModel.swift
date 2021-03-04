@@ -14,11 +14,15 @@ struct StickerModel {
     let description: String
     let category: String
     let tag: String
-    let isNew: Bool
-    let hasBeenOpened: Bool
 }
 
 struct StickerCategoryModel {
     let category: String
     var isCategorySelected: Bool
+}
+
+struct StickerStatusModel {
+    let stickerID: String
+    let isNew: Bool
+    let isOpened: Bool
 }

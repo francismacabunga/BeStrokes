@@ -20,7 +20,6 @@ class NotificationViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let stickerData = StickerData()
-    private var newStickerViewModel: [NewStickerViewModel]?
     
     
     //MARK: - View Controller Life Cycle
@@ -105,17 +104,7 @@ class NotificationViewController: UIViewController {
     }
     
     func getNewStickers() {
-        stickerData.fetchNewStickerTableView { [self] (error, stickerData) in
-            guard let error = error else {
-                guard let stickerData = stickerData else {return}
-                newStickerViewModel = stickerData
-                DispatchQueue.main.async {
-                    notificationTableView.reloadData()
-                }
-                return
-            }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
-        }
+        
     }
     
 }
@@ -126,18 +115,11 @@ class NotificationViewController: UIViewController {
 extension NotificationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return newStickerViewModel?.count ?? 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.stickerTableViewCell) as! StickerTableViewCell
-        guard let newStickerViewModel = newStickerViewModel else {
-            return cell
-        }
-        DispatchQueue.main.async {
-            cell.newStickerViewModel = newStickerViewModel[indexPath.item]
-            cell.prepareStickerTableViewCell()
-        }
         return cell
     }
     
@@ -153,7 +135,6 @@ extension NotificationViewController: UITableViewDelegate {
         let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
         DispatchQueue.main.async { [self] in
             stickerOptionVC.prepareStickerOptionVC()
-            stickerOptionVC.newStickerViewModel = newStickerViewModel![indexPath.item]
             present(stickerOptionVC, animated: true)
         }
     }

@@ -222,15 +222,43 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func checkIfNotificationHasBeenOpened(on stickerData: [StickerViewModel]) {
-        for sticker in stickerData {
-            if !sticker.hasBeenOpened {
-                triggerNotification()
-                self.stickerData.setStickerStatusToOpened(on: sticker.stickerID) { [self] (error) in
-                    guard let error = error else {return}
-                    showErrorAlert(usingError: true, withErrorMessage: error)
+    func showBannerNotification() {
+        stickerData.fetchStickerStatus(forOpenStickersField: true) { [self] (error, isUserSignedIn, numberOfNewStickers, stickerStatusData) in
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
                 }
+                guard let stickerStatusData = stickerStatusData else {return}
+                for sticker in stickerStatusData {
+                    if sticker.isOpened == false {
+                        triggerNotification()
+                        stickerData.setStickerStatusToOld(on: sticker.stickerID) { (error) in
+                            guard let error = error else {return}
+                            showErrorAlert(usingError: true, withErrorMessage: error)
+                            return
+                        }
+                    }
+                }
+                return
             }
+            showErrorAlert(usingError: true, withErrorMessage: error)
+        }
+    }
+    
+    func updateBadgeCounter() {
+        stickerData.fetchStickerStatus(forNewStickersField: true) { [self] (error, isUserSignedIn, numberOfNewStickers, stickerStatusData) in
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let numberOfNewStickers = numberOfNewStickers else {return}
+                UserDefaults.standard.setValue(numberOfNewStickers, forKey: Strings.notificationBadgeCounterKey)
+                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
+                return
+            }
+            showErrorAlert(usingError: true, withErrorMessage: error)
         }
     }
     
@@ -245,7 +273,6 @@ class HomeViewController: UIViewController {
             guard let error = error else {return}
             showErrorAlert(usingError: true, withErrorMessage: error)
         }
-        NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
     }
     
     func showErrorAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
@@ -310,12 +337,50 @@ class HomeViewController: UIViewController {
         getStickersCollectionViewData(onCategory: Strings.allStickers)
     }
     
-    func changeStickerStatusOnUserFirstTimeLogin() {
+    func changeStickerStatusOnFirstTimeLogin(using stickerData: [StickerViewModel]) {
         if UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
             UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
-            stickerData.setStickerStatusToOld(toAll: true) { [self] (error) in
-                guard let error = error else {return}
-                showErrorAlert(usingError: true, withErrorMessage: error)
+            for sticker in stickerData {
+                self.stickerData.setStickerStatus(on: sticker, isStickerNew: false, isStickerOpen: true) { [self] (error, isUserSignedIn) in
+                    guard let error = error else {
+                        if !isUserSignedIn {
+                            showNoSignedInUserAlert()
+                            return
+                        }
+                        return
+                    }
+                    showErrorAlert(usingError: true, withErrorMessage: error)
+                }
+            }
+        }
+    }
+    
+    func setStickerDataToUserID(using stickerData: [StickerViewModel]) {
+        if !UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
+            for sticker in stickerData {
+                self.stickerData.checkIfStickerExistsOnUserID(stickerID: sticker.stickerID) { [self] (error, isUserSignedIn, isStickerPresent) in
+                    if error != nil {
+                        showErrorAlert(usingError: true, withErrorMessage: error)
+                        return
+                    }
+                    if !isUserSignedIn {
+                        showNoSignedInUserAlert()
+                        return
+                    }
+                    guard let isStickerPresent = isStickerPresent else {return}
+                    if !isStickerPresent {
+                        self.stickerData.setStickerStatus(on: sticker, isStickerNew: true, isStickerOpen: false) { (error, isUserSignedIn) in
+                            guard let error = error else {
+                                if !isUserSignedIn {
+                                    showNoSignedInUserAlert()
+                                    return
+                                }
+                                return
+                            }
+                            showErrorAlert(usingError: true, withErrorMessage: error)
+                        }
+                    }
+                }
             }
         }
     }
@@ -343,22 +408,11 @@ class HomeViewController: UIViewController {
             guard let error = error else {
                 guard let stickerData = stickerData else {return}
                 stickerViewModel = stickerData
-                changeStickerStatusOnUserFirstTimeLogin()
-                getNumberOfNewStickers()
-                checkIfNotificationHasBeenOpened(on: stickerViewModel!)
+                changeStickerStatusOnFirstTimeLogin(using: stickerViewModel!)
+                setStickerDataToUserID(using: stickerViewModel!)
+                showBannerNotification()
+                updateBadgeCounter()
                 showStickers()
-                return
-            }
-            showErrorAlert(usingError: true, withErrorMessage: error)
-        }
-    }
-    
-    func getNumberOfNewStickers() {
-        stickerData.fetchStickerStatus { [self] (error, newStickersCount, stickerData) in
-            guard let error = error else {
-                guard let newStickersCount = newStickersCount else {return}
-                UserDefaults.standard.setValue(newStickersCount, forKey: Strings.notificationBadgeCounterKey)
-                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
                 return
             }
             showErrorAlert(usingError: true, withErrorMessage: error)

@@ -229,7 +229,7 @@ struct Strings {
     static let stickerCategoryField = "category"
     static let stickerTagField = "tag"
     static let stickerIsNewField = "isNew"
-    static let stickerHasBeenOpenedField = "hasBeenOpened"
+    static let stickerIsOpenField = "isOpen"
     static let stickerIsCategorySelected = "isCategorySelected"
     static let stickerSelectedOnStart = "selectedOnStart"
     

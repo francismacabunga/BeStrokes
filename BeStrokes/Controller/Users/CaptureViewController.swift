@@ -64,12 +64,6 @@ class CaptureViewController: UIViewController {
             downloadImage(using: stickerData.image)
         }
     }
-    var newStickerViewModel: NewStickerViewModel? {
-        didSet {
-            guard let stickerData = newStickerViewModel else {return}
-            downloadImage(using: stickerData.image)
-        }
-    }
     
     
     //MARK: - View Controller Cycle
@@ -206,9 +200,6 @@ class CaptureViewController: UIViewController {
         }
         if lovedStickerViewModel != nil {
             setStickerInformation(stickerImage: lovedStickerViewModel!.image, stickerName: lovedStickerViewModel!.name)
-        }
-        if newStickerViewModel != nil {
-            setStickerInformation(stickerImage: newStickerViewModel!.image, stickerName: newStickerViewModel!.name)
         }
     }
     

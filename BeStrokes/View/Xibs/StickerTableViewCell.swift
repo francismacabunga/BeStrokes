@@ -31,14 +31,6 @@ class StickerTableViewCell: UITableViewCell {
             stickerImageView.kf.setImage(with: URL(string: lovedStickerViewModel.image))
         }
     }
-    var newStickerViewModel: NewStickerViewModel! {
-        didSet {
-            if newStickerViewModel.isNew == true {
-                stickerHeadingLabel.text = newStickerViewModel.name
-                stickerImageView.kf.setImage(with: URL(string: newStickerViewModel.image))
-            }
-        }
-    }
     
     
     //MARK: - NIB Funtions
@@ -132,7 +124,6 @@ class StickerTableViewCell: UITableViewCell {
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
         let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
         captureVC.lovedStickerViewModel = lovedStickerViewModel
-        captureVC.newStickerViewModel = newStickerViewModel
         captureVC.modalPresentationStyle = .fullScreen
         stickerCellDelegate?.getVC(using: captureVC)
     }

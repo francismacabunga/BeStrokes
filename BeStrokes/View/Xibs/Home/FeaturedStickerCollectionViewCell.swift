@@ -172,9 +172,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
                                          Strings.stickerImageField : featuredStickerViewModel.image,
                                          Strings.stickerDescriptionField : featuredStickerViewModel.description,
                                          Strings.stickerCategoryField : featuredStickerViewModel.category,
-                                         Strings.stickerTagField : featuredStickerViewModel.tag,
-                                         Strings.stickerIsNewField : featuredStickerViewModel.isNew,
-                                         Strings.stickerHasBeenOpenedField : featuredStickerViewModel.hasBeenOpened]
+                                         Strings.stickerTagField : featuredStickerViewModel.tag]
             heartButtonLogic.tapHeartButton(using: featuredStickerViewModel.stickerID, with: stickerDataDictionary) { [self] (error, userAuthenticationState, isProcessDone) in
                 if error != nil {
                     featuredStickerCellDelegate?.getError(using: error!)

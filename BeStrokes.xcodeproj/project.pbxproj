@@ -30,8 +30,6 @@
 		2F88A016259B1FBC00AAC82D /* StickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A015259B1FBC00AAC82D /* StickerModel.swift */; };
 		2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A018259B239700AAC82D /* StickerViewModel.swift */; };
 		2F94B5F225EFD4FA00417982 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F94B5F125EFD4FA00417982 /* NotificationViewController.swift */; };
-		2F94B5F725EFDA8000417982 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F94B5F525EFDA8000417982 /* NotificationTableViewCell.swift */; };
-		2F94B5F825EFDA8000417982 /* NotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F94B5F625EFDA8000417982 /* NotificationTableViewCell.xib */; };
 		2F9C40F525AAF52600A7663F /* EditAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9C40F425AAF52600A7663F /* EditAccountViewController.swift */; };
 		2FB1ABE52552ED8C0076A8FD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB1ABE42552ED8C0076A8FD /* Strings.swift */; };
 		2FD6E4D2257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6E4D0257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift */; };
@@ -77,8 +75,6 @@
 		2F88A015259B1FBC00AAC82D /* StickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerModel.swift; sourceTree = "<group>"; };
 		2F88A018259B239700AAC82D /* StickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewModel.swift; sourceTree = "<group>"; };
 		2F94B5F125EFD4FA00417982 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
-		2F94B5F525EFDA8000417982 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
-		2F94B5F625EFDA8000417982 /* NotificationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationTableViewCell.xib; sourceTree = "<group>"; };
 		2F9C40F425AAF52600A7663F /* EditAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewController.swift; sourceTree = "<group>"; };
 		2FB1ABE42552ED8C0076A8FD /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		2FD6E4D0257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedStickerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -141,8 +137,8 @@
 			children = (
 				2F58B0E625A4B255009EFDE5 /* Home */,
 				2FC8FAED25A7D98E00A3C7F2 /* Profile */,
-				2F94B5FB25EFDA9900417982 /* Notification */,
-				2FC8FAEA25A7D97D00A3C7F2 /* Account */,
+				2FEAC09725AA0B6400E149CE /* StickerTableViewCell.swift */,
+				2FEAC09825AA0B6400E149CE /* StickerTableViewCell.xib */,
 			);
 			path = Xibs;
 			sourceTree = "<group>";
@@ -163,9 +159,9 @@
 		2F88A013259B1A6300AAC82D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2F45D04725B4ABC3005167AE /* LandingPageModel.swift */,
 				2F58B0E025A47CE0009EFDE5 /* UserModel.swift */,
 				2F88A015259B1FBC00AAC82D /* StickerModel.swift */,
+				2F45D04725B4ABC3005167AE /* LandingPageModel.swift */,
 				2FFB0C4D25A8740400FAED42 /* ProfileSettingsModel.swift */,
 			);
 			path = Model;
@@ -174,9 +170,9 @@
 		2F88A014259B1DE100AAC82D /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */,
 				2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */,
 				2F88A018259B239700AAC82D /* StickerViewModel.swift */,
+				2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */,
 				2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */,
 				2F628EB025D2DD7200B9F615 /* CaptureViewModel.swift */,
 			);
@@ -199,15 +195,6 @@
 				2F23FCA82578462500E69933 /* Xibs */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		2F94B5FB25EFDA9900417982 /* Notification */ = {
-			isa = PBXGroup;
-			children = (
-				2F94B5F525EFDA8000417982 /* NotificationTableViewCell.swift */,
-				2F94B5F625EFDA8000417982 /* NotificationTableViewCell.xib */,
-			);
-			path = Notification;
 			sourceTree = "<group>";
 		};
 		2F9C40F825AAF53200A7663F /* Home */ = {
@@ -235,15 +222,6 @@
 				2F382FC52562E3CD00D3A125 /* Utilities.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		2FC8FAEA25A7D97D00A3C7F2 /* Account */ = {
-			isa = PBXGroup;
-			children = (
-				2FEAC09725AA0B6400E149CE /* StickerTableViewCell.swift */,
-				2FEAC09825AA0B6400E149CE /* StickerTableViewCell.xib */,
-			);
-			path = Account;
 			sourceTree = "<group>";
 		};
 		2FC8FAED25A7D98E00A3C7F2 /* Profile */ = {
@@ -393,7 +371,6 @@
 				2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */,
 				2FD6E4E1257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib in Resources */,
 				2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */,
-				2F94B5F825EFDA8000417982 /* NotificationTableViewCell.xib in Resources */,
 				2F402CA6256806DD00666028 /* User.storyboard in Resources */,
 				2FD6E4DB257AC99900B49E41 /* StickerCollectionViewCell.xib in Resources */,
 				2FD6E4D3257AC96100B49E41 /* FeaturedStickerCollectionViewCell.xib in Resources */,
@@ -469,7 +446,6 @@
 				2F9C40F525AAF52600A7663F /* EditAccountViewController.swift in Sources */,
 				2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */,
 				2FFB0C4E25A8740400FAED42 /* ProfileSettingsModel.swift in Sources */,
-				2F94B5F725EFDA8000417982 /* NotificationTableViewCell.swift in Sources */,
 				2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */,
 				2F45D04B25B4ACAA005167AE /* LandingPageViewModel.swift in Sources */,
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
