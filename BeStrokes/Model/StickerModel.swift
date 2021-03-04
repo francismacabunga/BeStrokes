@@ -16,13 +16,19 @@ struct StickerModel {
     let tag: String
 }
 
+struct UserStickerModel {
+    let stickerID: String
+    let name: String
+    let image: String
+    let description: String
+    let category: String
+    let tag: String
+    let isNew: Bool
+    let isOpen: Bool
+}
+
 struct StickerCategoryModel {
     let category: String
     var isCategorySelected: Bool
 }
 
-struct StickerStatusModel {
-    let stickerID: String
-    let isNew: Bool
-    let isOpened: Bool
-}

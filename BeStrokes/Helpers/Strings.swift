@@ -28,6 +28,7 @@ struct Strings {
     static let captureTutorial3Label = "You can tap the sticker to try!"
     static let captureStickerLabel = "Sticker Name"
     static let captureDefaultStickerName = "Elephant"
+    static let notificationHeadingLabel = "Notifications"
     
     //MARK: - Button Labels
     static let tryMeButtonText = "Try me"

@@ -225,7 +225,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ga-ho-YN8">
-                                <rect key="frame" x="30" y="10" width="315" height="21"/>
+                                <rect key="frame" x="30" y="35" width="315" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -240,7 +240,7 @@
                                 <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                             </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="spM-Rz-sgP">
-                                <rect key="frame" x="0.0" y="41" width="375" height="577"/>
+                                <rect key="frame" x="15" y="66" width="345" height="552"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                         </subviews>
@@ -250,10 +250,10 @@
                             <constraint firstItem="I40-bB-cCf" firstAttribute="trailing" secondItem="9Ga-ho-YN8" secondAttribute="trailing" constant="30" id="3fI-zH-Dc7"/>
                             <constraint firstItem="8b2-F6-rSm" firstAttribute="centerX" secondItem="ywt-5I-gKz" secondAttribute="centerX" id="AA8-XR-ubu"/>
                             <constraint firstItem="9Ga-ho-YN8" firstAttribute="leading" secondItem="I40-bB-cCf" secondAttribute="leading" constant="30" id="NZY-hJ-yqc"/>
-                            <constraint firstItem="I40-bB-cCf" firstAttribute="trailing" secondItem="spM-Rz-sgP" secondAttribute="trailing" id="VJU-aj-dkR"/>
+                            <constraint firstItem="I40-bB-cCf" firstAttribute="trailing" secondItem="spM-Rz-sgP" secondAttribute="trailing" constant="15" id="VJU-aj-dkR"/>
                             <constraint firstItem="I40-bB-cCf" firstAttribute="bottom" secondItem="spM-Rz-sgP" secondAttribute="bottom" id="WTe-Uo-Kba"/>
-                            <constraint firstItem="9Ga-ho-YN8" firstAttribute="top" secondItem="I40-bB-cCf" secondAttribute="top" constant="10" id="Y0V-gU-oIS"/>
-                            <constraint firstItem="spM-Rz-sgP" firstAttribute="leading" secondItem="I40-bB-cCf" secondAttribute="leading" id="eAa-3L-eqM"/>
+                            <constraint firstItem="9Ga-ho-YN8" firstAttribute="top" secondItem="I40-bB-cCf" secondAttribute="top" constant="35" id="Y0V-gU-oIS"/>
+                            <constraint firstItem="spM-Rz-sgP" firstAttribute="leading" secondItem="I40-bB-cCf" secondAttribute="leading" constant="15" id="eAa-3L-eqM"/>
                             <constraint firstItem="8b2-F6-rSm" firstAttribute="centerY" secondItem="ywt-5I-gKz" secondAttribute="centerY" id="oih-ZK-sf0"/>
                             <constraint firstItem="Zgp-NB-ZYM" firstAttribute="centerX" secondItem="ywt-5I-gKz" secondAttribute="centerX" id="qRU-y8-tNH"/>
                             <constraint firstItem="spM-Rz-sgP" firstAttribute="top" secondItem="9Ga-ho-YN8" secondAttribute="bottom" constant="10" id="tMm-1Z-fFk"/>

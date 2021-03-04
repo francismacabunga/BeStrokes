@@ -31,6 +31,12 @@ class StickerTableViewCell: UITableViewCell {
             stickerImageView.kf.setImage(with: URL(string: lovedStickerViewModel.image))
         }
     }
+    var stickerViewModel: StickerViewModel! {
+        didSet {
+            stickerHeadingLabel.text = stickerViewModel.name
+            stickerImageView.kf.setImage(with: URL(string: stickerViewModel.image))
+        }
+    }
     
     
     //MARK: - NIB Funtions

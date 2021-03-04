@@ -20,6 +20,7 @@ class NotificationViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let stickerData = StickerData()
+    private var stickerViewModel: [StickerViewModel]?
     
     
     //MARK: - View Controller Life Cycle
@@ -30,7 +31,7 @@ class NotificationViewController: UIViewController {
         setDesignElements()
         setDataSourceAndDelegate()
         registerNIB()
-        getNewStickers()
+        get()
         
     }
     
@@ -38,10 +39,10 @@ class NotificationViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        Utilities.setDesignOn(label: notificationHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, textAlignment: .left, text: "Notifications")
+        Utilities.setDesignOn(label: notificationHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, textAlignment: .left, text: Strings.notificationHeadingLabel)
         Utilities.setDesignOn(label: notificationWarningLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 0, textAlignment: .center, isHidden: true)
         Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, size: .medium, isStartAnimating: true, isHidden: true)
-        Utilities.setDesignOn(tableView: notificationTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: false)
+        Utilities.setDesignOn(tableView: notificationTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
         checkThemeAppearance()
@@ -77,6 +78,10 @@ class NotificationViewController: UIViewController {
         Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
     }
     
+    func get() {
+        
+    }
+    
     func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
         var alert = UIAlertController()
         if error {
@@ -103,10 +108,6 @@ class NotificationViewController: UIViewController {
         notificationTableView.register(UINib(nibName: Strings.stickerTableViewCell, bundle: nil), forCellReuseIdentifier: Strings.stickerTableViewCell)
     }
     
-    func getNewStickers() {
-        
-    }
-    
 }
 
 
@@ -115,11 +116,15 @@ class NotificationViewController: UIViewController {
 extension NotificationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return stickerViewModel?.count ?? 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.stickerTableViewCell) as! StickerTableViewCell
+        guard let stickerViewModel = stickerViewModel else {return cell}
+        cell.stickerViewModel = stickerViewModel[indexPath.item]
+        print(stickerViewModel)
+        //cell.prepareStickerTableViewCell
         return cell
     }
     
