@@ -233,7 +233,7 @@ class HomeViewController: UIViewController {
                 for sticker in stickerStatusData {
                     if sticker.isOpen == false {
                         triggerNotification()
-                        stickerData.setStickerStatusToOld(on: sticker.stickerID) { (error) in
+                        stickerData.updateStickerStatusToOld(on: sticker.stickerID) { (error) in
                             guard let error = error else {return}
                             showErrorAlert(usingError: true, withErrorMessage: error)
                             return

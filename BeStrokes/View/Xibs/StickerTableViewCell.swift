@@ -31,10 +31,10 @@ class StickerTableViewCell: UITableViewCell {
             stickerImageView.kf.setImage(with: URL(string: lovedStickerViewModel.image))
         }
     }
-    var stickerViewModel: StickerViewModel! {
+    var userStickerViewModel: UserStickerViewModel! {
         didSet {
-            stickerHeadingLabel.text = stickerViewModel.name
-            stickerImageView.kf.setImage(with: URL(string: stickerViewModel.image))
+            stickerHeadingLabel.text = userStickerViewModel.name
+            stickerImageView.kf.setImage(with: URL(string: userStickerViewModel.image))
         }
     }
     

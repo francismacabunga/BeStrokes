@@ -20,7 +20,7 @@ class NotificationViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let stickerData = StickerData()
-    private var stickerViewModel: [StickerViewModel]?
+    private var userStickerViewModel: [UserStickerViewModel]?
     
     
     //MARK: - View Controller Life Cycle
@@ -31,7 +31,7 @@ class NotificationViewController: UIViewController {
         setDesignElements()
         setDataSourceAndDelegate()
         registerNIB()
-        get()
+        setNotificationData()
         
     }
     
@@ -78,8 +78,19 @@ class NotificationViewController: UIViewController {
         Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
     }
     
-    func get() {
-        
+    func setNotificationData() {
+        stickerData.fetchStickerData(withNotificationData: true) { [self] (error, stickerData, userStickerData) in
+            guard let error = error else {
+                guard let userStickerData = userStickerData else {return}
+                userStickerViewModel = userStickerData
+                DispatchQueue.main.async {
+                    notificationTableView.reloadData()
+                    notificationTableView.isHidden = false
+                }
+                return
+            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+        }
     }
     
     func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
@@ -116,15 +127,14 @@ class NotificationViewController: UIViewController {
 extension NotificationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return stickerViewModel?.count ?? 1
+        return userStickerViewModel?.count ?? 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.stickerTableViewCell) as! StickerTableViewCell
-        guard let stickerViewModel = stickerViewModel else {return cell}
-        cell.stickerViewModel = stickerViewModel[indexPath.item]
-        print(stickerViewModel)
-        //cell.prepareStickerTableViewCell
+        guard let userStickerViewModel = userStickerViewModel else {return cell}
+        cell.userStickerViewModel = userStickerViewModel[indexPath.item]
+        cell.prepareStickerTableViewCell()
         return cell
     }
     
