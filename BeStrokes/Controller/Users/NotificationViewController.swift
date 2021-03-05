@@ -41,8 +41,8 @@ class NotificationViewController: UIViewController {
     func setDesignElements() {
         Utilities.setDesignOn(label: notificationHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, textAlignment: .left, text: Strings.notificationHeadingLabel)
         Utilities.setDesignOn(label: notificationWarningLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 0, textAlignment: .center, isHidden: true)
-        Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, size: .medium, isStartAnimating: true, isHidden: true)
-        Utilities.setDesignOn(tableView: notificationTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
+        Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, size: .medium)
+        Utilities.setDesignOn(tableView: notificationTableView, backgroundColor: .clear, separatorStyle: UITableViewCell.SeparatorStyle.none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
         checkThemeAppearance()
@@ -83,13 +83,29 @@ class NotificationViewController: UIViewController {
             guard let error = error else {
                 guard let userStickerData = userStickerData else {return}
                 userStickerViewModel = userStickerData
-                DispatchQueue.main.async {
-                    notificationTableView.reloadData()
-                    notificationTableView.isHidden = false
-                }
+                checkIfUserStickerViewModelIsEmpty()
                 return
             }
             showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+        }
+    }
+    
+    func checkIfUserStickerViewModelIsEmpty() {
+        Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, isStartAnimating: true, isHidden: false)
+        Utilities.setDesignOn(label: notificationWarningLabel, text: Strings.notificationWarningLabel, isHidden: true)
+        notificationTableView.isHidden = true
+        if userStickerViewModel?.count == 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
+                Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, isStartAnimating: false, isHidden: true)
+                Utilities.setDesignOn(label: notificationWarningLabel, text: Strings.notificationWarningLabel, isHidden: false)
+            }
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+                notificationTableView.reloadData()
+                Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, isStartAnimating: false, isHidden: true)
+                Utilities.setDesignOn(label: notificationWarningLabel, isHidden: true)
+                notificationTableView.isHidden = false
+            }
         }
     }
     
@@ -111,8 +127,8 @@ class NotificationViewController: UIViewController {
     //MARK: - Table View Process
     
     func setDataSourceAndDelegate() {
-        notificationTableView.delegate = self
         notificationTableView.dataSource = self
+        notificationTableView.delegate = self
     }
     
     func registerNIB() {

@@ -81,6 +81,7 @@ struct Strings {
     
     //MARK: - Warning Labels
     static let profileWarningLabel = "To change the notification settings,"
+    static let profileCannotSignOutUserLabel = "Cannot sign out user now. Please try again."
     static let accountNoLovedStickerLabel = "You don't have any loved stickers yet."
     static let accountInvalidStickerLabel = "No results for this sticker."
     static let editAccountEmailVerficationErrorLabel = "Account cannot be updated. Kindly tap the resend button below to resend an email verification."
@@ -88,7 +89,6 @@ struct Strings {
     static let editAccountTextFieldErrorLabel = "All fields are required, please fill them out."
     static let editAccountSuccessfullySentEmailVerificationLabel = "Email verfication has been successfully resent, please check your email."
     static let editAccountProcessSuccessfulLabel = "Your account has been updated, please verify your new email address to edit your account again."
-    static let profileCannotSignOutUserLabel = "Cannot sign out user now. Please try again."
     static let signUpFirstNameTextFieldErrorLabel = "First Name is required."
     static let signUpLastNameTextFieldErrorLabel = "Last Name is required."
     static let signUpEmailTextFieldErrorLabel = "Email is required."
@@ -97,6 +97,7 @@ struct Strings {
     static let signUpProfilePictureErrorLabel = "Profile picture is required, please choose an image."
     static let signUpProcessSuccessfulLabel = "Successfully created your account. Email verification has been sent, please check your email."
     static let forgotPasswordProcessSuccessfulLabel = "Your password has been successfuly reset. Please check your email."
+    static let notificationWarningLabel = "No new stickers as of the moment."
     
     
     

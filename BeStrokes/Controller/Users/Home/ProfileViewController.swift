@@ -154,6 +154,9 @@ class ProfileViewController: UIViewController {
     
     func setData() {
         profileSettingsViewModel = fetchProfileData.settings()
+        DispatchQueue.main.async { [self] in
+            profileTableView.reloadData()
+        }
         showLoadingSkeletonView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
             getSignedInUserData()

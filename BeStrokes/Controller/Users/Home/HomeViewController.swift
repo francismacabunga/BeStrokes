@@ -55,7 +55,6 @@ class HomeViewController: UIViewController {
         setDesignElements()
         registerCollectionView()
         setCollectionViewData()
-        setInitalSelectedCategoryCell()
         
     }
     
@@ -401,6 +400,10 @@ class HomeViewController: UIViewController {
     
     func getStickersCategoryCollectionViewData() {
         stickerCategoryViewModel = stickerData.fetchStickerCategory()
+        DispatchQueue.main.async { [self] in
+            homeStickerCategoryCollectionView.reloadData()
+            setInitalSelectedCategoryCell()
+        }
     }
     
     func getStickersCollectionViewData(onCategory stickerCategory: String) {
@@ -408,6 +411,9 @@ class HomeViewController: UIViewController {
             guard let error = error else {
                 guard let stickerData = stickerData else {return}
                 stickerViewModel = stickerData
+                DispatchQueue.main.async {
+                    homeStickerCollectionView.reloadData()
+                }
                 changeStickerStatusOnFirstTimeLogin(using: stickerViewModel!)
                 setStickerDataToUserID(using: stickerViewModel!)
                 showBannerNotification()

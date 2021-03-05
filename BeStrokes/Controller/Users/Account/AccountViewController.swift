@@ -76,7 +76,7 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(label: accountEmailHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: " ", canResize: true, minimumScaleFactor: 0.8)
         Utilities.setDesignOn(label: accountHeading2Label, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 1, textAlignment: .left, text: Strings.accountHeading2Text)
         Utilities.setDesignOn(label: accountWarningLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, isHidden: true)
-        Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: .none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
+        Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: UITableViewCell.SeparatorStyle.none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
         Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, isStartAnimating: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
@@ -222,14 +222,14 @@ class AccountViewController: UIViewController {
                 }
                 guard let lovedStickerData = lovedStickerData else {return}
                 lovedStickerViewModel = lovedStickerData
-                checkIfStickerViewModelIsEmpty(withDelay: 0.5)
+                checkIfLovedStickerViewModelIsEmpty(withDelay: 0.5)
                 return
             }
             showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     
-    func checkIfStickerViewModelIsEmpty(withDelay delay: Double) {
+    func checkIfLovedStickerViewModelIsEmpty(withDelay delay: Double) {
         accountBottomStackView.isHidden = true
         accountWarningLabel.isHidden = true
         accountLovedStickerTableView.isHidden = true
@@ -293,7 +293,7 @@ class AccountViewController: UIViewController {
         }
         if accountLovedStickerTableView.isHidden == true {
             accountNoLovedStickerLabelConstraint.constant = 100
-            checkIfStickerViewModelIsEmpty(withDelay: 0)
+            checkIfLovedStickerViewModelIsEmpty(withDelay: 0)
         }
     }
     
