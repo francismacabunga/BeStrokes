@@ -58,9 +58,9 @@ class CaptureViewController: UIViewController {
             downloadImage(using: stickerData.image)
         }
     }
-    var lovedStickerViewModel: LovedStickerViewModel? {
+    var userStickerViewModel: UserStickerViewModel? {
         didSet {
-            guard let stickerData = lovedStickerViewModel else {return}
+            guard let stickerData = userStickerViewModel else {return}
             downloadImage(using: stickerData.image)
         }
     }
@@ -198,8 +198,8 @@ class CaptureViewController: UIViewController {
         if stickerViewModel != nil {
             setStickerInformation(stickerImage: stickerViewModel!.image, stickerName: stickerViewModel!.name)
         }
-        if lovedStickerViewModel != nil {
-            setStickerInformation(stickerImage: lovedStickerViewModel!.image, stickerName: lovedStickerViewModel!.name)
+        if userStickerViewModel != nil {
+            setStickerInformation(stickerImage: userStickerViewModel!.image, stickerName: userStickerViewModel!.name)
         }
     }
     

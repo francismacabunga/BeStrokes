@@ -36,7 +36,7 @@ class AccountViewController: UIViewController {
     
     private let user = User()
     private let stickerData = StickerData()
-    private var lovedStickerViewModel: [LovedStickerViewModel]?
+    private var userStickerViewModel: [UserStickerViewModel]?
     private var userViewModel: UserViewModel?
     private let heartButtonLogic = HeartButtonLogic()
     private var isButtonPressed = false
@@ -176,9 +176,9 @@ class AccountViewController: UIViewController {
         }
     }
     
-    func showSearchedSticker(using stickerData: [LovedStickerViewModel]) {
+    func showSearchedSticker(using stickerData: [UserStickerViewModel]) {
         hasPerformedSearch = true
-        lovedStickerViewModel = stickerData
+        userStickerViewModel = stickerData
         DispatchQueue.main.async { [self] in
             accountLovedStickerTableView.reloadData()
         }
@@ -221,20 +221,20 @@ class AccountViewController: UIViewController {
                     return
                 }
                 guard let lovedStickerData = lovedStickerData else {return}
-                lovedStickerViewModel = lovedStickerData
-                checkIfLovedStickerViewModelIsEmpty(withDelay: 0.5)
+                userStickerViewModel = lovedStickerData
+                checkIfUserStickerViewModelIsEmpty(withDelay: 0.5)
                 return
             }
             showErrorFetchingAlert(usingError: true, withErrorMessage: error)
         }
     }
     
-    func checkIfLovedStickerViewModelIsEmpty(withDelay delay: Double) {
+    func checkIfUserStickerViewModelIsEmpty(withDelay delay: Double) {
         accountBottomStackView.isHidden = true
         accountWarningLabel.isHidden = true
         accountLovedStickerTableView.isHidden = true
         accountLoadingIndicatorView.isHidden = false
-        if lovedStickerViewModel?.count == 0 {
+        if userStickerViewModel?.count == 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
                 accountLoadingIndicatorView.isHidden = true
                 accountWarningLabel.text = Strings.accountNoLovedStickerLabel
@@ -293,7 +293,7 @@ class AccountViewController: UIViewController {
         }
         if accountLovedStickerTableView.isHidden == true {
             accountNoLovedStickerLabelConstraint.constant = 100
-            checkIfLovedStickerViewModelIsEmpty(withDelay: 0)
+            checkIfUserStickerViewModelIsEmpty(withDelay: 0)
         }
     }
     
@@ -318,14 +318,14 @@ class AccountViewController: UIViewController {
 extension AccountViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lovedStickerViewModel?.count ?? 3
+        return userStickerViewModel?.count ?? 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.stickerTableViewCell) as! StickerTableViewCell
-        guard let lovedStickerViewModel = lovedStickerViewModel else {return cell}
+        guard let userStickerViewModel = userStickerViewModel else {return cell}
         DispatchQueue.main.async {
-            cell.lovedStickerViewModel = lovedStickerViewModel[indexPath.item]
+            cell.userStickerViewModel = userStickerViewModel[indexPath.item]
             cell.stickerCellDelegate = self
             cell.prepareStickerTableViewCell()
         }
@@ -344,7 +344,7 @@ extension AccountViewController: UITableViewDelegate {
         let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
         DispatchQueue.main.async { [self] in
             stickerOptionVC.prepareStickerOptionVC()
-            stickerOptionVC.lovedStickerViewModel = lovedStickerViewModel![indexPath.item]
+            stickerOptionVC.userStickerViewModel = userStickerViewModel![indexPath.item]
             present(stickerOptionVC, animated: true)
         }
     }
@@ -352,7 +352,7 @@ extension AccountViewController: UITableViewDelegate {
 }
 
 
-//MARK: - Loved Sticker Delegate
+//MARK: - Sticker Cell Delegate
 
 extension AccountViewController: StickerTableViewCellDelegate {
     

@@ -149,8 +149,9 @@ extension NotificationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.stickerTableViewCell) as! StickerTableViewCell
         guard let userStickerViewModel = userStickerViewModel else {return cell}
-        cell.userStickerViewModel = userStickerViewModel[indexPath.item]
         cell.prepareStickerTableViewCell()
+        cell.userStickerViewModel = userStickerViewModel[indexPath.item]
+        cell.stickerCellDelegate = self
         return cell
     }
     
@@ -164,8 +165,10 @@ extension NotificationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
         let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
+        guard let userStickerViewModel = userStickerViewModel else {return}
         DispatchQueue.main.async { [self] in
             stickerOptionVC.prepareStickerOptionVC()
+            stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.item]
             present(stickerOptionVC, animated: true)
         }
     }
@@ -173,6 +176,15 @@ extension NotificationViewController: UITableViewDelegate {
 }
 
 
+//MARK: - Sticker Cell Delegate
 
-
+extension NotificationViewController: StickerTableViewCellDelegate {
+    
+    func getVC(using viewController: UIViewController) {
+        DispatchQueue.main.async { [self] in
+            present(viewController, animated: true)
+        }
+    }
+    
+}
 

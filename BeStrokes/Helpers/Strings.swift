@@ -213,7 +213,6 @@ struct Strings {
     static let userCollection = "users"
     static let stickerCollection = "stickers"
     static let lovedByCollection = "lovedBy"
-    static let lovedStickerCollection = "lovedStickers"
     
     static let userDocumentIDField = "documentID"
     static let userIDField = "userID"
@@ -232,6 +231,7 @@ struct Strings {
     static let stickerTagField = "tag"
     static let stickerIsNewField = "isNew"
     static let stickerIsOpenField = "isOpen"
+    static let stickerIsLovedField = "isLoved"
     static let stickerIsCategorySelected = "isCategorySelected"
     static let stickerSelectedOnStart = "selectedOnStart"
     

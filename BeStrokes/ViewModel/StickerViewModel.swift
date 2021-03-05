@@ -48,26 +48,6 @@ struct StickerViewModel {
     
 }
 
-struct LovedStickerViewModel {
-    
-    let stickerID: String
-    let name: String
-    let image: String
-    let description: String
-    let category: String
-    let tag: String
-    
-    init(_ lovedSticker: StickerModel) {
-        self.stickerID = lovedSticker.stickerID
-        self.name = lovedSticker.name
-        self.image = lovedSticker.image
-        self.description = lovedSticker.description
-        self.category = lovedSticker.category
-        self.tag = lovedSticker.tag
-    }
-    
-}
-
 struct UserStickerViewModel {
     
     let stickerID: String
@@ -78,6 +58,7 @@ struct UserStickerViewModel {
     let tag: String
     let isNew: Bool
     let isOpen: Bool
+    let isLoved: Bool
     
     init(_ userSticker: UserStickerModel) {
         self.stickerID = userSticker.stickerID
@@ -88,6 +69,7 @@ struct UserStickerViewModel {
         self.tag = userSticker.tag
         self.isNew = userSticker.isNew
         self.isOpen = userSticker.isOpen
+        self.isLoved = userSticker.isLoved
     }
     
 }
@@ -220,7 +202,8 @@ struct StickerData {
                                                                                                                  category: $0[Strings.stickerCategoryField] as! String,
                                                                                                                  tag: $0[Strings.stickerTagField] as! String,
                                                                                                                  isNew: $0[Strings.stickerIsNewField] as! Bool,
-                                                                                                                 isOpen: $0[Strings.stickerIsOpenField] as! Bool))})
+                                                                                                                 isOpen: $0[Strings.stickerIsOpenField] as! Bool,
+                                                                                                                 isLoved: $0[Strings.stickerIsLovedField] as! Bool))})
                         completion(nil, nil, userStickerViewModel)
                         return
                     }
@@ -259,7 +242,8 @@ struct StickerData {
                                                                                                                    category: $0[Strings.stickerCategoryField] as! String,
                                                                                                                    tag: $0[Strings.stickerTagField] as! String,
                                                                                                                    isNew: $0[Strings.stickerIsNewField] as! Bool,
-                                                                                                                   isOpen: $0[Strings.stickerIsOpenField] as! Bool))})
+                                                                                                                   isOpen: $0[Strings.stickerIsOpenField] as! Bool,
+                                                                                                                   isLoved: $0[Strings.stickerIsLovedField] as! Bool))})
                         completion(nil, true, stickerData.count, stickerStatusViewModel)
                         return
                     }
@@ -279,7 +263,8 @@ struct StickerData {
                                                                                                                    category: $0[Strings.stickerCategoryField] as! String,
                                                                                                                    tag: $0[Strings.stickerTagField] as! String,
                                                                                                                    isNew: $0[Strings.stickerIsNewField] as! Bool,
-                                                                                                                   isOpen: $0[Strings.stickerIsOpenField] as! Bool))})
+                                                                                                                   isOpen: $0[Strings.stickerIsOpenField] as! Bool,
+                                                                                                                   isLoved: $0[Strings.stickerIsLovedField] as! Bool))})
                         completion(nil, true, nil, stickerStatusViewModel)
                         return
                     }
@@ -296,24 +281,27 @@ struct StickerData {
         }
     }
     
-    func searchSticker(using searchTextFieldText: String, completion: @escaping (Error?, Bool, Bool?, LovedStickerViewModel?) -> Void) {
+    func searchSticker(using searchTextFieldText: String, completion: @escaping (Error?, Bool, Bool?, UserStickerViewModel?) -> Void) {
         guard let signedInUser = user else {
             completion(nil, false, nil, nil)
             return
         }
-        db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.lovedStickerCollection).whereField(Strings.stickerNameField, isEqualTo: searchTextFieldText).getDocuments { (snapshot, error) in
+        db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerNameField, isEqualTo: searchTextFieldText).getDocuments { (snapshot, error) in
             guard let error = error else {
                 guard let stickerData = snapshot?.documents.first else {
                     completion(nil, true, false, nil)
                     return
                 }
-                let searchedSticker = LovedStickerViewModel(StickerModel(stickerID: stickerData[Strings.stickerIDField] as! String,
-                                                                         name: stickerData[Strings.stickerNameField] as! String,
-                                                                         image: stickerData[Strings.stickerImageField] as! String,
-                                                                         description: stickerData[Strings.stickerDescriptionField] as! String,
-                                                                         category: stickerData[Strings.stickerCategoryField] as! String,
-                                                                         tag: stickerData[Strings.stickerTagField] as! String))
-                completion(nil, true, true, searchedSticker)
+                let userStickerViewModel = UserStickerViewModel(UserStickerModel(stickerID: stickerData[Strings.stickerIDField] as! String,
+                                                                                 name: stickerData[Strings.stickerNameField] as! String,
+                                                                                 image: stickerData[Strings.stickerImageField] as! String,
+                                                                                 description: stickerData[Strings.stickerDescriptionField] as! String,
+                                                                                 category: stickerData[Strings.stickerCategoryField] as! String,
+                                                                                 tag: stickerData[Strings.stickerTagField] as! String,
+                                                                                 isNew: stickerData[Strings.stickerIsNewField] as! Bool,
+                                                                                 isOpen: stickerData[Strings.stickerIsOpenField] as! Bool,
+                                                                                 isLoved: stickerData[Strings.stickerIsLovedField] as! Bool))
+                completion(nil, true, true, userStickerViewModel)
                 return
             }
             completion(error, true, nil, nil)
@@ -347,7 +335,7 @@ struct HeartButtonLogic {
         }
     }
     
-    func showLovedSticker(completion: @escaping (Error?, Bool, [LovedStickerViewModel]?) -> Void) {
+    func showLovedSticker(completion: @escaping (Error?, Bool, [UserStickerViewModel]?) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
                 completion(error, true, nil)
@@ -358,16 +346,19 @@ struct HeartButtonLogic {
                 return
             }
             guard let userData = userData else {return}
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).addSnapshotListener { (snapshot, error) in
+            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true).addSnapshotListener { (snapshot, error) in
                 guard let error = error else {
                     guard let result = snapshot?.documents else {return}
-                    let lovedStickers = result.map({return LovedStickerViewModel(StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
-                                                                                              name: $0[Strings.stickerNameField] as! String,
-                                                                                              image: $0[Strings.stickerImageField] as! String,
-                                                                                              description: $0[Strings.stickerDescriptionField] as! String,
-                                                                                              category: $0[Strings.stickerCategoryField] as! String,
-                                                                                              tag: $0[Strings.stickerTagField] as! String))})
-                    completion(nil, true, lovedStickers)
+                    let userStickerViewModel = result.map({return UserStickerViewModel(UserStickerModel(stickerID: $0[Strings.stickerIDField] as! String,
+                                                                                                        name: $0[Strings.stickerNameField] as! String,
+                                                                                                        image: $0[Strings.stickerImageField] as! String,
+                                                                                                        description: $0[Strings.stickerDescriptionField] as! String,
+                                                                                                        category: $0[Strings.stickerCategoryField] as! String,
+                                                                                                        tag: $0[Strings.stickerTagField] as! String,
+                                                                                                        isNew: $0[Strings.stickerIsNewField] as! Bool,
+                                                                                                        isOpen: $0[Strings.stickerIsOpenField] as! Bool,
+                                                                                                        isLoved: $0[Strings.stickerIsLovedField] as! Bool))})
+                    completion(nil, true, userStickerViewModel)
                     return
                 }
                 completion(error, true, nil)
@@ -375,7 +366,7 @@ struct HeartButtonLogic {
         }
     }
     
-    func tapHeartButton(using stickerID: String, with stickerDataDictionary: [String : Any], completion: @escaping (Error?, Bool, Bool) -> Void) {
+    func tapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
                 completion(error, true, false)
@@ -397,12 +388,10 @@ struct HeartButtonLogic {
                     return
                 }
             }
-            // Save Sticker Data to User Collection -- showLovedSticker
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).document(stickerID).setData(stickerDataDictionary) { (error) in
-                if error != nil {
-                    completion(error, true, false)
-                    return
-                }
+            // Update 'isLoved' field on Sticker Collection at User Collection
+            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsLovedField : true]) { (error) in
+                guard let error = error else {return}
+                completion(error, true, false)
             }
             completion(nil, true, true)
         }
@@ -419,12 +408,10 @@ struct HeartButtonLogic {
                 return
             }
             guard let userData = userData else {return}
-            // Remove Sticker Data to User Collection
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.lovedStickerCollection).document(stickerID).delete { (error) in
-                if error != nil {
-                    completion(error, true, false)
-                    return
-                }
+            // Update 'isLoved' field on Sticker Collection at User Collection
+            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsLovedField : false]) { (error) in
+                guard let error = error else {return}
+                completion(error, true, false)
             }
             // Remove User Data to Sticker Collection
             db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).delete { (error) in

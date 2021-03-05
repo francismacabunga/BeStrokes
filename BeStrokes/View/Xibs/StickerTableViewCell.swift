@@ -25,12 +25,6 @@ class StickerTableViewCell: UITableViewCell {
     
     private var skeletonColor: UIColor?
     var stickerCellDelegate: StickerTableViewCellDelegate?
-    var lovedStickerViewModel: LovedStickerViewModel! {
-        didSet {
-            stickerHeadingLabel.text = lovedStickerViewModel.name
-            stickerImageView.kf.setImage(with: URL(string: lovedStickerViewModel.image))
-        }
-    }
     var userStickerViewModel: UserStickerViewModel! {
         didSet {
             stickerHeadingLabel.text = userStickerViewModel.name
@@ -108,7 +102,6 @@ class StickerTableViewCell: UITableViewCell {
     }
     
     func showLoadingSkeletonView() {
-        setSkeletonColor()
         DispatchQueue.main.async { [self] in
             stickerView.isSkeletonable = true
             Utilities.setDesignOn(view: stickerView, isSkeletonCircular: true, setCustomSkeletonCircleCurve: 30)
@@ -129,7 +122,7 @@ class StickerTableViewCell: UITableViewCell {
     func transitionToCaptureVC() {
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
         let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
-        captureVC.lovedStickerViewModel = lovedStickerViewModel
+        captureVC.userStickerViewModel = userStickerViewModel
         captureVC.modalPresentationStyle = .fullScreen
         stickerCellDelegate?.getVC(using: captureVC)
     }

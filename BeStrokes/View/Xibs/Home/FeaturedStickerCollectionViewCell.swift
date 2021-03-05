@@ -167,13 +167,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
                 }
             }
         } else {
-            let stickerDataDictionary: [String : Any] = [Strings.stickerIDField : featuredStickerViewModel.stickerID,
-                                         Strings.stickerNameField : featuredStickerViewModel.name,
-                                         Strings.stickerImageField : featuredStickerViewModel.image,
-                                         Strings.stickerDescriptionField : featuredStickerViewModel.description,
-                                         Strings.stickerCategoryField : featuredStickerViewModel.category,
-                                         Strings.stickerTagField : featuredStickerViewModel.tag]
-            heartButtonLogic.tapHeartButton(using: featuredStickerViewModel.stickerID, with: stickerDataDictionary) { [self] (error, userAuthenticationState, isProcessDone) in
+            heartButtonLogic.tapHeartButton(using: featuredStickerViewModel.stickerID) { [self] (error, userAuthenticationState, isProcessDone) in
                 if error != nil {
                     featuredStickerCellDelegate?.getError(using: error!)
                     return
