@@ -79,15 +79,15 @@ class NotificationViewController: UIViewController {
     }
     
     func setNotificationData() {
-        stickerData.fetchStickerData(withNotificationData: true) { [self] (error, stickerData, userStickerData) in
-            guard let error = error else {
-                guard let userStickerData = userStickerData else {return}
-                userStickerViewModel = userStickerData
-                checkIfUserStickerViewModelIsEmpty()
-                return
-            }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
-        }
+//        stickerData.fetchStickerData(withNotificationData: true) { [self] (error, stickerData, userStickerData) in
+//            guard let error = error else {
+//                guard let userStickerData = userStickerData else {return}
+//                userStickerViewModel = userStickerData
+//                checkIfUserStickerViewModelIsEmpty()
+//                return
+//            }
+//            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+//        }
     }
     
     func checkIfUserStickerViewModelIsEmpty() {

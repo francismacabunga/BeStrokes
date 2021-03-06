@@ -340,7 +340,7 @@ class HomeViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
             UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
             for sticker in stickerData {
-                self.stickerData.setStickerStatus(on: sticker, isStickerNew: false, isStickerOpen: true) { [self] (error, isUserSignedIn) in
+                self.stickerData.uploadStickerInUserCollection(on: sticker, isStickerNew: false, isStickerOpen: true) { [self] (error, isUserSignedIn) in
                     guard let error = error else {
                         if !isUserSignedIn {
                             showNoSignedInUserAlert()
@@ -357,7 +357,7 @@ class HomeViewController: UIViewController {
     func setStickerDataToUserID(using stickerData: [StickerViewModel]) {
         if !UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
             for sticker in stickerData {
-                self.stickerData.checkIfStickerExistsOnUserID(stickerID: sticker.stickerID) { [self] (error, isUserSignedIn, isStickerPresent) in
+                self.stickerData.checkIfStickerExistsInUserCollection(stickerID: sticker.stickerID) { [self] (error, isUserSignedIn, isStickerPresent) in
                     if error != nil {
                         showErrorAlert(usingError: true, withErrorMessage: error)
                         return
@@ -368,7 +368,7 @@ class HomeViewController: UIViewController {
                     }
                     guard let isStickerPresent = isStickerPresent else {return}
                     if !isStickerPresent {
-                        self.stickerData.setStickerStatus(on: sticker, isStickerNew: true, isStickerOpen: false) { (error, isUserSignedIn) in
+                        self.stickerData.uploadStickerInUserCollection(on: sticker, isStickerNew: true, isStickerOpen: false) { (error, isUserSignedIn) in
                             guard let error = error else {
                                 if !isUserSignedIn {
                                     showNoSignedInUserAlert()
@@ -385,7 +385,7 @@ class HomeViewController: UIViewController {
     }
     
     func getFeaturedStickersCollectionViewData() {
-        stickerData.fetchFeaturedStickerCollectionView { [self] (error, featuredStickerData) in
+        stickerData.fetchFeaturedSticker { [self] (error, featuredStickerData) in
             guard let error = error else {
                 guard let featuredStickerData = featuredStickerData else {return}
                 featuredStickerViewModel = featuredStickerData
@@ -399,7 +399,7 @@ class HomeViewController: UIViewController {
     }
     
     func getStickersCategoryCollectionViewData() {
-        stickerCategoryViewModel = stickerData.fetchStickerCategory()
+        stickerCategoryViewModel = stickerData.fetchStickerCategories()
         DispatchQueue.main.async { [self] in
             homeStickerCategoryCollectionView.reloadData()
             setInitalSelectedCategoryCell()
@@ -407,7 +407,7 @@ class HomeViewController: UIViewController {
     }
     
     func getStickersCollectionViewData(onCategory stickerCategory: String) {
-        stickerData.fetchStickerCollectionView(category: stickerCategory) { [self] (error, stickerData) in
+        stickerData.fetchSticker(onCategory: stickerCategory) { [self] (error, stickerData) in
             guard let error = error else {
                 guard let stickerData = stickerData else {return}
                 stickerViewModel = stickerData

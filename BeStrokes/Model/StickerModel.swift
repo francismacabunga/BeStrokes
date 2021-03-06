@@ -23,8 +23,8 @@ struct UserStickerModel {
     let description: String
     let category: String
     let tag: String
+    let isRecentlyUploaded: Bool
     let isNew: Bool
-    let isOpen: Bool
     let isLoved: Bool
 }
 
