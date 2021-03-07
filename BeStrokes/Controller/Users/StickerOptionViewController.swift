@@ -129,9 +129,9 @@ class StickerOptionViewController: UIViewController {
     }
     
     func checkIfStickerIsLoved(_ stickerID: String) {
-        heartButtonLogic.checkIfStickerIsLoved(using: stickerID) { [self] (error, isUserSignedIn, isStickerLoved) in
+        stickerData.fetchLovedSticker(on: stickerID) { [self] (error, isUserIsSignedIn, isStickerLoved, userStickerData) in
             guard let error = error else {
-                if !isUserSignedIn {
+                if !isUserIsSignedIn {
                     showNoSignedInUserAlert()
                     return
                 }
@@ -221,22 +221,16 @@ class StickerOptionViewController: UIViewController {
     }
     
     @objc func tapGestureHandler(tap: UITapGestureRecognizer) {
-        if heartButtonTapped! {
+        guard let heartButtonTapped = heartButtonTapped else {return}
+        if heartButtonTapped {
             if stickerViewModel != nil {
                 untapHeartButton(using: stickerViewModel!.stickerID) { (isProcessDone) in}
                 return
             }
-            
-            
-//            untapHeartButtonUsing(stickerViewModel: stickerViewModel) { (isErrorPresent) in}
-//            untapHeartButtonUsing(userStickerViewModel: userStickerViewModel) { (isErrorPresent) in}
-//            untapHeartButtonUsing(lovedStickerViewModel: lovedStickerViewModel) { [self] (isErrorPresent) in
-//                if !isErrorPresent {
-//                    self.dismiss(animated: true)
-//                }
-//            }
-            
-            
+            if userStickerViewModel != nil {
+                untapHeartButton(using: userStickerViewModel!.stickerID) { (isProcessDone) in}
+                return
+            }
         } else {
             if stickerViewModel != nil {
                 tapHeartButton(using: stickerViewModel!.stickerID)
@@ -248,47 +242,6 @@ class StickerOptionViewController: UIViewController {
             }
         }
     }
-    
-//    func untapHeartButtonUsing(stickerViewModel: StickerViewModel? = nil,
-//                               userStickerViewModel: UserStickerViewModel? = nil,
-//                               lovedStickerViewModel: LovedStickerViewModel? = nil,
-//                               completion: @escaping (Bool) -> Void) {
-//        if stickerViewModel != nil {
-//            untapHeartButtonProcess(using: stickerViewModel!.stickerID) { (isErrorPresent) in
-//            }
-//        }
-//        if userStickerViewModel != nil {
-//            untapHeartButtonProcess(using: userStickerViewModel!.stickerID) { (isErrorPresent) in
-//            }
-//        }
-//        if lovedStickerViewModel != nil {
-//            untapHeartButtonProcess(using: lovedStickerViewModel!.stickerID) { (isErrorPresent) in
-//                if isErrorPresent {
-//                    completion(true)
-//                } else {
-//                    completion(false)
-//                }
-//            }
-//        }
-//    }
-//
-//    func untapHeartButtonProcess(using stickerID: String, completion: @escaping (Bool) -> Void) {
-//        heartButtonLogic.untapHeartButton(using: stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
-//            guard let error = error else {
-//                if !isUserSignedIn {
-//                    completion(true)
-//                    showNoSignedInUserAlert()
-//                    return
-//                }
-//                if isProcessDone {
-//                    completion(false)
-//                }
-//                return
-//            }
-//            completion(true)
-//            showErrorAlert(usingError: true, withErrorMessage: error)
-//        }
-//    }
     
     func tapHeartButton(using stickerID: String) {
         heartButtonLogic.tapHeartButton(using: stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
@@ -305,15 +258,19 @@ class StickerOptionViewController: UIViewController {
     
     func untapHeartButton(using stickerID: String, completion: @escaping (Bool) -> Void) {
         heartButtonLogic.untapHeartButton(using: stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
-            guard let error = error else {
-                if !isUserSignedIn {
-                    showNoSignedInUserAlert()
-                    return
-                }
-                completion(isProcessDone)
+            if error != nil {
+                showErrorAlert(usingError: true, withErrorMessage: error)
                 return
             }
-            showErrorAlert(usingError: true, withErrorMessage: error)
+            if !isUserSignedIn {
+                showNoSignedInUserAlert()
+                return
+            }
+            guard let _ = isProcessDone else {
+                completion(false)
+                return
+            }
+            completion(true)
         }
     }
     

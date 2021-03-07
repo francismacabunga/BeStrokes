@@ -214,14 +214,14 @@ class AccountViewController: UIViewController {
     }
     
     func setLovedStickersData() {
-        heartButtonLogic.showLovedSticker { [self] (error, isUserSignedIn, lovedStickerData) in
+        stickerData.fetchLovedSticker { [self] (error, isUserSignedIn, isStickerLoved, userStickerData) in
             guard let error = error else {
                 if !isUserSignedIn {
                     showNoSignedInUserAlert()
                     return
                 }
-                guard let lovedStickerData = lovedStickerData else {return}
-                userStickerViewModel = lovedStickerData
+                guard let userStickerData = userStickerData else {return}
+                userStickerViewModel = userStickerData
                 checkIfUserStickerViewModelIsEmpty(withDelay: 0.5)
                 return
             }
@@ -369,24 +369,25 @@ extension AccountViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         accountSearchTextField.resignFirstResponder()
-        stickerData.searchSticker(using: accountSearchTextField.text!) { [self] (error, isUserSignedIn, isStickerValid, stickerData) in
-            guard let error = error else {
+        if accountSearchTextField.text != nil {
+            stickerData.searchSticker(using: accountSearchTextField.text!) { [self] (error, isUserSignedIn, userStickerData) in
+                if error != nil {
+                    showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+                    return
+                }
                 if !isUserSignedIn {
                     showNoSignedInUserAlert()
                     return
                 }
-                guard let isStickerValid = isStickerValid else {return}
-                if !isStickerValid {
+                guard let userStickerViewModel = userStickerData else {
                     showNoStickerResultLabel()
                     return
                 }
-                guard let stickerData = stickerData else {return}
-                showSearchedSticker(using: [stickerData])
-                return
+                showSearchedSticker(using: [userStickerViewModel])
             }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+            return true
         }
-        return true
+        return false
     }
     
 }
