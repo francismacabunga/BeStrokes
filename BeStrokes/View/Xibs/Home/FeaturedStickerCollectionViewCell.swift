@@ -28,11 +28,12 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     private var heartButtonTapped: Bool?
     private var skeletonColor: UIColor?
     var featuredStickerCellDelegate: FeaturedStickerCellDelegate?
-    var featuredStickerViewModel: FeaturedStickerViewModel! {
+    var featuredStickerViewModel: FeaturedStickerViewModel? {
         didSet {
-            featuredStickerLabel.text = featuredStickerViewModel.name
-            featuredStickerImageView.kf.setImage(with: URL(string: featuredStickerViewModel.image))
-            getHeartButtonValue(from: featuredStickerViewModel.stickerID)
+            guard let featuredStickerData = featuredStickerViewModel else {return}
+            featuredStickerLabel.text = featuredStickerData.name
+            featuredStickerImageView.kf.setImage(with: URL(string: featuredStickerData.image))
+            getHeartButtonValue(from: featuredStickerData.stickerID)
         }
     }
     
@@ -156,9 +157,10 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func tapGestureHandler() {
-        guard let heartButtonTapped = heartButtonTapped else {return}
+        guard let heartButtonTapped = heartButtonTapped,
+              let featuredStickerData = featuredStickerViewModel else {return}
         if heartButtonTapped {
-            heartButtonLogic.untapHeartButton(using: featuredStickerViewModel.stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
+            heartButtonLogic.untapHeartButton(using: featuredStickerData.stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
                 if error != nil {
                     featuredStickerCellDelegate?.getError(using: error!)
                     return
@@ -169,7 +171,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
                 }
             }
         } else {
-            heartButtonLogic.tapHeartButton(using: featuredStickerViewModel.stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
+            heartButtonLogic.tapHeartButton(using: featuredStickerData.stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
                 if error != nil {
                     featuredStickerCellDelegate?.getError(using: error!)
                     return

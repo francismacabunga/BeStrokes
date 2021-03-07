@@ -229,20 +229,17 @@ class HomeViewController: UIViewController {
                 return
             }
             guard let userStickerData = userStickerData else {return}
-            print(userStickerData)
             triggerNotification()
-            _ = userStickerData.map({
-                stickerData.updateRecentlyUploadedSticker(on: $0.stickerID) { (error, isUserSignedIn) in
-                    guard let error = error else {
-                        if !isUserSignedIn {
-                            showNoSignedInUserAlert()
-                            return
-                        }
+            stickerData.updateRecentlyUploadedSticker(on: userStickerData.stickerID) { (error, isUserSignedIn) in
+                guard let error = error else {
+                    if !isUserSignedIn {
+                        showNoSignedInUserAlert()
                         return
                     }
-                    showErrorAlert(usingError: true, withErrorMessage: error)
+                    return
                 }
-            })
+                showErrorAlert(usingError: true, withErrorMessage: error)
+            }
         }
     }
     
@@ -386,6 +383,19 @@ class HomeViewController: UIViewController {
         }
     }
     
+    func removeDeletedStickersInUserCollection() {
+        stickerData.checkIfUserStickerExistsInStickerCollection { [self] (error, isUserSignedIn) in
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                return
+            }
+            showErrorAlert(usingError: true, withErrorMessage: error)
+        }
+    }
+    
     func getFeaturedStickersCollectionViewData() {
         stickerData.fetchFeaturedSticker { [self] (error, featuredStickerData) in
             guard let error = error else {
@@ -420,6 +430,7 @@ class HomeViewController: UIViewController {
                 setStickerDataToUserID(using: stickerViewModel!)
                 showBannerNotification()
                 updateBadgeCounter()
+                removeDeletedStickersInUserCollection()
                 showStickers()
                 return
             }
