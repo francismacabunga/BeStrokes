@@ -143,7 +143,7 @@ struct StickerData {
                 return
             }
             guard let userData = userData else {return}
-            let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsRecentlyUploadedField, isEqualTo: false)
+            let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsRecentlyUploadedField, isEqualTo: true)
             fetchStickerData(withQuery: firebaseQuery) { (error, stickerData, userStickerData) in
                 guard let error = error else {
                     guard let userStickerViewModel = userStickerData else {return}
@@ -174,6 +174,43 @@ struct StickerData {
                     return
                 }
                 completion(error, true, nil)
+            }
+        }
+    }
+    
+    func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool, Bool?, [UserStickerViewModel]?) -> Void) {
+        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if error != nil {
+                completion(error, true, nil, nil)
+                return
+            }
+            if !isUserSignedIn {
+                completion(nil, false, nil, nil)
+                return
+            }
+            guard let userData = userData else {return}
+            if stickerID != nil {
+                db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID!).addSnapshotListener { (snapshot, error) in
+                    if error != nil {
+                        completion(error, true, nil, nil)
+                        return
+                    }
+                    guard let _ = snapshot else {
+                        completion(nil, true, false, nil)
+                        return
+                    }
+                    completion(nil, true, true, nil)
+                }
+            } else {
+                let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true)
+                fetchStickerData(withQuery: firebaseQuery) { (error, stickerData, userStickerData) in
+                    guard let error = error else {
+                        guard let userStickerViewModel = userStickerData else {return}
+                        completion(nil, true, nil, userStickerViewModel)
+                        return
+                    }
+                    completion(error, true, nil, nil)
+                }
             }
         }
     }
@@ -226,21 +263,22 @@ struct StickerData {
             }
             guard let userData = userData else {return}
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID).getDocuments { (snapshot, error) in
-                guard let error = error else {
-                    guard let stickerData = snapshot?.documents else {return}
-                    if stickerData.count == 0 {
-                        completion(nil, true, false)
-                    }
+                if error != nil {
+                    completion(error, true, nil)
                     return
                 }
-                completion(error, true, nil)
+                guard let _ = snapshot?.documents else {
+                    completion(nil, true, false)
+                    return
+                }
+                completion(nil, true, true)
             }
         }
     }
     
     func uploadStickerInUserCollection(from stickerData: StickerViewModel,
-                                       isRecentlyUploaded isOpen: Bool,
-                                       isNewSticker isNew: Bool,
+                                       isRecentlyUploaded: Bool,
+                                       isNew: Bool,
                                        completion: @escaping (Error?, Bool) -> Void)
     {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
@@ -259,8 +297,8 @@ struct StickerData {
                                                                   Strings.stickerDescriptionField : stickerData.description,
                                                                   Strings.stickerCategoryField : stickerData.category,
                                                                   Strings.stickerTagField : stickerData.tag,
+                                                                  Strings.stickerIsRecentlyUploadedField : isRecentlyUploaded,
                                                                   Strings.stickerIsNewField : isNew,
-                                                                  Strings.stickerIsRecentlyUploadedField : isOpen,
                                                                   Strings.stickerIsLovedField : false]
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerData.stickerID).setData(userStickerViewModelDictionary) { (error) in
                 guard let error = error else {return}
@@ -280,7 +318,7 @@ struct StickerData {
                 return
             }
             guard let userData = userData else {return}
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsRecentlyUploadedField : true]) { (error) in
+            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsRecentlyUploadedField : false]) { (error) in
                 guard let error = error else {return}
                 completion(error, true)
             }
@@ -326,7 +364,7 @@ struct HeartButtonLogic {
     private let db = Firestore.firestore()
     private let userViewModel = User()
     
-    func checkIfStickerIsLoved(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
+    func tapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
                 completion(error, true, nil)
@@ -334,62 +372,6 @@ struct HeartButtonLogic {
             }
             if !isUserSignedIn {
                 completion(nil, false, nil)
-                return
-            }
-            guard let userData = userData else {return}
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true).addSnapshotListener { (snapshot, error) in
-                if error != nil {
-                    completion(error, true, nil)
-                    return
-                }
-                guard let _ = snapshot?.documents.first else {
-                    completion(nil, true, false)
-                    return
-                }
-                completion(nil, true, true)
-            }
-        }
-    }
-    
-    func showLovedSticker(completion: @escaping (Error?, Bool, [UserStickerViewModel]?) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if error != nil {
-                completion(error, true, nil)
-                return
-            }
-            if !isUserSignedIn {
-                completion(nil, false, nil)
-                return
-            }
-            guard let userData = userData else {return}
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true).addSnapshotListener { (snapshot, error) in
-                guard let error = error else {
-                    guard let result = snapshot?.documents else {return}
-                    let userStickerViewModel = result.map({return UserStickerViewModel(UserStickerModel(stickerID: $0[Strings.stickerIDField] as! String,
-                                                                                                        name: $0[Strings.stickerNameField] as! String,
-                                                                                                        image: $0[Strings.stickerImageField] as! String,
-                                                                                                        description: $0[Strings.stickerDescriptionField] as! String,
-                                                                                                        category: $0[Strings.stickerCategoryField] as! String,
-                                                                                                        tag: $0[Strings.stickerTagField] as! String,
-                                                                                                        isRecentlyUploaded: $0[Strings.stickerIsRecentlyUploadedField] as! Bool,
-                                                                                                        isNew: $0[Strings.stickerIsNewField] as! Bool,
-                                                                                                        isLoved: $0[Strings.stickerIsLovedField] as! Bool))})
-                    completion(nil, true, userStickerViewModel)
-                    return
-                }
-                completion(error, true, nil)
-            }
-        }
-    }
-    
-    func tapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if error != nil {
-                completion(error, true, false)
-                return
-            }
-            if !isUserSignedIn {
-                completion(nil, false, false)
                 return
             }
             guard let userData = userData else {return}
@@ -399,42 +381,38 @@ struct HeartButtonLogic {
                                       Strings.userEmailField : userData.email]
             // Save User Data to Sticker Collection -- checkIfStickerIsLoved
             db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).setData(userDataDictionary) { (error) in
-                if error != nil {
-                    completion(error, true, false)
-                    return
-                }
+                guard let error = error else {return}
+                completion(error, true, nil)
             }
             // Update 'isLoved' field on Sticker Collection at User Collection
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsLovedField : true]) { (error) in
                 guard let error = error else {return}
-                completion(error, true, false)
+                completion(error, true, nil)
             }
             completion(nil, true, true)
         }
     }
     
-    func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool) -> Void) {
+    func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
         userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
             if error != nil {
-                completion(error, true, false)
+                completion(error, true, nil)
                 return
             }
             if !isUserSignedIn {
-                completion(nil, false, false)
+                completion(nil, false, nil)
                 return
             }
             guard let userData = userData else {return}
+            // Remove User Data to Sticker Collection
+            db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).delete { (error) in
+                guard let error = error else {return}
+                completion(error, true, nil)
+            }
             // Update 'isLoved' field on Sticker Collection at User Collection
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsLovedField : false]) { (error) in
                 guard let error = error else {return}
-                completion(error, true, false)
-            }
-            // Remove User Data to Sticker Collection
-            db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).delete { (error) in
-                if error != nil {
-                    completion(error, true, false)
-                    return
-                }
+                completion(error, true, nil)
             }
             completion(nil, true, true)
         }
