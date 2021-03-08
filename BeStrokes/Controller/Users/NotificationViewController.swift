@@ -41,7 +41,7 @@ class NotificationViewController: UIViewController {
     func setDesignElements() {
         Utilities.setDesignOn(label: notificationHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, textAlignment: .left, text: Strings.notificationHeadingLabel)
         Utilities.setDesignOn(label: notificationWarningLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 0, textAlignment: .center, isHidden: true)
-        Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, size: .medium)
+        Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, size: .medium, isHidden: true)
         Utilities.setDesignOn(tableView: notificationTableView, backgroundColor: .clear, separatorStyle: UITableViewCell.SeparatorStyle.none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
@@ -79,15 +79,19 @@ class NotificationViewController: UIViewController {
     }
     
     func setNotificationData() {
-//        stickerData.fetchStickerData(withNotificationData: true) { [self] (error, stickerData, userStickerData) in
-//            guard let error = error else {
-//                guard let userStickerData = userStickerData else {return}
-//                userStickerViewModel = userStickerData
-//                checkIfUserStickerViewModelIsEmpty()
-//                return
-//            }
-//            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
-//        }
+        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, numberOfNewStickers, userStickerData) in
+            guard let error = error else {
+                if !isUserSignedIn {
+                    showNoSignedInUserAlert()
+                    return
+                }
+                guard let userStickerData = userStickerData else {return}
+                userStickerViewModel = userStickerData
+                checkIfUserStickerViewModelIsEmpty()
+                return
+            }
+            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+        }
     }
     
     func checkIfUserStickerViewModelIsEmpty() {
@@ -121,6 +125,22 @@ class NotificationViewController: UIViewController {
         }
         alert.addAction(tryAgainAction)
         present(alert, animated: true)
+    }
+    
+    func showNoSignedInUserAlert() {
+        let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { [self] (alertAction) in
+            transitionToLandingVC()
+        }
+        alert.addAction(dismissAction)
+        present(alert, animated: true)
+    }
+    
+    func transitionToLandingVC() {
+        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
+        view.window?.rootViewController = landingVC
+        view.window?.makeKeyAndVisible()
     }
     
     

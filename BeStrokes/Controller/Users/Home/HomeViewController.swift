@@ -244,7 +244,7 @@ class HomeViewController: UIViewController {
     }
     
     func updateBadgeCounter() {
-        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, numberOfNewStickers) in
+        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, numberOfNewStickers, userStickerData) in
             guard let error = error else {
                 if !isUserSignedIn {
                     showNoSignedInUserAlert()
@@ -540,7 +540,7 @@ extension HomeViewController: UICollectionViewDelegate {
             guard let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell else {
                 DispatchQueue.main.async { [self] in
                     homeStickerCategoryCollectionView.reloadData()
-                    homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .right)
+                    homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
                 }
                 return
             }

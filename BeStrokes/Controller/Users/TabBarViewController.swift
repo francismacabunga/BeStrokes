@@ -22,12 +22,12 @@ class TabBarViewController: UITabBarController {
         super.viewDidLoad()
         
         setTabBar()
-//        setDelegate()
+        setDelegate()
         setDesignElements()
         setIconData()
         
     }
-
+    
     
     //MARK: - Design Elements
     
@@ -74,7 +74,9 @@ class TabBarViewController: UITabBarController {
         userTabBarItem[0].image = UIImage(systemName: Strings.tabHomeIcon)
         userTabBarItem[1].image = UIImage(systemName: Strings.tabCaptureIcon)
         userTabBarItem[2].image = UIImage(systemName: Strings.tabNotificationIcon)
+        userTabBarItem[2].tag = 2
         userTabBarItem[3].image = UIImage(systemName: Strings.tabAccountIcon)
+        userTabBarItem[3].tag = 3
         setBadgeCounterValue()
     }
     
@@ -86,9 +88,9 @@ class TabBarViewController: UITabBarController {
         userTabBarItem = (userTabBar?.items)!
     }
     
-//    func setDelegate() {
-//        self.delegate = self
-//    }
+    func setDelegate() {
+        self.delegate = self
+    }
     
 }
 
@@ -97,13 +99,18 @@ class TabBarViewController: UITabBarController {
 
 extension TabBarViewController: UITabBarControllerDelegate {
     
-//    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-//        if tabBar.selectedItem?.badgeValue != nil {
-//            userTabBarItem[2].badgeValue = nil
-//            UserDefaults.standard.removeObject(forKey: Strings.notificationBadgeCounterKey)
-//            NotificationCenter.default.post(name: Utilities.resetBadgeCounterToNotificationIcon, object: nil)
-//        }
-//    }
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        if tabBar.selectedItem?.tag == 2 {
+            UserDefaults.standard.setValue(true, forKey: Strings.notificationTabIsTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.accountTabIsTappedKey)
+        } else if tabBar.selectedItem?.tag == 3 {
+            UserDefaults.standard.setValue(true, forKey: Strings.accountTabIsTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabIsTappedKey)
+        } else {
+            UserDefaults.standard.setValue(false, forKey: Strings.accountTabIsTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabIsTappedKey)
+        }
+    }
     
 }
 

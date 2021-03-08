@@ -250,6 +250,8 @@ struct Strings {
     static let notificationKey = "notificationAuthorization"
     static let notificationBadgeCounterKey = "notificationBadgeCounter"
     static let userFirstTimeLoginKey = "userFirstTimeLogin"
+    static let accountTabIsTappedKey = "accountTabIsTapped"
+    static let notificationTabIsTappedKey = "notificationTabIsTapped"
     
     //MARK: - Notification
     

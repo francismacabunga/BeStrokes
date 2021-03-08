@@ -37,6 +37,7 @@ class CaptureViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
+    private let stickerData = StickerData()
     private var capture = Capture()
     private let imagePicker = UIImagePickerController()
     var isStickerPicked = false
@@ -267,6 +268,22 @@ class CaptureViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    func showNoSignedInUserAlert() {
+        let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { [self] (alertAction) in
+            transitionToLandingVC()
+        }
+        alert.addAction(dismissAction)
+        present(alert, animated: true)
+    }
+    
+    func transitionToLandingVC() {
+        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
+        view.window?.rootViewController = landingVC
+        view.window?.makeKeyAndVisible()
+    }
+    
     
     //MARK: - UIGestureHandlers
     
@@ -293,6 +310,19 @@ class CaptureViewController: UIViewController {
     }
     
     @objc func tapExitButtonGestureHandler() {
+        if UserDefaults.standard.bool(forKey: Strings.notificationTabIsTappedKey) {
+            guard let userStickerViewModel = userStickerViewModel else {return}
+            stickerData.updateNewSticker(on: userStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
+                guard let error = error else {
+                    if !isUserSignedIn {
+                        showNoSignedInUserAlert()
+                        return
+                    }
+                    return
+                }
+                showCustomAlert(withTitle: Strings.captureAlertErrorTitle, usingErrorMessage: true, usingError: error)
+            }
+        }
         dismiss(animated: true)
     }
     

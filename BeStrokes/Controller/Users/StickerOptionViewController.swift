@@ -33,6 +33,7 @@ class StickerOptionViewController: UIViewController {
     private let stickerData = StickerData()
     private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
+    private var sampleShit: String?
     var stickerViewModel: StickerViewModel! {
         didSet {
             getHeartButtonValue(stickerViewModel: stickerViewModel)
@@ -58,7 +59,18 @@ class StickerOptionViewController: UIViewController {
     //MARK: - View Controller Life Cycle
     
     override func viewWillDisappear(_ animated: Bool) {
-        
+        if UserDefaults.standard.bool(forKey: Strings.notificationTabIsTappedKey) {
+            stickerData.updateNewSticker(on: userStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
+                guard let error = error else {
+                    if !isUserSignedIn {
+                        showNoSignedInUserAlert()
+                        return
+                    }
+                    return
+                }
+                showErrorAlert(usingError: true, withErrorMessage: error)
+            }
+        }
     }
     
     
@@ -228,6 +240,14 @@ class StickerOptionViewController: UIViewController {
                 return
             }
             if userStickerViewModel != nil {
+                if UserDefaults.standard.bool(forKey: Strings.accountTabIsTappedKey) {
+                    untapHeartButton(using: userStickerViewModel!.stickerID) { (isProcessDone) in
+                        if isProcessDone {
+                            self.dismiss(animated: true)
+                        }
+                    }
+                    return
+                }
                 untapHeartButton(using: userStickerViewModel!.stickerID) { (isProcessDone) in}
                 return
             }

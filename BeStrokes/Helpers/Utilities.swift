@@ -286,8 +286,8 @@ struct Utilities {
     
     // Page Control
     static func setDesignOn(pageControl: UIPageControl,
-                          pageIndicatorColor: UIColor,
-                          currentPageColor: UIColor)
+                            pageIndicatorColor: UIColor,
+                            currentPageColor: UIColor)
     {
         pageControl.pageIndicatorTintColor = pageIndicatorColor
         pageControl.currentPageIndicatorTintColor = currentPageColor
