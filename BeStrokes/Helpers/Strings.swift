@@ -10,6 +10,12 @@ import Foundation
 struct Strings {
     
     //MARK: - Heading / Body Labels
+    static let landingHeading1Text = "BeStrokes"
+    static let landingHeading2Text = "Make it stick"
+    static let landingHeading3Text = "Show it off"
+    static let landingSubheading1Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
+    static let landingSubheading2Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
+    static let landingSubheading3Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
     static let homeHeading1Text = "Featured"
     static let homeHeading2Text = "Stickers"
     static let profileSettingsHeadingText = "Settings"
@@ -23,12 +29,12 @@ struct Strings {
     static let loginHeadingText = "Welcome Back!"
     static let forgotPasswordHeadingText = "Forgot your password?"
     static let forgotPasswordSubheadingText = "Enter your associated email with your account."
-    static let captureTutorial1Label = "Choose an image from your photos!"
-    static let captureTutorial2Label = "Point your iPhone to a flat surface and start moving it."
-    static let captureTutorial3Label = "You can tap the sticker to try!"
-    static let captureStickerLabel = "Sticker Name"
-    static let captureDefaultStickerName = "Elephant"
-    static let notificationHeadingLabel = "Notifications"
+    static let captureTutorial1Text = "Choose an image from your photos!"
+    static let captureTutorial2Text = "Point your iPhone to a flat surface and start moving it."
+    static let captureTutorial3Text = "You can tap the sticker to try!"
+    static let captureStickerText = "Sticker Name"
+    static let captureDefaultStickerNameText = "Elephant"
+    static let notificationHeadingText = "Notifications"
     
     //MARK: - Button Labels
     static let tryMeButtonText = "Try me"
@@ -58,7 +64,6 @@ struct Strings {
     static let editAccountAlertTitle = "Success!"
     static let editAccountAlertMessage = "Your account details and email has been successfully updated. You may now sign in with your new email. Signing you out."
     static let landingAlertMessage = "User is automatically signed out."
-    static let landingAlertAction = "Dismiss"
     static let landingInvalidCErrorAlertTitle = "Invalid credentials"
     static let landingInvalidUTErrorAlertTitle = "Invalid user token"
     static let landingInvalidCTErrorAlertTitle = "Invalid custom token"
@@ -67,17 +72,15 @@ struct Strings {
     static let landingUserNFErrorAlertTitle = "User not found"
     static let landingCustomTMErrorAlertTitle = "Custom token mismatch"
     static let landingCallDErrorAlertTitle = "Default error"
-    static let homeAlertTitle = "Error"
     static let homeAlertMessage = "The user is not signed in."
     static let homeAlert1Action = "Try again"
-    static let homeAlert2Action = "Dismiss"
-    static let captureAlertErrorTitle = "Error"
     static let captureAlertWarningTitle = "Warning"
     static let captureAlertExcessStickerErrorMessage = "Sticker is already present. You can only add 1 sticker as of the moment."
     static let captureAlertNoStickerErrorMessage = "Please choose a sticker first."
     static let captureAlertRaycastErrorMessage = "No flat surface has been detected yet."
     static let captureAlertAnchorErrorMessage = "Cannot create a plane anchor as of the moment."
-    static let captureAlertAction = "Dismiss"
+    static let errorAlert = "Error"
+    static let dismissAlert = "Dismiss"
     
     //MARK: - Warning Labels
     static let profileWarningLabel = "To change the notification settings,"
@@ -85,7 +88,6 @@ struct Strings {
     static let accountNoLovedStickerLabel = "You don't have any loved stickers yet."
     static let accountInvalidStickerLabel = "No results for this sticker."
     static let editAccountEmailVerficationErrorLabel = "Account cannot be updated. Kindly tap the resend button below to resend an email verification."
-    static let editAccountTextFieldsErrorLabel = "Some fields are incomplete."
     static let editAccountTextFieldErrorLabel = "All fields are required, please fill them out."
     static let editAccountSuccessfullySentEmailVerificationLabel = "Email verfication has been successfully resent, please check your email."
     static let editAccountProcessSuccessfulLabel = "Your account has been updated, please verify your new email address to edit your account again."
@@ -103,7 +105,6 @@ struct Strings {
     
     
     //MARK: - Sticker Category/Tag Title
-    static let categoryAllStickers = "All"
     static let categoryFeaturedStickers = "Featured"
     static let tagNoStickers = "None"
     
@@ -119,17 +120,6 @@ struct Strings {
     static let profileSettingsNotifications = "Notifications"
     static let profileSettingsDarkAppearance = "Dark Appearance"
     static let profileSettingsLogout = "Logout"
-    
-    //MARK: - Landing Array
-    static let lionImage = "Lion"
-    static let shirtImage = "Shirt"
-    static let dancingImage = "Dancing"
-    static let headingOne = "BeStrokes"
-    static let headingTwo = "Make it stick"
-    static let headingThree = "Show it off"
-    static let subheadingOne = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
-    static let subheadingTwo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
-    static let subheadingThree = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer cursus odio a purus."
     
     
     
@@ -150,26 +140,23 @@ struct Strings {
     static let whiteKeys = "White_Keys"
     static let tutorialDialogueImage = "Dialogue"
     static let defaultStickerImage = "Elephant"
+    static let lionImage = "Lion"
+    static let shirtImage = "Shirt"
+    static let dancingImage = "Dancing"
     
     //MARK: - SF Symbols Names
     static let settingNotificationIcon = "bell.badge"
-    static let settingNotificationWithBadgeIcon = "bell.badge.fill"
     static let settingDarkModeIcon = "moon"
     static let settingLogoutIcon = "power"
-    
     static let tabHomeIcon = "house.fill"
     static let tabCaptureIcon = "camera.fill"
     static let tabNotificationIcon = "bell.fill"
     static let tabAccountIcon = "person.circle.fill"
-    
-    static let accountNotificationIcon = "bell.fill"
     static let accountEditAccountIcon = "pencil.circle.fill"
     static let accountSearchStickerIcon = "magnifyingglass"
     static let accountArrowUpIcon = "chevron.up.square.fill"
-    
     static let loveStickerIcon = "heart"
     static let lovedStickerIcon = "heart.fill"
-    
     static let captureExitIcon = "xmark.circle.fill"
     static let captureDeleteIcon = "trash.fill"
     static let captureChooseImageIcon = "camera.fill"
@@ -178,17 +165,13 @@ struct Strings {
     
     
     //MARK: - Storyboard Names
-    static let mainStoryboard = "Main"
+    static let guestStoryboard = "Guest"
     static let userStoryboard = "User"
     
     //MARK: - View Controllers Names
     static let landingVC = "LandingViewController"
     static let tabBarVC = "UserTabBarController"
-    static let homeVC = "HomeViewController"
     static let stickerOptionVC = "StickerOptionViewController"
-    static let editAccountVC = "EditAccountViewController"
-    static let editAccountContainerVC = "EditAccountContainerViewController"
-    static let profileVC = "ProfileViewController"
     static let landingPageContentVC = "LandingPageContentViewController"
     static let captureVC = "CaptureViewController"
     
@@ -214,7 +197,6 @@ struct Strings {
     static let stickerCollection = "stickers"
     static let lovedByCollection = "lovedBy"
     
-    static let userDocumentIDField = "documentID"
     static let userIDField = "userID"
     static let userFirstNameField = "firstName"
     static let userLastNameField = "lastName"
@@ -232,8 +214,6 @@ struct Strings {
     static let stickerIsRecentlyUploadedField = "isRecentlyUploaded"
     static let stickerIsNewField = "isNew"
     static let stickerIsLovedField = "isLoved"
-    static let stickerIsCategorySelected = "isCategorySelected"
-    static let stickerSelectedOnStart = "selectedOnStart"
     
     //MARK: - Password Regex
     static let regexFormat = "SELF MATCHES %@"

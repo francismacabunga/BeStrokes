@@ -26,8 +26,8 @@ struct LandingPage {
     func fetchData() -> LandingPageViewModel {
         let landingPageViewModel = LandingPageViewModel(LandingPageModel(
                                                             imageArray: [Strings.lionImage, Strings.shirtImage, Strings.dancingImage],
-                                                            headingArray: [Strings.headingOne, Strings.headingTwo, Strings.headingThree],
-                                                            subheadingArray: [Strings.subheadingOne, Strings.subheadingTwo, Strings.subheadingThree]))
+                                                            headingArray: [Strings.landingHeading1Text, Strings.landingHeading2Text, Strings.landingHeading3Text],
+                                                            subheadingArray: [Strings.landingSubheading1Text, Strings.landingSubheading2Text, Strings.landingSubheading3Text]))
         return landingPageViewModel
     }
     

@@ -186,9 +186,9 @@ class StickerOptionViewController: UIViewController {
     func showErrorAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
         var alert = UIAlertController()
         if error {
-            alert = UIAlertController(title: Strings.homeAlertTitle, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
+            alert = UIAlertController(title: Strings.errorAlert, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
         } else {
-            alert = UIAlertController(title: Strings.homeAlertTitle, message: withCustomizedString, preferredStyle: .alert)
+            alert = UIAlertController(title: Strings.errorAlert, message: withCustomizedString, preferredStyle: .alert)
         }
         let tryAgainAction = UIAlertAction(title: Strings.homeAlert1Action, style: .default) { [self] (alertAction) in
             dismiss(animated: true)
@@ -198,8 +198,8 @@ class StickerOptionViewController: UIViewController {
     }
     
     func showNoSignedInUserAlert() {
-        let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { [self] (alertAction) in
+        let alert = UIAlertController(title: Strings.errorAlert, message: Strings.homeAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.dismissAlert, style: .default) { [self] (alertAction) in
             transitionToLandingVC()
         }
         alert.addAction(dismissAction)
@@ -217,7 +217,7 @@ class StickerOptionViewController: UIViewController {
     }
     
     func transitionToLandingVC() {
-        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: Strings.guestStoryboard, bundle: nil)
         let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
         view.window?.rootViewController = landingVC
         view.window?.makeKeyAndVisible()

@@ -41,7 +41,7 @@
 		2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE99CF725183D3F002AFFDC /* AppDelegate.swift */; };
 		2FE99CFA25183D3F002AFFDC /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99CF925183D3F002AFFDC /* art.scnassets */; };
 		2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */; };
-		2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99CFD25183D3F002AFFDC /* Main.storyboard */; };
+		2FE99CFF25183D3F002AFFDC /* Guest.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99CFD25183D3F002AFFDC /* Guest.storyboard */; };
 		2FE99D0425183D40002AFFDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FE99D0225183D40002AFFDC /* LaunchScreen.storyboard */; };
 		2FEAC09925AA0B6400E149CE /* StickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEAC09725AA0B6400E149CE /* StickerTableViewCell.swift */; };
 		2FEAC09A25AA0B6400E149CE /* StickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FEAC09825AA0B6400E149CE /* StickerTableViewCell.xib */; };
@@ -88,7 +88,7 @@
 		2FE99CF725183D3F002AFFDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FE99CF925183D3F002AFFDC /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
-		2FE99CFE25183D3F002AFFDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2FE99CFE25183D3F002AFFDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Guest.storyboard; sourceTree = "<group>"; };
 		2FE99D0325183D40002AFFDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2FE99D0525183D40002AFFDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FEAC09725AA0B6400E149CE /* StickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerTableViewCell.swift; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 		2F23FCA7257845F100E69933 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				2FE99CFD25183D3F002AFFDC /* Main.storyboard */,
+				2FE99CFD25183D3F002AFFDC /* Guest.storyboard */,
 				2F402CA5256806DD00666028 /* User.storyboard */,
 				2FE99D0225183D40002AFFDC /* LaunchScreen.storyboard */,
 			);
@@ -183,7 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				2FD634692567F76600C00EE9 /* Guest */,
-				2FD6346A2567F77800C00EE9 /* Users */,
+				2FD6346A2567F77800C00EE9 /* User */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -246,7 +246,7 @@
 			path = Guest;
 			sourceTree = "<group>";
 		};
-		2FD6346A2567F77800C00EE9 /* Users */ = {
+		2FD6346A2567F77800C00EE9 /* User */ = {
 			isa = PBXGroup;
 			children = (
 				2F9C40F825AAF53200A7663F /* Home */,
@@ -256,7 +256,7 @@
 				2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */,
 				2FF328302580FEF4001E6E1E /* TabBarViewController.swift */,
 			);
-			path = Users;
+			path = User;
 			sourceTree = "<group>";
 		};
 		2FE99CEB25183D3F002AFFDC = {
@@ -370,7 +370,7 @@
 				2F3141582594EFC900D47E3F /* ProfileTableViewCell.xib in Resources */,
 				2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */,
 				2FD6E4E1257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.xib in Resources */,
-				2FE99CFF25183D3F002AFFDC /* Main.storyboard in Resources */,
+				2FE99CFF25183D3F002AFFDC /* Guest.storyboard in Resources */,
 				2F402CA6256806DD00666028 /* User.storyboard in Resources */,
 				2FD6E4DB257AC99900B49E41 /* StickerCollectionViewCell.xib in Resources */,
 				2FD6E4D3257AC96100B49E41 /* FeaturedStickerCollectionViewCell.xib in Resources */,
@@ -463,12 +463,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		2FE99CFD25183D3F002AFFDC /* Main.storyboard */ = {
+		2FE99CFD25183D3F002AFFDC /* Guest.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				2FE99CFE25183D3F002AFFDC /* Base */,
 			);
-			name = Main.storyboard;
+			name = Guest.storyboard;
 			sourceTree = "<group>";
 		};
 		2FE99D0225183D40002AFFDC /* LaunchScreen.storyboard */ = {

@@ -55,7 +55,7 @@ class LandingViewController: UIViewController {
     
     func showInvalidUserAlert(using errorMessage: String?) {
         let alert = UIAlertController(title: errorMessage, message: Strings.landingAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.landingAlertAction, style: .cancel, handler: nil)
+        let dismissAction = UIAlertAction(title: Strings.dismissAlert, style: .cancel, handler: nil)
         alert.addAction(dismissAction)
         present(alert, animated: true, completion: nil)
     }

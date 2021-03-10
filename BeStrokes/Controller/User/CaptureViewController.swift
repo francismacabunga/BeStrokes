@@ -124,11 +124,11 @@ class CaptureViewController: UIViewController {
         Utilities.setDesignOn(imageView: captureExitButtonImageView, image: UIImage(systemName: Strings.captureExitIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(imageView: captureDeleteButtonImageView, image: UIImage(systemName: Strings.captureDeleteIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(imageView: captureChooseImageButtonImageView, image: UIImage(systemName: Strings.captureChooseImageIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(label: captureTutorial1Label, fontName: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial1Label)
-        Utilities.setDesignOn(label: captureTutorial2Label, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, textAlignment: .center, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial2Label)
-        Utilities.setDesignOn(label: captureTutorial3Label, fontName: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureTutorial3Label, isHidden: true)
-        Utilities.setDesignOn(label: captureStickerLabel, fontName: Strings.defaultFont, fontSize: 12, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureStickerLabel)
-        Utilities.setDesignOn(label: captureStickerNameLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureDefaultStickerName)
+        Utilities.setDesignOn(label: captureTutorial1Label, fontName: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial1Text)
+        Utilities.setDesignOn(label: captureTutorial2Label, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, textAlignment: .center, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial2Text)
+        Utilities.setDesignOn(label: captureTutorial3Label, fontName: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureTutorial3Text, isHidden: true)
+        Utilities.setDesignOn(label: captureStickerLabel, fontName: Strings.defaultFont, fontSize: 12, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureStickerText)
+        Utilities.setDesignOn(label: captureStickerNameLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureDefaultStickerNameText)
         Utilities.setDesignOn(button: captureDontShowAgainButton, title: Strings.dontShowAgainButtonText, fontName: Strings.defaultFontBold, fontSize: 16, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
@@ -213,7 +213,7 @@ class CaptureViewController: UIViewController {
                 stickerMaterial.diffuse.contents = UIImage(data: imageData)
                 return
             }
-            showCustomAlert(withTitle: Strings.captureAlertErrorTitle, usingErrorMessage: true, usingError: error)
+            showCustomAlert(withTitle: Strings.errorAlert, usingErrorMessage: true, usingError: error)
         }
         dataTask.resume()
     }
@@ -263,14 +263,14 @@ class CaptureViewController: UIViewController {
         } else {
             alert = UIAlertController(title: title, message: message!, preferredStyle: .alert)
         }
-        let action = UIAlertAction(title: Strings.captureAlertAction, style: .cancel)
+        let action = UIAlertAction(title: Strings.dismissAlert, style: .cancel)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
     
     func showNoSignedInUserAlert() {
-        let alert = UIAlertController(title: Strings.homeAlertTitle, message: Strings.homeAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.homeAlert2Action, style: .default) { [self] (alertAction) in
+        let alert = UIAlertController(title: Strings.errorAlert, message: Strings.homeAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.dismissAlert, style: .default) { [self] (alertAction) in
             transitionToLandingVC()
         }
         alert.addAction(dismissAction)
@@ -278,7 +278,7 @@ class CaptureViewController: UIViewController {
     }
     
     func transitionToLandingVC() {
-        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: Strings.guestStoryboard, bundle: nil)
         let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
         view.window?.rootViewController = landingVC
         view.window?.makeKeyAndVisible()
@@ -320,7 +320,7 @@ class CaptureViewController: UIViewController {
                     }
                     return
                 }
-                showCustomAlert(withTitle: Strings.captureAlertErrorTitle, usingErrorMessage: true, usingError: error)
+                showCustomAlert(withTitle: Strings.errorAlert, usingErrorMessage: true, usingError: error)
             }
         }
         dismiss(animated: true)
@@ -353,14 +353,14 @@ class CaptureViewController: UIViewController {
             guard let ARSCNView = tapGesture.view as? ARSCNView else {return}
             let tapLocation = tapGesture.location(in: ARSCNView)
             guard let raycastResult = capture.performRaycast(on: ARSCNView, tapLocation) else {
-                showCustomAlert(withTitle: Strings.captureAlertErrorTitle, withMessage: Strings.captureAlertRaycastErrorMessage)
+                showCustomAlert(withTitle: Strings.errorAlert, withMessage: Strings.captureAlertRaycastErrorMessage)
                 return
             }
             raycastTargetAlignment = raycastResult.targetAlignment
             createStickerNode(using: raycastResult)
             return
         }
-        showCustomAlert(withTitle: Strings.captureAlertErrorTitle, withMessage: Strings.captureAlertNoStickerErrorMessage)
+        showCustomAlert(withTitle: Strings.errorAlert, withMessage: Strings.captureAlertNoStickerErrorMessage)
     }
     
     @objc func longPressStickerGestureHandler(longPressGesture: UILongPressGestureRecognizer) {
@@ -425,7 +425,7 @@ class CaptureViewController: UIViewController {
     
     func createPlaneNode(using anchor: ARAnchor) -> SCNNode? {
         guard let planeAnchor = capture.createPlaneAnchor(using: anchor) else {
-            showCustomAlert(withTitle: Strings.captureAlertErrorTitle, withMessage: Strings.captureAlertAnchorErrorMessage)
+            showCustomAlert(withTitle: Strings.errorAlert, withMessage: Strings.captureAlertAnchorErrorMessage)
             return nil
         }
         let planeMaterials = SCNMaterial()

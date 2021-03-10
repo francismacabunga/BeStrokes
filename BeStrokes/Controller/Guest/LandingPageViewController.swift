@@ -55,7 +55,7 @@ class LandingPageViewController: UIPageViewController {
         if !indexIsValid {
             return nil
         }
-        let storyboard = UIStoryboard(name: Strings.mainStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: Strings.guestStoryboard, bundle: nil)
         let landingPageContentViewController = storyboard.instantiateViewController(withIdentifier: Strings.landingPageContentVC) as! LandingPageContentViewController
         landingPageContentViewController.imageFileName = images[index]
         landingPageContentViewController.headingLabelText = headings[index]
