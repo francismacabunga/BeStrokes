@@ -119,19 +119,14 @@ class StickerTableViewCell: UITableViewCell {
         setDesignElements()
     }
     
-    func transitionToCaptureVC() {
-        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
-        captureVC.userStickerViewModel = userStickerViewModel
-        captureVC.modalPresentationStyle = .fullScreen
-        stickerCellDelegate?.getVC(using: captureVC)
-    }
-    
     
     //MARK: - Buttons
     
     @IBAction func lovedStickerTryMeButton(_ sender: UIButton) {
-        transitionToCaptureVC()
+        let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true)! as! CaptureViewController
+        captureVC.userStickerViewModel = userStickerViewModel
+        captureVC.modalPresentationStyle = .fullScreen
+        stickerCellDelegate?.getVC(using: captureVC)
     }
     
 }

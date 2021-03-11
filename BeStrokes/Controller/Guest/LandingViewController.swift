@@ -53,11 +53,9 @@ class LandingViewController: UIViewController {
         return .darkContent
     }
     
-    func showInvalidUserAlert(using errorMessage: String?) {
-        let alert = UIAlertController(title: errorMessage, message: Strings.landingAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.dismissAlert, style: .cancel, handler: nil)
-        alert.addAction(dismissAction)
-        present(alert, animated: true, completion: nil)
+    func showInvalidUserAlert(using alertTitle: String) {
+        let errorAlert = Utilities.showAlert(alertTitle: alertTitle, alertMessage: Strings.landingUserIsSignedOutAlertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+        present(errorAlert!, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -70,7 +68,7 @@ class LandingViewController: UIViewController {
     //MARK: - Checking of Signed In User Process
     
     func checkIfUserIsSignedIn() {
-        user.checkIfUserIsSignedIn { [self] (authErrorCode, isUserSignedIn, isUserInvalid) in
+        user.checkIfUserIsSignedIn { [self] (authErrorCode, isUserSignedIn) in
             if isUserSignedIn {
                 print("User is signed in!")
                 guard let authErrorCode = authErrorCode else {

@@ -156,15 +156,6 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func transitionToHomeVC() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-            let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-            let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
-            view.window?.rootViewController = homeVC
-            view.window?.makeKeyAndVisible()
-        }
-    }
-    
     
     //MARK: - Buttons
     
@@ -200,7 +191,9 @@ class LoginViewController: UIViewController {
     func loginSuccessful() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
             setLoginButtonToOriginalDesign()
-            transitionToHomeVC()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+                _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+            }
         }
     }
     

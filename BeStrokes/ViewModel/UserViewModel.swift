@@ -86,19 +86,19 @@ struct User {
         }
     }
     
-    func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?, Bool, Bool?) -> Void) {
+    func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?, Bool) -> Void) {
         guard let signedInUser = user else {
-            completion(nil, false, nil)
+            completion(nil, false)
             return
         }
         signedInUser.reload { (error) in
             guard let error = error else {
-                completion(nil, true, false)
+                completion(nil, true)
                 return
             }
             let NSError = error as NSError
             guard let authError = AuthErrorCode(rawValue: NSError.code) else {return}
-            completion(authError, true, true)
+            completion(authError, true)
         }
     }
     

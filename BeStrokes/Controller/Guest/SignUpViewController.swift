@@ -187,15 +187,6 @@ class SignUpViewController: UIViewController {
         present(cropViewController, animated: true, completion: nil)
     }
     
-    func transitionToHomeVC() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
-            let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-            let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
-            view.window?.rootViewController = homeVC
-            view.window?.makeKeyAndVisible()
-        }
-    }
-    
     
     //MARK: - UIGestureHandlers
     
@@ -324,7 +315,9 @@ class SignUpViewController: UIViewController {
                 if isEmailVerificationSent {
                     showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
                     setSignUpButtonTransitionAnimation()
-                    transitionToHomeVC()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
+                        _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+                    }
                     UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
                 }
                 return
