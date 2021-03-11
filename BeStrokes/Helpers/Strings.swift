@@ -77,7 +77,6 @@ struct Strings {
     static let captureAlertAnchorErrorMessage = "Cannot create a plane anchor as of the moment."
     // Rename this
     static let captureAlertWarningTitle = "Warning"
-    static let editAccountAlertTitle = "Success!"
     static let homeAlertMessage = "The user is not signed in."
     static let homeAlert1Action = "Try again"
     // Except this 3 below

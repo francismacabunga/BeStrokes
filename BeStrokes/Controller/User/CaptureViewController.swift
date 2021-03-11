@@ -213,7 +213,8 @@ class CaptureViewController: UIViewController {
                 stickerMaterial.diffuse.contents = UIImage(data: imageData)
                 return
             }
-            showCustomAlert(withTitle: Strings.errorAlert, usingErrorMessage: true, usingError: error)
+            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+            present(errorAlert!, animated: true)
         }
         dataTask.resume()
     }
@@ -254,36 +255,6 @@ class CaptureViewController: UIViewController {
         }
     }
     
-    func showCustomAlert(withTitle title: String, withMessage message: String? = nil, usingErrorMessage: Bool? = nil, usingError error: Error? = nil) {
-        var alert = UIAlertController()
-        if usingErrorMessage != nil {
-            if usingErrorMessage! {
-                alert = UIAlertController(title: title, message: error!.localizedDescription, preferredStyle: .alert)
-            }
-        } else {
-            alert = UIAlertController(title: title, message: message!, preferredStyle: .alert)
-        }
-        let action = UIAlertAction(title: Strings.dismissAlert, style: .cancel)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    func showNoSignedInUserAlert() {
-        let alert = UIAlertController(title: Strings.errorAlert, message: Strings.homeAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.dismissAlert, style: .default) { [self] (alertAction) in
-            transitionToLandingVC()
-        }
-        alert.addAction(dismissAction)
-        present(alert, animated: true)
-    }
-    
-    func transitionToLandingVC() {
-        let storyboard = UIStoryboard(name: Strings.guestStoryboard, bundle: nil)
-        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
-        view.window?.rootViewController = landingVC
-        view.window?.makeKeyAndVisible()
-    }
-    
     
     //MARK: - UIGestureHandlers
     
@@ -315,12 +286,16 @@ class CaptureViewController: UIViewController {
             stickerData.updateNewSticker(on: userStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
                 guard let error = error else {
                     if !isUserSignedIn {
-                        showNoSignedInUserAlert()
+                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        }
+                        present(noSignedInUserAlert!, animated: true)
                         return
                     }
                     return
                 }
-                showCustomAlert(withTitle: Strings.errorAlert, usingErrorMessage: true, usingError: error)
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(errorAlert!, animated: true)
             }
         }
         dismiss(animated: true)
@@ -353,14 +328,16 @@ class CaptureViewController: UIViewController {
             guard let ARSCNView = tapGesture.view as? ARSCNView else {return}
             let tapLocation = tapGesture.location(in: ARSCNView)
             guard let raycastResult = capture.performRaycast(on: ARSCNView, tapLocation) else {
-                showCustomAlert(withTitle: Strings.errorAlert, withMessage: Strings.captureAlertRaycastErrorMessage)
+                let raycastErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertRaycastErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(raycastErrorAlert!, animated: true)
                 return
             }
             raycastTargetAlignment = raycastResult.targetAlignment
             createStickerNode(using: raycastResult)
             return
         }
-        showCustomAlert(withTitle: Strings.errorAlert, withMessage: Strings.captureAlertNoStickerErrorMessage)
+        let raycastErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertNoStickerErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+        present(raycastErrorAlert!, animated: true)
     }
     
     @objc func longPressStickerGestureHandler(longPressGesture: UILongPressGestureRecognizer) {
@@ -425,7 +402,8 @@ class CaptureViewController: UIViewController {
     
     func createPlaneNode(using anchor: ARAnchor) -> SCNNode? {
         guard let planeAnchor = capture.createPlaneAnchor(using: anchor) else {
-            showCustomAlert(withTitle: Strings.errorAlert, withMessage: Strings.captureAlertAnchorErrorMessage)
+            let anchorErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertAnchorErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+            present(anchorErrorAlert!, animated: true)
             return nil
         }
         let planeMaterials = SCNMaterial()
@@ -453,7 +431,8 @@ class CaptureViewController: UIViewController {
             stickerNodes.append(stickerNode)
             fadePlaneNode()
         } else {
-            showCustomAlert(withTitle: Strings.captureAlertWarningTitle, withMessage: Strings.captureAlertExcessStickerErrorMessage)
+            let stickerErrorAlert = Utilities.showAlert(alertTitle: Strings.captureAlertWarningTitle, alertMessage: Strings.captureAlertExcessStickerErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+            present(stickerErrorAlert!, animated: true)
         }
     }
     

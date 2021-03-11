@@ -82,7 +82,10 @@ class NotificationViewController: UIViewController {
         stickerData.fetchNewSticker { [self] (error, isUserSignedIn, numberOfNewStickers, userStickerData) in
             guard let error = error else {
                 if !isUserSignedIn {
-                    showNoSignedInUserAlert()
+                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                    }
+                    present(noSignedInUserAlert!, animated: true)
                     return
                 }
                 guard let userStickerData = userStickerData else {return}
@@ -90,7 +93,8 @@ class NotificationViewController: UIViewController {
                 checkIfUserStickerViewModelIsEmpty()
                 return
             }
-            showErrorFetchingAlert(usingError: true, withErrorMessage: error)
+            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+            present(errorAlert!, animated: true)
         }
     }
     
@@ -111,36 +115,6 @@ class NotificationViewController: UIViewController {
                 notificationTableView.isHidden = false
             }
         }
-    }
-    
-    func showErrorFetchingAlert(usingError error: Bool, withErrorMessage: Error? = nil, withCustomizedString: String? = nil) {
-        var alert = UIAlertController()
-        if error {
-            alert = UIAlertController(title: Strings.errorAlert, message: withErrorMessage?.localizedDescription, preferredStyle: .alert)
-        } else {
-            alert = UIAlertController(title: Strings.errorAlert, message: withCustomizedString, preferredStyle: .alert)
-        }
-        let tryAgainAction = UIAlertAction(title: Strings.homeAlert1Action, style: .default) { [self] (alertAction) in
-            dismiss(animated: true)
-        }
-        alert.addAction(tryAgainAction)
-        present(alert, animated: true)
-    }
-    
-    func showNoSignedInUserAlert() {
-        let alert = UIAlertController(title: Strings.errorAlert, message: Strings.homeAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.dismissAlert, style: .default) { [self] (alertAction) in
-            transitionToLandingVC()
-        }
-        alert.addAction(dismissAction)
-        present(alert, animated: true)
-    }
-    
-    func transitionToLandingVC() {
-        let storyboard = UIStoryboard(name: Strings.guestStoryboard, bundle: nil)
-        let landingVC = storyboard.instantiateViewController(identifier: Strings.landingVC)
-        view.window?.rootViewController = landingVC
-        view.window?.makeKeyAndVisible()
     }
     
     
