@@ -16,6 +16,9 @@ struct Utilities {
     static let setDarkModeAppearance = Notification.Name(Strings.darkModeAppearanceNotificationName)
     static let setBadgeCounterToNotificationIcon = Notification.Name(Strings.badgeCounterToNotificationName)
     
+    
+    //MARK: - Design Elements
+    
     // Label
     static func setDesignOn(label: UILabel,
                             fontName: String? = nil,
@@ -519,8 +522,63 @@ struct Utilities {
         }
     }
     
+    
+    //MARK: - Error Handlers
+    
+    static func transition(from view: UIView? = nil,
+                           to viewController: String,
+                           onStoryboard storyboard: String,
+                           canAccessDestinationProperties: Bool) -> UIViewController?
+    {
+        let storyboard = UIStoryboard(name: storyboard, bundle: nil)
+        if canAccessDestinationProperties {
+            let destinationVC = storyboard.instantiateViewController(identifier: viewController)
+            return destinationVC
+        } else {
+            let destinationVC = storyboard.instantiateViewController(identifier: viewController)
+            view!.window?.rootViewController = destinationVC
+            view!.window?.makeKeyAndVisible()
+        }
+        return nil
+    }
+    
+    static func showAlert(alertTitle: String,
+                          alertMessage: String,
+                          alertActionTitle1: String,
+                          alertActionTitle2: String? = nil,
+                          forSingleActionTitleWillItUseHandler: Bool? = nil,
+                          completion: @escaping () -> Void) -> UIAlertController?
+    {
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        if forSingleActionTitleWillItUseHandler != nil {
+            if forSingleActionTitleWillItUseHandler! {
+                let alertAction1 = UIAlertAction(title: alertActionTitle1, style: .default) { (alertAction) in
+                    completion()
+                }
+                alert.addAction(alertAction1)
+                return alert
+            } else {
+                let alertAction1 = UIAlertAction(title: alertActionTitle1, style: .cancel)
+                alert.addAction(alertAction1)
+                return alert
+            }
+        }
+        if alertActionTitle2 != nil {
+            let alertAction1 = UIAlertAction(title: alertActionTitle1, style: .default) { (alertAction) in
+                completion()
+            }
+            let alertAction2 = UIAlertAction(title: alertActionTitle2, style: .cancel)
+            alert.addAction(alertAction1)
+            alert.addAction(alertAction2)
+            return alert
+        }
+        return nil
+    }
+    
+    
+    
+    
 }
-
 
 
 

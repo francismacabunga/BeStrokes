@@ -66,21 +66,6 @@ class LandingViewController: UIViewController {
         }
     }
     
-    func transitionToCaptureVC() {
-        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        let captureVC = storyboard.instantiateViewController(identifier: Strings.captureVC) as! CaptureViewController
-        captureVC.isPresentedFromLandingVC = true
-        captureVC.modalPresentationStyle = .fullScreen
-        present(captureVC, animated: true)
-    }
-    
-    func transitionToHomeVC() {
-        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        let homeVC = storyboard.instantiateViewController(identifier: Strings.tabBarVC)
-        self.view.window?.rootViewController = homeVC
-        self.view.window?.makeKeyAndVisible()
-    }
-    
     
     //MARK: - Checking of Signed In User Process
     
@@ -90,7 +75,7 @@ class LandingViewController: UIViewController {
                 print("User is signed in!")
                 guard let authErrorCode = authErrorCode else {
                     print("Valid Token!")
-                    transitionToHomeVC()
+                    _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
                     return
                 }
                 print("Invalid user!")
@@ -114,7 +99,10 @@ class LandingViewController: UIViewController {
     
     @IBAction func getStartedButton(_ sender: UIButton) {
         Utilities.animate(button: sender)
-        transitionToCaptureVC()
+        let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! CaptureViewController
+        captureVC.isPresentedFromLandingVC = true
+        captureVC.modalPresentationStyle = .fullScreen
+        present(captureVC, animated: true)
     }
     
 }

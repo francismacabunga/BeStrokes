@@ -61,7 +61,6 @@ struct Strings {
     static let logoutAlertTitle = "Are you sure?"
     static let logoutYesAction = "Yes"
     static let logoutNoAction = "No"
-    static let editAccountAlertTitle = "Success!"
     static let editAccountAlertMessage = "Your account details and email has been successfully updated. You may now sign in with your new email. Signing you out."
     static let landingAlertMessage = "User is automatically signed out."
     static let landingInvalidCErrorAlertTitle = "Invalid credentials"
@@ -72,13 +71,17 @@ struct Strings {
     static let landingUserNFErrorAlertTitle = "User not found"
     static let landingCustomTMErrorAlertTitle = "Custom token mismatch"
     static let landingCallDErrorAlertTitle = "Default error"
-    static let homeAlertMessage = "The user is not signed in."
-    static let homeAlert1Action = "Try again"
-    static let captureAlertWarningTitle = "Warning"
     static let captureAlertExcessStickerErrorMessage = "Sticker is already present. You can only add 1 sticker as of the moment."
     static let captureAlertNoStickerErrorMessage = "Please choose a sticker first."
     static let captureAlertRaycastErrorMessage = "No flat surface has been detected yet."
     static let captureAlertAnchorErrorMessage = "Cannot create a plane anchor as of the moment."
+    // Rename this
+    static let captureAlertWarningTitle = "Warning"
+    static let editAccountAlertTitle = "Success!"
+    static let homeAlertMessage = "The user is not signed in."
+    static let homeAlert1Action = "Try again"
+    // Except this 3 below
+    static let noSignedInUserAlert = "There is currently no signed in user."
     static let errorAlert = "Error"
     static let dismissAlert = "Dismiss"
     
