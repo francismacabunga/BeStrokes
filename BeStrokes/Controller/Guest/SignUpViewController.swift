@@ -36,7 +36,7 @@ class SignUpViewController: UIViewController {
     private let imagePicker = UIImagePickerController()
     private var editedImage: UIImage? = nil
     private var imageIsChanged = false
-    private let user = User()
+    private let user = UserData()
     
     
     //MARK: - View Controller Life Cycle

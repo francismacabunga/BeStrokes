@@ -23,7 +23,7 @@ class LandingViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private lazy var user = User()
+    private lazy var user = UserData()
     
     
     //MARK: - View Controller Life Cycle
@@ -68,28 +68,33 @@ class LandingViewController: UIViewController {
     //MARK: - Checking of Signed In User Process
     
     func checkIfUserIsSignedIn() {
-        user.checkIfUserIsSignedIn { [self] (authErrorCode, isUserSignedIn) in
-            if isUserSignedIn {
-                print("User is signed in!")
-                guard let authErrorCode = authErrorCode else {
-                    print("Valid Token!")
-                    _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
-                    return
-                }
-                print("Invalid user!")
-                switch authErrorCode {
-                case .invalidCredential: showInvalidUserAlert(using: Strings.landingInvalidCErrorAlertTitle)
-                case .invalidUserToken: showInvalidUserAlert(using: Strings.landingInvalidUTErrorAlertTitle)
-                case .invalidCustomToken: showInvalidUserAlert(using: Strings.landingInvalidCTErrorAlertTitle)
-                case .userTokenExpired: showInvalidUserAlert(using: Strings.landingUserTEErrorAlertTitle)
-                case .userDisabled: showInvalidUserAlert(using: Strings.landingUserDErrorAlertTitle)
-                case .userNotFound: showInvalidUserAlert(using: Strings.landingUserNFErrorAlertTitle)
-                case .customTokenMismatch: showInvalidUserAlert(using: Strings.landingCustomTMErrorAlertTitle)
-                default: showInvalidUserAlert(using: Strings.landingCallDErrorAlertTitle)
-                }
-            }
-            print("User is not signed in!")
-        }
+        
+        
+        
+//        user.checkIfUserIsSignedIn { [self] (authErrorCode, isUserSignedIn) in
+//            if isUserSignedIn {
+//                print("User is signed in!")
+//                guard let authErrorCode = authErrorCode else {
+//                    print("Valid Token!")
+//                    _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+//                    return
+//                }
+//                print("Invalid user!")
+//                switch authErrorCode {
+//                case .invalidCredential: showInvalidUserAlert(using: Strings.landingInvalidCErrorAlertTitle)
+//                case .invalidUserToken: showInvalidUserAlert(using: Strings.landingInvalidUTErrorAlertTitle)
+//                case .invalidCustomToken: showInvalidUserAlert(using: Strings.landingInvalidCTErrorAlertTitle)
+//                case .userTokenExpired: showInvalidUserAlert(using: Strings.landingUserTEErrorAlertTitle)
+//                case .userDisabled: showInvalidUserAlert(using: Strings.landingUserDErrorAlertTitle)
+//                case .userNotFound: showInvalidUserAlert(using: Strings.landingUserNFErrorAlertTitle)
+//                case .customTokenMismatch: showInvalidUserAlert(using: Strings.landingCustomTMErrorAlertTitle)
+//                default: showInvalidUserAlert(using: Strings.landingCallDErrorAlertTitle)
+//                }
+//            }
+//            print("User is not signed in!")
+//        }
+        
+        
     }
     
     

@@ -90,7 +90,7 @@ struct StickerData {
     
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
-    private let userViewModel = User()
+    private let userData = UserData()
     
     func fetchFeaturedSticker(completion: @escaping (Error?, [FeaturedStickerViewModel]?) -> Void) {
         let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerTagField, isEqualTo: Strings.categoryFeaturedStickers)
@@ -133,12 +133,12 @@ struct StickerData {
     }
     
     func fetchRecentlyUploadedSticker(completion: @escaping (Error?, Bool, UserStickerViewModel?) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true, nil)
+                completion(error, false, nil)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false, nil)
                 return
             }
@@ -156,12 +156,12 @@ struct StickerData {
     }
     
     func fetchNewSticker(completion: @escaping (Error?, Bool, Int?, [UserStickerViewModel]?) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true, nil, nil)
+                completion(error, false, nil, nil)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false, nil, nil)
                 return
             }
@@ -179,12 +179,12 @@ struct StickerData {
     }
     
     func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool, Bool?, [UserStickerViewModel]?) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true, nil, nil)
+                completion(error, false, nil, nil)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false, nil, nil)
                 return
             }
@@ -263,12 +263,12 @@ struct StickerData {
     }
     
     func checkIfStickerExistsInUserCollection(stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true, nil)
+                completion(error, false, nil)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false, nil)
                 return
             }
@@ -288,12 +288,12 @@ struct StickerData {
     }
     
     func checkIfUserStickerExistsInStickerCollection(completion: @escaping (Error?, Bool) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true)
+                completion(error, false)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false)
                 return
             }
@@ -330,12 +330,12 @@ struct StickerData {
                                        isNew: Bool,
                                        completion: @escaping (Error?, Bool) -> Void)
     {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true)
+                completion(error, false)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false)
                 return
             }
@@ -357,12 +357,12 @@ struct StickerData {
     }
     
     func updateRecentlyUploadedSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true)
+                completion(error, false)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false)
                 return
             }
@@ -375,12 +375,12 @@ struct StickerData {
     }
     
     func updateNewSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true)
+                completion(error, false)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false)
                 return
             }
@@ -393,12 +393,12 @@ struct StickerData {
     }
     
     func searchSticker(using searchText: String, completion: @escaping (Error?, Bool, UserStickerViewModel?) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true, nil)
+                completion(error, false, nil)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false, nil)
                 return
             }
@@ -432,15 +432,15 @@ struct HeartButtonLogic {
     
     private let user = Auth.auth().currentUser
     private let db = Firestore.firestore()
-    private let userViewModel = User()
+    private let userData = UserData()
     
     func tapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true, nil)
+                completion(error, false, nil)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false, nil)
                 return
             }
@@ -464,12 +464,12 @@ struct HeartButtonLogic {
     }
     
     func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
-        userViewModel.getSignedInUserData { (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { (error, isUserValid, userData) in
             if error != nil {
-                completion(error, true, nil)
+                completion(error, false, nil)
                 return
             }
-            if !isUserSignedIn {
+            if !isUserValid {
                 completion(nil, false, nil)
                 return
             }

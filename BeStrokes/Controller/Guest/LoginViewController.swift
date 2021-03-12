@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let user = User()
+    private let user = UserData()
     
     
     //MARK: - View Controller Life Cyle

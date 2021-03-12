@@ -26,18 +26,21 @@ struct UserViewModel {
     
 }
 
-struct User {
+struct UserData {
     
     private let db = Firestore.firestore()
-    private let user = Auth.auth().currentUser
+    private let auth = Auth.auth()
     
     func isPasswordValid(_ password: String) -> Bool {
         let passwordTest = NSPredicate(format: Strings.regexFormat, Strings.validationType)
         return passwordTest.evaluate(with: password)
     }
     
-    func createUser(with email: String, _ password: String, completion: @escaping (Error?, AuthDataResult?) -> Void) {
-        Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+    func createUser(with email: String,
+                    _ password: String,
+                    completion: @escaping (Error?, AuthDataResult?) -> Void)
+    {
+        auth.createUser(withEmail: email, password: password) { (authResult, error) in
             guard let error = error else {
                 completion(nil, authResult)
                 return
@@ -46,7 +49,10 @@ struct User {
         }
     }
     
-    func storeData(using userID: String, with dictionary: [String : String], completion: @escaping (Error?, Bool) -> Void) {
+    func storeData(using userID: String,
+                   with dictionary: [String : String],
+                   completion: @escaping (Error?, Bool) -> Void)
+    {
         db.collection(Strings.userCollection).document(userID).setData(dictionary) { (error) in
             guard let error = error else {
                 completion(nil, true)
@@ -57,17 +63,27 @@ struct User {
     }
     
     func sendEmailVerification(completion: @escaping (Error?, Bool) -> Void) {
-        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
-            guard let error = error else {
-                completion(nil, true)
+        checkIfUserIsValid { (authErrorCode, error, user) in
+            if error != nil {
+                completion(error, false)
                 return
             }
-            completion(error, false)
-        })
+            guard let signedInUser = user else {return}
+            signedInUser.sendEmailVerification { (error) in
+                guard let error = error else {
+                    completion(nil, true)
+                    return
+                }
+                completion(error, false)
+            }
+        }
     }
     
-    func signInUser(with email: String, _ password: String, completion: @escaping (Error?, AuthDataResult?) -> Void) {
-        Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
+    func signInUser(with email: String,
+                    _ password: String,
+                    completion: @escaping (Error?, AuthDataResult?) -> Void)
+    {
+        auth.signIn(withEmail: email, password: password) { (authResult, error) in
             guard let error = error else {
                 completion(nil, authResult)
                 return
@@ -77,7 +93,7 @@ struct User {
     }
     
     func forgotPassword(with email: String, completion: @escaping (Error?, Bool) -> Void) {
-        Auth.auth().sendPasswordReset(withEmail: email) { (error) in
+        auth.sendPasswordReset(withEmail: email) { (error) in
             guard let error = error else {
                 completion(nil, true)
                 return
@@ -86,81 +102,81 @@ struct User {
         }
     }
     
-    func checkIfUserIsSignedIn(completion: @escaping (AuthErrorCode?, Bool) -> Void) {
-        guard let signedInUser = user else {
-            completion(nil, false)
+    func checkIfUserIsValid(completion: @escaping (AuthErrorCode?, Error?, User?) -> Void) {
+        guard let signedInUser = auth.currentUser else {
+            completion(nil, nil, nil)
             return
         }
         signedInUser.reload { (error) in
             guard let error = error else {
-                completion(nil, true)
+                completion(nil, nil, signedInUser)
                 return
             }
             let NSError = error as NSError
-            guard let authError = AuthErrorCode(rawValue: NSError.code) else {return}
-            completion(authError, true)
+            guard let authErrorCode = AuthErrorCode(rawValue: NSError.code) else {return}
+            completion(authErrorCode, error, nil)
         }
     }
     
     func getSignedInUserData(completion: @escaping (Error?, Bool, UserViewModel?) -> Void) {
-        guard let signedInUser = user else {
-            completion(nil, false, nil)
-            return
-        }
-        let signedInUserID = signedInUser.uid
-        db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUserID).addSnapshotListener { (snapshot, error) in
-            guard let error = error else {
-                guard let result = snapshot?.documents.first else {return}
-                let userViewModel = UserViewModel(UserModel(userID: result[Strings.userIDField] as! String,
-                                                            firstName: result[Strings.userFirstNameField] as! String,
-                                                            lastName: result[Strings.userLastNameField] as! String,
-                                                            email: result[Strings.userEmailField] as! String,
-                                                            profilePic: result[Strings.userProfilePicField] as! String))
-                completion(nil, true, userViewModel)
+        checkIfUserIsValid { (authErrorCode, error, user) in
+            if error != nil {
+                completion(error, false, nil)
                 return
             }
-            completion(error, true, nil)
+            guard let signedInUser = user else {return}
+            db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: signedInUser.uid).addSnapshotListener { (snapshot, error) in
+                guard let error = error else {
+                    guard let userData = snapshot?.documents.first else {return}
+                    let userViewModel = UserViewModel(UserModel(userID: userData[Strings.userIDField] as! String,
+                                                                firstName: userData[Strings.userFirstNameField] as! String,
+                                                                lastName: userData[Strings.userLastNameField] as! String,
+                                                                email: userData[Strings.userEmailField] as! String,
+                                                                profilePic: userData[Strings.userProfilePicField] as! String))
+                    completion(nil, true, userViewModel)
+                    return
+                }
+                completion(error, true, nil)
+            }
         }
     }
     
     func isEmailVerified(completion: @escaping (Error?, Bool, Bool?) -> Void) {
-        guard let signedInUser = user else {
-            completion(nil, false, nil)
-            return
-        }
-        signedInUser.reload { (error) in
+        checkIfUserIsValid { (authErrorCode, error, user) in
             guard let error = error else {
+                guard let signedInUser = user else {return}
                 if signedInUser.isEmailVerified {
                     completion(nil, true, true)
-                    return
+                } else {
+                    completion(nil, true, false)
                 }
-                completion(nil, true, false)
                 return
             }
-            completion(error, true, nil)
+            completion(error, false, nil)
         }
     }
     
-    func updateUserData(_ firstName: String, _ lastName: String, _ email: String, _ profilePicURL: String, completion: @escaping (Error?, Bool, Bool) -> Void) {
-        guard let signedInUser = user else {
-            completion(nil, false, false)
-            return
-        }
-        signedInUser.reload { (error) in
+    func updateUserData(_ firstName: String,
+                        _ lastName: String,
+                        _ email: String,
+                        _ profilePicURL: String,
+                        completion: @escaping (Error?, Bool, Bool?) -> Void)
+    {
+        checkIfUserIsValid { (authErrorCode, error, user) in
             if error != nil {
-                completion(error, true, false)
+                completion(error, false, nil)
                 return
             }
-            let signedInUserID = signedInUser.uid
+            guard let signedInUser = user else {return}
             signedInUser.updateEmail(to: email) { (error) in
                 if error != nil {
                     completion(error, true, false)
                     return
                 }
-                db.collection(Strings.userCollection).document(signedInUserID).updateData([Strings.userFirstNameField : firstName,
-                                                                                           Strings.userLastNameField : lastName,
-                                                                                           Strings.userEmailField : email,
-                                                                                           Strings.userProfilePicField : profilePicURL]) { (error) in
+                db.collection(Strings.userCollection).document(signedInUser.uid).updateData([Strings.userFirstNameField : firstName,
+                                                                                             Strings.userLastNameField : lastName,
+                                                                                             Strings.userEmailField : email,
+                                                                                             Strings.userProfilePicField : profilePicURL]) { (error) in
                     guard let error = error else {
                         completion(nil, true, true)
                         return
@@ -171,7 +187,10 @@ struct User {
         }
     }
     
-    func uploadProfilePic(with image: UIImage, using userID: String, completion: @escaping (Error?, String?) -> Void) {
+    func uploadProfilePic(with image: UIImage,
+                          using userID: String,
+                          completion: @escaping (Error?, String?) -> Void)
+    {
         guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
         let storagePath = Storage.storage().reference(forURL: Strings.firebaseStoragePath)
         let profilePicStoragePath = storagePath.child(Strings.firebaseProfilePicStoragePath).child(userID)
@@ -193,18 +212,19 @@ struct User {
         }
     }
     
-    func signOutUser(completion: @escaping (Bool) -> Void) -> Bool {
-        guard let _ = user else {
-            completion(false)
-            return false
-        }
-        do {
-            try Auth.auth().signOut()
-            completion(true)
-            return true
-        } catch {
-            completion(true)
-            return false
+    func signOutUser(completion: @escaping (Error?, Bool?) -> Void) {
+        checkIfUserIsValid { (authErrorCode, error, user) in
+            if error != nil {
+                completion(error, nil)
+                return
+            }
+            guard let _ = user else {return}
+            do {
+                try auth.signOut()
+                completion(nil, true)
+            } catch {
+                completion(nil, false)
+            }
         }
     }
     

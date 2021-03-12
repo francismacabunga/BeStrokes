@@ -32,7 +32,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let user = User()
+    private let user = UserData()
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
     private var stickerViewModel: [StickerViewModel]?

@@ -34,7 +34,7 @@ class AccountViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let user = User()
+    private let user = UserData()
     private let stickerData = StickerData()
     private var userStickerViewModel: [UserStickerViewModel]?
     private var userViewModel: UserViewModel?
