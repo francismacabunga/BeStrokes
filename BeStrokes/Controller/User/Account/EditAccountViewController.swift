@@ -317,6 +317,7 @@ class EditAccountViewController: UIViewController {
                         setEditAccountButtonToOriginalDesign()
                         return
                     }
+                    guard let isUpdateDataFinished = isUpdateDataFinished else {return}
                     if isUpdateDataFinished {
                         sendEmailVerification(with: Strings.editAccountProcessSuccessfulLabel)
                     }
@@ -336,6 +337,7 @@ class EditAccountViewController: UIViewController {
                         setEditAccountButtonToOriginalDesign()
                         return
                     }
+                    guard let isUpdateDataFinished = isUpdateDataFinished else {return}
                     if isUpdateDataFinished {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             setEditAccountButtonToOriginalDesign()
