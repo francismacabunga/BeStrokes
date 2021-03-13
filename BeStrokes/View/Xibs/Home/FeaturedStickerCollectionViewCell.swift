@@ -153,23 +153,23 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
               let featuredStickerData = featuredStickerViewModel else {return}
         if heartButtonTapped {
             heartButtonLogic.untapHeartButton(using: featuredStickerData.stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
-                if error != nil {
-                    featuredStickerCellDelegate?.getError(using: error!)
-                    return
-                }
                 if !isUserSignedIn {
                     featuredStickerCellDelegate?.getUserAuthenticationState(false)
+                    return
+                }
+                if error != nil {
+                    featuredStickerCellDelegate?.getError(using: error!)
                     return
                 }
             }
         } else {
             heartButtonLogic.tapHeartButton(using: featuredStickerData.stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
-                if error != nil {
-                    featuredStickerCellDelegate?.getError(using: error!)
-                    return
-                }
                 if !isUserSignedIn {
                     featuredStickerCellDelegate?.getUserAuthenticationState(false)
+                    return
+                }
+                if error != nil {
+                    featuredStickerCellDelegate?.getError(using: error!)
                     return
                 }
             }

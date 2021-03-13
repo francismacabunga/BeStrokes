@@ -62,7 +62,7 @@ struct Strings {
     static let logoutYesAction = "Yes"
     static let logoutNoAction = "No"
     static let editAccountAlertMessage = "Your account details and email has been successfully updated. You may now sign in with your new email. Signing you out."
-    static let landingUserIsSignedOutAlertMessage = "User is automatically signed out."
+    //static let landingUserIsSignedOutAlertMessage = "User is automatically signed out."
     static let landingInvalidCErrorAlertTitle = "Invalid credentials"
     static let landingInvalidUTErrorAlertTitle = "Invalid user token"
     static let landingInvalidCTErrorAlertTitle = "Invalid custom token"

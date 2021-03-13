@@ -37,6 +37,7 @@ class CaptureViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
+    private let userData = UserData()
     private let stickerData = StickerData()
     private var capture = Capture()
     private let imagePicker = UIImagePickerController()
@@ -88,6 +89,22 @@ class CaptureViewController: UIViewController {
             return
         }
         if isPresentedWithTabBar() {
+            userData.checkIfUserIsValid { [self] (error, _) in
+                guard let error = error else {return}
+                let invalidUserAlert = Utilities.showDismissAlert(message: error.localizedDescription, view: view)
+                present(invalidUserAlert, animated: true)
+            }
+            
+            
+//            userData.checkIfUserIsValid { [self] (error) in
+//                guard let error = error else {
+//                    return
+//                }
+//                let invalidUserAlert = Utilities.showDismissAlert(message: error.localizedDescription, view: view)
+//                present(invalidUserAlert, animated: true)
+//            }
+            
+            
             if UserDefaults.standard.bool(forKey: Strings.captureButtonKey) == false {
                 showCaptureVCTutorial()
             } else {
@@ -213,8 +230,8 @@ class CaptureViewController: UIViewController {
                 stickerMaterial.diffuse.contents = UIImage(data: imageData)
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+//            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+//            present(errorAlert!, animated: true)
         }
         dataTask.resume()
     }
@@ -286,16 +303,16 @@ class CaptureViewController: UIViewController {
             stickerData.updateNewSticker(on: userStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
                 guard let error = error else {
                     if !isUserSignedIn {
-                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                        }
-                        present(noSignedInUserAlert!, animated: true)
+//                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+//                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+//                        }
+//                        present(noSignedInUserAlert!, animated: true)
                         return
                     }
                     return
                 }
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+//                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+//                present(errorAlert!, animated: true)
             }
         }
         dismiss(animated: true)
@@ -328,16 +345,16 @@ class CaptureViewController: UIViewController {
             guard let ARSCNView = tapGesture.view as? ARSCNView else {return}
             let tapLocation = tapGesture.location(in: ARSCNView)
             guard let raycastResult = capture.performRaycast(on: ARSCNView, tapLocation) else {
-                let raycastErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertRaycastErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(raycastErrorAlert!, animated: true)
+//                let raycastErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertRaycastErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+//                present(raycastErrorAlert!, animated: true)
                 return
             }
             raycastTargetAlignment = raycastResult.targetAlignment
             createStickerNode(using: raycastResult)
             return
         }
-        let raycastErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertNoStickerErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-        present(raycastErrorAlert!, animated: true)
+//        let raycastErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertNoStickerErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+//        present(raycastErrorAlert!, animated: true)
     }
     
     @objc func longPressStickerGestureHandler(longPressGesture: UILongPressGestureRecognizer) {
@@ -402,8 +419,8 @@ class CaptureViewController: UIViewController {
     
     func createPlaneNode(using anchor: ARAnchor) -> SCNNode? {
         guard let planeAnchor = capture.createPlaneAnchor(using: anchor) else {
-            let anchorErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertAnchorErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(anchorErrorAlert!, animated: true)
+//            let anchorErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertAnchorErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+//            present(anchorErrorAlert!, animated: true)
             return nil
         }
         let planeMaterials = SCNMaterial()
@@ -431,8 +448,8 @@ class CaptureViewController: UIViewController {
             stickerNodes.append(stickerNode)
             fadePlaneNode()
         } else {
-            let stickerErrorAlert = Utilities.showAlert(alertTitle: Strings.captureAlertWarningTitle, alertMessage: Strings.captureAlertExcessStickerErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(stickerErrorAlert!, animated: true)
+//            let stickerErrorAlert = Utilities.showAlert(alertTitle: Strings.captureAlertWarningTitle, alertMessage: Strings.captureAlertExcessStickerErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+//            present(stickerErrorAlert!, animated: true)
         }
     }
     

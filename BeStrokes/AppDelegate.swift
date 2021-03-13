@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
-        
+    
         return true
         
     }
@@ -46,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 UserDefaults.standard.setValue(false, forKey: Strings.notificationKey)
             }
         }
+        print("Will open")
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

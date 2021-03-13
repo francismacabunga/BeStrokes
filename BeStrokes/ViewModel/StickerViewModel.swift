@@ -180,12 +180,12 @@ struct StickerData {
     
     func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool, Bool?, [UserStickerViewModel]?) -> Void) {
         userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false, nil, nil)
-                return
-            }
             if !isUserValid {
                 completion(nil, false, nil, nil)
+                return
+            }
+            if error != nil {
+                completion(error, false, nil, nil)
                 return
             }
             guard let userData = userData else {return}
@@ -226,7 +226,7 @@ struct StickerData {
     }
     
     func fetchStickerData(withQuery query: Query, completion: @escaping (Error?, [StickerModel]?) -> Void) {
-        query.addSnapshotListener { (snapshot, error) in
+        query.getDocuments { (snapshot, error) in
             guard let error = error else {
                 guard let stickerData = snapshot?.documents else {return}
                 let stickerModel = stickerData.map({return StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
@@ -436,12 +436,12 @@ struct HeartButtonLogic {
     
     func tapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
         userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false, nil)
-                return
-            }
             if !isUserValid {
                 completion(nil, false, nil)
+                return
+            }
+            if error != nil {
+                completion(error, false, nil)
                 return
             }
             guard let userData = userData else {return}

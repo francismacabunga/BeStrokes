@@ -23,7 +23,7 @@ class LandingViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private lazy var user = UserData()
+    private lazy var userData = UserData()
     
     
     //MARK: - View Controller Life Cycle
@@ -53,8 +53,8 @@ class LandingViewController: UIViewController {
         return .darkContent
     }
     
-    func showInvalidUserAlert(using alertTitle: String) {
-        let errorAlert = Utilities.showAlert(alertTitle: alertTitle, alertMessage: Strings.landingUserIsSignedOutAlertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+    func showInvalidUserAlert(using alertMessage: String) {
+        let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
         present(errorAlert!, animated: true)
     }
     
@@ -68,7 +68,67 @@ class LandingViewController: UIViewController {
     //MARK: - Checking of Signed In User Process
     
     func checkIfUserIsSignedIn() {
+        userData.checkIfUserIsValid { [self] (error, isUserValid) in
+            guard let error = error else {
+                guard let isUserValid = isUserValid else {return}
+                if isUserValid {
+                    print("Valid user")
+                    _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+                    return
+                }
+                print("No signed in user!")
+                return
+            }
+            print("Invalid user!")
+            showInvalidUserAlert(using: error.localizedDescription)
+        }
         
+        
+        
+//
+//        userData.checkIfUserIsValid { [self] (error) in
+//            guard let error = error else {
+//                _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+//                return
+//            }
+//            print("Invalid user")
+//            showInvalidUserAlert(using: error.localizedDescription)
+//        }
+        
+        
+        
+        
+      
+//        userData.checkIfUserIsValid { [self] (authErrorCode, error, user) in
+//            guard let error = error else {
+//                _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+//                return
+//            }
+//            showInvalidUserAlert(using: error.localizedDescription)
+            
+            
+            
+//            guard let authErrorCode = authErrorCode else {
+//                print("Valid user!")
+//                _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+//                return
+//            }
+//            print("User is invalid!")
+//            showInvalidUserAlert(using: Utilities.sampleErrorHandler(from: authErrorCode))
+            
+            
+//            let sampleString = Utilities.sampleErrorHandler(from: authErrorCode)
+//            switch authErrorCode {
+//            case .invalidCredential: showInvalidUserAlert(using: Strings.landingInvalidCErrorAlertTitle)
+//            case .invalidUserToken: showInvalidUserAlert(using: Strings.landingInvalidUTErrorAlertTitle)
+//            case .invalidCustomToken: showInvalidUserAlert(using: Strings.landingInvalidCTErrorAlertTitle)
+//            case .userTokenExpired: showInvalidUserAlert(using: Strings.landingUserTEErrorAlertTitle)
+//            case .userDisabled: showInvalidUserAlert(using: Strings.landingUserDErrorAlertTitle)
+//            case .userNotFound: showInvalidUserAlert(using: Strings.landingUserNFErrorAlertTitle)
+//            case .customTokenMismatch: showInvalidUserAlert(using: Strings.landingCustomTMErrorAlertTitle)
+//            default: showInvalidUserAlert(using: Strings.landingCallDErrorAlertTitle)
+//            }
+//        }
         
         
 //        user.checkIfUserIsSignedIn { [self] (authErrorCode, isUserSignedIn) in

@@ -43,6 +43,8 @@ class HomeViewController: UIViewController {
     private var shouldReloadStickerCategoryCollectionView = false
     private var skeletonColor: UIColor?
     private var hasProfilePicLoaded = false
+    private var isHomeVCLoaded = false
+    private var isAlertControllerPresented = false
     private let notificationCenter = UNUserNotificationCenter.current()
     
     
@@ -56,6 +58,16 @@ class HomeViewController: UIViewController {
         registerCollectionView()
         setCollectionViewData()
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("HomeVC is loaded")
+        isHomeVCLoaded = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        print("HomeVC is not loaded")
+        isHomeVCLoaded = false
     }
     
     
@@ -155,10 +167,7 @@ class HomeViewController: UIViewController {
         user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
             guard let error = error else {
                 if !isUserSignedIn {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
+                    showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                     return
                 }
                 guard let userData = userData else {return}
@@ -173,8 +182,7 @@ class HomeViewController: UIViewController {
                 }
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -225,15 +233,11 @@ class HomeViewController: UIViewController {
     func showBannerNotification() {
         stickerData.fetchRecentlyUploadedSticker { [self] (error, isUserSignedIn, userStickerData) in
             if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             if !isUserSignedIn {
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                 return
             }
             guard let userStickerData = userStickerData else {return}
@@ -241,16 +245,12 @@ class HomeViewController: UIViewController {
             stickerData.updateRecentlyUploadedSticker(on: userStickerData.stickerID) { (error, isUserSignedIn) in
                 guard let error = error else {
                     if !isUserSignedIn {
-                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                        }
-                        present(noSignedInUserAlert!, animated: true)
+                        showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                         return
                     }
                     return
                 }
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: error.localizedDescription, withHandler: false)
             }
         }
     }
@@ -259,10 +259,7 @@ class HomeViewController: UIViewController {
         stickerData.fetchNewSticker { [self] (error, isUserSignedIn, numberOfNewStickers, userStickerData) in
             guard let error = error else {
                 if !isUserSignedIn {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
+                    showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                     return
                 }
                 guard let numberOfNewStickers = numberOfNewStickers else {return}
@@ -270,8 +267,7 @@ class HomeViewController: UIViewController {
                 NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -284,8 +280,23 @@ class HomeViewController: UIViewController {
         let notificationRequest = UNNotificationRequest(identifier: notificationIdentifier, content: notificationContent, trigger: notificationTrigger)
         notificationCenter.add(notificationRequest) { [self] (error) in
             guard let error = error else {return}
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+        }
+    }
+    
+    func showAlertController(alertMessage: String, withHandler: Bool) {
+        if !isAlertControllerPresented {
+            if withHandler {
+                let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                }
+                present(alertWithHandler!, animated: true)
+                isAlertControllerPresented = true
+                return
+            }
+            let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+            present(alert!, animated: true)
+            isAlertControllerPresented = true
         }
     }
     
@@ -328,16 +339,12 @@ class HomeViewController: UIViewController {
                 self.stickerData.uploadStickerInUserCollection(from: $0, isRecentlyUploaded: false, isNew: false) { [self] (error, isUserSignedIn) in
                     guard let error = error else {
                         if !isUserSignedIn {
-                            let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                                _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                            }
-                            present(noSignedInUserAlert!, animated: true)
+                            showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                             return
                         }
                         return
                     }
-                    let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                    present(errorAlert!, animated: true)
+                    showAlertController(alertMessage: error.localizedDescription, withHandler: false)
                 }
             })
         }
@@ -349,15 +356,11 @@ class HomeViewController: UIViewController {
                 let stickerViewModel = $0
                 self.stickerData.checkIfStickerExistsInUserCollection(stickerID: stickerViewModel.stickerID) { [self] (error, isUserSignedIn, isStickerPresent) in
                     if error != nil {
-                        let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                        present(errorAlert!, animated: true)
+                        showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                         return
                     }
                     if !isUserSignedIn {
-                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                        }
-                        present(noSignedInUserAlert!, animated: true)
+                        showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                         return
                     }
                     guard let isStickerPresent = isStickerPresent else {return}
@@ -365,16 +368,12 @@ class HomeViewController: UIViewController {
                         self.stickerData.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { (error, isUserSignedIn) in
                             guard let error = error else {
                                 if !isUserSignedIn {
-                                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                                    }
-                                    present(noSignedInUserAlert!, animated: true)
+                                    showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                                     return
                                 }
                                 return
                             }
-                            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                            present(errorAlert!, animated: true)
+                            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
                         }
                     }
                 }
@@ -386,16 +385,12 @@ class HomeViewController: UIViewController {
         stickerData.checkIfUserStickerExistsInStickerCollection { [self] (error, isUserSignedIn) in
             guard let error = error else {
                 if !isUserSignedIn {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
+                    showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                     return
                 }
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -409,8 +404,7 @@ class HomeViewController: UIViewController {
                 }
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -438,8 +432,7 @@ class HomeViewController: UIViewController {
                 showStickers()
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -591,16 +584,16 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 extension HomeViewController: FeaturedStickerCellDelegate {
     
     func getError(using error: Error) {
-        let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-        present(errorAlert!, animated: true)
+        if isHomeVCLoaded {
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+        }
     }
     
     func getUserAuthenticationState(_ isUserSignedIn: Bool) {
         if !isUserSignedIn {
-            let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+            if isHomeVCLoaded {
+                showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
             }
-            present(noSignedInUserAlert!, animated: true)
         }
     }
     
