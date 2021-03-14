@@ -105,9 +105,9 @@ struct StickerData {
         }
     }
     
-    func fetchSticker(onCategory: String, completion: @escaping (Error?, [StickerViewModel]?) -> Void) {
+    func fetchSticker(onCategory category: String, completion: @escaping (Error?, [StickerViewModel]?) -> Void) {
         var firebaseQuery: Query
-        if onCategory == Strings.allStickers {
+        if category == Strings.allStickers {
             firebaseQuery = db.collection(Strings.stickerCollection)
             fetchStickerData(withQuery: firebaseQuery) { (error, stickerData) in
                 guard let error = error else {
@@ -119,7 +119,7 @@ struct StickerData {
                 completion(error, nil)
             }
         } else {
-            firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerCategoryField, isEqualTo: onCategory)
+            firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerCategoryField, isEqualTo: category)
             fetchStickerData(withQuery: firebaseQuery) { (error, stickerData) in
                 guard let error = error else {
                     guard let stickerData = stickerData else {return}
@@ -132,14 +132,16 @@ struct StickerData {
         }
     }
     
-    func fetchRecentlyUploadedSticker(completion: @escaping (Error?, Bool, UserStickerViewModel?) -> Void) {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false, nil)
-                return
+    func fetchRecentlyUploadedSticker(completion: @escaping (Error?, Bool?, UserStickerViewModel?) -> Void) {
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false, nil)
+                    return
+                }
             }
-            if !isUserValid {
-                completion(nil, false, nil)
+            if error != nil {
+                completion(error, nil, nil)
                 return
             }
             guard let userData = userData else {return}
@@ -150,19 +152,21 @@ struct StickerData {
                     completion(nil, true, userStickerViewModel)
                     return
                 }
-                completion(error, true, nil)
+                completion(error, nil, nil)
             }
         }
     }
     
-    func fetchNewSticker(completion: @escaping (Error?, Bool, Int?, [UserStickerViewModel]?) -> Void) {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false, nil, nil)
-                return
+    func fetchNewSticker(completion: @escaping (Error?, Bool?, Int?, [UserStickerViewModel]?) -> Void) {
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false, nil, nil)
+                    return
+                }
             }
-            if !isUserValid {
-                completion(nil, false, nil, nil)
+            if error != nil {
+                completion(error, nil, nil, nil)
                 return
             }
             guard let userData = userData else {return}
@@ -173,33 +177,36 @@ struct StickerData {
                     completion(nil, true, userStickerViewModel.count, userStickerViewModel)
                     return
                 }
-                completion(error, true, nil, nil)
+                completion(error, nil, nil, nil)
             }
         }
     }
     
-    func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool, Bool?, [UserStickerViewModel]?) -> Void) {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if !isUserValid {
-                completion(nil, false, nil, nil)
-                return
+    func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool?, Bool?, [UserStickerViewModel]?) -> Void) {
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false, nil, nil)
+                    return
+                }
             }
             if error != nil {
-                completion(error, false, nil, nil)
+                completion(error, nil, nil, nil)
                 return
             }
             guard let userData = userData else {return}
             if stickerID != nil {
-                db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID!).whereField(Strings.stickerIsLovedField, isEqualTo: true).addSnapshotListener { (snapshot, error) in
+                let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID!).whereField(Strings.stickerIsLovedField, isEqualTo: true)
+                fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
                     if error != nil {
-                        completion(error, true, nil, nil)
+                        completion(error, nil, nil, nil)
                         return
                     }
-                    guard let _ = snapshot?.documents.first else {
-                        completion(error, true, false, nil)
+                    guard let _ = userStickerData else {
+                        completion(nil, true, false, nil)
                         return
                     }
-                    completion(error, true, true, nil)
+                    completion(nil, true, true, nil)
                 }
             } else {
                 let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true)
@@ -209,7 +216,7 @@ struct StickerData {
                         completion(nil, true, nil, userStickerViewModel)
                         return
                     }
-                    completion(error, true, nil, nil)
+                    completion(error, nil, nil, nil)
                 }
             }
         }
@@ -226,59 +233,68 @@ struct StickerData {
     }
     
     func fetchStickerData(withQuery query: Query, completion: @escaping (Error?, [StickerModel]?) -> Void) {
-        query.getDocuments { (snapshot, error) in
-            guard let error = error else {
-                guard let stickerData = snapshot?.documents else {return}
-                let stickerModel = stickerData.map({return StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
-                                                                        name: $0[Strings.stickerNameField] as! String,
-                                                                        image: $0[Strings.stickerImageField] as! String,
-                                                                        description: $0[Strings.stickerDescriptionField] as! String,
-                                                                        category: $0[Strings.stickerCategoryField] as! String,
-                                                                        tag: $0[Strings.stickerTagField] as! String)})
-                completion(nil, stickerModel)
+        query.addSnapshotListener { (snapshot, error) in
+            if error != nil {
+                completion(error, nil)
                 return
             }
-            completion(error, nil)
+            guard let stickerData = snapshot?.documents else {
+                completion(nil, nil)
+                return
+            }
+            let stickerModel = stickerData.map({return StickerModel(stickerID: $0[Strings.stickerIDField] as! String,
+                                                                    name: $0[Strings.stickerNameField] as! String,
+                                                                    image: $0[Strings.stickerImageField] as! String,
+                                                                    description: $0[Strings.stickerDescriptionField] as! String,
+                                                                    category: $0[Strings.stickerCategoryField] as! String,
+                                                                    tag: $0[Strings.stickerTagField] as! String)})
+            completion(nil, stickerModel)
         }
     }
     
     func fetchUserStickerData(withQuery query: Query, completion: @escaping (Error?, [UserStickerViewModel]?) -> Void) {
         query.addSnapshotListener { (snapshot, error) in
-            guard let error = error else {
-                guard let userStickerData = snapshot?.documents else {return}
-                let userStickerViewModel = userStickerData.map({return UserStickerViewModel(UserStickerModel(stickerID: $0[Strings.stickerIDField] as! String,
-                                                                                                             name: $0[Strings.stickerNameField] as! String,
-                                                                                                             image: $0[Strings.stickerImageField] as! String,
-                                                                                                             description: $0[Strings.stickerDescriptionField] as! String,
-                                                                                                             category: $0[Strings.stickerCategoryField] as! String,
-                                                                                                             tag: $0[Strings.stickerTagField] as! String,
-                                                                                                             isRecentlyUploaded: $0[Strings.stickerIsRecentlyUploadedField] as! Bool,
-                                                                                                             isNew: $0[Strings.stickerIsNewField] as! Bool,
-                                                                                                             isLoved: $0[Strings.stickerIsLovedField] as! Bool))})
-                completion(nil, userStickerViewModel)
+            if error != nil {
+                completion(error, nil)
                 return
             }
-            completion(error, nil)
+            guard let userStickerData = snapshot?.documents else {
+                completion(nil, nil)
+                return
+            }
+            let userStickerViewModel = userStickerData.map({return UserStickerViewModel(UserStickerModel(stickerID: $0[Strings.stickerIDField] as! String,
+                                                                                                         name: $0[Strings.stickerNameField] as! String,
+                                                                                                         image: $0[Strings.stickerImageField] as! String,
+                                                                                                         description: $0[Strings.stickerDescriptionField] as! String,
+                                                                                                         category: $0[Strings.stickerCategoryField] as! String,
+                                                                                                         tag: $0[Strings.stickerTagField] as! String,
+                                                                                                         isRecentlyUploaded: $0[Strings.stickerIsRecentlyUploadedField] as! Bool,
+                                                                                                         isNew: $0[Strings.stickerIsNewField] as! Bool,
+                                                                                                         isLoved: $0[Strings.stickerIsLovedField] as! Bool))})
+            completion(nil, userStickerViewModel)
         }
     }
     
-    func checkIfStickerExistsInUserCollection(stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false, nil)
-                return
+    func checkIfStickerExistsInUserCollection(stickerID: String, completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false, nil)
+                    return
+                }
             }
-            if !isUserValid {
-                completion(nil, false, nil)
+            if error != nil {
+                completion(error, nil, nil)
                 return
             }
             guard let userData = userData else {return}
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID).getDocuments { (snapshot, error) in
+            let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID)
+            fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
                 if error != nil {
-                    completion(error, true, nil)
+                    completion(error, nil, nil)
                     return
                 }
-                guard let _ = snapshot?.documents.first else {
+                guard let _ = userStickerData else {
                     completion(nil, true, false)
                     return
                 }
@@ -287,35 +303,38 @@ struct StickerData {
         }
     }
     
-    func checkIfUserStickerExistsInStickerCollection(completion: @escaping (Error?, Bool) -> Void) {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false)
-                return
+    func checkIfUserStickerExistsInStickerCollection(completion: @escaping (Error?, Bool?) -> Void) {
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false)
+                    return
+                }
             }
-            if !isUserValid {
-                completion(nil, false)
+            if error != nil {
+                completion(error, nil)
                 return
             }
             guard let userData = userData else {return}
             let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection)
             fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
                 if error != nil {
-                    completion(error, true)
+                    completion(error, nil)
                     return
                 }
                 guard let userStickerData = userStickerData else {return}
                 _ = userStickerData.map({
                     let missingStickerID = $0.stickerID
-                    db.collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: $0.stickerID).addSnapshotListener { (snapshot, error) in
+                    let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: $0.stickerID)
+                    fetchStickerData(withQuery: firebaseQuery) { (error, stickerData) in
                         if error != nil {
-                            completion(error, true)
+                            completion(error, nil)
                             return
                         }
-                        guard let _ = snapshot?.documents.first else {
+                        guard let _ = stickerData else {
                             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(missingStickerID).delete { (error) in
                                 guard let error = error else {return}
-                                completion(error, true)
+                                completion(error, nil)
                             }
                             return
                         }
@@ -328,15 +347,17 @@ struct StickerData {
     func uploadStickerInUserCollection(from stickerData: StickerViewModel,
                                        isRecentlyUploaded: Bool,
                                        isNew: Bool,
-                                       completion: @escaping (Error?, Bool) -> Void)
+                                       completion: @escaping (Error?, Bool?) -> Void)
     {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false)
-                return
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false)
+                    return
+                }
             }
-            if !isUserValid {
-                completion(nil, false)
+            if error != nil {
+                completion(error, nil)
                 return
             }
             guard let userData = userData else {return}
@@ -351,64 +372,71 @@ struct StickerData {
                                                                   Strings.stickerIsLovedField : false]
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerData.stickerID).setData(userStickerViewModelDictionary) { (error) in
                 guard let error = error else {return}
-                completion(error, true)
+                completion(error, nil)
             }
         }
     }
     
-    func updateRecentlyUploadedSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false)
-                return
+    func updateRecentlyUploadedSticker(on stickerID: String, completion: @escaping (Error?, Bool?) -> Void) {
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false)
+                    return
+                }
             }
-            if !isUserValid {
-                completion(nil, false)
+            if error != nil {
+                completion(error, nil)
                 return
             }
             guard let userData = userData else {return}
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsRecentlyUploadedField : false]) { (error) in
                 guard let error = error else {return}
-                completion(error, true)
+                completion(error, nil)
             }
         }
     }
     
-    func updateNewSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false)
-                return
+    func updateNewSticker(on stickerID: String, completion: @escaping (Error?, Bool?) -> Void) {
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false)
+                    return
+                }
             }
-            if !isUserValid {
-                completion(nil, false)
+            if error != nil {
+                completion(error, nil)
                 return
             }
             guard let userData = userData else {return}
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsNewField : false]) { (error) in
                 guard let error = error else {return}
-                completion(error, true)
+                completion(error, nil)
             }
         }
     }
     
-    func searchSticker(using searchText: String, completion: @escaping (Error?, Bool, UserStickerViewModel?) -> Void) {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false, nil)
-                return
+    func searchSticker(using searchText: String, completion: @escaping (Error?, Bool?, UserStickerViewModel?) -> Void) {
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false, nil)
+                    return
+                }
             }
-            if !isUserValid {
-                completion(nil, false, nil)
+            if error != nil {
+                completion(error, nil, nil)
                 return
             }
             guard let userData = userData else {return}
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true).whereField(Strings.stickerNameField, isEqualTo: searchText).getDocuments { (snapshot, error) in
+            let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true).whereField(Strings.stickerNameField, isEqualTo: searchText)
+            fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
                 if error != nil {
-                    completion(error, true, nil)
+                    completion(error, nil, nil)
                     return
                 }
-                guard let userStickerData = snapshot?.documents.first else {
+                guard let userStickerData = userStickerData else {
                     completion(nil, true, nil)
                     return
                 }
