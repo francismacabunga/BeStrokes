@@ -268,7 +268,7 @@ class SignUpViewController: UIViewController {
         if validateTextFields() && validateProfilePicture() {
             let userDataDictionary = userData()
             setSignUpButtonTappedAnimation()
-            user.createUser(with: userDataDictionary[Strings.userEmailField]!, userDataDictionary[Strings.userPasswordField]!) { [self] (error, authResult) in
+            user.createUser(with: userDataDictionary[Strings.userEmailField]!, and: userDataDictionary[Strings.userPasswordField]!) { [self] (error, authResult) in
                 guard let error = error else {
                     guard let authResult = authResult else {return}
                     UIView.animate(withDuration: 0.2) { [self] in

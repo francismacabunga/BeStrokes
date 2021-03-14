@@ -37,7 +37,7 @@ struct UserData {
     }
     
     func createUser(with email: String,
-                    _ password: String,
+                    and password: String,
                     completion: @escaping (Error?, AuthDataResult?) -> Void)
     {
         auth.createUser(withEmail: email, password: password) { (authResult, error) in
@@ -62,23 +62,31 @@ struct UserData {
         }
     }
     
-    func sendEmailVerification(completion: @escaping (Error?, Bool) -> Void) {
-        // USING 'checkIfUserIsValid'
-        
-//        checkIfUserIsValid { (user) in
-//            guard let signedInUser = user else {return}
-        auth.currentUser?.sendEmailVerification { (error) in
-                guard let error = error else {
-                    completion(nil, true)
+    func sendEmailVerification(completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+        checkIfUserIsValid { (error, isUserSignedIn, user) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false, nil)
                     return
                 }
-                completion(error, false)
             }
-//        }
+            if error != nil {
+                completion(error, nil, nil)
+                return
+            }
+            guard let signedInUser = user else {return}
+            signedInUser.sendEmailVerification { (error) in
+                guard let error = error else {
+                    completion(nil, true, true)
+                    return
+                }
+                completion(error, true, false)
+            }
+        }
     }
     
     func signInUser(with email: String,
-                    _ password: String,
+                    and password: String,
                     completion: @escaping (Error?, AuthDataResult?) -> Void)
     {
         auth.signIn(withEmail: email, password: password) { (authResult, error) in
@@ -100,78 +108,94 @@ struct UserData {
         }
     }
     
-    func checkIfUserIsValid(completion: @escaping (Error?, Bool?) -> Void) {
+    func checkIfUserIsValid(completion: @escaping (Error?, Bool?, User?) -> Void) {
         guard let signedInUser = auth.currentUser else {
-            completion(nil, false)
+            completion(nil, false, nil)
             return
         }
         signedInUser.reload { (error) in
             guard let error = error else {
-                completion(nil, true)
+                completion(nil, true, signedInUser)
                 return
             }
-            completion(error, nil)
+            completion(error, nil, nil)
         }
     }
     
-    func getSignedInUserData(completion: @escaping (Error?, Bool, UserViewModel?) -> Void) {
-        // USING 'checkIfUserIsValid'
-        checkIfUserIsValid { (error, isUserValid) in
-            guard let error = error else {
-                guard let isUserValid = isUserValid else {return}
-                if isUserValid {
-                    db.collection(Strings.userCollection).whereField(Strings.userIDField, isEqualTo: auth.currentUser!.uid).addSnapshotListener { (snapshot, error) in
-                        guard let error = error else {
-                            guard let userData = snapshot?.documents.first else {return}
-                            let userViewModel = UserViewModel(UserModel(userID: userData[Strings.userIDField] as! String,
-                                                                        firstName: userData[Strings.userFirstNameField] as! String,
-                                                                        lastName: userData[Strings.userLastNameField] as! String,
-                                                                        email: userData[Strings.userEmailField] as! String,
-                                                                        profilePic: userData[Strings.userProfilePicField] as! String))
-                            completion(nil, true, userViewModel)
-                            return
-                        }
-                        completion(error, true, nil)
-                    }
-                } else {
+    func getSignedInUserData(completion: @escaping (Error?, Bool?, UserViewModel?) -> Void) {
+        checkIfUserIsValid { (error, isUserSignedIn, user) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     completion(nil, false, nil)
+                    return
                 }
+            }
+            if error != nil {
+                completion(error, nil, nil)
                 return
             }
-            completion(error, false, nil)
+            guard let signedInUser = user else {return}
+            db.collection(Strings.userCollection).document(signedInUser.uid).addSnapshotListener { (snapshot, error) in
+                guard let error = error else {
+                    guard let userData = snapshot else {return}
+                    let userViewModel = UserViewModel(UserModel(userID: userData[Strings.userIDField] as! String,
+                                                                firstName: userData[Strings.userFirstNameField] as! String,
+                                                                lastName: userData[Strings.userLastNameField] as! String,
+                                                                email: userData[Strings.userEmailField] as! String,
+                                                                profilePic: userData[Strings.userProfilePicField] as! String))
+                    completion(nil, true, userViewModel)
+                    return
+                }
+                completion(error, nil, nil)
+            }
         }
     }
     
-    func isEmailVerified(completion: @escaping (Error?, Bool, Bool?) -> Void) {
-        // USING 'checkIfUserIsValid'
-        
-//        checkIfUserIsValid { (user) in
-//            guard let signedInUser = user else {return}
-        if auth.currentUser!.isEmailVerified {
+    func isEmailVerified(completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+        checkIfUserIsValid { (error, isUserSignedIn, user) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false, nil)
+                    return
+                }
+            }
+            if error != nil {
+                completion(error, nil, nil)
+                return
+            }
+            guard let signedInUser = user else {return}
+            if signedInUser.isEmailVerified {
                 completion(nil, true, true)
             } else {
                 completion(nil, true, false)
             }
-            return
-//        }
+        }
     }
     
     func updateUserData(_ firstName: String,
                         _ lastName: String,
                         _ email: String,
                         _ profilePicURL: String,
-                        completion: @escaping (Error?, Bool, Bool?) -> Void)
+                        completion: @escaping (Error?, Bool?, Bool?) -> Void)
     {
-        // USING 'checkIfUserIsValid'
-        
-//        checkIfUserIsValid { (user) in
-//            guard let signedInUser = user else {return}
-        auth.currentUser?.updateEmail(to: email) { (error) in
-                if error != nil {
-                    completion(error, true, false)
+        checkIfUserIsValid { (error, isUserSignedIn, user) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false, nil)
                     return
                 }
-            db.collection(Strings.userCollection).document(auth.currentUser!.uid).updateData([Strings.userFirstNameField : firstName,
+            }
+            if error != nil {
+                completion(error, nil, nil)
+                return
+            }
+            guard let signedInUser = user else {return}
+            signedInUser.updateEmail(to: email) { (error) in
+                if error != nil {
+                    completion(error, nil, false)
+                    return
+                }
+                db.collection(Strings.userCollection).document(signedInUser.uid).updateData([Strings.userFirstNameField : firstName,
                                                                                              Strings.userLastNameField : lastName,
                                                                                              Strings.userEmailField : email,
                                                                                              Strings.userProfilePicField : profilePicURL]) { (error) in
@@ -179,10 +203,10 @@ struct UserData {
                         completion(nil, true, true)
                         return
                     }
-                    completion(error, true, false)
+                    completion(error, nil, false)
                 }
             }
-//        }
+        }
     }
     
     func uploadProfilePic(with image: UIImage,
@@ -210,18 +234,26 @@ struct UserData {
         }
     }
     
-    func signOutUser(completion: @escaping (Error?, Bool?) -> Void) {
-        // USING 'checkIfUserIsValid'
-        
-//        checkIfUserIsValid { (user) in
-        guard let _ = auth.currentUser else {return}
+    func signOutUser(completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+        checkIfUserIsValid { (error, isUserSignedIn, user) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false, nil)
+                    return
+                }
+            }
+            if error != nil {
+                completion(error, nil, nil)
+                return
+            }
+            guard let _ = user else {return}
             do {
                 try auth.signOut()
-                completion(nil, true)
+                completion(nil, nil, true)
             } catch {
-                completion(nil, false)
+                completion(nil, nil, false)
             }
-//        }
+        }
     }
     
 }
