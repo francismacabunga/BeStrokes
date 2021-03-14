@@ -436,19 +436,10 @@ struct StickerData {
                     completion(error, nil, nil)
                     return
                 }
-                guard let userStickerData = userStickerData else {
+                guard let userStickerViewModel = userStickerData?.first else {
                     completion(nil, true, nil)
                     return
                 }
-                let userStickerViewModel = UserStickerViewModel(UserStickerModel(stickerID: userStickerData[Strings.stickerIDField] as! String,
-                                                                                 name: userStickerData[Strings.stickerNameField] as! String,
-                                                                                 image: userStickerData[Strings.stickerImageField] as! String,
-                                                                                 description: userStickerData[Strings.stickerDescriptionField] as! String,
-                                                                                 category: userStickerData[Strings.stickerCategoryField] as! String,
-                                                                                 tag: userStickerData[Strings.stickerTagField] as! String,
-                                                                                 isRecentlyUploaded: userStickerData[Strings.stickerIsRecentlyUploadedField] as! Bool,
-                                                                                 isNew: userStickerData[Strings.stickerIsNewField] as! Bool,
-                                                                                 isLoved: userStickerData[Strings.stickerIsLovedField] as! Bool))
                 completion(nil, true, userStickerViewModel)
             }
         }
