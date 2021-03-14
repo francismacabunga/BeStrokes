@@ -32,7 +32,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let user = UserData()
+    private let userData = UserData()
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
     private var stickerViewModel: [StickerViewModel]?
@@ -164,25 +164,27 @@ class HomeViewController: UIViewController {
     }
     
     func setProfilePicture() {
-        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            guard let error = error else {
-                if !isUserSignedIn {
+        userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                     return
                 }
-                guard let userData = userData else {return}
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
-                    Utilities.setDesignOn(button: homeProfilePictureButton, backgroundColor: .clear, isCircular: true)
-                    homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-                    hasProfilePicLoaded = true
-                    if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
-                        Utilities.setShadowOn(view: homeProfilePicContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
-                    }
-                }
+            }
+            if error != nil {
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
-            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            guard let userData = userData else {return}
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
+                Utilities.setDesignOn(button: homeProfilePictureButton, backgroundColor: .clear, isCircular: true)
+                homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                hasProfilePicLoaded = true
+                if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
+                    Utilities.setShadowOn(view: homeProfilePicContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
+                }
+            }
         }
     }
     
@@ -232,42 +234,48 @@ class HomeViewController: UIViewController {
     
     func showBannerNotification() {
         stickerData.fetchRecentlyUploadedSticker { [self] (error, isUserSignedIn, userStickerData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                    return
+                }
+            }
             if error != nil {
                 showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                return
-            }
-            if !isUserSignedIn {
-                showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                 return
             }
             guard let userStickerData = userStickerData else {return}
             triggerNotification()
             stickerData.updateRecentlyUploadedSticker(on: userStickerData.stickerID) { (error, isUserSignedIn) in
-                guard let error = error else {
-                    if !isUserSignedIn {
+                if isUserSignedIn != nil {
+                    if !isUserSignedIn! {
                         showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                         return
                     }
+                }
+                if error != nil {
+                    showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                     return
                 }
-                showAlertController(alertMessage: error.localizedDescription, withHandler: false)
             }
         }
     }
     
     func updateBadgeCounter() {
-        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, numberOfNewStickers, userStickerData) in
-            guard let error = error else {
-                if !isUserSignedIn {
+        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, numberOfNewStickers, _) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                     return
                 }
-                guard let numberOfNewStickers = numberOfNewStickers else {return}
-                UserDefaults.standard.setValue(numberOfNewStickers, forKey: Strings.notificationBadgeCounterKey)
-                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
+            }
+            if error != nil {
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
-            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            guard let numberOfNewStickers = numberOfNewStickers else {return}
+            UserDefaults.standard.setValue(numberOfNewStickers, forKey: Strings.notificationBadgeCounterKey)
+            NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
         }
     }
     
@@ -337,14 +345,15 @@ class HomeViewController: UIViewController {
             UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
             _ = stickerData.map({
                 self.stickerData.uploadStickerInUserCollection(from: $0, isRecentlyUploaded: false, isNew: false) { [self] (error, isUserSignedIn) in
-                    guard let error = error else {
-                        if !isUserSignedIn {
+                    if isUserSignedIn != nil {
+                        if !isUserSignedIn! {
                             showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                             return
                         }
-                        return
                     }
-                    showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+                    if error != nil {
+                        showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    }
                 }
             })
         }
@@ -355,25 +364,28 @@ class HomeViewController: UIViewController {
             _ = stickerData.map({
                 let stickerViewModel = $0
                 self.stickerData.checkIfStickerExistsInUserCollection(stickerID: stickerViewModel.stickerID) { [self] (error, isUserSignedIn, isStickerPresent) in
+                    if isUserSignedIn != nil {
+                        if !isUserSignedIn! {
+                            showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                            return
+                        }
+                    }
                     if error != nil {
                         showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                        return
-                    }
-                    if !isUserSignedIn {
-                        showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                         return
                     }
                     guard let isStickerPresent = isStickerPresent else {return}
                     if !isStickerPresent {
                         self.stickerData.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { (error, isUserSignedIn) in
-                            guard let error = error else {
-                                if !isUserSignedIn {
+                            if isUserSignedIn != nil {
+                                if !isUserSignedIn! {
                                     showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                                     return
                                 }
-                                return
                             }
-                            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+                            if error != nil {
+                                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                            }
                         }
                     }
                 }
@@ -383,14 +395,15 @@ class HomeViewController: UIViewController {
     
     func removeDeletedStickersInUserCollection() {
         stickerData.checkIfUserStickerExistsInStickerCollection { [self] (error, isUserSignedIn) in
-            guard let error = error else {
-                if !isUserSignedIn {
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
                     return
                 }
-                return
             }
-            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            if error != nil {
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+            }
         }
     }
     

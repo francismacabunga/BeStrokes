@@ -36,7 +36,7 @@ class SignUpViewController: UIViewController {
     private let imagePicker = UIImagePickerController()
     private var editedImage: UIImage? = nil
     private var imageIsChanged = false
-    private let user = UserData()
+    private let userData = UserData()
     
     
     //MARK: - View Controller Life Cycle
@@ -240,7 +240,7 @@ class SignUpViewController: UIViewController {
         }
         if signUpPasswordTextField.text != "" {
             guard let password = signUpPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return false}
-            let passwordValid = user.isPasswordValid(password)
+            let passwordValid = userData.isPasswordValid(password)
             if passwordValid {
                 signUpWarning1Label.isHidden = true
                 return true
@@ -252,7 +252,7 @@ class SignUpViewController: UIViewController {
         return Bool()
     }
     
-    func userData() -> [String : String] {
+    func userInfo() -> [String : String] {
         let firstName = signUpFirstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let lastName = signUpLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let email = signUpEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -266,9 +266,9 @@ class SignUpViewController: UIViewController {
     
     func signUpAccount() {
         if validateTextFields() && validateProfilePicture() {
-            let userDataDictionary = userData()
+            let userDataDictionary = userInfo()
             setSignUpButtonTappedAnimation()
-            user.createUser(with: userDataDictionary[Strings.userEmailField]!, and: userDataDictionary[Strings.userPasswordField]!) { [self] (error, authResult) in
+            userData.createUser(with: userDataDictionary[Strings.userEmailField]!, and: userDataDictionary[Strings.userPasswordField]!) { [self] (error, authResult) in
                 guard let error = error else {
                     guard let authResult = authResult else {return}
                     UIView.animate(withDuration: 0.2) { [self] in
@@ -284,7 +284,7 @@ class SignUpViewController: UIViewController {
     }
     
     func uploadUserData(using authResult: AuthDataResult, with userDataDictionary: [String : String]) {
-        user.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { [self] (error, profilePic) in
+        userData.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { [self] (error, profilePic) in
             if error != nil {
                 showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
                 setSignUpButtonToOriginalDesign()
@@ -296,7 +296,7 @@ class SignUpViewController: UIViewController {
                               Strings.userLastNameField : userDataDictionary[Strings.userLastNameField]!,
                               Strings.userEmailField : userDataDictionary[Strings.userEmailField]!,
                               Strings.userProfilePicField : profilePic]
-            user.storeData(using: authResult.user.uid, with: dictionary) { (error, isFinishedStoring) in
+            userData.storeData(using: authResult.user.uid, with: dictionary) { (error, isFinishedStoring) in
                 guard let error = error else {
                     if isFinishedStoring {
                         sendEmailVerification()
@@ -310,8 +310,18 @@ class SignUpViewController: UIViewController {
     }
     
     func sendEmailVerification() {
-        user.sendEmailVerification { [self] (error, isEmailVerificationSent) in
-            guard let error = error else {
+        userData.sendEmailVerification { [self] (error, isUserSignedIn, isEmailVerificationSent) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpNoUserIsCreatedErrorLabel, isASuccessMessage: false)
+                    return
+                }
+                if error != nil {
+                    showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
+                    setSignUpButtonToOriginalDesign()
+                    return
+                }
+                guard let isEmailVerificationSent = isEmailVerificationSent else {return}
                 if isEmailVerificationSent {
                     showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
                     setSignUpButtonTransitionAnimation()
@@ -320,10 +330,7 @@ class SignUpViewController: UIViewController {
                     }
                     UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
                 }
-                return
             }
-            showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
-            setSignUpButtonToOriginalDesign()
         }
     }
     

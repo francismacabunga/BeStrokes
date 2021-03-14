@@ -34,7 +34,7 @@ class AccountViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let user = UserData()
+    private let userData = UserData()
     private let stickerData = StickerData()
     private var userStickerViewModel: [UserStickerViewModel]?
     private var userViewModel: UserViewModel?
@@ -194,46 +194,50 @@ class AccountViewController: UIViewController {
     }
     
     func setSignedInUserData() {
-        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            guard let error = error else {
-                if !isUserSignedIn {
+        userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(noSignedInUserAlert!, animated: true)
                     return
                 }
-                guard let userData = userData else {return}
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
-                    accountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                    accountNameHeadingLabel.text = "\(userData.firstName) \(userData.lastname)"
-                    accountEmailHeadingLabel.text = userData.email
-                    hideLoadingSkeletonView()
-                }
+            }
+            if error != nil {
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(errorAlert!, animated: true)
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            guard let userData = userData else {return}
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
+                accountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                accountNameHeadingLabel.text = "\(userData.firstName) \(userData.lastname)"
+                accountEmailHeadingLabel.text = userData.email
+                hideLoadingSkeletonView()
+            }
         }
     }
     
     func setLovedStickersData() {
-        stickerData.fetchLovedSticker { [self] (error, isUserSignedIn, isStickerLoved, userStickerData) in
-            guard let error = error else {
-                if !isUserSignedIn {
+        stickerData.fetchLovedSticker { [self] (error, isUserSignedIn, _, userStickerData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(noSignedInUserAlert!, animated: true)
                     return
                 }
-                guard let userStickerData = userStickerData else {return}
-                userStickerViewModel = userStickerData
-                checkIfUserStickerViewModelIsEmpty(withDelay: 0.5)
+            }
+            if error != nil {
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(errorAlert!, animated: true)
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            guard let userStickerData = userStickerData else {return}
+            userStickerViewModel = userStickerData
+            checkIfUserStickerViewModelIsEmpty(withDelay: 0.5)
         }
     }
     
@@ -349,16 +353,18 @@ extension AccountViewController: UITextFieldDelegate {
         accountSearchTextField.resignFirstResponder()
         if accountSearchTextField.text != nil {
             stickerData.searchSticker(using: accountSearchTextField.text!) { [self] (error, isUserSignedIn, userStickerData) in
+                if isUserSignedIn != nil {
+                    if !isUserSignedIn! {
+                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        }
+                        present(noSignedInUserAlert!, animated: true)
+                        return
+                    }
+                }
                 if error != nil {
                     let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
                     present(errorAlert!, animated: true)
-                    return
-                }
-                if !isUserSignedIn {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
                     return
                 }
                 guard let userStickerViewModel = userStickerData else {

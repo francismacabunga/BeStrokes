@@ -61,18 +61,19 @@ class StickerOptionViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         if UserDefaults.standard.bool(forKey: Strings.notificationTabIsTappedKey) {
             stickerData.updateNewSticker(on: userStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
-                guard let error = error else {
-                    if !isUserSignedIn {
+                if isUserSignedIn != nil {
+                    if !isUserSignedIn! {
                         let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                             _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                         }
                         present(noSignedInUserAlert!, animated: true)
                         return
                     }
-                    return
                 }
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                if error != nil {
+                    let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                    present(errorAlert!, animated: true)
+                }
             }
         }
     }
@@ -145,27 +146,29 @@ class StickerOptionViewController: UIViewController {
     }
     
     func checkIfStickerIsLoved(_ stickerID: String) {
-        stickerData.fetchLovedSticker(on: stickerID) { [self] (error, isUserIsSignedIn, isStickerLoved, userStickerData) in
-            guard let error = error else {
-                if !isUserIsSignedIn {
+        stickerData.fetchLovedSticker(on: stickerID) { [self] (error, isUserSignedIn, isStickerLoved, _) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(noSignedInUserAlert!, animated: true)
                     return
                 }
-                guard let isStickerLoved = isStickerLoved else {return}
-                if isStickerLoved {
-                    Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                    heartButtonTapped = true
-                } else {
-                    Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                    heartButtonTapped = false
-                }
+            }
+            if error != nil {
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(errorAlert!, animated: true)
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            guard let isStickerLoved = isStickerLoved else {return}
+            if isStickerLoved {
+                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                heartButtonTapped = true
+            } else {
+                Utilities.setDesignOn(imageView: stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                heartButtonTapped = false
+            }
         }
     }
     
@@ -232,41 +235,43 @@ class StickerOptionViewController: UIViewController {
     }
     
     func tapHeartButton(using stickerID: String) {
-        heartButtonLogic.tapHeartButton(using: stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
-            guard let error = error else {
-                if !isUserSignedIn {
+        heartButtonLogic.tapHeartButton(using: stickerID) { [self] (error, isUserSignedIn) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(noSignedInUserAlert!, animated: true)
                     return
                 }
-                return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            if error != nil {
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(errorAlert!, animated: true)
+            }
         }
     }
     
     func untapHeartButton(using stickerID: String, completion: @escaping (Bool) -> Void) {
         heartButtonLogic.untapHeartButton(using: stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                    }
+                    present(noSignedInUserAlert!, animated: true)
+                    return
+                }
+            }
             if error != nil {
                 let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
                 present(errorAlert!, animated: true)
                 return
             }
-            if !isUserSignedIn {
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
-                return
+            guard let isProcessDone = isProcessDone else {return}
+            if isProcessDone {
+                completion(true)
             }
-            guard let _ = isProcessDone else {
-                completion(false)
-                return
-            }
-            completion(true)
         }
     }
     

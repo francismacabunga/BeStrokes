@@ -36,7 +36,7 @@ class EditAccountViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private var userViewModel: UserViewModel?
-    private let user = UserData()
+    private let userData = UserData()
     private let imagePicker = UIImagePickerController()
     private var editedImage: UIImage?
     private lazy var userID = String()
@@ -120,33 +120,35 @@ class EditAccountViewController: UIViewController {
     }
     
     func setData() {
-        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            guard let error = error else {
-                if !isUserSignedIn {
+        userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(noSignedInUserAlert!, animated: true)
                     return
                 }
-                guard let userData = userData else {return}
-                userID = userData.userID
-                profilePic = userData.profilePic
-                initialUserEmail = userData.email
-                DispatchQueue.main.async { [self] in
-                    editAccountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                    editAccountFirstNameTextField.text = userData.firstName
-                    editAccountLastNameTextField.text = userData.lastname
-                    editAccountEmailTextField.text = userData.email
-                }
+            }
+            if error != nil {
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(errorAlert!, animated: true)
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            guard let userData = userData else {return}
+            userID = userData.userID
+            profilePic = userData.profilePic
+            initialUserEmail = userData.email
+            DispatchQueue.main.async { [self] in
+                editAccountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                editAccountFirstNameTextField.text = userData.firstName
+                editAccountLastNameTextField.text = userData.lastname
+                editAccountEmailTextField.text = userData.email
+            }
         }
     }
     
-    func userData() -> [String : String?] {
+    func userInfo() -> [String : String?] {
         let firstName = editAccountFirstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let lastName = editAccountLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let email = editAccountEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -216,7 +218,7 @@ class EditAccountViewController: UIViewController {
     //MARK: - Buttons
     
     func returnButtonTapped() {
-        let field = userData()
+        let field = userInfo()
         if field[Strings.userFirstNameField] != "" &&  field[Strings.userLastNameField] != "" && field[Strings.userEmailField] != "" {
             checkIfEmailIsVerified(using: field[Strings.userFirstNameField]!!, field[Strings.userLastNameField]!!, field[Strings.userEmailField]!!, field[Strings.userInitialUserEmail]!!)
         } else {
@@ -227,7 +229,7 @@ class EditAccountViewController: UIViewController {
     @IBAction func editAccountSaveButton(_ sender: UIButton) {
         Utilities.animate(button: sender)
         let buttonCurrentTitle = sender.currentTitle
-        let field = userData()
+        let field = userInfo()
         if field[Strings.userFirstNameField] != "" &&  field[Strings.userLastNameField] != "" && field[Strings.userEmailField] != "" {
             if buttonCurrentTitle != Strings.resendButtonText {
                 checkIfEmailIsVerified(using: field[Strings.userFirstNameField]!!, field[Strings.userLastNameField]!!, field[Strings.userEmailField]!!, field[Strings.userInitialUserEmail]!!)
@@ -251,23 +253,33 @@ class EditAccountViewController: UIViewController {
     }
     
     func sendEmailVerification(with successLabel: String) {
-        user.sendEmailVerification { [self] (error, isEmailVerificationSent) in
-            guard let error = error else {
-                if isEmailVerificationSent {
-                    showWarningLabel(on: editAccountWarningLabel, customizedWarning: successLabel, isASuccessMessage: true)
-                    setEditAccountButtonToOriginalDesign()
+        userData.sendEmailVerification { [self] (error, isUserSignedIn, isEmailVerificationSent) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                    }
+                    present(noSignedInUserAlert!, animated: true)
+                    return
                 }
+            }
+            if error != nil {
+                showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
+                Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
                 return
             }
-            showWarningLabel(on: editAccountWarningLabel, with: error, isASuccessMessage: false)
-            Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
+            guard let isEmailVerificationSent = isEmailVerificationSent else {return}
+            if isEmailVerificationSent {
+                showWarningLabel(on: editAccountWarningLabel, customizedWarning: successLabel, isASuccessMessage: true)
+                setEditAccountButtonToOriginalDesign()
+            }
         }
     }
     
     func checkIfEmailIsVerified(using firstName: String, _ lastName: String, _ email: String, _ initialUserEmail: String) {
-        user.isEmailVerified { [self] (error, isUserSignedIn, isEmailVerified) in
-            guard let error = error else {
-                if !isUserSignedIn {
+        userData.isEmailVerified { [self] (error, isUserSignedIn, isEmailVerified) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
@@ -275,24 +287,26 @@ class EditAccountViewController: UIViewController {
                     setEditAccountButtonToOriginalDesign()
                     return
                 }
-                guard let isEmailVerified = isEmailVerified else {return}
-                if isEmailVerified {
-                    showLoadingButton()
-                    updateAccount(using: firstName, lastName, email, initialUserEmail)
-                } else {
-                    showWarningLabel(on: editAccountWarningLabel, customizedWarning: Strings.editAccountEmailVerficationErrorLabel, isASuccessMessage: false)
-                    Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
-                }
+            }
+            if error != nil {
+                showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
+                setEditAccountButtonToOriginalDesign()
                 return
             }
-            showWarningLabel(on: editAccountWarningLabel, with: error, isASuccessMessage: false)
-            setEditAccountButtonToOriginalDesign()
+            guard let isEmailVerified = isEmailVerified else {return}
+            if isEmailVerified {
+                showLoadingButton()
+                updateAccount(using: firstName, lastName, email, initialUserEmail)
+            } else {
+                showWarningLabel(on: editAccountWarningLabel, customizedWarning: Strings.editAccountEmailVerficationErrorLabel, isASuccessMessage: false)
+                Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
+            }
         }
     }
     
     func updateAccount(using firstName: String, _ lastName: String, _ email: String, _ initialUserEmail: String) {
         if editedImage != nil {
-            user.uploadProfilePic(with: editedImage!, using: userID) { [self] (error, chosenPic) in
+            userData.uploadProfilePic(with: editedImage!, using: userID) { [self] (error, chosenPic) in
                 guard let error = error else {
                     guard let chosenPic = chosenPic else {return}
                     updateAccountProcess(using: firstName, lastName, email, chosenPic, initialUserEmail)
@@ -307,9 +321,9 @@ class EditAccountViewController: UIViewController {
     
     func updateAccountProcess(using firstName: String, _ lastName: String, _ email: String, _ profilePic: String, _ initialUserEmail: String) {
         if initialUserEmail != email {
-            user.updateUserData(firstName, lastName, email, profilePic) { [self] (error, isUserSignedIn, isUpdateDataFinished) in
-                guard let error = error else {
-                    if !isUserSignedIn {
+            userData.updateUserData(firstName, lastName, email, profilePic) { [self] (error, isUserSignedIn, isUpdateFinished) in
+                if isUserSignedIn != nil {
+                    if !isUserSignedIn! {
                         let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                             _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                         }
@@ -317,19 +331,21 @@ class EditAccountViewController: UIViewController {
                         setEditAccountButtonToOriginalDesign()
                         return
                     }
-                    guard let isUpdateDataFinished = isUpdateDataFinished else {return}
-                    if isUpdateDataFinished {
-                        sendEmailVerification(with: Strings.editAccountProcessSuccessfulLabel)
-                    }
+                }
+                if error != nil {
+                    showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
+                    setEditAccountButtonToOriginalDesign()
                     return
                 }
-                showWarningLabel(on: editAccountWarningLabel, with: error, isASuccessMessage: false)
-                setEditAccountButtonToOriginalDesign()
+                guard let isUpdateFinished = isUpdateFinished else {return}
+                if isUpdateFinished {
+                    sendEmailVerification(with: Strings.editAccountProcessSuccessfulLabel)
+                }
             }
         } else {
-            user.updateUserData(firstName, lastName, email, profilePic) { [self] (error, isUserSignedIn, isUpdateDataFinished) in
-                guard let error = error else {
-                    if !isUserSignedIn {
+            userData.updateUserData(firstName, lastName, email, profilePic) { [self] (error, isUserSignedIn, isUpdateFinished) in
+                if isUserSignedIn != nil {
+                    if !isUserSignedIn! {
                         let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                             _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                         }
@@ -337,17 +353,19 @@ class EditAccountViewController: UIViewController {
                         setEditAccountButtonToOriginalDesign()
                         return
                     }
-                    guard let isUpdateDataFinished = isUpdateDataFinished else {return}
-                    if isUpdateDataFinished {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            setEditAccountButtonToOriginalDesign()
-                            dismiss(animated: true)
-                        }
-                    }
+                }
+                if error != nil {
+                    showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
+                    setEditAccountButtonToOriginalDesign()
                     return
                 }
-                showWarningLabel(on: editAccountWarningLabel, with: error, isASuccessMessage: false)
-                setEditAccountButtonToOriginalDesign()
+                guard let isUpdateFinished = isUpdateFinished else {return}
+                if isUpdateFinished {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        setEditAccountButtonToOriginalDesign()
+                        dismiss(animated: true)
+                    }
+                }
             }
         }
     }
