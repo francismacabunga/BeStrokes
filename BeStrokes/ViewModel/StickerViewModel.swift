@@ -453,14 +453,16 @@ struct HeartButtonLogic {
     private let db = Firestore.firestore()
     private let userData = UserData()
     
-    func tapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if !isUserValid {
-                completion(nil, false, nil)
-                return
+    func tapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool?) -> Void) {
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false)
+                    return
+                }
             }
             if error != nil {
-                completion(error, false, nil)
+                completion(error, nil)
                 return
             }
             guard let userData = userData else {return}
@@ -471,39 +473,42 @@ struct HeartButtonLogic {
             // Save User Data to Sticker Collection -- checkIfStickerIsLoved
             db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).setData(userDataDictionary) { (error) in
                 guard let error = error else {return}
-                completion(error, true, nil)
+                completion(error, nil)
             }
             // Update 'isLoved' field on Sticker Collection at User Collection
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsLovedField : true]) { (error) in
                 guard let error = error else {return}
-                completion(error, true, nil)
+                completion(error, nil)
             }
-            completion(nil, true, true)
         }
     }
     
-    func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
-        userData.getSignedInUserData { (error, isUserValid, userData) in
-            if error != nil {
-                completion(error, false, nil)
-                return
+    func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    completion(nil, false, nil)
+                    return
+                }
             }
-            if !isUserValid {
-                completion(nil, false, nil)
+            if error != nil {
+                completion(error, nil, nil)
                 return
             }
             guard let userData = userData else {return}
             // Remove User Data to Sticker Collection
             db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).delete { (error) in
                 guard let error = error else {return}
-                completion(error, true, nil)
+                completion(error, nil, nil)
             }
             // Update 'isLoved' field on Sticker Collection at User Collection
             db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsLovedField : false]) { (error) in
-                guard let error = error else {return}
-                completion(error, true, nil)
+                guard let error = error else {
+                    completion(nil, true, true)
+                    return
+                }
+                completion(error, nil, nil)
             }
-            completion(nil, true, true)
         }
     }
     
