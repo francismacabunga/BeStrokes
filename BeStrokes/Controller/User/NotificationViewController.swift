@@ -79,22 +79,24 @@ class NotificationViewController: UIViewController {
     }
     
     func setNotificationData() {
-        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, numberOfNewStickers, userStickerData) in
-            guard let error = error else {
-                if !isUserSignedIn {
+        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, _, userStickerData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(noSignedInUserAlert!, animated: true)
                     return
                 }
-                guard let userStickerData = userStickerData else {return}
-                userStickerViewModel = userStickerData
-                checkIfUserStickerViewModelIsEmpty()
+            }
+            if error != nil {
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(errorAlert!, animated: true)
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            guard let userStickerData = userStickerData else {return}
+            userStickerViewModel = userStickerData
+            checkIfUserStickerViewModelIsEmpty()
         }
     }
     

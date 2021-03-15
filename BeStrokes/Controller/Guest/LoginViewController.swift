@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let user = UserData()
+    private let userData = UserData()
     
     
     //MARK: - View Controller Life Cyle
@@ -176,7 +176,7 @@ class LoginViewController: UIViewController {
     func processLogin() {
         guard let email = loginEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
         guard let password = loginPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
-        user.signInUser(with: email, password) { [self] (error, authResult) in
+        userData.signInUser(with: email, and: password) { [self] (error, _) in
             guard let error = error else {
                 removeWarningLabel()
                 setLoginButtonTappedAnimation()

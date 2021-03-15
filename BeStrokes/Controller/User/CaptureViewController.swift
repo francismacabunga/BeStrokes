@@ -89,28 +89,14 @@ class CaptureViewController: UIViewController {
             return
         }
         if isPresentedWithTabBar() {
-            userData.checkIfUserIsValid { [self] (error, _) in
-                guard let error = error else {return}
-                let invalidUserAlert = Utilities.showDismissAlert(message: error.localizedDescription, view: view)
-                present(invalidUserAlert, animated: true)
-            }
-            
-            
-//            userData.checkIfUserIsValid { [self] (error) in
-//                guard let error = error else {
-//                    return
-//                }
-//                let invalidUserAlert = Utilities.showDismissAlert(message: error.localizedDescription, view: view)
-//                present(invalidUserAlert, animated: true)
-//            }
-            
-            
+            checkIsUserIsValid()
             if UserDefaults.standard.bool(forKey: Strings.captureButtonKey) == false {
                 showCaptureVCTutorial()
             } else {
                 showCaptureVCDefaultDesign()
             }
         } else {
+            checkIsUserIsValid()
             if UserDefaults.standard.bool(forKey: Strings.tryMeButtonKey) == false {
                 showCaptureVCTutorial()
             } else {
@@ -230,8 +216,8 @@ class CaptureViewController: UIViewController {
                 stickerMaterial.diffuse.contents = UIImage(data: imageData)
                 return
             }
-//            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-//            present(errorAlert!, animated: true)
+            //            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+            //            present(errorAlert!, animated: true)
         }
         dataTask.resume()
     }
@@ -272,6 +258,25 @@ class CaptureViewController: UIViewController {
         }
     }
     
+    func checkIsUserIsValid() {
+        userData.checkIfUserIsValid { [self] (error, isUserSignedIn, _) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
+                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                    }
+                    present(noSignedInUserAlert!, animated: true)
+                    return
+                }
+            }
+            if error != nil {
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(errorAlert!, animated: true)
+                return
+            }
+        }
+    }
+    
     
     //MARK: - UIGestureHandlers
     
@@ -301,18 +306,20 @@ class CaptureViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.notificationTabIsTappedKey) {
             guard let userStickerViewModel = userStickerViewModel else {return}
             stickerData.updateNewSticker(on: userStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
-                guard let error = error else {
-                    if !isUserSignedIn {
-//                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-//                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-//                        }
-//                        present(noSignedInUserAlert!, animated: true)
+                if isUserSignedIn != nil {
+                    if !isUserSignedIn! {
+                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        }
+                        present(noSignedInUserAlert!, animated: true)
                         return
                     }
+                }
+                if error != nil {
+                    let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                    present(errorAlert!, animated: true)
                     return
                 }
-//                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-//                present(errorAlert!, animated: true)
             }
         }
         dismiss(animated: true)
@@ -345,16 +352,16 @@ class CaptureViewController: UIViewController {
             guard let ARSCNView = tapGesture.view as? ARSCNView else {return}
             let tapLocation = tapGesture.location(in: ARSCNView)
             guard let raycastResult = capture.performRaycast(on: ARSCNView, tapLocation) else {
-//                let raycastErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertRaycastErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-//                present(raycastErrorAlert!, animated: true)
+                //                let raycastErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertRaycastErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                //                present(raycastErrorAlert!, animated: true)
                 return
             }
             raycastTargetAlignment = raycastResult.targetAlignment
             createStickerNode(using: raycastResult)
             return
         }
-//        let raycastErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertNoStickerErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-//        present(raycastErrorAlert!, animated: true)
+        //        let raycastErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertNoStickerErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+        //        present(raycastErrorAlert!, animated: true)
     }
     
     @objc func longPressStickerGestureHandler(longPressGesture: UILongPressGestureRecognizer) {
@@ -419,8 +426,8 @@ class CaptureViewController: UIViewController {
     
     func createPlaneNode(using anchor: ARAnchor) -> SCNNode? {
         guard let planeAnchor = capture.createPlaneAnchor(using: anchor) else {
-//            let anchorErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertAnchorErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-//            present(anchorErrorAlert!, animated: true)
+            //            let anchorErrorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.captureAlertAnchorErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+            //            present(anchorErrorAlert!, animated: true)
             return nil
         }
         let planeMaterials = SCNMaterial()
@@ -448,8 +455,8 @@ class CaptureViewController: UIViewController {
             stickerNodes.append(stickerNode)
             fadePlaneNode()
         } else {
-//            let stickerErrorAlert = Utilities.showAlert(alertTitle: Strings.captureAlertWarningTitle, alertMessage: Strings.captureAlertExcessStickerErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-//            present(stickerErrorAlert!, animated: true)
+            //            let stickerErrorAlert = Utilities.showAlert(alertTitle: Strings.captureAlertWarningTitle, alertMessage: Strings.captureAlertExcessStickerErrorMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+            //            present(stickerErrorAlert!, animated: true)
         }
     }
     

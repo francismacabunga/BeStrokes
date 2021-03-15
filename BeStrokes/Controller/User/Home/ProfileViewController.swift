@@ -31,7 +31,7 @@ class ProfileViewController: UIViewController {
     
     private var profileSettingsViewModel: [ProfileSettingsViewModel]!
     private let fetchProfileData = FetchProfileData()
-    private let user = UserData()
+    private let userData = UserData()
     private var skeletonColor: UIColor?
     private var hasProfilePicLoaded = false
     
@@ -134,25 +134,27 @@ class ProfileViewController: UIViewController {
     }
     
     func getSignedInUserData() {
-        user.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            guard let error = error else {
-                if !isUserSignedIn {
+        userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(noSignedInUserAlert!, animated: true)
                     return
                 }
-                guard let userData = userData else {return}
-                profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
-                profileEmailLabel.text = userData.email
-                hasProfilePicLoaded = true
-                hideLoadingSkeletonView()
+            }
+            if error != nil {
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(errorAlert!, animated: true)
                 return
             }
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            present(errorAlert!, animated: true)
+            guard let userData = userData else {return}
+            profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+            profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
+            profileEmailLabel.text = userData.email
+            hasProfilePicLoaded = true
+            hideLoadingSkeletonView()
         }
     }
     
@@ -167,26 +169,31 @@ class ProfileViewController: UIViewController {
         }
     }
     
-//    func signOutUser() {
-//        let logoutAlert = Utilities.showAlert(alertTitle: Strings.logoutAlertTitle, alertMessage: "", alertActionTitle1: Strings.logoutYesAction, alertActionTitle2: Strings.logoutNoAction) { [self] in
-//            let signOutUser = user.signOutUser { (isUserSignedIn) in
-//                if !isUserSignedIn {
-//                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-//                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-//                    }
-//                    present(noSignedInUserAlert!, animated: true)
-//                    return
-//                }
-//            }
-//            if !signOutUser {
-//                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.profileCannotSignOutUserLabel, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-//                present(errorAlert!, animated: true)
-//                return
-//            }
-//            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-//        }
-//        present(logoutAlert!, animated: true)
-//    }
+    func signOutUser() {
+        let logoutAlert = Utilities.showAlert(alertTitle: Strings.logoutAlertTitle, alertMessage: "", alertActionTitle1: Strings.logoutYesAction, alertActionTitle2: Strings.logoutNoAction) { [self] in
+            userData.signOutUser { [self] (error, isUserSignedIn, isUserSignedOut) in
+                if isUserSignedIn != nil {
+                    if !isUserSignedIn! {
+                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        }
+                        present(noSignedInUserAlert!, animated: true)
+                        return
+                    }
+                }
+                if error != nil {
+                    let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                    present(errorAlert!, animated: true)
+                    return
+                }
+                guard let isUserSignedOut = isUserSignedOut else {return}
+                if isUserSignedOut {
+                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                }
+            }
+        }
+        present(logoutAlert!, animated: true)
+    }
     
     
     //MARK: - Buttons
@@ -239,7 +246,7 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let clickedCell = profileSettingsViewModel[indexPath.item].profileSettings.first!.settingLabel
         if clickedCell == Strings.profileSettingsLogout {
-//            signOutUser()
+            //            signOutUser()
         }
     }
     

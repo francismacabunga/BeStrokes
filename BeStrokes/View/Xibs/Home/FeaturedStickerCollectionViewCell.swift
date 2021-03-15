@@ -113,23 +113,25 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     }
     
     func getHeartButtonValue(from stickerID: String) {
-        stickerData.fetchLovedSticker(on: stickerID) { [self] (error, isUserSignedIn, isStickerLoved, userStickerData) in
-            guard let error = error else {
-                if !isUserSignedIn {
+        stickerData.fetchLovedSticker(on: stickerID) { [self] (error, isUserSignedIn, isStickerLoved, _) in
+            if isUserSignedIn != nil {
+                if !isUserSignedIn! {
                     featuredStickerCellDelegate?.getUserAuthenticationState(false)
                     return
                 }
-                guard let isStickerLoved = isStickerLoved else {return}
-                if isStickerLoved {
-                    Utilities.setDesignOn(imageView: featuredStickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                    heartButtonTapped = true
-                } else {
-                    Utilities.setDesignOn(imageView: featuredStickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                    heartButtonTapped = false
-                }
+            }
+            if error != nil {
+                featuredStickerCellDelegate?.getError(using: error!)
                 return
             }
-            featuredStickerCellDelegate?.getError(using: error)
+            guard let isStickerLoved = isStickerLoved else {return}
+            if isStickerLoved {
+                Utilities.setDesignOn(imageView: featuredStickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                heartButtonTapped = true
+            } else {
+                Utilities.setDesignOn(imageView: featuredStickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                heartButtonTapped = false
+            }
         }
     }
     
@@ -150,12 +152,14 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     
     @objc func tapGestureHandler() {
         guard let heartButtonTapped = heartButtonTapped,
-              let featuredStickerData = featuredStickerViewModel else {return}
+              let featuredStickerViewModel = featuredStickerViewModel else {return}
         if heartButtonTapped {
-            heartButtonLogic.untapHeartButton(using: featuredStickerData.stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
-                if !isUserSignedIn {
-                    featuredStickerCellDelegate?.getUserAuthenticationState(false)
-                    return
+            heartButtonLogic.untapHeartButton(using: featuredStickerViewModel.stickerID) { [self] (error, isUserSignedIn, _) in
+                if isUserSignedIn != nil {
+                    if !isUserSignedIn! {
+                        featuredStickerCellDelegate?.getUserAuthenticationState(false)
+                        return
+                    }
                 }
                 if error != nil {
                     featuredStickerCellDelegate?.getError(using: error!)
@@ -163,10 +167,12 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
                 }
             }
         } else {
-            heartButtonLogic.tapHeartButton(using: featuredStickerData.stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
-                if !isUserSignedIn {
-                    featuredStickerCellDelegate?.getUserAuthenticationState(false)
-                    return
+            heartButtonLogic.tapHeartButton(using: featuredStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
+                if isUserSignedIn != nil {
+                    if !isUserSignedIn! {
+                        featuredStickerCellDelegate?.getUserAuthenticationState(false)
+                        return
+                    }
                 }
                 if error != nil {
                     featuredStickerCellDelegate?.getError(using: error!)

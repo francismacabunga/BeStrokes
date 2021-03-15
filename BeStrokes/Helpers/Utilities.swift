@@ -576,14 +576,6 @@ struct Utilities {
         return nil
     }
     
-    static func showDismissAlert(message: String, view: UIView) -> UIAlertController {
-        let alert = UIAlertController(title: Strings.errorAlert, message: message, preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: Strings.dismissAlert, style: .default) { (alertAction) in
-            _ = transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-        }
-        alert.addAction(alertAction)
-        return alert
-    }
     
     
     
