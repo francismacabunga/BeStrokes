@@ -246,7 +246,7 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let clickedCell = profileSettingsViewModel[indexPath.item].profileSettings.first!.settingLabel
         if clickedCell == Strings.profileSettingsLogout {
-            //            signOutUser()
+            signOutUser()
         }
     }
     
