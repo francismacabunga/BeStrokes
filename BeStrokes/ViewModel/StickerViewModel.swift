@@ -202,7 +202,7 @@ struct StickerData {
                         completion(error, nil, nil, nil)
                         return
                     }
-                    guard let _ = userStickerData else {
+                    guard let _ = userStickerData?.first else {
                         completion(nil, true, false, nil)
                         return
                     }
