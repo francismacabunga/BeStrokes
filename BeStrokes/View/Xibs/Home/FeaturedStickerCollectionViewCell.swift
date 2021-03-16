@@ -28,12 +28,12 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     private var heartButtonTapped: Bool?
     private var skeletonColor: UIColor?
     var featuredStickerCellDelegate: FeaturedStickerCellDelegate?
-    var featuredStickerViewModel: FeaturedStickerViewModel? {
+    var featuredStickerViewModel: FeaturedStickerViewModel! {
         didSet {
-            guard let featuredStickerData = featuredStickerViewModel else {return}
-            featuredStickerLabel.text = featuredStickerData.name
-            featuredStickerImageView.kf.setImage(with: URL(string: featuredStickerData.image))
-            getHeartButtonValue(from: featuredStickerData.stickerID)
+//            guard let featuredStickerData = featuredStickerViewModel else {return}
+            featuredStickerLabel.text = featuredStickerViewModel.name
+            featuredStickerImageView.kf.setImage(with: URL(string: featuredStickerViewModel.image))
+            getHeartButtonValue(from: featuredStickerViewModel.stickerID)
         }
     }
     

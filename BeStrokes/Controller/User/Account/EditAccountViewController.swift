@@ -295,9 +295,11 @@ class EditAccountViewController: UIViewController {
             }
             guard let isEmailVerified = isEmailVerified else {return}
             if isEmailVerified {
+                print("Verified")
                 showLoadingButton()
                 updateAccount(using: firstName, lastName, email, initialUserEmail)
             } else {
+                print("Not verified")
                 showWarningLabel(on: editAccountWarningLabel, customizedWarning: Strings.editAccountEmailVerficationErrorLabel, isASuccessMessage: false)
                 Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
             }

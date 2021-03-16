@@ -133,91 +133,64 @@ struct StickerData {
     }
     
     func fetchRecentlyUploadedSticker(completion: @escaping (Error?, Bool?, UserStickerViewModel?) -> Void) {
-        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    completion(nil, false, nil)
-                    return
-                }
-            }
-            if error != nil {
-                completion(error, nil, nil)
+        guard let signedInUser = userData.checkIfUserIsSignedIn() else {
+            completion(nil, false, nil)
+            return
+        }
+        let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIsRecentlyUploadedField, isEqualTo: true)
+        fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
+            guard let error = error else {
+                guard let userStickerViewModel = userStickerData?.first else {return}
+                completion(nil, true, userStickerViewModel)
                 return
             }
-            guard let userData = userData else {return}
-            let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsRecentlyUploadedField, isEqualTo: true)
-            fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
-                guard let error = error else {
-                    guard let userStickerViewModel = userStickerData?.first else {return}
-                    completion(nil, true, userStickerViewModel)
-                    return
-                }
-                completion(error, nil, nil)
-            }
+            completion(error, nil, nil)
         }
     }
     
     func fetchNewSticker(completion: @escaping (Error?, Bool?, Int?, [UserStickerViewModel]?) -> Void) {
-        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    completion(nil, false, nil, nil)
-                    return
-                }
-            }
-            if error != nil {
-                completion(error, nil, nil, nil)
+        guard let signedInUser = userData.checkIfUserIsSignedIn() else {
+            completion(nil, false, nil, nil)
+            return
+        }
+        let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIsNewField, isEqualTo: true)
+        fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
+            guard let error = error else {
+                guard let userStickerViewModel = userStickerData else {return}
+                completion(nil, true, userStickerViewModel.count, userStickerViewModel)
                 return
             }
-            guard let userData = userData else {return}
-            let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsNewField, isEqualTo: true)
-            fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
-                guard let error = error else {
-                    guard let userStickerViewModel = userStickerData else {return}
-                    completion(nil, true, userStickerViewModel.count, userStickerViewModel)
-                    return
-                }
-                completion(error, nil, nil, nil)
-            }
+            completion(error, nil, nil, nil)
         }
     }
     
     func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool?, Bool?, [UserStickerViewModel]?) -> Void) {
-        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    completion(nil, false, nil, nil)
+        guard let signedInUser = userData.checkIfUserIsSignedIn() else {
+            completion(nil, false, nil, nil)
+            return
+        }
+        if stickerID != nil {
+            let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID!).whereField(Strings.stickerIsLovedField, isEqualTo: true)
+            fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
+                if error != nil {
+                    completion(error, nil, nil, nil)
                     return
                 }
+                guard let _ = userStickerData?.first else {
+                    completion(nil, true, false, nil)
+                    return
+                }
+                completion(nil, true, true, nil)
             }
-            if error != nil {
+        } else {
+            let firebaseQuery = db.collection(Strings.userCollection).document(Auth.auth().currentUser!.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true)
+            fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
+                guard let error = error else {
+                    guard let userStickerViewModel = userStickerData else {return}
+                    completion(nil, true, nil, userStickerViewModel)
+                    return
+                }
                 completion(error, nil, nil, nil)
-                return
-            }
-            guard let userData = userData else {return}
-            if stickerID != nil {
-                let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID!).whereField(Strings.stickerIsLovedField, isEqualTo: true)
-                fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
-                    if error != nil {
-                        completion(error, nil, nil, nil)
-                        return
-                    }
-                    guard let _ = userStickerData?.first else {
-                        completion(nil, true, false, nil)
-                        return
-                    }
-                    completion(nil, true, true, nil)
-                }
-            } else {
-                let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true)
-                fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
-                    guard let error = error else {
-                        guard let userStickerViewModel = userStickerData else {return}
-                        completion(nil, true, nil, userStickerViewModel)
-                        return
-                    }
-                    completion(error, nil, nil, nil)
-                }
             }
         }
     }
@@ -276,71 +249,54 @@ struct StickerData {
     }
     
     func checkIfStickerExistsInUserCollection(stickerID: String, completion: @escaping (Error?, Bool?, Bool?) -> Void) {
-        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    completion(nil, false, nil)
-                    return
-                }
-            }
+        guard let signedInUser = userData.checkIfUserIsSignedIn() else {
+            completion(nil, false, nil)
+            return
+        }
+        db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID).getDocuments { (snapshot, error) in
             if error != nil {
                 completion(error, nil, nil)
                 return
             }
-            guard let userData = userData else {return}
-            let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID)
-            fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
-                if error != nil {
-                    completion(error, nil, nil)
-                    return
-                }
-                guard let _ = userStickerData else {
-                    completion(nil, true, false)
-                    return
-                }
-                completion(nil, true, true)
+            guard let _ = snapshot?.documents.first else {
+                completion(nil, true, false)
+                return
             }
+            completion(nil, true, true)
         }
     }
     
     func checkIfUserStickerExistsInStickerCollection(completion: @escaping (Error?, Bool?) -> Void) {
-        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    completion(nil, false)
-                    return
-                }
-            }
+        guard let signedInUser = userData.checkIfUserIsSignedIn() else {
+            completion(nil, false)
+            return
+        }
+        let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection)
+        fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
             if error != nil {
                 completion(error, nil)
                 return
             }
-            guard let userData = userData else {return}
-            let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection)
-            fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
-                if error != nil {
-                    completion(error, nil)
-                    return
-                }
-                guard let userStickerData = userStickerData else {return}
-                _ = userStickerData.map({
-                    let missingStickerID = $0.stickerID
-                    let firebaseQuery = db.collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: $0.stickerID)
-                    fetchStickerData(withQuery: firebaseQuery) { (error, stickerData) in
-                        if error != nil {
-                            completion(error, nil)
-                            return
-                        }
-                        guard let _ = stickerData else {
-                            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(missingStickerID).delete { (error) in
-                                guard let error = error else {return}
-                                completion(error, nil)
-                            }
-                            return
-                        }
+            guard let userStickerData = userStickerData else {return}
+            _ = userStickerData.map({
+                let missingStickerID = $0.stickerID
+                let stickerName = $0.name
+                print("Before: \($0.name)")
+                db.collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: $0.stickerID).getDocuments { (snapshot, error) in
+                    if error != nil {
+                        completion(error, nil)
+                        return
                     }
-                })
-            }
+                    print("After: \(snapshot?.documents.count)")
+                    guard let _ = snapshot?.documents.first else {
+                        db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).document(missingStickerID).delete { (error) in
+                            guard let error = error else {return}
+                            completion(error, nil)
+                        }
+                        return
+                    }
+                }
+            })
         }
     }
     
@@ -349,99 +305,63 @@ struct StickerData {
                                        isNew: Bool,
                                        completion: @escaping (Error?, Bool?) -> Void)
     {
-        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    completion(nil, false)
-                    return
-                }
-            }
-            if error != nil {
-                completion(error, nil)
-                return
-            }
-            guard let userData = userData else {return}
-            let userStickerViewModelDictionary: [String : Any] = [Strings.stickerIDField : stickerData.stickerID,
-                                                                  Strings.stickerNameField : stickerData.name,
-                                                                  Strings.stickerImageField : stickerData.image,
-                                                                  Strings.stickerDescriptionField : stickerData.description,
-                                                                  Strings.stickerCategoryField : stickerData.category,
-                                                                  Strings.stickerTagField : stickerData.tag,
-                                                                  Strings.stickerIsRecentlyUploadedField : isRecentlyUploaded,
-                                                                  Strings.stickerIsNewField : isNew,
-                                                                  Strings.stickerIsLovedField : false]
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerData.stickerID).setData(userStickerViewModelDictionary) { (error) in
-                guard let error = error else {return}
-                completion(error, nil)
-            }
+        guard let signedInUser = userData.checkIfUserIsSignedIn() else {
+            completion(nil, false)
+            return
+        }
+        let userStickerViewModelDictionary: [String : Any] = [Strings.stickerIDField : stickerData.stickerID,
+                                                              Strings.stickerNameField : stickerData.name,
+                                                              Strings.stickerImageField : stickerData.image,
+                                                              Strings.stickerDescriptionField : stickerData.description,
+                                                              Strings.stickerCategoryField : stickerData.category,
+                                                              Strings.stickerTagField : stickerData.tag,
+                                                              Strings.stickerIsRecentlyUploadedField : isRecentlyUploaded,
+                                                              Strings.stickerIsNewField : isNew,
+                                                              Strings.stickerIsLovedField : false]
+        db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).document(stickerData.stickerID).setData(userStickerViewModelDictionary) { (error) in
+            guard let error = error else {return}
+            completion(error, nil)
         }
     }
     
     func updateRecentlyUploadedSticker(on stickerID: String, completion: @escaping (Error?, Bool?) -> Void) {
-        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    completion(nil, false)
-                    return
-                }
-            }
-            if error != nil {
-                completion(error, nil)
-                return
-            }
-            guard let userData = userData else {return}
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsRecentlyUploadedField : false]) { (error) in
-                guard let error = error else {return}
-                completion(error, nil)
-            }
+        guard let signedInUser = userData.checkIfUserIsSignedIn() else {
+            completion(nil, false)
+            return
+        }
+        db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsRecentlyUploadedField : false]) { (error) in
+            guard let error = error else {return}
+            completion(error, nil)
         }
     }
     
     func updateNewSticker(on stickerID: String, completion: @escaping (Error?, Bool?) -> Void) {
-        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    completion(nil, false)
-                    return
-                }
-            }
-            if error != nil {
-                completion(error, nil)
-                return
-            }
-            guard let userData = userData else {return}
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsNewField : false]) { (error) in
-                guard let error = error else {return}
-                completion(error, nil)
-            }
+        guard let signedInUser = userData.checkIfUserIsSignedIn() else {
+            completion(nil, false)
+            return
+        }
+        db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsNewField : false]) { (error) in
+            guard let error = error else {return}
+            completion(error, nil)
         }
     }
     
     func searchSticker(using searchText: String, completion: @escaping (Error?, Bool?, UserStickerViewModel?) -> Void) {
-        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    completion(nil, false, nil)
-                    return
-                }
-            }
+        guard let signedInUser = userData.checkIfUserIsSignedIn() else {
+            completion(nil, false, nil)
+            return
+        }
+        let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true).whereField(Strings.stickerNameField, isEqualTo: searchText)
+        fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
             if error != nil {
                 completion(error, nil, nil)
                 return
             }
-            guard let userData = userData else {return}
-            let firebaseQuery = db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true).whereField(Strings.stickerNameField, isEqualTo: searchText)
-            fetchUserStickerData(withQuery: firebaseQuery) { (error, userStickerData) in
-                if error != nil {
-                    completion(error, nil, nil)
-                    return
-                }
-                guard let userStickerViewModel = userStickerData?.first else {
-                    completion(nil, true, nil)
-                    return
-                }
-                completion(nil, true, userStickerViewModel)
+            guard let userStickerViewModel = userStickerData?.first else {
+                completion(nil, true, nil)
+                return
             }
+            completion(nil, true, userStickerViewModel)
         }
     }
     
@@ -484,31 +404,22 @@ struct HeartButtonLogic {
     }
     
     func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool?, Bool?) -> Void) {
-        userData.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    completion(nil, false, nil)
-                    return
-                }
-            }
-            if error != nil {
-                completion(error, nil, nil)
+        guard let signedInUser = userData.checkIfUserIsSignedIn() else {
+            completion(nil, false, nil)
+            return
+        }
+        // Remove User Data to Sticker Collection
+        db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(signedInUser.uid).delete { (error) in
+            guard let error = error else {return}
+            completion(error, nil, nil)
+        }
+        // Update 'isLoved' field on Sticker Collection at User Collection
+        db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsLovedField : false]) { (error) in
+            guard let error = error else {
+                completion(nil, true, true)
                 return
             }
-            guard let userData = userData else {return}
-            // Remove User Data to Sticker Collection
-            db.collection(Strings.stickerCollection).document(stickerID).collection(Strings.lovedByCollection).document(userData.userID).delete { (error) in
-                guard let error = error else {return}
-                completion(error, nil, nil)
-            }
-            // Update 'isLoved' field on Sticker Collection at User Collection
-            db.collection(Strings.userCollection).document(userData.userID).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsLovedField : false]) { (error) in
-                guard let error = error else {
-                    completion(nil, true, true)
-                    return
-                }
-                completion(error, nil, nil)
-            }
+            completion(error, nil, nil)
         }
     }
     

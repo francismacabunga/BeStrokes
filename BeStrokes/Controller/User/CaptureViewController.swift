@@ -259,7 +259,7 @@ class CaptureViewController: UIViewController {
     }
     
     func checkIsUserIsValid() {
-        userData.checkIfUserIsValid { [self] (error, isUserSignedIn, _) in
+        userData.checkIfUserIsValid { [self] (error, isUserSignedIn) in
             if isUserSignedIn != nil {
                 if !isUserSignedIn! {
                     let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
