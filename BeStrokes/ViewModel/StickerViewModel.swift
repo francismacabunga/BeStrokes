@@ -280,14 +280,11 @@ struct StickerData {
             guard let userStickerData = userStickerData else {return}
             _ = userStickerData.map({
                 let missingStickerID = $0.stickerID
-                let stickerName = $0.name
-                print("Before: \($0.name)")
                 db.collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: $0.stickerID).getDocuments { (snapshot, error) in
                     if error != nil {
                         completion(error, nil)
                         return
                     }
-                    print("After: \(snapshot?.documents.count)")
                     guard let _ = snapshot?.documents.first else {
                         db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).document(missingStickerID).delete { (error) in
                             guard let error = error else {return}
