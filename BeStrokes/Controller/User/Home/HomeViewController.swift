@@ -488,9 +488,10 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedStickerCollectionViewCell
             guard let featuredStickerViewModel = featuredStickerViewModel else {return cell}
             DispatchQueue.main.async {
+                cell.prepareFeaturedStickerCell()
                 cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.row]
                 cell.featuredStickerCellDelegate = self
-                cell.prepareFeaturedStickerCell()
+                
             }
             return cell
         }

@@ -86,17 +86,18 @@ class CaptureViewController: UIViewController {
         if isPresentedFromLandingVC {
             showCaptureVCTutorial()
             captureTutorial3Label.isHidden = false
+            registerTapGestureOnStickerContentView()
             return
         }
         if isPresentedWithTabBar() {
-            checkIsUserIsValid()
+            checkIfUserIsSignedIn()
             if UserDefaults.standard.bool(forKey: Strings.captureButtonKey) == false {
                 showCaptureVCTutorial()
             } else {
                 showCaptureVCDefaultDesign()
             }
         } else {
-            checkIsUserIsValid()
+            checkIfUserIsSignedIn()
             if UserDefaults.standard.bool(forKey: Strings.tryMeButtonKey) == false {
                 showCaptureVCTutorial()
             } else {
@@ -258,7 +259,9 @@ class CaptureViewController: UIViewController {
         }
     }
     
-    func checkIsUserIsValid() {
+    func checkIfUserIsSignedIn() {
+        
+        
         userData.checkIfUserIsValid { [self] (error, isUserSignedIn) in
             if isUserSignedIn != nil {
                 if !isUserSignedIn! {
@@ -275,6 +278,7 @@ class CaptureViewController: UIViewController {
                 return
             }
         }
+        
     }
     
     
@@ -284,7 +288,6 @@ class CaptureViewController: UIViewController {
         let tapExitButton = UITapGestureRecognizer(target: self, action: #selector(tapExitButtonGestureHandler))
         let tapDeleteButton = UITapGestureRecognizer(target: self, action: #selector(tapDeleteButtonGestureHandler))
         let tapChooseImageButton = UITapGestureRecognizer(target: self, action: #selector(tapChooseImageButtonGestureHandler))
-        let tapStickerName = UITapGestureRecognizer(target: self, action: #selector(tapStickerNameGestureHandler))
         let tapSticker = UITapGestureRecognizer(target: self, action: #selector(tapStickerGestureHandler(tapGesture:)))
         let longPressSticker = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressStickerGestureHandler(longPressGesture:)))
         let pinchSticker = UIPinchGestureRecognizer(target: self, action: #selector(Self.pinchStickerGestureHandler(pinchGesture:)))
@@ -292,7 +295,6 @@ class CaptureViewController: UIViewController {
         captureExitButtonImageView.addGestureRecognizer(tapExitButton)
         captureDeleteButtonImageView.addGestureRecognizer(tapDeleteButton)
         captureChooseImageButtonImageView.addGestureRecognizer(tapChooseImageButton)
-        captureStickerContentView.addGestureRecognizer(tapStickerName)
         captureSceneView.addGestureRecognizer(tapSticker)
         captureSceneView.addGestureRecognizer(longPressSticker)
         captureSceneView.addGestureRecognizer(pinchSticker)
@@ -300,6 +302,11 @@ class CaptureViewController: UIViewController {
         captureExitButtonImageView.isUserInteractionEnabled = true
         captureDeleteButtonImageView.isUserInteractionEnabled = true
         captureChooseImageButtonImageView.isUserInteractionEnabled = true
+    }
+    
+    func registerTapGestureOnStickerContentView() {
+        let tapStickerName = UITapGestureRecognizer(target: self, action: #selector(tapStickerNameGestureHandler))
+        captureStickerContentView.addGestureRecognizer(tapStickerName)
     }
     
     @objc func tapExitButtonGestureHandler() {

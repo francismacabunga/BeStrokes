@@ -16,7 +16,6 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var featuredStickerContentView: UIView!
     @IBOutlet weak var featuredStickerView: UIView!
     @IBOutlet weak var featuredStickerLabel: UILabel!
-    @IBOutlet weak var featuredStickerHeartButtonImageView: UIImageView!
     @IBOutlet weak var featuredStickerImageView: UIImageView!
     @IBOutlet weak var featuredStickerTryMeButton: UIButton!
     
@@ -28,12 +27,11 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     private var heartButtonTapped: Bool?
     private var skeletonColor: UIColor?
     var featuredStickerCellDelegate: FeaturedStickerCellDelegate?
-    var featuredStickerViewModel: FeaturedStickerViewModel! {
+    var featuredStickerViewModel: FeaturedStickerViewModel? {
         didSet {
-//            guard let featuredStickerData = featuredStickerViewModel else {return}
-            featuredStickerLabel.text = featuredStickerViewModel.name
-            featuredStickerImageView.kf.setImage(with: URL(string: featuredStickerViewModel.image))
-            getHeartButtonValue(from: featuredStickerViewModel.stickerID)
+            guard let featuredStickerData = featuredStickerViewModel else {return}
+            featuredStickerLabel.text = featuredStickerData.name
+            featuredStickerImageView.kf.setImage(with: URL(string: featuredStickerData.image))
         }
     }
     
@@ -46,10 +44,6 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
         setSkeletonColor()
         showLoadingSkeletonView()
         
-    }
-    
-    override func prepareForReuse() {
-        featuredStickerHeartButtonImageView.image = nil
     }
     
     
@@ -112,74 +106,9 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
         featuredStickerView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
     }
     
-    func getHeartButtonValue(from stickerID: String) {
-        stickerData.fetchLovedSticker(on: stickerID) { [self] (error, isUserSignedIn, isStickerLoved, _) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    featuredStickerCellDelegate?.getUserAuthenticationState(false)
-                    return
-                }
-            }
-            if error != nil {
-                featuredStickerCellDelegate?.getError(using: error!)
-                return
-            }
-            guard let isStickerLoved = isStickerLoved else {return}
-            if isStickerLoved {
-                Utilities.setDesignOn(imageView: featuredStickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                heartButtonTapped = true
-            } else {
-                Utilities.setDesignOn(imageView: featuredStickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                heartButtonTapped = false
-            }
-        }
-    }
-    
     func prepareFeaturedStickerCell() {
         hideLoadingSkeletonView()
         setDesignElements()
-        registerGestures()
-    }
-    
-    
-    //MARK: - UIGestureHandlers
-    
-    func registerGestures() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
-        featuredStickerHeartButtonImageView.addGestureRecognizer(tapGesture)
-        featuredStickerHeartButtonImageView.isUserInteractionEnabled = true
-    }
-    
-    @objc func tapGestureHandler() {
-        guard let heartButtonTapped = heartButtonTapped,
-              let featuredStickerViewModel = featuredStickerViewModel else {return}
-        if heartButtonTapped {
-            heartButtonLogic.untapHeartButton(using: featuredStickerViewModel.stickerID) { [self] (error, isUserSignedIn, _) in
-                if isUserSignedIn != nil {
-                    if !isUserSignedIn! {
-                        featuredStickerCellDelegate?.getUserAuthenticationState(false)
-                        return
-                    }
-                }
-                if error != nil {
-                    featuredStickerCellDelegate?.getError(using: error!)
-                    return
-                }
-            }
-        } else {
-            heartButtonLogic.tapHeartButton(using: featuredStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
-                if isUserSignedIn != nil {
-                    if !isUserSignedIn! {
-                        featuredStickerCellDelegate?.getUserAuthenticationState(false)
-                        return
-                    }
-                }
-                if error != nil {
-                    featuredStickerCellDelegate?.getError(using: error!)
-                    return
-                }
-            }
-        }
     }
     
     
@@ -198,8 +127,6 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
 //MARK: - Protocols
 
 protocol FeaturedStickerCellDelegate {
-    func getError(using error: Error)
-    func getUserAuthenticationState(_ isUserSignedIn: Bool)
     func getVC(using viewController: UIViewController)
 }
 

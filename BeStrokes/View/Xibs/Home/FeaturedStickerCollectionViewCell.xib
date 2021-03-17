@@ -23,18 +23,14 @@
                                 <rect key="frame" x="3" y="3" width="324" height="274"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zqW-oj-kiD">
-                                        <rect key="frame" x="25" y="10" width="239" height="50"/>
+                                        <rect key="frame" x="25" y="20" width="274" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="Duf-pG-J8G"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="88f-f7-XI0">
-                                        <rect key="frame" x="269" y="15" width="35" height="35"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="2Hh-4n-643"/>
-                                            <constraint firstAttribute="width" constant="35" id="rPu-05-5JH"/>
-                                        </constraints>
-                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dY6-vw-kCF">
                                         <rect key="frame" x="25" y="214" width="85" height="40"/>
                                         <constraints>
@@ -46,23 +42,20 @@
                                         </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="j03-Wy-krp">
-                                        <rect key="frame" x="115" y="60" width="204" height="209"/>
+                                        <rect key="frame" x="115" y="55" width="204" height="214"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="88f-f7-XI0" firstAttribute="leading" secondItem="zqW-oj-kiD" secondAttribute="trailing" constant="5" id="64b-JI-l65"/>
-                                    <constraint firstItem="zqW-oj-kiD" firstAttribute="top" secondItem="GWH-8E-Gc5" secondAttribute="top" constant="10" id="DNQ-YF-QVK"/>
+                                    <constraint firstItem="zqW-oj-kiD" firstAttribute="top" secondItem="GWH-8E-Gc5" secondAttribute="top" constant="20" id="DNQ-YF-QVK"/>
                                     <constraint firstAttribute="trailing" secondItem="j03-Wy-krp" secondAttribute="trailing" constant="5" id="HgT-gr-RJZ"/>
-                                    <constraint firstItem="j03-Wy-krp" firstAttribute="top" secondItem="88f-f7-XI0" secondAttribute="bottom" constant="10" id="KXi-f3-8hV"/>
-                                    <constraint firstItem="j03-Wy-krp" firstAttribute="top" secondItem="zqW-oj-kiD" secondAttribute="bottom" id="KZ6-uM-SpZ"/>
                                     <constraint firstAttribute="bottom" secondItem="j03-Wy-krp" secondAttribute="bottom" constant="5" id="L2L-YZ-Ai0"/>
                                     <constraint firstItem="dY6-vw-kCF" firstAttribute="leading" secondItem="GWH-8E-Gc5" secondAttribute="leading" constant="25" id="TBn-Iv-HoM"/>
                                     <constraint firstAttribute="bottom" secondItem="dY6-vw-kCF" secondAttribute="bottom" constant="20" id="eWd-0c-5um"/>
                                     <constraint firstItem="j03-Wy-krp" firstAttribute="leading" secondItem="dY6-vw-kCF" secondAttribute="trailing" constant="5" id="fNI-iD-cxR"/>
+                                    <constraint firstItem="j03-Wy-krp" firstAttribute="top" secondItem="zqW-oj-kiD" secondAttribute="bottom" id="puM-yk-a58"/>
                                     <constraint firstItem="zqW-oj-kiD" firstAttribute="leading" secondItem="GWH-8E-Gc5" secondAttribute="leading" constant="25" id="w84-Wk-cHQ"/>
-                                    <constraint firstItem="88f-f7-XI0" firstAttribute="top" secondItem="GWH-8E-Gc5" secondAttribute="top" constant="15" id="wl2-Yf-Dkz"/>
-                                    <constraint firstAttribute="trailing" secondItem="88f-f7-XI0" secondAttribute="trailing" constant="20" id="y4f-gI-GoI"/>
+                                    <constraint firstAttribute="trailing" secondItem="zqW-oj-kiD" secondAttribute="trailing" constant="25" id="xbZ-cs-jUU"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -87,13 +80,12 @@
             <size key="customSize" width="319" height="84"/>
             <connections>
                 <outlet property="featuredStickerContentView" destination="jWe-zL-DEt" id="DmN-bU-JjA"/>
-                <outlet property="featuredStickerHeartButtonImageView" destination="88f-f7-XI0" id="QjW-YU-f0e"/>
                 <outlet property="featuredStickerImageView" destination="j03-Wy-krp" id="jA4-dC-tE9"/>
                 <outlet property="featuredStickerLabel" destination="zqW-oj-kiD" id="CR5-cM-5Fv"/>
                 <outlet property="featuredStickerTryMeButton" destination="dY6-vw-kCF" id="y7b-IL-zgD"/>
                 <outlet property="featuredStickerView" destination="GWH-8E-Gc5" id="Tg5-nh-92i"/>
             </connections>
-            <point key="canvasLocation" x="-25.362318840579711" y="99.776785714285708"/>
+            <point key="canvasLocation" x="-26.086956521739133" y="99.776785714285708"/>
         </collectionViewCell>
     </objects>
 </document>
