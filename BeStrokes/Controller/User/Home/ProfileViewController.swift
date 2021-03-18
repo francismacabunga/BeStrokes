@@ -48,6 +48,19 @@ class ProfileViewController: UIViewController {
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        print("Will disappear")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        print("Did disappear")
+        
+        UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+        
+    }
+    
     
     //MARK: - Design Elements
     
@@ -177,7 +190,7 @@ class ProfileViewController: UIViewController {
                         let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                             _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                         }
-                        present(noSignedInUserAlert!, animated: true)
+                            present(noSignedInUserAlert!, animated: true)
                         return
                     }
                 }

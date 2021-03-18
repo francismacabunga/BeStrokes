@@ -172,6 +172,7 @@ struct Strings {
     static let stickerOptionVC = "StickerOptionViewController"
     static let landingPageContentVC = "LandingPageContentViewController"
     static let captureVC = "CaptureViewController"
+    static let profileVC = "ProfileViewController"
     
     //MARK: - NIBs Names
     static let featuredStickerCell = "FeaturedStickerCollectionViewCell"
@@ -230,6 +231,7 @@ struct Strings {
     static let userFirstTimeLoginKey = "userFirstTimeLogin"
     static let accountTabIsTappedKey = "accountTabIsTapped"
     static let notificationTabIsTappedKey = "notificationTabIsTapped"
+    static let isHomeVCLoadedKey = "IsHomeVCLoaded"
     
     //MARK: - Notification
     

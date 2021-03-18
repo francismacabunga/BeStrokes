@@ -63,17 +63,14 @@ class LandingViewController: UIViewController {
     //MARK: - Checking of Signed In User Process
     
     func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsValid { [self] (error, isUserSignedIn) in
-            if isUserSignedIn != nil {
-                if isUserSignedIn! {
-                    _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
-                    return
-                }
+        userData.checkIfUserIsSignedIn { [self] (error, isUserSignedIn, _) in
+            if isUserSignedIn {
+                _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+                return
             }
-            if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
-            }
+            guard let error = error else {return}
+            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+            present(errorAlert!, animated: true)
         }
     }
     

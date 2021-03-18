@@ -576,6 +576,10 @@ struct Utilities {
         return nil
     }
     
+    static func showAlertWithHandler() {
+        
+    }
+    
     
     
     

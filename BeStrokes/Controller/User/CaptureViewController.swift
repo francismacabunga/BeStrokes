@@ -48,6 +48,8 @@ class CaptureViewController: UIViewController {
     private var planeNodes = [SCNNode]()
     private var stickerNodes = [SCNNode]()
     private var raycastTargetAlignment: ARRaycastQuery.TargetAlignment?
+    private var isAlertControllerPresented = false
+    private var isCaptureVCLoaded = false
     var featuredStickerViewModel: FeaturedStickerViewModel? {
         didSet {
             guard let stickerData = featuredStickerViewModel else {return}
@@ -107,9 +109,17 @@ class CaptureViewController: UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        isCaptureVCLoaded = true
+        
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        isCaptureVCLoaded = false
         captureSceneView.session.pause()
         
     }
@@ -259,26 +269,28 @@ class CaptureViewController: UIViewController {
         }
     }
     
-    func checkIfUserIsSignedIn() {
-        
-        
-        userData.checkIfUserIsValid { [self] (error, isUserSignedIn) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
-                    return
+    func showAlertController(alertMessage: String, withHandler: Bool) {
+        if self.presentedViewController as? UIAlertController == nil {
+            if withHandler {
+                let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                 }
+                present(alertWithHandler!, animated: true)
+                return
             }
-            if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+            let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+            present(alert!, animated: true)
+        }
+    }
+    
+    func checkIfUserIsSignedIn() {
+        userData.checkIfUserIsSignedIn { [self] (error, isUserSignedIn, _) in
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
         }
-        
     }
     
     
@@ -315,16 +327,16 @@ class CaptureViewController: UIViewController {
             stickerData.updateNewSticker(on: userStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
                 if isUserSignedIn != nil {
                     if !isUserSignedIn! {
-                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                        }
-                        present(noSignedInUserAlert!, animated: true)
+//                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+//                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+//                        }
+//                        present(noSignedInUserAlert!, animated: true)
                         return
                     }
                 }
                 if error != nil {
-                    let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                    present(errorAlert!, animated: true)
+//                    let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+//                    present(errorAlert!, animated: true)
                     return
                 }
             }

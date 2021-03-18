@@ -665,17 +665,17 @@
             <objects>
                 <viewController storyboardIdentifier="ProfileViewController" autoresizesArchivedViewToFullSize="NO" id="Kur-RJ-RnG" customClass="ProfileViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bOW-9E-ouC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2hQ-6I-WaJ">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <items>
                                     <navigationItem id="7qH-76-Wem"/>
                                 </items>
                             </navigationBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mhu-jy-Mhh">
-                                <rect key="frame" x="10" y="76" width="355" height="130"/>
+                                <rect key="frame" x="10" y="64" width="355" height="130"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U0i-CE-IWu">
                                         <rect key="frame" x="20" y="25" width="80" height="80"/>
@@ -723,38 +723,38 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XBv-Gv-qMy">
-                                <rect key="frame" x="30" y="226" width="42" height="21"/>
+                                <rect key="frame" x="30" y="214" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0cf-4B-yQb">
-                                <rect key="frame" x="0.0" y="267" width="375" height="150"/>
+                                <rect key="frame" x="0.0" y="255" width="375" height="150"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="oUe-Hi-iVE"/>
                                 </constraints>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AvH-rW-jnd">
-                                <rect key="frame" x="30" y="437" width="42" height="21"/>
+                                <rect key="frame" x="30" y="425" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bmp-0o-rj5">
-                                <rect key="frame" x="0.0" y="590" width="375" height="21"/>
+                                <rect key="frame" x="0.0" y="610" width="375" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FEB-PM-wpc">
-                                <rect key="frame" x="0.0" y="616" width="375" height="21"/>
+                                <rect key="frame" x="0.0" y="636" width="375" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pT3-R2-UmJ">
-                                <rect key="frame" x="75" y="432" width="30" height="30"/>
+                                <rect key="frame" x="75" y="420" width="30" height="30"/>
                                 <connections>
                                     <action selector="profileSettingsButton:" destination="Kur-RJ-RnG" eventType="touchUpInside" id="WwK-kA-xYR"/>
                                 </connections>
@@ -1053,7 +1053,7 @@
                                                                     <constraint firstAttribute="height" constant="60" id="bTu-EW-bpf"/>
                                                                 </constraints>
                                                                 <connections>
-                                                                    <segue destination="Kur-RJ-RnG" kind="show" id="39h-Uq-41T"/>
+                                                                    <action selector="homeProfilePictureButton:" destination="4Ep-et-YK5" eventType="touchUpInside" id="EoX-lS-n7y"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
