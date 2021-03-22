@@ -363,24 +363,24 @@ class HomeViewController: UIViewController {
         getStickersCollectionViewData(onCategory: Strings.allStickers)
     }
     
-//    func changeStickerStatusOnFirstTimeLogin(using stickerData: [StickerViewModel]) {
-//        if UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
-//            UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
-//            _ = stickerData.map({
-//                self.stickerData.uploadStickerInUserCollection(from: $0, isRecentlyUploaded: false, isNew: false) { [self] (error, isUserSignedIn) in
-//                    if isUserSignedIn != nil {
-//                        if !isUserSignedIn! {
-//                                showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
-//                                return
-//                        }
-//                    }
-//                    if error != nil {
-//                            showHomeAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-//                    }
-//                }
-//            })
-//        }
-//    }
+    func changeStickerStatusOnFirstTimeLogin(using stickerData: [StickerViewModel]) {
+        if UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
+            _ = stickerData.map({
+                self.stickerData.uploadStickerInUserCollection(from: $0, isRecentlyUploaded: false, isNew: false) { [self] (error, isUserSignedIn) in
+                    if isUserSignedIn != nil {
+                        if !isUserSignedIn! {
+                                showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                                return
+                        }
+                    }
+                    if error != nil {
+                            showHomeAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    }
+                }
+            })
+        }
+    }
     
 //    func setStickerDataToUserID(using stickerData: [StickerViewModel]) {
 //        if !UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
@@ -460,7 +460,7 @@ class HomeViewController: UIViewController {
                 DispatchQueue.main.async {
                     homeStickerCollectionView.reloadData()
                 }
-//                changeStickerStatusOnFirstTimeLogin(using: stickerViewModel!)
+                changeStickerStatusOnFirstTimeLogin(using: stickerViewModel!)
 //                setStickerDataToUserID(using: stickerViewModel!)
 //                showBannerNotification()
 //                updateBadgeCounter()

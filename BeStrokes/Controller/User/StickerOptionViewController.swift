@@ -236,14 +236,13 @@ class StickerOptionViewController: UIViewController {
     
     func tapHeartButton(using stickerID: String) {
         heartButtonLogic.tapHeartButton(using: stickerID) { [self] (error, isUserSignedIn) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
-                    return
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                 }
+                present(noSignedInUserAlert!, animated: true)
+                return
             }
             if error != nil {
                 let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
@@ -254,21 +253,19 @@ class StickerOptionViewController: UIViewController {
     
     func untapHeartButton(using stickerID: String, completion: @escaping (Bool) -> Void) {
         heartButtonLogic.untapHeartButton(using: stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
-                    return
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                 }
+                present(noSignedInUserAlert!, animated: true)
+                return
             }
             if error != nil {
                 let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
                 present(errorAlert!, animated: true)
                 return
             }
-            guard let isProcessDone = isProcessDone else {return}
             if isProcessDone {
                 completion(true)
             }
