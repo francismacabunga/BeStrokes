@@ -121,14 +121,12 @@ class EditAccountViewController: UIViewController {
     
     func setData() {
         userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
-                    return
+            if !isUserSignedIn {
+                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                 }
+                present(noSignedInUserAlert!, animated: true)
+                return
             }
             if error != nil {
                 let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
@@ -254,21 +252,18 @@ class EditAccountViewController: UIViewController {
     
     func sendEmailVerification(with successLabel: String) {
         userData.sendEmailVerification { [self] (error, isUserSignedIn, isEmailVerificationSent) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
-                    return
+            if !isUserSignedIn {
+                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                 }
+                present(noSignedInUserAlert!, animated: true)
+                return
             }
             if error != nil {
                 showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
                 Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
                 return
             }
-            guard let isEmailVerificationSent = isEmailVerificationSent else {return}
             if isEmailVerificationSent {
                 showWarningLabel(on: editAccountWarningLabel, customizedWarning: successLabel, isASuccessMessage: true)
                 setEditAccountButtonToOriginalDesign()
@@ -278,22 +273,19 @@ class EditAccountViewController: UIViewController {
     
     func checkIfEmailIsVerified(using firstName: String, _ lastName: String, _ email: String, _ initialUserEmail: String) {
         userData.isEmailVerified { [self] (error, isUserSignedIn, isEmailVerified) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
-                    setEditAccountButtonToOriginalDesign()
-                    return
+            if !isUserSignedIn {
+                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                 }
+                present(noSignedInUserAlert!, animated: true)
+                setEditAccountButtonToOriginalDesign()
+                return
             }
             if error != nil {
                 showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
                 setEditAccountButtonToOriginalDesign()
                 return
             }
-            guard let isEmailVerified = isEmailVerified else {return}
             if isEmailVerified {
                 print("Verified")
                 showLoadingButton()
@@ -324,44 +316,38 @@ class EditAccountViewController: UIViewController {
     func updateAccountProcess(using firstName: String, _ lastName: String, _ email: String, _ profilePic: String, _ initialUserEmail: String) {
         if initialUserEmail != email {
             userData.updateUserData(firstName, lastName, email, profilePic) { [self] (error, isUserSignedIn, isUpdateFinished) in
-                if isUserSignedIn != nil {
-                    if !isUserSignedIn! {
-                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                        }
-                        present(noSignedInUserAlert!, animated: true)
-                        setEditAccountButtonToOriginalDesign()
-                        return
+                if !isUserSignedIn {
+                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
+                    present(noSignedInUserAlert!, animated: true)
+                    setEditAccountButtonToOriginalDesign()
+                    return
                 }
                 if error != nil {
                     showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
                     setEditAccountButtonToOriginalDesign()
                     return
                 }
-                guard let isUpdateFinished = isUpdateFinished else {return}
                 if isUpdateFinished {
                     sendEmailVerification(with: Strings.editAccountProcessSuccessfulLabel)
                 }
             }
         } else {
             userData.updateUserData(firstName, lastName, email, profilePic) { [self] (error, isUserSignedIn, isUpdateFinished) in
-                if isUserSignedIn != nil {
-                    if !isUserSignedIn! {
-                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                        }
-                        present(noSignedInUserAlert!, animated: true)
-                        setEditAccountButtonToOriginalDesign()
-                        return
+                if !isUserSignedIn {
+                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
+                    present(noSignedInUserAlert!, animated: true)
+                    setEditAccountButtonToOriginalDesign()
+                    return
                 }
                 if error != nil {
                     showWarningLabel(on: editAccountWarningLabel, with: error!, isASuccessMessage: false)
                     setEditAccountButtonToOriginalDesign()
                     return
                 }
-                guard let isUpdateFinished = isUpdateFinished else {return}
                 if isUpdateFinished {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         setEditAccountButtonToOriginalDesign()

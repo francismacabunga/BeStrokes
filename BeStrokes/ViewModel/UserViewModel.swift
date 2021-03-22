@@ -62,11 +62,11 @@ struct UserData {
         }
     }
     
-    func sendEmailVerification(completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+    func sendEmailVerification(completion: @escaping (Error?, Bool, Bool) -> Void) {
         checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
-                completion(error, false, nil)
+                completion(error, false, false)
                 return
             }
             guard let signedInUser = user else {return}
@@ -75,7 +75,7 @@ struct UserData {
                     completion(nil, true, true)
                     return
                 }
-                completion(error, nil, false)
+                completion(error, true, false)
             }
         }
     }
@@ -114,7 +114,7 @@ struct UserData {
         }
     }
     
-    func getSignedInUserData(completion: @escaping (Error?, Bool?, UserViewModel?) -> Void) {
+    func getSignedInUserData(completion: @escaping (Error?, Bool, UserViewModel?) -> Void) {
         checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -122,7 +122,7 @@ struct UserData {
                 return
             }
             guard let signedInUser = user else {return}
-            db.collection(Strings.userCollection).document(signedInUser.uid).addSnapshotListener { (snapshot, error) in
+            db.collection(Strings.userCollection).document(signedInUser.uid).getDocument { (snapshot, error) in
                 guard let error = error else {
                     guard let userData = snapshot else {return}
                     let userViewModel = UserViewModel(UserModel(userID: userData[Strings.userIDField] as! String,
@@ -133,16 +133,16 @@ struct UserData {
                     completion(nil, true, userViewModel)
                     return
                 }
-                completion(error, nil, nil)
+                completion(error, true, nil)
             }
         }
     }
     
-    func isEmailVerified(completion: @escaping (Error?, Bool?, Bool?) -> Void) {
+    func isEmailVerified(completion: @escaping (Error?, Bool, Bool) -> Void) {
         checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
-                completion(error, false, nil)
+                completion(error, false, false)
                 return
             }
             guard let signedInUser = user else {return}
@@ -158,18 +158,18 @@ struct UserData {
                         _ lastName: String,
                         _ email: String,
                         _ profilePicURL: String,
-                        completion: @escaping (Error?, Bool?, Bool?) -> Void)
+                        completion: @escaping (Error?, Bool, Bool) -> Void)
     {
         checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
-                completion(error, false, nil)
+                completion(error, false, false)
                 return
             }
             guard let signedInUser = user else {return}
             signedInUser.updateEmail(to: email) { (error) in
                 if error != nil {
-                    completion(error, nil, false)
+                    completion(error, true, false)
                     return
                 }
                 db.collection(Strings.userCollection).document(signedInUser.uid).updateData([Strings.userFirstNameField : firstName,
@@ -180,7 +180,7 @@ struct UserData {
                         completion(nil, true, true)
                         return
                     }
-                    completion(error, nil, false)
+                    completion(error, true, false)
                 }
             }
         }
@@ -195,7 +195,7 @@ struct UserData {
         let profilePicStoragePath = storagePath.child(Strings.firebaseProfilePicStoragePath).child(userID)
         let imageMetadata = StorageMetadata()
         imageMetadata.contentType = Strings.metadataContentType
-        profilePicStoragePath.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
+        profilePicStoragePath.putData(imageData, metadata: imageMetadata) { (_, error) in
             if error != nil {
                 completion(error, nil)
                 return
@@ -211,19 +211,12 @@ struct UserData {
         }
     }
     
-    func signOutUser(completion: @escaping (Error?, Bool?, Bool?) -> Void) {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                completion(error, false, nil)
-                return
-            }
-            do {
-                try auth.signOut()
-                completion(nil, nil, true)
-            } catch {
-                completion(nil, nil, false)
-            }
+    func signOutUser() -> Bool {
+        do {
+            try auth.signOut()
+            return true
+        } catch {
+            return false
         }
     }
     

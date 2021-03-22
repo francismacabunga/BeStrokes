@@ -206,8 +206,8 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpButton(_ sender: UIButton) {
         Utilities.animate(button: sender)
-        validateProfilePicture()
-        validateTextFields()
+        _ = validateProfilePicture()
+        _ = validateTextFields()
         signUpAccount()
         dismissKeyboard()
     }
@@ -311,25 +311,22 @@ class SignUpViewController: UIViewController {
     
     func sendEmailVerification() {
         userData.sendEmailVerification { [self] (error, isUserSignedIn, isEmailVerificationSent) in
-            if isUserSignedIn != nil {
-                if !isUserSignedIn! {
-                    showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpNoUserIsCreatedErrorLabel, isASuccessMessage: false)
-                    return
+            if !isUserSignedIn {
+                showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpNoUserIsCreatedErrorLabel, isASuccessMessage: false)
+                return
+            }
+            if error != nil {
+                showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
+                setSignUpButtonToOriginalDesign()
+                return
+            }
+            if isEmailVerificationSent {
+                showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
+                setSignUpButtonTransitionAnimation()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
+                    _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
                 }
-                if error != nil {
-                    showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
-                    setSignUpButtonToOriginalDesign()
-                    return
-                }
-                guard let isEmailVerificationSent = isEmailVerificationSent else {return}
-                if isEmailVerificationSent {
-                    showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
-                    setSignUpButtonTransitionAnimation()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
-                        _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
-                    }
-                    UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
-                }
+                UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
             }
         }
     }
