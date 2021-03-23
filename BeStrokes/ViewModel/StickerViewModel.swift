@@ -273,29 +273,36 @@ struct StickerData {
     }
     
     func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool, Bool?, [UserStickerViewModel]?) -> Void) {
-        guard let signedInUserID = user else {return}
-        if stickerID != nil {
-            let firebaseQuery = db.collection(Strings.userCollection).document(signedInUserID.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID!).whereField(Strings.stickerIsLovedField, isEqualTo: true)
-            fetchUserStickerData(withQuery: firebaseQuery, withListener: true) { (error, userStickerData) in
-                if error != nil {
-                    completion(error, true, nil, nil)
-                    return
-                }
-                guard let _ = userStickerData?.first else {
-                    completion(nil, true, false, nil)
-                    return
-                }
-                completion(nil, true, true, nil)
+        userData.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                completion(error, false, nil, nil)
+                return
             }
-        } else {
-            let firebaseQuery = db.collection(Strings.userCollection).document(signedInUserID.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true)
-            fetchUserStickerData(withQuery: firebaseQuery, withListener: true) { (error, userStickerData) in
-                guard let error = error else {
-                    guard let userStickerViewModel = userStickerData else {return}
-                    completion(nil, true, nil, userStickerViewModel)
-                    return
+            guard let signedInUser = user else {return}
+            if stickerID != nil {
+                let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID!).whereField(Strings.stickerIsLovedField, isEqualTo: true)
+                fetchUserStickerData(withQuery: firebaseQuery, withListener: true) { (error, userStickerData) in
+                    if error != nil {
+                        completion(error, true, nil, nil)
+                        return
+                    }
+                    guard let _ = userStickerData?.first else {
+                        completion(nil, true, false, nil)
+                        return
+                    }
+                    completion(nil, true, true, nil)
                 }
-                completion(error, true, nil, nil)
+            } else {
+                let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true)
+                fetchUserStickerData(withQuery: firebaseQuery, withListener: true) { (error, userStickerData) in
+                    guard let error = error else {
+                        guard let userStickerViewModel = userStickerData else {return}
+                        completion(nil, true, nil, userStickerViewModel)
+                        return
+                    }
+                    completion(error, true, nil, nil)
+                }
             }
         }
     }
@@ -424,7 +431,7 @@ struct StickerData {
             }
         }
     }
-
+    
     func updateNewSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
         userData.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
@@ -475,11 +482,11 @@ struct HeartButtonLogic {
         }
     }
     
-    func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool) -> Void) {
+    func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
         userData.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
-                completion(error, false, false)
+                completion(error, false, nil)
                 return
             }
             guard let signedInUser = user else {return}
