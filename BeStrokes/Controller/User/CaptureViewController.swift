@@ -325,19 +325,17 @@ class CaptureViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.notificationTabIsTappedKey) {
             guard let userStickerViewModel = userStickerViewModel else {return}
             stickerData.updateNewSticker(on: userStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
-                if isUserSignedIn != nil {
-                    if !isUserSignedIn! {
-//                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-//                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-//                        }
-//                        present(noSignedInUserAlert!, animated: true)
-                        return
-                    }
+                if !isUserSignedIn {
+//                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+//                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+//                    }
+//                    present(noSignedInUserAlert!, animated: true)
+//                    return
                 }
                 if error != nil {
 //                    let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
 //                    present(errorAlert!, animated: true)
-                    return
+//                    return
                 }
             }
         }

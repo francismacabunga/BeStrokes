@@ -35,6 +35,11 @@ class NotificationViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        print("Notification appeared")
+        setNotificationData()
+    }
+    
     
     //MARK: - Design Elements
     
@@ -79,25 +84,23 @@ class NotificationViewController: UIViewController {
     }
     
     func setNotificationData() {
-//        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, _, userStickerData) in
-//            if isUserSignedIn != nil {
-//                if !isUserSignedIn! {
-//                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-//                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-//                    }
-//                    present(noSignedInUserAlert!, animated: true)
-//                    return
-//                }
-//            }
-//            if error != nil {
-//                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-//                present(errorAlert!, animated: true)
-//                return
-//            }
-//            guard let userStickerData = userStickerData else {return}
-//            userStickerViewModel = userStickerData
-//            checkIfUserStickerViewModelIsEmpty()
-//        }
+        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, _, userStickerData) in
+            if !isUserSignedIn {
+                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                }
+                present(noSignedInUserAlert!, animated: true)
+                return
+            }
+            if error != nil {
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                present(errorAlert!, animated: true)
+                return
+            }
+            guard let userStickerData = userStickerData else {return}
+            userStickerViewModel = userStickerData
+            checkIfUserStickerViewModelIsEmpty()
+        }
     }
     
     func checkIfUserStickerViewModelIsEmpty() {
