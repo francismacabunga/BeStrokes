@@ -262,6 +262,7 @@ class StickerOptionViewController: UIViewController {
                 present(errorAlert!, animated: true)
                 return
             }
+            guard let isProcessDone = isProcessDone else {return}
             if isProcessDone {
                 completion(true)
             }
