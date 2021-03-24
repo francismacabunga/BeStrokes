@@ -48,14 +48,16 @@ class ProfileViewController: UIViewController {
         
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
-        
+    override func viewDidAppear(_ animated: Bool) {
+        UserDefaults.standard.setValue(true, forKey: Strings.isProfileVCLoadedKey)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        UserDefaults.standard.setValue(false, forKey: Strings.isProfileVCLoadedKey)
+        UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+    }
     
+
     //MARK: - Design Elements
     
     func setDesignElements() {
@@ -143,15 +145,12 @@ class ProfileViewController: UIViewController {
     func getSignedInUserData() {
         userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
             if !isUserSignedIn {
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userData = userData else {return}
@@ -180,11 +179,26 @@ class ProfileViewController: UIViewController {
             if isUserSignedOut {
                 _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
             } else {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.profileCannotSignOutUserLabel, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: Strings.profileCannotSignOutUserLabel, withHandler: false)
             }
         }
         present(logoutAlert!, animated: true)
+    }
+    
+    func showAlertController(alertMessage: String, withHandler: Bool) {
+        if UserDefaults.standard.bool(forKey: Strings.isProfileVCLoadedKey) {
+            if self.presentedViewController as? UIAlertController == nil {
+                if withHandler {
+                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                    }
+                        present(alertWithHandler!, animated: true)
+                    return
+                }
+                let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                    present(alert!, animated: true)
+            }
+        }
     }
     
     

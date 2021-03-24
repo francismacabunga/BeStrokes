@@ -39,6 +39,14 @@ class NotificationViewController: UIViewController {
         setNotificationData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
+    }
+    
     
     //MARK: - Design Elements
     
@@ -85,15 +93,12 @@ class NotificationViewController: UIViewController {
     func setNotificationData() {
         stickerData.fetchNewSticker { [self] (error, isUserSignedIn, _, userStickerData) in
             if !isUserSignedIn {
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userStickerData = userStickerData else {return}
@@ -117,6 +122,22 @@ class NotificationViewController: UIViewController {
                 Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, isStartAnimating: false, isHidden: true)
                 Utilities.setDesignOn(label: notificationWarningLabel, isHidden: true)
                 notificationTableView.isHidden = false
+            }
+        }
+    }
+    
+    func showAlertController(alertMessage: String, withHandler: Bool) {
+        if UserDefaults.standard.bool(forKey: Strings.isNotificationVCLoadedKey) {
+            if self.presentedViewController as? UIAlertController == nil {
+                if withHandler {
+                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                    }
+                        present(alertWithHandler!, animated: true)
+                    return
+                }
+                let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                    present(alert!, animated: true)
             }
         }
     }

@@ -62,6 +62,14 @@ class AccountViewController: UIViewController {
         setSignedInUserData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
+    }
+    
     
     //MARK: - Design Elements
     
@@ -201,15 +209,12 @@ class AccountViewController: UIViewController {
     func setSignedInUserData() {
         userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
             if !isUserSignedIn {
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userData = userData else {return}
@@ -225,15 +230,12 @@ class AccountViewController: UIViewController {
     func setLovedStickersData() {
         stickerData.fetchLovedSticker { [self] (error, isUserSignedIn, _, userStickerData) in
             if !isUserSignedIn {
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userStickerData = userStickerData else {return}
@@ -266,6 +268,22 @@ class AccountViewController: UIViewController {
     
     @objc func reloadAccountVC() {
         setSignedInUserData()
+    }
+    
+    func showAlertController(alertMessage: String, withHandler: Bool) {
+        if UserDefaults.standard.bool(forKey: Strings.isAccountVCLoadedKey) {
+            if self.presentedViewController as? UIAlertController == nil {
+                if withHandler {
+                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                    }
+                        present(alertWithHandler!, animated: true)
+                    return
+                }
+                let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                    present(alert!, animated: true)
+            }
+        }
     }
     
     
@@ -358,15 +376,12 @@ extension AccountViewController: UITextFieldDelegate {
         if accountSearchTextField.text != nil {
             stickerData.searchSticker(using: accountSearchTextField.text!) { [self] (error, isUserSignedIn, userStickerData) in
                 if !isUserSignedIn {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
+                    guard let error = error else {return}
+                    showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                     return
                 }
                 if error != nil {
-                    let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                    present(errorAlert!, animated: true)
+                    showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                     return
                 }
                 guard let userStickerViewModel = userStickerData else {

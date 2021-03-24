@@ -46,25 +46,32 @@ class StickerOptionViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
+        UserDefaults.standard.setValue(true, forKey: Strings.isStickerOptionVCLoadedKey)
         showStickerData()
         setSkeletonColor()
         showLoadingSkeletonView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        UserDefaults.standard.setValue(false, forKey: Strings.isStickerOptionVCLoadedKey)
+        
+        
+        
+        
         if UserDefaults.standard.bool(forKey: Strings.notificationTabIsTappedKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
             if userStickerViewModel != nil {
                 stickerData.updateNewSticker(on: userStickerViewModel!.stickerID) { [self] (error, isUserSignedIn) in
                     if !isUserSignedIn {
-                        let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                            _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                        }
-                        present(noSignedInUserAlert!, animated: true)
+                        guard let error = error else {return}
+                        showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                         return
                     }
                     if error != nil {
-                        let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                        present(errorAlert!, animated: true)
+                        showAlertController(alertMessage: error!.localizedDescription, withHandler: true)
                     }
                 }
             }
@@ -182,15 +189,12 @@ class StickerOptionViewController: UIViewController {
     func checkIfStickerIsLoved(_ stickerID: String) {
         stickerData.fetchLovedSticker(on: stickerID) { [self] (error, isUserSignedIn, isStickerLoved, _) in
             if !isUserSignedIn {
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: true)
                 return
             }
             guard let isStickerLoved = isStickerLoved else {return}
@@ -249,6 +253,22 @@ class StickerOptionViewController: UIViewController {
         }
     }
     
+    func showAlertController(alertMessage: String, withHandler: Bool) {
+        if UserDefaults.standard.bool(forKey: Strings.isStickerOptionVCLoadedKey) {
+            if self.presentedViewController as? UIAlertController == nil {
+                if withHandler {
+                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                    }
+                        present(alertWithHandler!, animated: true)
+                    return
+                }
+                let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                    present(alert!, animated: true)
+            }
+        }
+    }
+    
     
     //MARK: - UIGestureHandlers
     
@@ -293,15 +313,11 @@ class StickerOptionViewController: UIViewController {
         heartButtonLogic.tapHeartButton(using: stickerID) { [self] (error, isUserSignedIn) in
             if !isUserSignedIn {
                 guard let error = error else {return}
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: true)
             }
         }
     }
@@ -310,15 +326,11 @@ class StickerOptionViewController: UIViewController {
         heartButtonLogic.untapHeartButton(using: stickerID) { [self] (error, isUserSignedIn, isProcessDone) in
             if !isUserSignedIn {
                 guard let error = error else {return}
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: true)
                 return
             }
             guard let isProcessDone = isProcessDone else {return}

@@ -173,11 +173,12 @@ class HomeViewController: UIViewController {
     func setProfilePicture() {
         userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
             if !isUserSignedIn {
-                showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showHomeAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userData = userData else {return}
@@ -240,22 +241,24 @@ class HomeViewController: UIViewController {
     func showBannerNotification() {
         stickerData.fetchRecentlyUploadedSticker { [self] (error, isUserSignedIn, userStickerData) in
             if !isUserSignedIn {
-                showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showHomeAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userStickerData = userStickerData else {return}
             triggerNotification()
             stickerData.updateRecentlyUploadedSticker(on: userStickerData.stickerID) { (error, isUserSignedIn) in
                 if !isUserSignedIn {
-                    showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                    guard let error = error else {return}
+                    showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                     return
                 }
                 if error != nil {
-                    showHomeAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                     return
                 }
             }
@@ -265,11 +268,12 @@ class HomeViewController: UIViewController {
     func updateBadgeCounter() {
         stickerData.fetchNewSticker { [self] (error, isUserSignedIn, numberOfNewStickers, _) in
             if !isUserSignedIn {
-                showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showHomeAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let numberOfNewStickers = numberOfNewStickers else {return}
@@ -287,12 +291,11 @@ class HomeViewController: UIViewController {
         let notificationRequest = UNNotificationRequest(identifier: notificationIdentifier, content: notificationContent, trigger: notificationTrigger)
         notificationCenter.add(notificationRequest) { [self] (error) in
             guard let error = error else {return}
-                showHomeAlertController(alertMessage: error.localizedDescription, withHandler: false)
+                showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
-    func showHomeAlertController(alertMessage: String, withHandler: Bool) {
-        print(UserDefaults.standard.bool(forKey: Strings.isHomeVCLoadedKey))
+    func showAlertController(alertMessage: String, withHandler: Bool) {
         if UserDefaults.standard.bool(forKey: Strings.isHomeVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
@@ -357,11 +360,12 @@ class HomeViewController: UIViewController {
             _ = stickerData.map({
                 self.stickerData.uploadStickerInUserCollection(from: $0, isRecentlyUploaded: false, isNew: false) { [self] (error, isUserSignedIn) in
                     if !isUserSignedIn {
-                        showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                        guard let error = error else {return}
+                        showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                         return
                     }
                     if error != nil {
-                        showHomeAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                        showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                     }
                 }
             })
@@ -374,22 +378,24 @@ class HomeViewController: UIViewController {
                 let stickerViewModel = $0
                 self.stickerData.checkIfStickerExistsInUserCollection(stickerID: stickerViewModel.stickerID) { [self] (error, isUserSignedIn, isStickerPresent) in
                     if !isUserSignedIn {
-                        showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                        guard let error = error else {return}
+                        showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                         return
                     }
                     if error != nil {
-                        showHomeAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                        showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                         return
                     }
                     guard let isStickerPresent = isStickerPresent else {return}
                     if !isStickerPresent {
                         self.stickerData.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { (error, isUserSignedIn) in
                             if !isUserSignedIn {
-                                showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                                guard let error = error else {return}
+                                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                                 return
                             }
                             if error != nil {
-                                showHomeAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                             }
                         }
                     }
@@ -401,11 +407,12 @@ class HomeViewController: UIViewController {
     func removeDeletedStickersInUserCollection() {
         stickerData.checkIfUserStickerExistsInStickerCollection { [self] (error, isUserSignedIn) in
             if !isUserSignedIn {
-                showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showHomeAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
             }
         }
     }
@@ -420,7 +427,7 @@ class HomeViewController: UIViewController {
                 }
                 return
             }
-                showHomeAlertController(alertMessage: error.localizedDescription, withHandler: false)
+                showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -448,7 +455,7 @@ class HomeViewController: UIViewController {
                 showStickers()
                 return
             }
-                showHomeAlertController(alertMessage: error.localizedDescription, withHandler: false)
+                showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -600,12 +607,12 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 extension HomeViewController: FeaturedStickerCellDelegate {
     
     func getError(using error: Error) {
-            showHomeAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
     }
     
     func getUserAuthenticationState(_ isUserSignedIn: Bool) {
         if !isUserSignedIn {
-                showHomeAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
+                showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
         }
     }
     
