@@ -16,6 +16,7 @@ struct Utilities {
     static let setLightModeAppearance = Notification.Name(Strings.lightModeAppearanceNotificationName)
     static let setDarkModeAppearance = Notification.Name(Strings.darkModeAppearanceNotificationName)
     static let setBadgeCounterToNotificationIcon = Notification.Name(Strings.badgeCounterToNotificationName)
+    static let alertAccountVC = Notification.Name(Strings.accountVCNotificationName)
     
     
     //MARK: - Design Elements

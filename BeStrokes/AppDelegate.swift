@@ -42,11 +42,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         notificationCenter.getNotificationSettings { (permission) in
             if permission.authorizationStatus == .authorized {
                 UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
+                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
             } else {
                 UserDefaults.standard.setValue(false, forKey: Strings.notificationKey)
+                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
             }
         }
-        print("Will open")
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

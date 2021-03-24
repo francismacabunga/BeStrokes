@@ -63,10 +63,16 @@ class TabBarViewController: UITabBarController {
     }
     
     func setBadgeCounterValue() {
-        if UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey) > 0 {
-            userTabBarItem[2].badgeValue = "\(UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey))"
-        } else {
-            userTabBarItem[2].badgeValue = nil
+        DispatchQueue.main.async { [self] in
+            if UserDefaults.standard.bool(forKey: Strings.notificationKey) {
+                if UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey) > 0 {
+                    userTabBarItem[2].badgeValue = "\(UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey))"
+                } else {
+                    userTabBarItem[2].badgeValue = nil
+                }
+            } else {
+                userTabBarItem[2].badgeValue = nil
+            }
         }
     }
     

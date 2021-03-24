@@ -48,14 +48,8 @@ class ProfileViewController: UIViewController {
         
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        print("Will disappear")
-    }
-    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        print("Did disappear")
         
         UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
         

@@ -36,7 +36,6 @@ class NotificationViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("Notification appeared")
         setNotificationData()
     }
     

@@ -238,6 +238,7 @@ struct Strings {
     static let lightModeAppearanceNotificationName = "setLightModeAppearance"
     static let darkModeAppearanceNotificationName = "setDarkModeAppearance"
     static let badgeCounterToNotificationName = "setBadgeCounterToNotificationIcon"
+    static let accountVCNotificationName = "alertAccountVC"
     static let notificationIdentifier = "Sticker Notification"
     static let notificationTitle = "New Sticker Alert"
     static let notificationBody = "A brand new sticker has been uploaded. Check it out on your notifications tab!"

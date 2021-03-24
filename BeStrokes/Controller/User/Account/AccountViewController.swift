@@ -58,6 +58,10 @@ class AccountViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setSignedInUserData()
+    }
+    
     
     //MARK: - Design Elements
     
@@ -80,6 +84,7 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, isStartAnimating: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadAccountVC), name: Utilities.alertAccountVC, object: nil)
         checkThemeAppearance()
     }
     
@@ -257,6 +262,10 @@ class AccountViewController: UIViewController {
                 accountLovedStickerTableView.reloadData()
             }
         }
+    }
+    
+    @objc func reloadAccountVC() {
+        setSignedInUserData()
     }
     
     

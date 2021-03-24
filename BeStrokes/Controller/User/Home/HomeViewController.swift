@@ -59,6 +59,10 @@ class HomeViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setProfilePicture()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
 //        super.viewWillDisappear(animated)
     
@@ -89,8 +93,6 @@ class HomeViewController: UIViewController {
         Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
-        homeScrollView.refreshControl = UIRefreshControl()
-        homeScrollView.refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         checkThemeAppearance()
         showLoadingProfilePicDesign()
         setProfilePicture()
@@ -286,14 +288,6 @@ class HomeViewController: UIViewController {
         notificationCenter.add(notificationRequest) { [self] (error) in
             guard let error = error else {return}
                 showHomeAlertController(alertMessage: error.localizedDescription, withHandler: false)
-        }
-    }
-    
-    @objc func refreshData() {
-        print("Refresh!")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
-            homeScrollView.refreshControl?.endRefreshing()
-            getFeaturedStickersCollectionViewData()
         }
     }
     
@@ -533,7 +527,6 @@ extension HomeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == homeStickerCategoryCollectionView {
-            print(UserDefaults.standard.bool(forKey: Strings.isHomeVCLoadedKey))
             selectedIndexPath = indexPath
             stickerCategoryViewModel[indexPath.row].isCategorySelected = true
             let cell = collectionView.cellForItem(at: indexPath) as! StickerCategoryCollectionViewCell

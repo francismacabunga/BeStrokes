@@ -56,6 +56,11 @@ class EditAccountViewController: UIViewController {
         
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        print("I disappeared!")
+        NotificationCenter.default.post(name: Utilities.alertAccountVC, object: nil)
+    }
+    
     
     //MARK: - Design Elements
     
