@@ -166,7 +166,6 @@ extension NotificationViewController: UITableViewDelegate {
         let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
         guard let userStickerViewModel = userStickerViewModel else {return}
         DispatchQueue.main.async { [self] in
-            stickerOptionVC.prepareStickerOptionVC()
             stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.item]
             present(stickerOptionVC, animated: true)
         }

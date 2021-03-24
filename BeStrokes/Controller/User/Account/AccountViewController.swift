@@ -321,7 +321,6 @@ extension AccountViewController: UITableViewDelegate {
         let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
         let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
         DispatchQueue.main.async { [self] in
-            stickerOptionVC.prepareStickerOptionVC()
             stickerOptionVC.userStickerViewModel = userStickerViewModel![indexPath.item]
             present(stickerOptionVC, animated: true)
         }

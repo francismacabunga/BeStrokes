@@ -420,7 +420,8 @@ struct Utilities {
                             tintColor: UIColor? = nil,
                             alpha: CGFloat? = nil,
                             isCircular: Bool? = nil,
-                            isSkeletonCircular: Bool? = nil)
+                            isSkeletonCircular: Bool? = nil,
+                            isHidden: Bool? = nil)
     {
         imageView.contentMode = .scaleAspectFit
         if image != nil {
@@ -442,6 +443,13 @@ struct Utilities {
         if isSkeletonCircular != nil {
             if isSkeletonCircular! {
                 imageView.skeletonCornerRadius = Float(imageView.frame.size.height / 2)
+            }
+        }
+        if isHidden != nil {
+            if isHidden! {
+                imageView.isHidden = true
+            } else {
+                imageView.isHidden = false
             }
         }
     }
