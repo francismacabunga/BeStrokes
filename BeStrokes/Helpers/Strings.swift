@@ -229,13 +229,20 @@ struct Strings {
     static let notificationKey = "notificationAuthorization"
     static let notificationBadgeCounterKey = "notificationBadgeCounter"
     static let userFirstTimeLoginKey = "userFirstTimeLogin"
-    static let accountTabIsTappedKey = "accountTabIsTapped"
-    static let notificationTabIsTappedKey = "notificationTabIsTapped"
+    
+   
+    
+    static let homeVCTappedKey = "homeVCTapped"
+    static let captureVCTappedKey = "captureVCTapped"
+    static let notificationVCTappedKey = "notificationVCTapped"
+    static let accountVCTappedKey = "accountVCTapped"
+    
     static let isHomeVCLoadedKey = "isHomeVCLoaded"
+    static let isCaptureVCLoadedKey = "isCaptureVCLoaded"
     static let isNotificationVCLoadedKey = "isNotificationVCLoaded"
     static let isAccountVCLoadedKey = "isAccountVCLoaded"
-    static let isStickerOptionVCLoadedKey = "isStickerOptionVCLoaded"
     static let isProfileVCLoadedKey = "isProfileVCLoaded"
+    static let isStickerOptionVCLoadedKey = "isStickerOptionVCLoaded"
     
     //MARK: - Notification
     

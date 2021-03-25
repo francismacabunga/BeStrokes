@@ -56,25 +56,12 @@ class HomeViewController: UIViewController {
         setDesignElements()
         registerCollectionView()
         setCollectionViewData()
-        
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
         setProfilePicture()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-    
-        UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
-        
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-       
-        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
-        
+        //UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
     }
     
     
@@ -315,7 +302,6 @@ class HomeViewController: UIViewController {
     //MARK: - Buttons
     
     @IBAction func homeProfilePictureButton(_ sender: UIButton) {
-        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
         let profileVC = Utilities.transition(to: Strings.profileVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! ProfileViewController
         profileVC.modalPresentationStyle = .popover
         present(profileVC, animated: true)

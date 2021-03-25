@@ -115,6 +115,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     //MARK: - Buttons
     
     @IBAction func featuredTryMeButton(_ sender: UIButton) {
+        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
         let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true)! as! CaptureViewController
         captureVC.isStickerPicked = true
         captureVC.featuredStickerViewModel = featuredStickerViewModel

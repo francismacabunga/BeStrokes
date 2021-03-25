@@ -60,16 +60,9 @@ class AccountViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         setSignedInUserData()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
-    }
-    
+
     
     //MARK: - Design Elements
     

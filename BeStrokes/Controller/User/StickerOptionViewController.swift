@@ -46,22 +46,28 @@ class StickerOptionViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
         UserDefaults.standard.setValue(true, forKey: Strings.isStickerOptionVCLoadedKey)
+        if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
+        }
         showStickerData()
         setSkeletonColor()
         showLoadingSkeletonView()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         UserDefaults.standard.setValue(false, forKey: Strings.isStickerOptionVCLoadedKey)
-        
-        
-        
-        
-        if UserDefaults.standard.bool(forKey: Strings.notificationTabIsTappedKey) {
+        if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
             UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
             if userStickerViewModel != nil {
                 stickerData.updateNewSticker(on: userStickerViewModel!.stickerID) { [self] (error, isUserSignedIn) in
@@ -75,6 +81,9 @@ class StickerOptionViewController: UIViewController {
                     }
                 }
             }
+        }
+        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
         }
     }
     
@@ -286,7 +295,7 @@ class StickerOptionViewController: UIViewController {
                 return
             }
             if userStickerViewModel != nil {
-                if UserDefaults.standard.bool(forKey: Strings.accountTabIsTappedKey) {
+                if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
                     untapHeartButton(using: userStickerViewModel!.stickerID) { (isProcessDone) in
                         if isProcessDone {
                             self.dismiss(animated: true)

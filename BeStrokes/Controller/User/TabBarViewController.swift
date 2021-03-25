@@ -77,12 +77,14 @@ class TabBarViewController: UITabBarController {
     }
     
     func setIconData() {
+        userTabBarItem[0].tag = 0
         userTabBarItem[0].image = UIImage(systemName: Strings.tabHomeIcon)
+        userTabBarItem[1].tag = 1
         userTabBarItem[1].image = UIImage(systemName: Strings.tabCaptureIcon)
-        userTabBarItem[2].image = UIImage(systemName: Strings.tabNotificationIcon)
         userTabBarItem[2].tag = 2
-        userTabBarItem[3].image = UIImage(systemName: Strings.tabAccountIcon)
+        userTabBarItem[2].image = UIImage(systemName: Strings.tabNotificationIcon)
         userTabBarItem[3].tag = 3
+        userTabBarItem[3].image = UIImage(systemName: Strings.tabAccountIcon)
         setBadgeCounterValue()
     }
     
@@ -106,16 +108,40 @@ class TabBarViewController: UITabBarController {
 extension TabBarViewController: UITabBarControllerDelegate {
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        if tabBar.selectedItem?.tag == 2 {
-            UserDefaults.standard.setValue(true, forKey: Strings.notificationTabIsTappedKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.accountTabIsTappedKey)
+        if tabBar.selectedItem?.tag == 0 {
+            UserDefaults.standard.setValue(true, forKey: Strings.homeVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
+        } else if tabBar.selectedItem?.tag == 1 {
+            UserDefaults.standard.setValue(true, forKey: Strings.captureVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
+        } else if tabBar.selectedItem?.tag == 2 {
+            UserDefaults.standard.setValue(true, forKey: Strings.notificationVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
         } else if tabBar.selectedItem?.tag == 3 {
-            UserDefaults.standard.setValue(true, forKey: Strings.accountTabIsTappedKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabIsTappedKey)
-        } else {
-            UserDefaults.standard.setValue(false, forKey: Strings.accountTabIsTappedKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabIsTappedKey)
+            UserDefaults.standard.setValue(true, forKey: Strings.accountVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
         }
+        
+        
+//        if tabBar.selectedItem?.tag == 2 {
+//            UserDefaults.standard.setValue(true, forKey: Strings.notificationTabIsTappedKey)
+//            UserDefaults.standard.setValue(false, forKey: Strings.accountTabIsTappedKey)
+//        } else if tabBar.selectedItem?.tag == 3 {
+//            UserDefaults.standard.setValue(true, forKey: Strings.accountTabIsTappedKey)
+//            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabIsTappedKey)
+//        } else {
+//            UserDefaults.standard.setValue(false, forKey: Strings.accountTabIsTappedKey)
+//            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabIsTappedKey)
+//        }
+        
     }
     
 }

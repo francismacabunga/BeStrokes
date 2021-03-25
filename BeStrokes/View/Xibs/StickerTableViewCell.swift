@@ -123,6 +123,14 @@ class StickerTableViewCell: UITableViewCell {
     //MARK: - Buttons
     
     @IBAction func lovedStickerTryMeButton(_ sender: UIButton) {
+        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
+        }
+        
+        
         let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true)! as! CaptureViewController
         captureVC.userStickerViewModel = userStickerViewModel
         captureVC.modalPresentationStyle = .fullScreen

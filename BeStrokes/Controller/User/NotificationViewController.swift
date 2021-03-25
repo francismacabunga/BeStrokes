@@ -37,14 +37,7 @@ class NotificationViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         setNotificationData()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
     }
     
     
