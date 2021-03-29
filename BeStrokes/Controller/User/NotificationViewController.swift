@@ -36,8 +36,10 @@ class NotificationViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         setNotificationData()
-        UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
+    
     }
     
     
@@ -175,15 +177,14 @@ extension NotificationViewController: UITableViewDataSource {
 extension NotificationViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
         guard let userStickerViewModel = userStickerViewModel else {return}
+        let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
         DispatchQueue.main.async { [self] in
             stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.item]
+            stickerOptionVC.modalPresentationStyle = .fullScreen
             present(stickerOptionVC, animated: true)
         }
     }
-    
 }
 
 

@@ -107,41 +107,80 @@ class TabBarViewController: UITabBarController {
 
 extension TabBarViewController: UITabBarControllerDelegate {
     
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+      
+        
+//        tabBarController.selectedViewController = viewController
+//        view.window?.rootViewController = tabBarController
+//        view.window?.makeKeyAndVisible()
+        
+        
+//        let tabBarVC = tabBarController
+//        
+//        if tabBarVC.selectedIndex == 0 {
+//            print("HomeVC")
+//            tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
+//            view.window?.rootViewController = tabBarVC
+//            view.window?.makeKeyAndVisible()
+//        }
+//        if tabBarVC.selectedIndex == 1 {
+//            print("CaptureVC")
+//            tabBarVC.selectedViewController = tabBarVC.viewControllers?[1]
+//            view.window?.rootViewController = tabBarVC
+//            view.window?.makeKeyAndVisible()
+//        }
+//        if tabBarVC.selectedIndex == 2 {
+//            print("NotificationVC")
+//            tabBarVC.selectedViewController = tabBarVC.viewControllers?[2]
+//            view.window?.rootViewController = tabBarVC
+//            view.window?.makeKeyAndVisible()
+//        }
+//        if tabBarVC.selectedIndex == 3 {
+//            print("AccountVC")
+//            tabBarVC.selectedViewController = tabBarVC.viewControllers?[3]
+//            view.window?.rootViewController = tabBarVC
+//            view.window?.makeKeyAndVisible()
+//        }
+    }
+       
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         if tabBar.selectedItem?.tag == 0 {
             UserDefaults.standard.setValue(true, forKey: Strings.homeVCTappedKey)
+            UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
         } else if tabBar.selectedItem?.tag == 1 {
             UserDefaults.standard.setValue(true, forKey: Strings.captureVCTappedKey)
+            UserDefaults.standard.setValue(true, forKey: Strings.isCaptureVCLoadedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
         } else if tabBar.selectedItem?.tag == 2 {
             UserDefaults.standard.setValue(true, forKey: Strings.notificationVCTappedKey)
+            UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
         } else if tabBar.selectedItem?.tag == 3 {
             UserDefaults.standard.setValue(true, forKey: Strings.accountVCTappedKey)
+            UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
             UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
+            UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
         }
-        
-        
-//        if tabBar.selectedItem?.tag == 2 {
-//            UserDefaults.standard.setValue(true, forKey: Strings.notificationTabIsTappedKey)
-//            UserDefaults.standard.setValue(false, forKey: Strings.accountTabIsTappedKey)
-//        } else if tabBar.selectedItem?.tag == 3 {
-//            UserDefaults.standard.setValue(true, forKey: Strings.accountTabIsTappedKey)
-//            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabIsTappedKey)
-//        } else {
-//            UserDefaults.standard.setValue(false, forKey: Strings.accountTabIsTappedKey)
-//            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabIsTappedKey)
-//        }
-        
     }
     
 }

@@ -56,9 +56,19 @@ class EditAccountViewController: UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        UserDefaults.standard.setValue(true, forKey: Strings.isEditAccountVCLoadedKey)
+        
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
-        print("I disappeared!")
+        super.viewDidDisappear(animated)
+        
         NotificationCenter.default.post(name: Utilities.alertAccountVC, object: nil)
+        UserDefaults.standard.setValue(false, forKey: Strings.isEditAccountVCLoadedKey)
+        
     }
     
     
@@ -127,15 +137,12 @@ class EditAccountViewController: UIViewController {
     func setData() {
         userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
             if !isUserSignedIn {
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error!.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(errorAlert!, animated: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userData = userData else {return}
@@ -194,6 +201,22 @@ class EditAccountViewController: UIViewController {
         }
         UIView.animate(withDuration: 0.2) {
             label.isHidden = false
+        }
+    }
+    
+    func showAlertController(alertMessage: String, withHandler: Bool) {
+        if UserDefaults.standard.bool(forKey: Strings.isEditAccountVCLoadedKey) {
+            if self.presentedViewController as? UIAlertController == nil {
+                if withHandler {
+                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                        _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                    }
+                        present(alertWithHandler!, animated: true)
+                    return
+                }
+                let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                    present(alert!, animated: true)
+            }
         }
     }
     
@@ -258,10 +281,8 @@ class EditAccountViewController: UIViewController {
     func sendEmailVerification(with successLabel: String) {
         userData.sendEmailVerification { [self] (error, isUserSignedIn, isEmailVerificationSent) in
             if !isUserSignedIn {
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
@@ -279,10 +300,8 @@ class EditAccountViewController: UIViewController {
     func checkIfEmailIsVerified(using firstName: String, _ lastName: String, _ email: String, _ initialUserEmail: String) {
         userData.isEmailVerified { [self] (error, isUserSignedIn, isEmailVerified) in
             if !isUserSignedIn {
-                let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                    _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-                present(noSignedInUserAlert!, animated: true)
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 setEditAccountButtonToOriginalDesign()
                 return
             }
@@ -292,11 +311,9 @@ class EditAccountViewController: UIViewController {
                 return
             }
             if isEmailVerified {
-                print("Verified")
                 showLoadingButton()
                 updateAccount(using: firstName, lastName, email, initialUserEmail)
             } else {
-                print("Not verified")
                 showWarningLabel(on: editAccountWarningLabel, customizedWarning: Strings.editAccountEmailVerficationErrorLabel, isASuccessMessage: false)
                 Utilities.setDesignOn(button: editAccountButton, title: Strings.resendButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), isCircular: true)
             }
@@ -322,10 +339,8 @@ class EditAccountViewController: UIViewController {
         if initialUserEmail != email {
             userData.updateUserData(firstName, lastName, email, profilePic) { [self] (error, isUserSignedIn, isUpdateFinished) in
                 if !isUserSignedIn {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
+                    guard let error = error else {return}
+                    showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                     setEditAccountButtonToOriginalDesign()
                     return
                 }
@@ -341,10 +356,8 @@ class EditAccountViewController: UIViewController {
         } else {
             userData.updateUserData(firstName, lastName, email, profilePic) { [self] (error, isUserSignedIn, isUpdateFinished) in
                 if !isUserSignedIn {
-                    let noSignedInUserAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: Strings.noSignedInUserAlert, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
-                        _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                    }
-                    present(noSignedInUserAlert!, animated: true)
+                    guard let error = error else {return}
+                    showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                     setEditAccountButtonToOriginalDesign()
                     return
                 }

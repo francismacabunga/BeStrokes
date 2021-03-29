@@ -92,7 +92,6 @@ class CaptureViewController: UIViewController {
             return
         }
         if isPresentedWithTabBar() {
-            UserDefaults.standard.setValue(true, forKey: Strings.isCaptureVCLoadedKey)
             checkIfUserIsSignedIn()
             if UserDefaults.standard.bool(forKey: Strings.captureButtonKey) == false {
                 showCaptureVCTutorial()
@@ -149,7 +148,7 @@ class CaptureViewController: UIViewController {
         Utilities.setShadowOn(view: captureStickerContentView, isHidden: false, shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
         Utilities.setDesignOn(imageView: captureTutorialImageView, image: UIImage(named: Strings.tutorialDialogueImage))
         Utilities.setDesignOn(imageView: captureStickerImageView, image: UIImage(named: Strings.defaultStickerImage))
-        Utilities.setDesignOn(imageView: captureExitButtonImageView, image: UIImage(systemName: Strings.captureExitIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        Utilities.setDesignOn(imageView: captureExitButtonImageView, image: UIImage(systemName: Strings.exitIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(imageView: captureDeleteButtonImageView, image: UIImage(systemName: Strings.captureDeleteIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(imageView: captureChooseImageButtonImageView, image: UIImage(systemName: Strings.captureChooseImageIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(label: captureTutorial1Label, fontName: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial1Text)
@@ -337,6 +336,15 @@ class CaptureViewController: UIViewController {
     }
     
     @objc func tapExitButtonGestureHandler() {
+        if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
+        }
         UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
         if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
             guard let userStickerViewModel = userStickerViewModel else {return}

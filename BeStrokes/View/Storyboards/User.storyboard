@@ -466,7 +466,7 @@
         <!--Tab Bar View Controller-->
         <scene sceneID="FTl-L9-mY1">
             <objects>
-                <tabBarController storyboardIdentifier="UserTabBarController" id="wV8-qg-fsa" customClass="TabBarViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarController" id="wV8-qg-fsa" customClass="TabBarViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FvM-qg-Ae0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -491,18 +491,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H1r-t8-Dkm">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                <items>
-                                    <navigationItem id="bdG-np-fWs"/>
-                                </items>
-                            </navigationBar>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="zIX-2M-xrc">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VuT-ef-Ivc">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="357"/>
                                         <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FGh-r3-e22">
+                                                <rect key="frame" x="30" y="20" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="4ao-6V-EvS"/>
+                                                    <constraint firstAttribute="width" constant="40" id="o4T-vU-5vz"/>
+                                                </constraints>
+                                            </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aQC-jg-LyR">
                                                 <rect key="frame" x="30" y="70" width="315" height="277"/>
                                             </imageView>
@@ -511,8 +512,10 @@
                                         <constraints>
                                             <constraint firstItem="aQC-jg-LyR" firstAttribute="top" secondItem="VuT-ef-Ivc" secondAttribute="top" constant="70" id="5qs-Bd-jeZ"/>
                                             <constraint firstAttribute="bottom" secondItem="aQC-jg-LyR" secondAttribute="bottom" constant="10" id="Ap7-1N-Soa"/>
+                                            <constraint firstItem="FGh-r3-e22" firstAttribute="top" secondItem="VuT-ef-Ivc" secondAttribute="top" constant="20" id="H7i-Of-Rfs"/>
                                             <constraint firstAttribute="trailing" secondItem="aQC-jg-LyR" secondAttribute="trailing" constant="30" id="Kkd-ks-2Et"/>
                                             <constraint firstItem="aQC-jg-LyR" firstAttribute="leading" secondItem="VuT-ef-Ivc" secondAttribute="leading" constant="30" id="SFi-qc-3Xu"/>
+                                            <constraint firstItem="FGh-r3-e22" firstAttribute="leading" secondItem="VuT-ef-Ivc" secondAttribute="leading" constant="30" id="lqO-ek-mmp"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pVy-ux-gGU">
@@ -631,9 +634,6 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="zIX-2M-xrc" firstAttribute="top" secondItem="XSI-Hj-yJH" secondAttribute="top" id="Q0F-F1-Zww"/>
-                            <constraint firstItem="H1r-t8-Dkm" firstAttribute="top" secondItem="XSI-Hj-yJH" secondAttribute="top" id="RkJ-HJ-yFa"/>
-                            <constraint firstItem="H1r-t8-Dkm" firstAttribute="trailing" secondItem="XSI-Hj-yJH" secondAttribute="trailing" id="Tre-66-lpc"/>
-                            <constraint firstItem="H1r-t8-Dkm" firstAttribute="leading" secondItem="XSI-Hj-yJH" secondAttribute="leading" id="WBu-iK-5Ql"/>
                             <constraint firstItem="XSI-Hj-yJH" firstAttribute="bottom" secondItem="zIX-2M-xrc" secondAttribute="bottom" id="jqO-Ua-xgh"/>
                             <constraint firstItem="zIX-2M-xrc" firstAttribute="leading" secondItem="XSI-Hj-yJH" secondAttribute="leading" id="qwt-ip-KdX"/>
                             <constraint firstItem="XSI-Hj-yJH" firstAttribute="trailing" secondItem="zIX-2M-xrc" secondAttribute="trailing" id="slW-Xn-jx8"/>
@@ -644,11 +644,11 @@
                         <outlet property="stickerCategoryLabel" destination="l7N-P3-Qy8" id="8e1-Df-hkh"/>
                         <outlet property="stickerCategoryView" destination="3Oi-zu-MXz" id="ahB-Tj-VSK"/>
                         <outlet property="stickerDescriptionLabel" destination="Fmb-ky-A7y" id="fGu-de-TtA"/>
+                        <outlet property="stickerExitImageView" destination="FGh-r3-e22" id="hpK-cC-MN4"/>
                         <outlet property="stickerHeartButtonImageView" destination="oFx-oK-Dbq" id="om9-KF-r58"/>
                         <outlet property="stickerImageView" destination="aQC-jg-LyR" id="KAS-2s-eNX"/>
                         <outlet property="stickerMiddleView" destination="pVy-ux-gGU" id="fpK-fB-8eO"/>
                         <outlet property="stickerNameLabel" destination="9PJ-Ek-3CP" id="nqF-1q-Sbe"/>
-                        <outlet property="stickerNavigationBar" destination="H1r-t8-Dkm" id="lLJ-lb-QQs"/>
                         <outlet property="stickerStackContentView" destination="zIX-2M-xrc" id="1b2-o5-XQD"/>
                         <outlet property="stickerTagLabel" destination="6Ca-xd-YME" id="6e3-6O-vqk"/>
                         <outlet property="stickerTagView" destination="LRA-wj-QL0" id="gY5-5d-iBX"/>
@@ -658,7 +658,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1jd-GY-TMR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="12961" y="916"/>
+            <point key="canvasLocation" x="12960.799999999999" y="915.29235382308855"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="DZk-Di-UFJ">

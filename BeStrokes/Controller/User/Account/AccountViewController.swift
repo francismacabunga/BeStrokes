@@ -46,8 +46,8 @@ class AccountViewController: UIViewController {
     
     //MARK: - View Controller Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         setDesignElements()
         setDataSourceAndDelegate()
@@ -55,12 +55,13 @@ class AccountViewController: UIViewController {
         showLoadingSkeletonView()
         setSignedInUserData()
         setLovedStickersData()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         setSignedInUserData()
-        UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
+
     }
 
     
@@ -338,10 +339,11 @@ extension AccountViewController: UITableViewDataSource {
 extension AccountViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-        let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
+        guard let userStickerViewModel = userStickerViewModel else {return}
+        let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
         DispatchQueue.main.async { [self] in
-            stickerOptionVC.userStickerViewModel = userStickerViewModel![indexPath.item]
+            stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.item]
+            stickerOptionVC.modalPresentationStyle = .fullScreen
             present(stickerOptionVC, animated: true)
         }
     }

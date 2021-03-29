@@ -43,7 +43,10 @@ class StickerCollectionViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
+        
         stickerOptionImageView.image = nil
+        
     }
     
     

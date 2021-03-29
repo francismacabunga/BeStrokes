@@ -34,6 +34,15 @@ class LandingViewController: UIViewController {
         setDesignElements()
         checkIfUserIsSignedIn()
         
+        UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
+        
     }
     
     
@@ -65,7 +74,10 @@ class LandingViewController: UIViewController {
     func checkIfUserIsSignedIn() {
         userData.checkIfUserIsSignedIn { [self] (error, isUserSignedIn, _) in
             if isUserSignedIn {
-                _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+                let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
+                tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
+                view.window?.rootViewController = tabBarVC
+                view.window?.makeKeyAndVisible()
                 return
             }
             guard let error = error else {return}

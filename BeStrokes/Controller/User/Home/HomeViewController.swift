@@ -56,15 +56,24 @@ class HomeViewController: UIViewController {
         setDesignElements()
         registerCollectionView()
         setCollectionViewData()
-    
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         setProfilePicture()
-        //UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+        
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+
+    }
     
+
     //MARK: - Design Elements
     
     func setDesignElements() {
@@ -531,11 +540,12 @@ extension HomeViewController: UICollectionViewDelegate {
             }
         }
         if collectionView == homeStickerCollectionView {
+            UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
             guard let stickerViewModel = stickerViewModel else {return}
-            let storyboard = UIStoryboard(name: Strings.userStoryboard, bundle: nil)
-            let stickerOptionVC = storyboard.instantiateViewController(identifier: Strings.stickerOptionVC) as! StickerOptionViewController
+            let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
             DispatchQueue.main.async { [self] in
                 stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.row]
+                stickerOptionVC.modalPresentationStyle = .fullScreen
                 present(stickerOptionVC, animated: true)
             }
         }

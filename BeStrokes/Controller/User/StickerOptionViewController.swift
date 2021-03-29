@@ -12,13 +12,13 @@ class StickerOptionViewController: UIViewController {
     
     //MARK: - IBOutlets
     
-    @IBOutlet weak var stickerNavigationBar: UINavigationBar!
     @IBOutlet weak var stickerStackContentView: UIStackView!
     @IBOutlet weak var stickerTopView: UIView!
     @IBOutlet weak var stickerMiddleView: UIView!
     @IBOutlet weak var stickerCategoryView: UIView!
     @IBOutlet weak var stickerTagView: UIView!
     @IBOutlet weak var stickerBottomView: UIView!
+    @IBOutlet weak var stickerExitImageView: UIImageView!
     @IBOutlet weak var stickerImageView: UIImageView!
     @IBOutlet weak var stickerHeartButtonImageView: UIImageView!
     @IBOutlet weak var stickerNameLabel: UILabel!
@@ -40,12 +40,9 @@ class StickerOptionViewController: UIViewController {
     
     //MARK: - View Controller Life Cycle
     
-    override func viewDidLoad() {
-        setDesignElements()
-        registerGestures()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         UserDefaults.standard.setValue(true, forKey: Strings.isStickerOptionVCLoadedKey)
         if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
             UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
@@ -56,38 +53,15 @@ class StickerOptionViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
             UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
         }
+        setDesignElements()
+        registerGestures()
         showStickerData()
         setSkeletonColor()
         showLoadingSkeletonView()
         
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        UserDefaults.standard.setValue(false, forKey: Strings.isStickerOptionVCLoadedKey)
-        if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
-            UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
-        }
-        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
-            UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
-            if userStickerViewModel != nil {
-                stickerData.updateNewSticker(on: userStickerViewModel!.stickerID) { [self] (error, isUserSignedIn) in
-                    if !isUserSignedIn {
-                        guard let error = error else {return}
-                        showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                        return
-                    }
-                    if error != nil {
-                        showAlertController(alertMessage: error!.localizedDescription, withHandler: true)
-                    }
-                }
-            }
-        }
-        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
-            UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
-        }
-    }
-    
-    
+  
     //MARK: - Design Elements
     
     func setDesignElements() {
@@ -98,7 +72,7 @@ class StickerOptionViewController: UIViewController {
         Utilities.setDesignOn(view: stickerTagView, isCircular: true, isHidden: true)
         Utilities.setDesignOn(view: stickerBottomView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: stickerStackContentView, backgroundColor: .clear)
-        Utilities.setDesignOn(navigationBar: stickerNavigationBar, isDarkMode: true)
+        Utilities.setDesignOn(imageView: stickerExitImageView, image: UIImage(systemName: Strings.exitIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isHidden: true)
         Utilities.setDesignOn(imageView: stickerImageView, isHidden: true)
         Utilities.setDesignOn(imageView: stickerHeartButtonImageView, tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isHidden: true)
         Utilities.setDesignOn(label: stickerNameLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: true, minimumScaleFactor: 0.8, isHidden: true)
@@ -203,7 +177,7 @@ class StickerOptionViewController: UIViewController {
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let isStickerLoved = isStickerLoved else {return}
@@ -226,6 +200,7 @@ class StickerOptionViewController: UIViewController {
                         stickerTag: String,
                         stickerDescription: String)
     {
+        stickerExitImageView.isHidden = false
         stickerImageView.kf.setImage(with: URL(string: stickerImageName))
         stickerImageView.isHidden = false
         stickerNameLabel.text = stickerName
@@ -269,11 +244,13 @@ class StickerOptionViewController: UIViewController {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
-                        present(alertWithHandler!, animated: true)
+                    print("Show alert with handler!")
+                    show(alertWithHandler!, sender: nil)
                     return
                 }
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                    present(alert!, animated: true)
+                print("Show alert without handler!")
+                show(alert!, sender: nil)
             }
         }
     }
@@ -282,12 +259,42 @@ class StickerOptionViewController: UIViewController {
     //MARK: - UIGestureHandlers
     
     func registerGestures() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
+        let tapExitButton = UITapGestureRecognizer(target: self, action: #selector(tapExitButtonGestureHandler))
+        stickerExitImageView.isUserInteractionEnabled = true
+        stickerExitImageView.addGestureRecognizer(tapExitButton)
+        let tapHeartButton = UITapGestureRecognizer(target: self, action: #selector(tapHeartButtonGestureHandler))
         stickerHeartButtonImageView.isUserInteractionEnabled = true
-        stickerHeartButtonImageView.addGestureRecognizer(tapGesture)
+        stickerHeartButtonImageView.addGestureRecognizer(tapHeartButton)
     }
     
-    @objc func tapGestureHandler(tap: UITapGestureRecognizer) {
+    @objc func tapExitButtonGestureHandler() {
+        UserDefaults.standard.setValue(false, forKey: Strings.isStickerOptionVCLoadedKey)
+        
+        if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
+            if userStickerViewModel != nil {
+                stickerData.updateNewSticker(on: userStickerViewModel!.stickerID) { [self] (error, isUserSignedIn) in
+                    if !isUserSignedIn {
+                        guard let error = error else {return}
+                        showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                        return
+                    }
+                    if error != nil {
+                        showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    }
+                }
+            }
+        }
+        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
+        }
+        dismiss(animated: true)
+    }
+    
+    @objc func tapHeartButtonGestureHandler(tap: UITapGestureRecognizer) {
         guard let heartButtonTapped = heartButtonTapped else {return}
         if heartButtonTapped {
             if stickerViewModel != nil {
@@ -326,7 +333,7 @@ class StickerOptionViewController: UIViewController {
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
             }
         }
     }
@@ -339,7 +346,7 @@ class StickerOptionViewController: UIViewController {
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: true)
+                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let isProcessDone = isProcessDone else {return}

@@ -155,9 +155,9 @@ struct Strings {
     static let accountArrowUpIcon = "chevron.up.square.fill"
     static let loveStickerIcon = "heart"
     static let lovedStickerIcon = "heart.fill"
-    static let captureExitIcon = "xmark.circle.fill"
     static let captureDeleteIcon = "trash.fill"
     static let captureChooseImageIcon = "camera.fill"
+    static let exitIcon = "xmark.circle.fill"
     
     
     
@@ -168,7 +168,8 @@ struct Strings {
     
     //MARK: - View Controllers Names
     static let landingVC = "LandingViewController"
-    static let tabBarVC = "UserTabBarController"
+    static let tabBarVC = "TabBarController"
+    static let homeVC = "HomeViewController"
     static let stickerOptionVC = "StickerOptionViewController"
     static let landingPageContentVC = "LandingPageContentViewController"
     static let captureVC = "CaptureViewController"
@@ -241,6 +242,7 @@ struct Strings {
     static let isCaptureVCLoadedKey = "isCaptureVCLoaded"
     static let isNotificationVCLoadedKey = "isNotificationVCLoaded"
     static let isAccountVCLoadedKey = "isAccountVCLoaded"
+    static let isEditAccountVCLoadedKey = "isEditAccountVCLoaded"
     static let isProfileVCLoadedKey = "isProfileVCLoaded"
     static let isStickerOptionVCLoadedKey = "isStickerOptionVCLoaded"
     

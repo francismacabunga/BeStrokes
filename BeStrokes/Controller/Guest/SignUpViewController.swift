@@ -324,7 +324,10 @@ class SignUpViewController: UIViewController {
                 showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
                 setSignUpButtonTransitionAnimation()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
-                    _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+                    let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
+                    tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
+                    view.window?.rootViewController = tabBarVC
+                    view.window?.makeKeyAndVisible()
                 }
                 UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
             }
