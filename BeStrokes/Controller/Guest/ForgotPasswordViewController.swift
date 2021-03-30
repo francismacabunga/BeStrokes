@@ -27,7 +27,7 @@ class ForgotPasswordViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let user = UserData()
+    private let userData = UserData()
     
     
     //MARK: - View Controller Life Cycle
@@ -159,7 +159,7 @@ class ForgotPasswordViewController: UIViewController {
     
     func processForgotPassword() {
         guard let email = forgotPasswordEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
-        user.forgotPassword(with: email) { [self] (error, isPasswordResetSent) in
+        userData.forgotPassword(with: email) { [self] (error, isPasswordResetSent) in
             guard let error = error else {
                 if isPasswordResetSent {
                     showWarningLabel(on: forgotPasswordWarningLabel, customizedWarning: Strings.forgotPasswordProcessSuccessfulLabel, isASuccessMessage: true)
