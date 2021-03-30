@@ -16,7 +16,8 @@ struct Utilities {
     static let setLightModeAppearance = Notification.Name(Strings.lightModeAppearanceNotificationName)
     static let setDarkModeAppearance = Notification.Name(Strings.darkModeAppearanceNotificationName)
     static let setBadgeCounterToNotificationIcon = Notification.Name(Strings.badgeCounterToNotificationName)
-    static let alertAccountVC = Notification.Name(Strings.accountVCNotificationName)
+    static let reloadUserData = Notification.Name(Strings.reloadUserDataNotificationName)
+    static let reloadProfilePic = Notification.Name(Strings.reloadProfilePicNotificationName)
     
     
     //MARK: - Design Elements
@@ -545,9 +546,11 @@ struct Utilities {
             let destinationVC = storyboard.instantiateViewController(identifier: viewController)
             return destinationVC
         } else {
-            let destinationVC = storyboard.instantiateViewController(identifier: viewController)
-            view!.window?.rootViewController = destinationVC
-            view!.window?.makeKeyAndVisible()
+            DispatchQueue.main.async {
+                let destinationVC = storyboard.instantiateViewController(identifier: viewController)
+                view!.window?.rootViewController = destinationVC
+                view!.window?.makeKeyAndVisible()
+            }
         }
         return nil
     }
@@ -585,11 +588,7 @@ struct Utilities {
         return nil
     }
     
-    static func showAlertWithHandler() {
-        
-    }
-    
-    
+   
     
     
     

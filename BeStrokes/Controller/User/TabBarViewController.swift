@@ -107,42 +107,6 @@ class TabBarViewController: UITabBarController {
 
 extension TabBarViewController: UITabBarControllerDelegate {
     
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-      
-        
-//        tabBarController.selectedViewController = viewController
-//        view.window?.rootViewController = tabBarController
-//        view.window?.makeKeyAndVisible()
-        
-        
-//        let tabBarVC = tabBarController
-//        
-//        if tabBarVC.selectedIndex == 0 {
-//            print("HomeVC")
-//            tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
-//            view.window?.rootViewController = tabBarVC
-//            view.window?.makeKeyAndVisible()
-//        }
-//        if tabBarVC.selectedIndex == 1 {
-//            print("CaptureVC")
-//            tabBarVC.selectedViewController = tabBarVC.viewControllers?[1]
-//            view.window?.rootViewController = tabBarVC
-//            view.window?.makeKeyAndVisible()
-//        }
-//        if tabBarVC.selectedIndex == 2 {
-//            print("NotificationVC")
-//            tabBarVC.selectedViewController = tabBarVC.viewControllers?[2]
-//            view.window?.rootViewController = tabBarVC
-//            view.window?.makeKeyAndVisible()
-//        }
-//        if tabBarVC.selectedIndex == 3 {
-//            print("AccountVC")
-//            tabBarVC.selectedViewController = tabBarVC.viewControllers?[3]
-//            view.window?.rootViewController = tabBarVC
-//            view.window?.makeKeyAndVisible()
-//        }
-    }
-       
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         if tabBar.selectedItem?.tag == 0 {
             UserDefaults.standard.setValue(true, forKey: Strings.homeVCTappedKey)

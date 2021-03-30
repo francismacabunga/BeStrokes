@@ -46,8 +46,8 @@ class AccountViewController: UIViewController {
     
     //MARK: - View Controller Life Cycle
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         setDesignElements()
         setDataSourceAndDelegate()
@@ -55,16 +55,17 @@ class AccountViewController: UIViewController {
         showLoadingSkeletonView()
         setSignedInUserData()
         setLovedStickersData()
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setSignedInUserData()
-
+        checkIfUserIsSignedIn()
+        
     }
-
     
+
     //MARK: - Design Elements
     
     func setDesignElements() {
@@ -86,7 +87,7 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, isStartAnimating: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadAccountVC), name: Utilities.alertAccountVC, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadUserData), name: Utilities.reloadUserData, object: nil)
         checkThemeAppearance()
     }
     
@@ -260,8 +261,18 @@ class AccountViewController: UIViewController {
         }
     }
     
-    @objc func reloadAccountVC() {
+    @objc func reloadUserData() {
         setSignedInUserData()
+    }
+    
+    func checkIfUserIsSignedIn() {
+        userData.checkIfUserIsSignedIn { [self] (error, isUserSignedIn, _) in
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                return
+            }
+        }
     }
     
     func showAlertController(alertMessage: String, withHandler: Bool) {
@@ -271,11 +282,11 @@ class AccountViewController: UIViewController {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
-                        present(alertWithHandler!, animated: true)
+                    present(alertWithHandler!, animated: true)
                     return
                 }
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                    present(alert!, animated: true)
+                present(alert!, animated: true)
             }
         }
     }

@@ -129,8 +129,6 @@ class StickerTableViewCell: UITableViewCell {
         if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
             UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
         }
-        
-        
         let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true)! as! CaptureViewController
         captureVC.userStickerViewModel = userStickerViewModel
         captureVC.modalPresentationStyle = .fullScreen

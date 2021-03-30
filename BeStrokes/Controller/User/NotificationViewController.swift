@@ -19,6 +19,7 @@ class NotificationViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
+    private let userData = UserData()
     private let stickerData = StickerData()
     private var userStickerViewModel: [UserStickerViewModel]?
     
@@ -38,7 +39,7 @@ class NotificationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setNotificationData()
+        checkIfUserIsSignedIn()
     
     }
     
@@ -121,6 +122,16 @@ class NotificationViewController: UIViewController {
         }
     }
     
+    func checkIfUserIsSignedIn() {
+        userData.checkIfUserIsSignedIn { [self] (error, isUserSignedIn, _) in
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                return
+            }
+        }
+    }
+    
     func showAlertController(alertMessage: String, withHandler: Bool) {
         if UserDefaults.standard.bool(forKey: Strings.isNotificationVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
@@ -128,11 +139,11 @@ class NotificationViewController: UIViewController {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
-                        present(alertWithHandler!, animated: true)
+                    present(alertWithHandler!, animated: true)
                     return
                 }
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                    present(alert!, animated: true)
+                present(alert!, animated: true)
             }
         }
     }

@@ -160,11 +160,13 @@ class ProfileViewController: UIViewController {
                 return
             }
             guard let userData = userData else {return}
-            profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-            profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
-            profileEmailLabel.text = userData.email
-            hasProfilePicLoaded = true
-            hideLoadingSkeletonView()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+                profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
+                profileEmailLabel.text = userData.email
+                hasProfilePicLoaded = true
+                hideLoadingSkeletonView()
+            }
         }
     }
     
@@ -174,9 +176,7 @@ class ProfileViewController: UIViewController {
             profileTableView.reloadData()
         }
         showLoadingSkeletonView()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-            getSignedInUserData()
-        }
+        getSignedInUserData()
     }
     
     func signOutUser() {
@@ -198,11 +198,11 @@ class ProfileViewController: UIViewController {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
-                        present(alertWithHandler!, animated: true)
+                    present(alertWithHandler!, animated: true)
                     return
                 }
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                    present(alert!, animated: true)
+                present(alert!, animated: true)
             }
         }
     }

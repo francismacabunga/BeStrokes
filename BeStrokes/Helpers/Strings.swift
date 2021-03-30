@@ -230,28 +230,25 @@ struct Strings {
     static let notificationKey = "notificationAuthorization"
     static let notificationBadgeCounterKey = "notificationBadgeCounter"
     static let userFirstTimeLoginKey = "userFirstTimeLogin"
-    
-   
-    
     static let homeVCTappedKey = "homeVCTapped"
     static let captureVCTappedKey = "captureVCTapped"
     static let notificationVCTappedKey = "notificationVCTapped"
     static let accountVCTappedKey = "accountVCTapped"
-    
     static let isHomeVCLoadedKey = "isHomeVCLoaded"
     static let isCaptureVCLoadedKey = "isCaptureVCLoaded"
     static let isNotificationVCLoadedKey = "isNotificationVCLoaded"
     static let isAccountVCLoadedKey = "isAccountVCLoaded"
-    static let isEditAccountVCLoadedKey = "isEditAccountVCLoaded"
     static let isProfileVCLoadedKey = "isProfileVCLoaded"
     static let isStickerOptionVCLoadedKey = "isStickerOptionVCLoaded"
+    static let isEditAccountVCLoadedKey = "isEditAccountVCLoaded"
     
     //MARK: - Notification
     
     static let lightModeAppearanceNotificationName = "setLightModeAppearance"
     static let darkModeAppearanceNotificationName = "setDarkModeAppearance"
     static let badgeCounterToNotificationName = "setBadgeCounterToNotificationIcon"
-    static let accountVCNotificationName = "alertAccountVC"
+    static let reloadUserDataNotificationName = "reloadUserData"
+    static let reloadProfilePicNotificationName = "reloadProfilePic"
     static let notificationIdentifier = "Sticker Notification"
     static let notificationTitle = "New Sticker Alert"
     static let notificationBody = "A brand new sticker has been uploaded. Check it out on your notifications tab!"

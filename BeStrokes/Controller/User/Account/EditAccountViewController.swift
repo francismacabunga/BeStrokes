@@ -46,9 +46,11 @@ class EditAccountViewController: UIViewController {
     
     //MARK: - View Controller Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        UserDefaults.standard.setValue(true, forKey: Strings.isEditAccountVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
         setDesignElements()
         registerGestures()
         setDataSourceAndDelegate()
@@ -56,18 +58,11 @@ class EditAccountViewController: UIViewController {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        UserDefaults.standard.setValue(true, forKey: Strings.isEditAccountVCLoadedKey)
-        
-    }
-    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        NotificationCenter.default.post(name: Utilities.alertAccountVC, object: nil)
         UserDefaults.standard.setValue(false, forKey: Strings.isEditAccountVCLoadedKey)
+        UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
         
     }
     
@@ -211,11 +206,11 @@ class EditAccountViewController: UIViewController {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
-                        present(alertWithHandler!, animated: true)
+                    present(alertWithHandler!, animated: true)
                     return
                 }
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                    present(alert!, animated: true)
+                present(alert!, animated: true)
             }
         }
     }
@@ -369,6 +364,8 @@ class EditAccountViewController: UIViewController {
                 if isUpdateFinished {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         setEditAccountButtonToOriginalDesign()
+                        NotificationCenter.default.post(name: Utilities.reloadUserData, object: nil)
+                        NotificationCenter.default.post(name: Utilities.reloadProfilePic, object: nil)
                         dismiss(animated: true)
                     }
                 }

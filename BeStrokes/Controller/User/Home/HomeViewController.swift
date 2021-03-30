@@ -43,7 +43,6 @@ class HomeViewController: UIViewController {
     private var shouldReloadStickerCategoryCollectionView = false
     private var skeletonColor: UIColor?
     private var hasProfilePicLoaded = false
-    private var isAlertControllerPresented = false
     private let notificationCenter = UNUserNotificationCenter.current()
     
     
@@ -59,17 +58,11 @@ class HomeViewController: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        setProfilePicture()
-        
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+        checkIfUserIsSignedIn()
 
     }
     
@@ -89,6 +82,7 @@ class HomeViewController: UIViewController {
         Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadProfilePic), name: Utilities.reloadProfilePic, object: nil)
         checkThemeAppearance()
         showLoadingProfilePicDesign()
         setProfilePicture()
@@ -213,6 +207,10 @@ class HomeViewController: UIViewController {
         }
     }
     
+    @objc func reloadProfilePic() {
+        setProfilePicture()
+    }
+    
     func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
         homeFeaturedStickerCollectionView.configureForPeekingBehavior(behavior: behavior)
         behavior.cellPeekWidth = 15
@@ -291,6 +289,16 @@ class HomeViewController: UIViewController {
         }
     }
     
+    func checkIfUserIsSignedIn() {
+        userData.checkIfUserIsSignedIn { [self] (error, isUserSignedIn, _) in
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                return
+            }
+        }
+    }
+    
     func showAlertController(alertMessage: String, withHandler: Bool) {
         if UserDefaults.standard.bool(forKey: Strings.isHomeVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
@@ -298,11 +306,11 @@ class HomeViewController: UIViewController {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
-                        present(alertWithHandler!, animated: true)
+                    present(alertWithHandler!, animated: true)
                     return
                 }
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                    present(alert!, animated: true)
+                present(alert!, animated: true)
             }
         }
     }
@@ -601,16 +609,6 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 //MARK: - Featured Sticker Cell Delegate
 
 extension HomeViewController: FeaturedStickerCellDelegate {
-    
-    func getError(using error: Error) {
-            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
-    }
-    
-    func getUserAuthenticationState(_ isUserSignedIn: Bool) {
-        if !isUserSignedIn {
-                showAlertController(alertMessage: Strings.noSignedInUserAlert, withHandler: true)
-        }
-    }
     
     func getVC(using viewController: UIViewController) {
         viewController.modalPresentationStyle = .fullScreen

@@ -192,7 +192,10 @@ class LoginViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
             setLoginButtonToOriginalDesign()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-                _ = Utilities.transition(from: view, to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: false)
+                let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
+                tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
+                view.window?.rootViewController = tabBarVC
+                view.window?.makeKeyAndVisible()
             }
         }
     }

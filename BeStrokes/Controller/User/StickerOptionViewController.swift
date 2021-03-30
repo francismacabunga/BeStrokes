@@ -177,6 +177,7 @@ class StickerOptionViewController: UIViewController {
                 return
             }
             if error != nil {
+                print("Error came from here!")
                 showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }

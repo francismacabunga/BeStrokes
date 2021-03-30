@@ -100,7 +100,6 @@ class CaptureViewController: UIViewController {
             }
         } else {
             UserDefaults.standard.setValue(true, forKey: Strings.isCaptureVCLoadedKey)
-            
             if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
                 UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
             }
@@ -110,8 +109,6 @@ class CaptureViewController: UIViewController {
             if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
                 UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
             }
-          
-            
             checkIfUserIsSignedIn()
             if UserDefaults.standard.bool(forKey: Strings.tryMeButtonKey) == false {
                 showCaptureVCTutorial()
@@ -298,11 +295,13 @@ class CaptureViewController: UIViewController {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
-                    present(alertWithHandler!, animated: true)
+                    show(alertWithHandler!, sender: nil)
+                    //present(alertWithHandler!, animated: true)
                     return
                 }
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                present(alert!, animated: true)
+                show(alert!, sender: nil)
+                //present(alert!, animated: true)
             }
         }
     }
