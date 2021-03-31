@@ -508,6 +508,13 @@ struct Utilities {
         }
     }
     
+    // Table View Cell
+    static func setDesignOn(cell: UITableViewCell,
+                            selectionStyle: UITableViewCell.SelectionStyle)
+    {
+        cell.selectionStyle = selectionStyle
+    }
+    
     // Animation
     static func animate(button: UIButton? = nil, view: UIView? = nil)
     {
@@ -589,6 +596,7 @@ struct Utilities {
     }
     
    
+    
     
     
     

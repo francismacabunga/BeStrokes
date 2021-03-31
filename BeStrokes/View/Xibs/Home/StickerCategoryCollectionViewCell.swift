@@ -25,16 +25,16 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
             if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
                 setLightMode()
                 if isCategorySelected {
-                    Utilities.setDesignOn(view: stickerCategoryView, backgroundColor: #colorLiteral(red: 0.9944363236, green: 0.9993038774, blue: 0, alpha: 1))
+                    stickerCategoryView.backgroundColor = #colorLiteral(red: 0.9944363236, green: 0.9993038774, blue: 0, alpha: 1)
                 } else {
-                    Utilities.setDesignOn(view: stickerCategoryView , backgroundColor: .white)
+                    stickerCategoryView.backgroundColor = .white
                 }
             } else {
                 setDarkMode()
                 if isCategorySelected {
-                    Utilities.setDesignOn(view: stickerCategoryView, backgroundColor: #colorLiteral(red: 0.9944363236, green: 0.9993038774, blue: 0, alpha: 1))
+                    stickerCategoryView.backgroundColor = #colorLiteral(red: 0.9944363236, green: 0.9993038774, blue: 0, alpha: 1)
                 } else {
-                    Utilities.setDesignOn(view: stickerCategoryView , backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+                    stickerCategoryView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
                 }
             }
         }

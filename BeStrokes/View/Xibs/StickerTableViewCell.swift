@@ -56,7 +56,7 @@ class StickerTableViewCell: UITableViewCell {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        self.selectionStyle = .none
+        Utilities.setDesignOn(cell: self, selectionStyle: .none)
         Utilities.setDesignOn(view: stickerContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: stickerView, setCustomCircleCurve: 30)
         Utilities.setDesignOn(label: stickerHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), canResize: true, minimumScaleFactor: 0.8)

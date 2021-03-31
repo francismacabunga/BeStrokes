@@ -44,7 +44,7 @@ class ProfileTableViewCell: UITableViewCell {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        self.selectionStyle = .none
+        Utilities.setDesignOn(cell: self, selectionStyle: .none)
         Utilities.setDesignOn(view: settingContentView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(imageView: settingIconImageView, tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(label: settingLabel, fontName: Strings.defaultFont, fontSize: 15, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
@@ -64,7 +64,7 @@ class ProfileTableViewCell: UITableViewCell {
     func setNotificationSetting() {
         if settingLabel.text == Strings.profileSettingsNotifications {
             self.isUserInteractionEnabled = false
-            Utilities.setDesignOn(switchIndicator: settingSwitch, alpha: 0.5)
+            settingSwitch.alpha = 0.5
             if UserDefaults.standard.bool(forKey: Strings.notificationKey) {
                 settingSwitch.isOn = true
             } else {
