@@ -53,6 +53,7 @@ class ProfileViewController: UIViewController {
         
         UserDefaults.standard.setValue(true, forKey: Strings.isProfileVCLoadedKey)
         UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

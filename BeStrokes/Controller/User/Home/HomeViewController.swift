@@ -79,7 +79,7 @@ class HomeViewController: UIViewController {
         Utilities.setDesignOn(collectionView: homeFeaturedStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCategoryCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
         Utilities.setDesignOn(collectionView: homeStickerCollectionView, backgroundColor: .clear, isHorizontalDirection: true, showScrollIndicator: false)
-        Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, isHidden: true)
+        Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, size: .medium, isStartAnimating: false, isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadProfilePic), name: Utilities.reloadProfilePic, object: nil)
@@ -117,7 +117,7 @@ class HomeViewController: UIViewController {
             Utilities.setDesignOn(view: view, backgroundColor: .white)
             Utilities.setDesignOn(label: homeHeading1Label, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             Utilities.setDesignOn(label: homeHeading2Label, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-            Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isStartAnimating: false, isHidden: true)
         }
     }
     
@@ -132,7 +132,7 @@ class HomeViewController: UIViewController {
             Utilities.setShadowOn(view: homeProfilePicContentView, isHidden: true)
             Utilities.setDesignOn(label: homeHeading1Label, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(label: homeHeading2Label, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-            Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: false, isHidden: true)
         }
     }
     
@@ -186,8 +186,7 @@ class HomeViewController: UIViewController {
     
     func showLoadingStickersDesign() {
         homeStickerCollectionView.isHidden = true
-        homeLoadingIndicatorView.isHidden = false
-        homeLoadingIndicatorView.startAnimating()
+        Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, isStartAnimating: true, isHidden: false)
         DispatchQueue.main.async { [self] in
             homeStickerCollectionView.reloadData()
         }
@@ -504,7 +503,6 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
                 cell.prepareFeaturedStickerCell()
                 cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.row]
                 cell.featuredStickerCellDelegate = self
-                
             }
             return cell
         }
@@ -589,15 +587,12 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == homeStickerCategoryCollectionView {
             let stickerCategoryCollectionViewLayout = homeStickerCategoryCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-            stickerCategoryCollectionViewLayout.sectionInset.left = 25
-            stickerCategoryCollectionViewLayout.sectionInset.right = 10
-            stickerCategoryCollectionViewLayout.minimumLineSpacing = 10
+            Utilities.setMeasurementsOn(collectionViewFlowLayout: stickerCategoryCollectionViewLayout, leftSectionInset: 25, rightSectionInset: 10, minimumLineSpacing: 10)
             return CGSize(width: 105, height: 40)
         }
         if collectionView == homeStickerCollectionView {
             let stickerCollectionViewLayout = homeStickerCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-            stickerCollectionViewLayout.sectionInset.left = 25
-            stickerCollectionViewLayout.sectionInset.right = 10
+            Utilities.setMeasurementsOn(collectionViewFlowLayout: stickerCollectionViewLayout, leftSectionInset: 25, rightSectionInset: 10)
             return CGSize(width: 145, height: 145)
         }
         return CGSize()

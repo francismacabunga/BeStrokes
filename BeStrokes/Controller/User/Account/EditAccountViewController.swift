@@ -89,7 +89,7 @@ class EditAccountViewController: UIViewController {
         Utilities.setDesignOn(textField: editAccountLastNameTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, capitalization: .words, isCircular: true)
         Utilities.setDesignOn(textField: editAccountEmailTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, isCircular: true)
         Utilities.setDesignOn(button: editAccountButton, title: Strings.saveButtonText, fontName: Strings.defaultFontBold, fontSize: 20, isCircular: true)
-        Utilities.setDesignOn(activityIndicatorView: editAccountLoadingIndicatorView, size: .medium, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isHidden: true)
+        Utilities.setDesignOn(activityIndicatorView: editAccountLoadingIndicatorView, size: .medium, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isStartAnimating: false, isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
         checkThemeAppearance()
@@ -166,12 +166,11 @@ class EditAccountViewController: UIViewController {
     
     func showLoadingButton() {
         editAccountButton.isHidden = true
-        editAccountLoadingIndicatorView.startAnimating()
-        editAccountLoadingIndicatorView.isHidden = false
+        Utilities.setDesignOn(activityIndicatorView: editAccountLoadingIndicatorView, isStartAnimating: true, isHidden: false)
     }
     
     func setEditAccountButtonToOriginalDesign() {
-        editAccountLoadingIndicatorView.isHidden = true
+        Utilities.setDesignOn(activityIndicatorView: editAccountLoadingIndicatorView, isStartAnimating: false, isHidden: true)
         editAccountButton.isHidden = false
         Utilities.setDesignOn(button: editAccountButton, title: Strings.saveButtonText, fontName: Strings.defaultFontBold, fontSize: 20, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
     }
@@ -227,8 +226,7 @@ class EditAccountViewController: UIViewController {
     
     func registerGestures() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
-        editAccountImageView.isUserInteractionEnabled = true
-        editAccountImageView.addGestureRecognizer(tapGesture)
+        Utilities.setDesignOn(imageView: editAccountImageView, isUserInteractionEnabled: true, gestureRecognizer: tapGesture)
     }
     
     @objc func tapGestureHandler() {

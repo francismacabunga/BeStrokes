@@ -77,14 +77,10 @@ class TabBarViewController: UITabBarController {
     }
     
     func setIconData() {
-        userTabBarItem[0].tag = 0
-        userTabBarItem[0].image = UIImage(systemName: Strings.tabHomeIcon)
-        userTabBarItem[1].tag = 1
-        userTabBarItem[1].image = UIImage(systemName: Strings.tabCaptureIcon)
-        userTabBarItem[2].tag = 2
-        userTabBarItem[2].image = UIImage(systemName: Strings.tabNotificationIcon)
-        userTabBarItem[3].tag = 3
-        userTabBarItem[3].image = UIImage(systemName: Strings.tabAccountIcon)
+        Utilities.setDesignOn(tabBarItem: userTabBarItem[0], tag: 0, image: UIImage(systemName: Strings.tabHomeIcon)!)
+        Utilities.setDesignOn(tabBarItem: userTabBarItem[1], tag: 1, image: UIImage(systemName: Strings.tabCaptureIcon)!)
+        Utilities.setDesignOn(tabBarItem: userTabBarItem[2], tag: 2, image: UIImage(systemName: Strings.tabNotificationIcon)!)
+        Utilities.setDesignOn(tabBarItem: userTabBarItem[3], tag: 3, image: UIImage(systemName: Strings.tabAccountIcon)!)
         setBadgeCounterValue()
     }
     

@@ -175,6 +175,7 @@ struct Utilities {
                             backgroundColor: UIColor? = nil,
                             isCircular: Bool? = nil,
                             isSkeletonCircular: Bool? = nil,
+                            isEnabled: Bool? = nil,
                             isHidden: Bool? = nil)
     {
         if title != nil {
@@ -204,6 +205,13 @@ struct Utilities {
         if isSkeletonCircular != nil {
             if isSkeletonCircular! {
                 button.skeletonCornerRadius = Float(button.bounds.height / 2)
+            }
+        }
+        if isEnabled != nil {
+            if isEnabled! {
+                button.isEnabled = true
+            } else {
+                button.isEnabled = false
             }
         }
         if isHidden != nil {
@@ -279,6 +287,8 @@ struct Utilities {
         if isStartAnimating != nil {
             if isStartAnimating! {
                 activityIndicatorView.startAnimating()
+            } else {
+                activityIndicatorView.stopAnimating()
             }
         }
         if isHidden != nil {
@@ -313,6 +323,15 @@ struct Utilities {
     {
         tabBar.barTintColor = backgroundColor
         tabBar.tintColor = iconColor
+    }
+    
+    // Tab Bar Item
+    static func setDesignOn(tabBarItem: UITabBarItem,
+                            tag: Int,
+                            image: UIImage)
+    {
+        tabBarItem.tag = tag
+        tabBarItem.image = image
     }
     
     // Stack View
@@ -423,6 +442,8 @@ struct Utilities {
                             alpha: CGFloat? = nil,
                             isCircular: Bool? = nil,
                             isSkeletonCircular: Bool? = nil,
+                            isUserInteractionEnabled: Bool? = nil,
+                            gestureRecognizer: UIGestureRecognizer? = nil,
                             isHidden: Bool? = nil)
     {
         imageView.contentMode = .scaleAspectFit
@@ -446,6 +467,16 @@ struct Utilities {
             if isSkeletonCircular! {
                 imageView.skeletonCornerRadius = Float(imageView.frame.size.height / 2)
             }
+        }
+        if isUserInteractionEnabled != nil {
+            if isUserInteractionEnabled! {
+                imageView.isUserInteractionEnabled = true
+            } else {
+                imageView.isUserInteractionEnabled = false
+            }
+        }
+        if gestureRecognizer != nil {
+            imageView.addGestureRecognizer(gestureRecognizer!)
         }
         if isHidden != nil {
             if isHidden! {
@@ -480,6 +511,18 @@ struct Utilities {
             } else {
                 collectionView.showsVerticalScrollIndicator = false
             }
+        }
+    }
+    
+    // Collection View Layout
+    static func setMeasurementsOn(collectionViewFlowLayout: UICollectionViewFlowLayout,
+                                  leftSectionInset: CGFloat,
+                                  rightSectionInset: CGFloat,
+                                  minimumLineSpacing: CGFloat? = nil) {
+        collectionViewFlowLayout.sectionInset.left = leftSectionInset
+        collectionViewFlowLayout.sectionInset.right = rightSectionInset
+        if minimumLineSpacing != nil {
+            collectionViewFlowLayout.minimumLineSpacing = minimumLineSpacing!
         }
     }
     

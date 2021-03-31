@@ -177,7 +177,6 @@ class StickerOptionViewController: UIViewController {
                 return
             }
             if error != nil {
-                print("Error came from here!")
                 showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
@@ -204,16 +203,12 @@ class StickerOptionViewController: UIViewController {
         stickerExitImageView.isHidden = false
         stickerImageView.kf.setImage(with: URL(string: stickerImageName))
         stickerImageView.isHidden = false
-        stickerNameLabel.text = stickerName
-        stickerNameLabel.isHidden = false
-        stickerCategoryLabel.text = stickerCategory
-        stickerCategoryView.isHidden = false
+        Utilities.setDesignOn(label: stickerNameLabel, text: stickerName, isHidden: false)
+        Utilities.setDesignOn(label: stickerCategoryLabel, text: stickerCategory, isHidden: false)
         if stickerTag != Strings.tagNoStickers {
-            stickerTagLabel.text = stickerTag
-            stickerTagView.isHidden = false
+            Utilities.setDesignOn(label: stickerTagLabel, text: stickerTag, isHidden: false)
         }
-        stickerDescriptionLabel.text = stickerDescription
-        stickerDescriptionLabel.isHidden = false
+        Utilities.setDesignOn(label: stickerDescriptionLabel, text: stickerDescription, isHidden: false)
         stickerHeartButtonImageView.isHidden = false
     }
     
@@ -245,12 +240,10 @@ class StickerOptionViewController: UIViewController {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
-                    print("Show alert with handler!")
                     show(alertWithHandler!, sender: nil)
                     return
                 }
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                print("Show alert without handler!")
                 show(alert!, sender: nil)
             }
         }
@@ -261,16 +254,13 @@ class StickerOptionViewController: UIViewController {
     
     func registerGestures() {
         let tapExitButton = UITapGestureRecognizer(target: self, action: #selector(tapExitButtonGestureHandler))
-        stickerExitImageView.isUserInteractionEnabled = true
-        stickerExitImageView.addGestureRecognizer(tapExitButton)
+        Utilities.setDesignOn(imageView: stickerExitImageView, isUserInteractionEnabled: true, gestureRecognizer: tapExitButton)
         let tapHeartButton = UITapGestureRecognizer(target: self, action: #selector(tapHeartButtonGestureHandler))
-        stickerHeartButtonImageView.isUserInteractionEnabled = true
-        stickerHeartButtonImageView.addGestureRecognizer(tapHeartButton)
+        Utilities.setDesignOn(imageView: stickerHeartButtonImageView, isUserInteractionEnabled: true, gestureRecognizer: tapHeartButton)
     }
     
     @objc func tapExitButtonGestureHandler() {
         UserDefaults.standard.setValue(false, forKey: Strings.isStickerOptionVCLoadedKey)
-        
         if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
             UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
         }

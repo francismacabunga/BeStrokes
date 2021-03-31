@@ -70,7 +70,7 @@ class SignUpViewController: UIViewController {
         Utilities.setDesignOn(textField: signUpLastNameTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, capitalization: .words, placeholder: Strings.lastNameTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(textField: signUpEmailTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, placeholder: Strings.emailTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(textField: signUpPasswordTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, placeholder: Strings.passwordTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
-        Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, size: .medium, isHidden: true)
+        Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, size: .medium, isStartAnimating: false, isHidden: true)
         Utilities.setDesignOn(button: signUpButton, title: Strings.signUpButtonText, fontName: Strings.defaultFontBold, fontSize: 20, isCircular: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
@@ -96,7 +96,7 @@ class SignUpViewController: UIViewController {
             Utilities.setDesignOn(textField: signUpEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setDesignOn(textField: signUpPasswordTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setDesignOn(button: signUpButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
-            Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isStartAnimating: false, isHidden: true)
             Utilities.setShadowOn(view: signUpImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
             Utilities.setShadowOn(textField: signUpFirstNameTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
             Utilities.setShadowOn(textField: signUpLastNameTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
@@ -117,7 +117,7 @@ class SignUpViewController: UIViewController {
             Utilities.setDesignOn(textField: signUpEmailTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(textField: signUpPasswordTextField, textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setDesignOn(button: signUpButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-            Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: false, isHidden: true)
             Utilities.setShadowOn(view: signUpImageContentView, isHidden: true)
             Utilities.setShadowOn(textField: signUpFirstNameTextField, isHidden: true)
             Utilities.setShadowOn(textField: signUpLastNameTextField, isHidden: true)
@@ -130,22 +130,20 @@ class SignUpViewController: UIViewController {
     func setSignUpButtonTappedAnimation() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             signUpButton.isHidden = true
-            signUpLoadingIndicatorView.isHidden = false
-            signUpLoadingIndicatorView.startAnimating()
+            Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, isStartAnimating: true, isHidden: false)
         }
     }
     
     func setSignUpButtonTransitionAnimation() {
-        signUpLoadingIndicatorView.isHidden = true
+        Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, isStartAnimating: false, isHidden: true)
         signUpButton.setTitle(Strings.signUpButtonTransitionText, for: .normal)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
-            signUpButton.isHidden = false
-            signUpButton.isEnabled = false
+            Utilities.setDesignOn(button: signUpButton, isEnabled: false, isHidden: false)
         }
     }
     
     func setSignUpButtonToOriginalDesign() {
-        signUpLoadingIndicatorView.isHidden = true
+        Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, isStartAnimating: false, isHidden: true)
         signUpButton.isHidden = false
     }
     
@@ -192,8 +190,7 @@ class SignUpViewController: UIViewController {
     
     func registerGestures() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler))
-        signUpImageView.isUserInteractionEnabled = true
-        signUpImageView.addGestureRecognizer(tapGestureRecognizer)
+        Utilities.setDesignOn(imageView: signUpImageView, isUserInteractionEnabled: true, gestureRecognizer: tapGestureRecognizer)
     }
     
     @objc func tapGestureHandler() {

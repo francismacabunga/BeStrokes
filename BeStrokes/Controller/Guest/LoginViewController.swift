@@ -65,7 +65,7 @@ class LoginViewController: UIViewController {
         Utilities.setDesignOn(textField: loginPasswordTextField, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, placeholder: Strings.passwordTextField, placeholderTextColor: #colorLiteral(red: 0.5411764706, green: 0.5411764706, blue: 0.5411764706, alpha: 1), isCircular: true)
         Utilities.setDesignOn(button: loginForgotPasswordButton, title: Strings.forgotPasswordButtonText, fontName: Strings.defaultFontMedium, fontSize: 15)
         Utilities.setDesignOn(button: loginButton, title: Strings.loginButtonText, fontName: Strings.defaultFontBold, fontSize: 20, isCircular: true)
-        Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, size: .medium, isHidden: true)
+        Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, size: .medium, isStartAnimating: false, isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
         checkThemeAppearance()
@@ -93,7 +93,7 @@ class LoginViewController: UIViewController {
             Utilities.setShadowOn(textField: loginEmailTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
             Utilities.setShadowOn(textField: loginPasswordTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
             Utilities.setShadowOn(button: loginButton, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
-            Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isStartAnimating: false, isHidden: true)
         }
     }
     
@@ -111,20 +111,19 @@ class LoginViewController: UIViewController {
             Utilities.setShadowOn(textField: loginEmailTextField, isHidden: true)
             Utilities.setShadowOn(textField: loginPasswordTextField, isHidden: true)
             Utilities.setShadowOn(button: loginButton, isHidden: true)
-            Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: false, isHidden: true)
         }
     }
     
     func setLoginButtonTappedAnimation() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             loginButton.isHidden = true
-            loginLoadingIndicatorView.isHidden = false
-            loginLoadingIndicatorView.startAnimating()
+            Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, isStartAnimating: true, isHidden: false)
         }
     }
     
     func setLoginButtonToOriginalDesign() {
-        loginLoadingIndicatorView.isHidden = true
+        Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, isStartAnimating: false, isHidden: true)
         loginButton.isHidden = false
     }
     

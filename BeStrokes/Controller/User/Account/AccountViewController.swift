@@ -84,7 +84,7 @@ class AccountViewController: UIViewController {
         Utilities.setDesignOn(label: accountHeading2Label, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 1, textAlignment: .left, text: Strings.accountHeading2Text)
         Utilities.setDesignOn(label: accountWarningLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, isHidden: true)
         Utilities.setDesignOn(tableView: accountLovedStickerTableView, backgroundColor: .clear, separatorStyle: UITableViewCell.SeparatorStyle.none, showVerticalScrollIndicator: false, rowHeight: 170, isHidden: true)
-        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, isStartAnimating: true)
+        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, size: .medium, isStartAnimating: false, isHidden: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadUserData), name: Utilities.reloadUserData, object: nil)
@@ -118,7 +118,7 @@ class AccountViewController: UIViewController {
             Utilities.setDesignOn(label: accountWarningLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             Utilities.setShadowOn(view: accountTopView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
             Utilities.setShadowOn(textField: accountSearchTextField, isHidden: false, borderStyle: UITextField.BorderStyle.none, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
-            Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isStartAnimating: false, isHidden: true)
         }
     }
     
@@ -133,7 +133,7 @@ class AccountViewController: UIViewController {
             Utilities.setDesignOn(label: accountWarningLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
             Utilities.setShadowOn(view: accountTopView, isHidden: true)
             Utilities.setShadowOn(textField: accountSearchTextField, isHidden: true)
-            Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: false, isHidden: true)
         }
     }
     
@@ -177,7 +177,7 @@ class AccountViewController: UIViewController {
         accountTextFieldContentView.isHidden = true
         accountSearchTextField.text = nil
         accountSearchTextField.resignFirstResponder()
-        Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountSearchStickerIcon))
+        accountSearchButton.setBackgroundImage(UIImage(systemName: Strings.accountSearchStickerIcon), for: .normal)
         if hasPerformedSearch {
             setLovedStickersData()
             hasPerformedSearch = false
@@ -196,8 +196,7 @@ class AccountViewController: UIViewController {
     
     func showNoStickerResultLabel() {
         accountLovedStickerTableView.isHidden = true
-        accountWarningLabel.isHidden = false
-        accountWarningLabel.text = Strings.accountInvalidStickerLabel
+        Utilities.setDesignOn(label: accountWarningLabel, text: Strings.accountInvalidStickerLabel, isHidden: false)
         accountNoLovedStickerLabelConstraint.constant = 115
     }
     
@@ -243,10 +242,10 @@ class AccountViewController: UIViewController {
         accountBottomStackView.isHidden = true
         accountWarningLabel.isHidden = true
         accountLovedStickerTableView.isHidden = true
-        accountLoadingIndicatorView.isHidden = false
+        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, isStartAnimating: true, isHidden: false)
         if userStickerViewModel?.count == 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
-                accountLoadingIndicatorView.isHidden = true
+                Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, isStartAnimating: false, isHidden: true)
                 accountWarningLabel.text = Strings.accountNoLovedStickerLabel
                 accountWarningLabel.isHidden = false
             }
@@ -254,7 +253,7 @@ class AccountViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [self] in
                 accountBottomStackView.isHidden = false
                 accountLovedStickerTableView.isHidden = false
-                accountLoadingIndicatorView.isHidden = true
+                Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, isStartAnimating: false, isHidden: true)
                 accountWarningLabel.isHidden = true
                 accountLovedStickerTableView.reloadData()
             }

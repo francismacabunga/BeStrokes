@@ -296,12 +296,10 @@ class CaptureViewController: UIViewController {
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     show(alertWithHandler!, sender: nil)
-                    //present(alertWithHandler!, animated: true)
                     return
                 }
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
                 show(alert!, sender: nil)
-                //present(alert!, animated: true)
             }
         }
     }
@@ -317,16 +315,13 @@ class CaptureViewController: UIViewController {
         let longPressSticker = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressStickerGestureHandler(longPressGesture:)))
         let pinchSticker = UIPinchGestureRecognizer(target: self, action: #selector(Self.pinchStickerGestureHandler(pinchGesture:)))
         let rotateSticker = UIRotationGestureRecognizer(target: self, action: #selector(self.rotateStickerGestureHandler(rotateGesture:)))
-        captureExitButtonImageView.addGestureRecognizer(tapExitButton)
-        captureDeleteButtonImageView.addGestureRecognizer(tapDeleteButton)
-        captureChooseImageButtonImageView.addGestureRecognizer(tapChooseImageButton)
+        Utilities.setDesignOn(imageView: captureExitButtonImageView, isUserInteractionEnabled: true, gestureRecognizer: tapExitButton)
+        Utilities.setDesignOn(imageView: captureDeleteButtonImageView, isUserInteractionEnabled: true, gestureRecognizer: tapDeleteButton)
+        Utilities.setDesignOn(imageView: captureChooseImageButtonImageView, isUserInteractionEnabled: true, gestureRecognizer: tapChooseImageButton)
         captureSceneView.addGestureRecognizer(tapSticker)
         captureSceneView.addGestureRecognizer(longPressSticker)
         captureSceneView.addGestureRecognizer(pinchSticker)
         captureSceneView.addGestureRecognizer(rotateSticker)
-        captureExitButtonImageView.isUserInteractionEnabled = true
-        captureDeleteButtonImageView.isUserInteractionEnabled = true
-        captureChooseImageButtonImageView.isUserInteractionEnabled = true
     }
     
     func registerTapGestureOnStickerContentView() {
