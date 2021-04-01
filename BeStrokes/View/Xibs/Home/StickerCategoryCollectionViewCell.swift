@@ -18,10 +18,11 @@ class StickerCategoryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Constants / Variables
     
-    var stickerCategoryViewModel: StickerCategoryViewModel! {
+    var stickerCategoryViewModel: StickerCategoryViewModel? {
         didSet {
-            stickerCategoryLabel.text = stickerCategoryViewModel.category
-            let isCategorySelected = stickerCategoryViewModel.isCategorySelected
+            guard let stickerCategoryData = stickerCategoryViewModel else {return}
+            stickerCategoryLabel.text = stickerCategoryData.category
+            let isCategorySelected = stickerCategoryData.isCategorySelected
             if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
                 setLightMode()
                 if isCategorySelected {

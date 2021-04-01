@@ -25,10 +25,11 @@ class StickerTableViewCell: UITableViewCell {
     
     private var skeletonColor: UIColor?
     var stickerCellDelegate: StickerTableViewCellDelegate?
-    var userStickerViewModel: UserStickerViewModel! {
+    var userStickerViewModel: UserStickerViewModel? {
         didSet {
-            stickerHeadingLabel.text = userStickerViewModel.name
-            stickerImageView.kf.setImage(with: URL(string: userStickerViewModel.image))
+            guard let userStickerData = userStickerViewModel else {return}
+            stickerHeadingLabel.text = userStickerData.name
+            stickerImageView.kf.setImage(with: URL(string: userStickerData.image))
         }
     }
     

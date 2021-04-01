@@ -37,7 +37,6 @@ class AccountViewController: UIViewController {
     private let userData = UserData()
     private let stickerData = StickerData()
     private var userStickerViewModel: [UserStickerViewModel]?
-    private var userViewModel: UserViewModel?
     private let heartButtonLogic = HeartButtonLogic()
     private var isButtonPressed = false
     private var hasPerformedSearch = false

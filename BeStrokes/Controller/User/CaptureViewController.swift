@@ -52,8 +52,8 @@ class CaptureViewController: UIViewController {
     private var isCaptureVCLoaded = false
     var featuredStickerViewModel: FeaturedStickerViewModel? {
         didSet {
-            guard let stickerData = featuredStickerViewModel else {return}
-            downloadImage(using: stickerData.image)
+            guard let featuredStickerData = featuredStickerViewModel else {return}
+            downloadImage(using: featuredStickerData.image)
         }
     }
     var stickerViewModel: StickerViewModel? {
@@ -64,8 +64,8 @@ class CaptureViewController: UIViewController {
     }
     var userStickerViewModel: UserStickerViewModel? {
         didSet {
-            guard let stickerData = userStickerViewModel else {return}
-            downloadImage(using: stickerData.image)
+            guard let userStickerData = userStickerViewModel else {return}
+            downloadImage(using: userStickerData.image)
         }
     }
     
@@ -341,8 +341,8 @@ class CaptureViewController: UIViewController {
         }
         UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
         if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
-            guard let userStickerViewModel = userStickerViewModel else {return}
-            stickerData.updateNewSticker(on: userStickerViewModel.stickerID) { [self] (error, isUserSignedIn) in
+            guard let userStickerData = userStickerViewModel else {return}
+            stickerData.updateNewSticker(on: userStickerData.stickerID) { [self] (error, isUserSignedIn) in
                 if !isUserSignedIn {
                     guard let error = error else {return}
                     showAlertController(alertMessage: error.localizedDescription, withHandler: true)

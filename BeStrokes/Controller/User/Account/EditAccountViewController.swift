@@ -35,7 +35,6 @@ class EditAccountViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private var userViewModel: UserViewModel?
     private let userData = UserData()
     private let imagePicker = UIImagePickerController()
     private var editedImage: UIImage?

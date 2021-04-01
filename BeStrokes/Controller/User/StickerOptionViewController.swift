@@ -221,7 +221,7 @@ class StickerOptionViewController: UIViewController {
                            stickerCategory: stickerViewModel!.category,
                            stickerTag: stickerViewModel!.tag,
                            stickerDescription: stickerViewModel!.description)
-            getHeartButtonValue(stickerViewModel: stickerViewModel)
+            getHeartButtonValue(stickerViewModel: stickerViewModel!)
             return
         }
         if userStickerViewModel != nil {
@@ -230,7 +230,7 @@ class StickerOptionViewController: UIViewController {
                            stickerCategory: userStickerViewModel!.category,
                            stickerTag: userStickerViewModel!.tag,
                            stickerDescription: userStickerViewModel!.description)
-            getHeartButtonValue(userStickerViewModel: userStickerViewModel)
+            getHeartButtonValue(userStickerViewModel: userStickerViewModel!)
             return
         }
     }

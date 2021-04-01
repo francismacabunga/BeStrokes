@@ -20,10 +20,11 @@ class ProfileTableViewCell: UITableViewCell {
     
     //MARK: - Constants / Variables
     
-    var profileSettingsViewModel: ProfileSettingsViewModel! {
+    var profileSettingsViewModel: ProfileSettingsViewModel? {
         didSet {
-            let label = profileSettingsViewModel.profileSettings.first!.settingLabel
-            let icon = profileSettingsViewModel.profileSettings.first!.settingIcon
+            guard let profileSettingsData = profileSettingsViewModel else {return}
+            let label = profileSettingsData.profileSettings.first!.settingLabel
+            let icon = profileSettingsData.profileSettings.first!.settingIcon
             setSettingData(using: label, and: icon)
             setNotificationSetting()
             setThemeSetting()

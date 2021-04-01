@@ -24,10 +24,11 @@ class StickerCollectionViewCell: UICollectionViewCell {
     
     private var heartButtonTapped: Bool?
     private var skeletonColor: UIColor?
-    var stickerViewModel: StickerViewModel! {
+    var stickerViewModel: StickerViewModel? {
         didSet {
-            stickerLabel.text = stickerViewModel.name
-            stickerImageView.kf.setImage(with: URL(string: stickerViewModel.image))
+            guard let stickerData = stickerViewModel else {return}
+            stickerLabel.text = stickerData.name
+            stickerImageView.kf.setImage(with: URL(string: stickerData.image))
         }
     }
     
