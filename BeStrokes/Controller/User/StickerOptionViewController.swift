@@ -204,9 +204,11 @@ class StickerOptionViewController: UIViewController {
         stickerImageView.kf.setImage(with: URL(string: stickerImageName))
         stickerImageView.isHidden = false
         Utilities.setDesignOn(label: stickerNameLabel, text: stickerName, isHidden: false)
-        Utilities.setDesignOn(label: stickerCategoryLabel, text: stickerCategory, isHidden: false)
+        stickerCategoryLabel.text = stickerCategory
+        stickerCategoryView.isHidden = false
         if stickerTag != Strings.tagNoStickers {
-            Utilities.setDesignOn(label: stickerTagLabel, text: stickerTag, isHidden: false)
+            stickerTagLabel.text = stickerTag
+            stickerTagView.isHidden = false
         }
         Utilities.setDesignOn(label: stickerDescriptionLabel, text: stickerDescription, isHidden: false)
         stickerHeartButtonImageView.isHidden = false
