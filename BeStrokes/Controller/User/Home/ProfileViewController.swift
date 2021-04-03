@@ -244,7 +244,7 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.profileCell) as! ProfileTableViewCell
         DispatchQueue.main.async { [self] in
-            cell.profileSettingsViewModel = profileSettingsViewModel[indexPath.item]
+            cell.profileSettingsViewModel = profileSettingsViewModel[indexPath.row]
         }
         return cell
     }
@@ -257,7 +257,7 @@ extension ProfileViewController: UITableViewDataSource {
 extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let clickedCell = profileSettingsViewModel[indexPath.item].profileSettings.first!.settingLabel
+        let clickedCell = profileSettingsViewModel[indexPath.row].profileSettings.first!.settingLabel
         if clickedCell == Strings.profileSettingsLogout {
             signOutUser()
         }

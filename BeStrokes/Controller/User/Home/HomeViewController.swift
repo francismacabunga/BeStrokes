@@ -501,7 +501,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             guard let featuredStickerViewModel = featuredStickerViewModel else {return cell}
             DispatchQueue.main.async {
                 cell.prepareFeaturedStickerCell()
-                cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.row]
+                cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.item]
                 cell.featuredStickerCellDelegate = self
             }
             return cell
@@ -509,7 +509,7 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if collectionView == homeStickerCategoryCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCategoryCell, for: indexPath) as! StickerCategoryCollectionViewCell
             DispatchQueue.main.async { [self] in
-                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
+                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
                 cell.setDesignElements()
             }
             return cell
@@ -518,8 +518,8 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCollectionViewCell, for: indexPath) as! StickerCollectionViewCell
             guard let stickerViewModel = stickerViewModel else {return cell}
             DispatchQueue.main.async {
-                cell.stickerViewModel = stickerViewModel[indexPath.row]
                 cell.prepareStickerCollectionViewCell()
+                cell.stickerViewModel = stickerViewModel[indexPath.item]
             }
             return cell
         }
@@ -536,10 +536,10 @@ extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == homeStickerCategoryCollectionView {
             selectedIndexPath = indexPath
-            stickerCategoryViewModel[indexPath.row].isCategorySelected = true
+            stickerCategoryViewModel[indexPath.item].isCategorySelected = true
             let cell = collectionView.cellForItem(at: indexPath) as! StickerCategoryCollectionViewCell
-            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
-            stickerCategorySelected = stickerCategoryViewModel[indexPath.row].category
+            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
+            stickerCategorySelected = stickerCategoryViewModel[indexPath.item].category
             showLoadingStickersDesign()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
                 getStickersCollectionViewData(onCategory: stickerCategorySelected!)
@@ -550,7 +550,7 @@ extension HomeViewController: UICollectionViewDelegate {
             guard let stickerViewModel = stickerViewModel else {return}
             let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
             DispatchQueue.main.async { [self] in
-                stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.row]
+                stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.item]
                 stickerOptionVC.modalPresentationStyle = .fullScreen
                 present(stickerOptionVC, animated: true)
             }
@@ -559,7 +559,7 @@ extension HomeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if collectionView == homeStickerCategoryCollectionView {
-            stickerCategoryViewModel[indexPath.row].isCategorySelected = false
+            stickerCategoryViewModel[indexPath.item].isCategorySelected = false
             guard let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell else {
                 DispatchQueue.main.async { [self] in
                     homeStickerCategoryCollectionView.reloadData()
@@ -567,7 +567,7 @@ extension HomeViewController: UICollectionViewDelegate {
                 }
                 return
             }
-            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.row]
+            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
         }
     }
     

@@ -174,9 +174,11 @@ extension NotificationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.stickerTableViewCell) as! StickerTableViewCell
         guard let userStickerViewModel = userStickerViewModel else {return cell}
-        cell.prepareStickerTableViewCell()
-        cell.userStickerViewModel = userStickerViewModel[indexPath.item]
-        cell.stickerCellDelegate = self
+        DispatchQueue.main.async {
+            cell.prepareStickerTableViewCell()
+            cell.userStickerViewModel = userStickerViewModel[indexPath.row]
+            cell.stickerCellDelegate = self
+        }
         return cell
     }
     
@@ -191,7 +193,7 @@ extension NotificationViewController: UITableViewDelegate {
         guard let userStickerViewModel = userStickerViewModel else {return}
         let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
         DispatchQueue.main.async { [self] in
-            stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.item]
+            stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.row]
             stickerOptionVC.modalPresentationStyle = .fullScreen
             present(stickerOptionVC, animated: true)
         }
