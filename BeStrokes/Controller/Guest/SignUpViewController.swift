@@ -307,11 +307,7 @@ class SignUpViewController: UIViewController {
     }
     
     func sendEmailVerification() {
-        userData.sendEmailVerification { [self] (error, isUserSignedIn, isEmailVerificationSent) in
-            if !isUserSignedIn {
-                showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpNoUserIsCreatedErrorLabel, isASuccessMessage: false)
-                return
-            }
+        userData.sendEmailVerification { [self] (error, _, isEmailVerificationSent) in
             if error != nil {
                 showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
                 setSignUpButtonToOriginalDesign()
