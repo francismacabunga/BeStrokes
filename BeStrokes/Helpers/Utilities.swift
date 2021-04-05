@@ -596,11 +596,9 @@ struct Utilities {
             let destinationVC = storyboard.instantiateViewController(identifier: viewController)
             return destinationVC
         } else {
-            DispatchQueue.main.async {
-                let destinationVC = storyboard.instantiateViewController(identifier: viewController)
-                view!.window?.rootViewController = destinationVC
-                view!.window?.makeKeyAndVisible()
-            }
+            let destinationVC = storyboard.instantiateViewController(identifier: viewController)
+            view!.window?.rootViewController = destinationVC
+            view!.window?.makeKeyAndVisible()
         }
         return nil
     }
@@ -638,13 +636,4 @@ struct Utilities {
         return nil
     }
     
-   
-    
-    
-    
-    
 }
-
-
-
-

@@ -63,10 +63,10 @@ class HomeViewController: UIViewController {
         
         UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
         checkIfUserIsSignedIn()
-
+        
     }
     
-
+    
     //MARK: - Design Elements
     
     func setDesignElements() {
@@ -152,12 +152,10 @@ class HomeViewController: UIViewController {
     
     func showLoadingProfilePicDesign() {
         setSkeletonColor()
-        DispatchQueue.main.async { [self] in
-            homeProfilePicContentView.isSkeletonable = true
-            Utilities.setDesignOn(view: homeProfilePicContentView, isSkeletonCircular: true)
-            homeProfilePicContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            homeProfilePictureButton.showAnimatedSkeleton()
-        }
+        homeProfilePicContentView.isSkeletonable = true
+        Utilities.setDesignOn(view: homeProfilePicContentView, isSkeletonCircular: true)
+        homeProfilePicContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        homeProfilePictureButton.showAnimatedSkeleton()
     }
     
     func setProfilePicture() {
@@ -187,9 +185,9 @@ class HomeViewController: UIViewController {
     func showLoadingStickersDesign() {
         homeStickerCollectionView.isHidden = true
         Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, isStartAnimating: true, isHidden: false)
-        DispatchQueue.main.async { [self] in
+//        DispatchQueue.main.async { [self] in
             homeStickerCollectionView.reloadData()
-        }
+//        }
     }
     
     func showStickers() {
@@ -284,7 +282,7 @@ class HomeViewController: UIViewController {
         let notificationRequest = UNNotificationRequest(identifier: notificationIdentifier, content: notificationContent, trigger: notificationTrigger)
         notificationCenter.add(notificationRequest) { [self] (error) in
             guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -424,12 +422,12 @@ class HomeViewController: UIViewController {
             guard let error = error else {
                 guard let featuredStickerData = featuredStickerData else {return}
                 featuredStickerViewModel = featuredStickerData
-                DispatchQueue.main.async {
+//                DispatchQueue.main.async {
                     homeFeaturedStickerCollectionView.reloadData()
-                }
+//                }
                 return
             }
-                showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -457,7 +455,7 @@ class HomeViewController: UIViewController {
                 showStickers()
                 return
             }
-                showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -499,28 +497,22 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if collectionView == homeFeaturedStickerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedStickerCollectionViewCell
             guard let featuredStickerViewModel = featuredStickerViewModel else {return cell}
-            DispatchQueue.main.async {
-                cell.prepareFeaturedStickerCell()
-                cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.item]
-                cell.featuredStickerCellDelegate = self
-            }
+            cell.prepareFeaturedStickerCell()
+            cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.item]
+            cell.featuredStickerCellDelegate = self
             return cell
         }
         if collectionView == homeStickerCategoryCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCategoryCell, for: indexPath) as! StickerCategoryCollectionViewCell
-            DispatchQueue.main.async { [self] in
-                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
-                cell.setDesignElements()
-            }
+            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
+            cell.setDesignElements()
             return cell
         }
         if collectionView == homeStickerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCollectionViewCell, for: indexPath) as! StickerCollectionViewCell
             guard let stickerViewModel = stickerViewModel else {return cell}
-            DispatchQueue.main.async {
-                cell.prepareStickerCollectionViewCell()
-                cell.stickerViewModel = stickerViewModel[indexPath.item]
-            }
+            cell.prepareStickerCollectionViewCell()
+            cell.stickerViewModel = stickerViewModel[indexPath.item]
             return cell
         }
         return UICollectionViewCell()
@@ -549,11 +541,9 @@ extension HomeViewController: UICollectionViewDelegate {
             UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
             guard let stickerViewModel = stickerViewModel else {return}
             let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
-            DispatchQueue.main.async { [self] in
-                stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.item]
-                stickerOptionVC.modalPresentationStyle = .fullScreen
-                present(stickerOptionVC, animated: true)
-            }
+            stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.item]
+            stickerOptionVC.modalPresentationStyle = .fullScreen
+            present(stickerOptionVC, animated: true)
         }
     }
     
