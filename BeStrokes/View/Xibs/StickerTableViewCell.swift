@@ -103,12 +103,10 @@ class StickerTableViewCell: UITableViewCell {
     }
     
     func showLoadingSkeletonView() {
-        DispatchQueue.main.async { [self] in
-            stickerView.isSkeletonable = true
-            Utilities.setDesignOn(view: stickerView, isSkeletonCircular: true, setCustomSkeletonCircleCurve: 30)
-            stickerView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            stickerView.showAnimatedSkeleton()
-        }
+        stickerView.isSkeletonable = true
+        Utilities.setDesignOn(view: stickerView, isSkeletonCircular: true, setCustomSkeletonCircleCurve: 30)
+        stickerView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        stickerView.showAnimatedSkeleton()
     }
     
     func hideLoadingSkeletonView() {

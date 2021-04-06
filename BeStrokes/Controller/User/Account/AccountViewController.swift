@@ -54,7 +54,7 @@ class AccountViewController: UIViewController {
         showLoadingSkeletonView()
         setSignedInUserData()
         setLovedStickersData()
-    
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,7 +64,7 @@ class AccountViewController: UIViewController {
         
     }
     
-
+    
     //MARK: - Design Elements
     
     func setDesignElements() {
@@ -146,18 +146,16 @@ class AccountViewController: UIViewController {
     
     func showLoadingSkeletonView() {
         setSkeletonColor()
-        DispatchQueue.main.async { [self] in
-            accountImageContentView.isSkeletonable = true
-            Utilities.setDesignOn(view: accountImageContentView, isSkeletonCircular: true)
-            accountNameHeadingLabel.isSkeletonable = true
-            accountEmailHeadingLabel.isSkeletonable = true
-            accountImageContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            accountNameHeadingLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            accountEmailHeadingLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            accountImageContentView.showAnimatedSkeleton()
-            accountNameHeadingLabel.showAnimatedSkeleton()
-            accountEmailHeadingLabel.showAnimatedSkeleton()
-        }
+        accountImageContentView.isSkeletonable = true
+        Utilities.setDesignOn(view: accountImageContentView, isSkeletonCircular: true)
+        accountNameHeadingLabel.isSkeletonable = true
+        accountEmailHeadingLabel.isSkeletonable = true
+        accountImageContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        accountNameHeadingLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        accountEmailHeadingLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        accountImageContentView.showAnimatedSkeleton()
+        accountNameHeadingLabel.showAnimatedSkeleton()
+        accountEmailHeadingLabel.showAnimatedSkeleton()
     }
     
     func hideLoadingSkeletonView() {
@@ -186,9 +184,7 @@ class AccountViewController: UIViewController {
     func showSearchedSticker(using stickerData: [UserStickerViewModel]) {
         hasPerformedSearch = true
         userStickerViewModel = stickerData
-        DispatchQueue.main.async { [self] in
-            accountLovedStickerTableView.reloadData()
-        }
+        accountLovedStickerTableView.reloadData()
         accountWarningLabel.isHidden = true
         accountLovedStickerTableView.isHidden = false
     }
@@ -350,11 +346,9 @@ extension AccountViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let userStickerViewModel = userStickerViewModel else {return}
         let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
-        DispatchQueue.main.async { [self] in
-            stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.row]
-            stickerOptionVC.modalPresentationStyle = .fullScreen
-            present(stickerOptionVC, animated: true)
-        }
+        stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.row]
+        stickerOptionVC.modalPresentationStyle = .fullScreen
+        present(stickerOptionVC, animated: true)
     }
     
 }

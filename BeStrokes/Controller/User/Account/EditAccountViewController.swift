@@ -143,12 +143,10 @@ class EditAccountViewController: UIViewController {
             userID = userData.userID
             profilePic = userData.profilePic
             initialUserEmail = userData.email
-            DispatchQueue.main.async { [self] in
-                editAccountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                editAccountFirstNameTextField.text = userData.firstName
-                editAccountLastNameTextField.text = userData.lastname
-                editAccountEmailTextField.text = userData.email
-            }
+            editAccountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+            editAccountFirstNameTextField.text = userData.firstName
+            editAccountLastNameTextField.text = userData.lastname
+            editAccountEmailTextField.text = userData.email
         }
     }
     

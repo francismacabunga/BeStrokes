@@ -40,7 +40,7 @@ class NotificationViewController: UIViewController {
         super.viewWillAppear(animated)
         
         checkIfUserIsSignedIn()
-    
+        
     }
     
     
@@ -192,11 +192,9 @@ extension NotificationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let userStickerViewModel = userStickerViewModel else {return}
         let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
-        DispatchQueue.main.async { [self] in
-            stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.row]
-            stickerOptionVC.modalPresentationStyle = .fullScreen
-            present(stickerOptionVC, animated: true)
-        }
+        stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.row]
+        stickerOptionVC.modalPresentationStyle = .fullScreen
+        present(stickerOptionVC, animated: true)
     }
 }
 
@@ -206,9 +204,7 @@ extension NotificationViewController: UITableViewDelegate {
 extension NotificationViewController: StickerTableViewCellDelegate {
     
     func getVC(using viewController: UIViewController) {
-        DispatchQueue.main.async { [self] in
-            present(viewController, animated: true)
-        }
+        present(viewController, animated: true)
     }
     
 }

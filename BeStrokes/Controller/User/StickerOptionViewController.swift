@@ -61,7 +61,7 @@ class StickerOptionViewController: UIViewController {
         
     }
     
-  
+    
     //MARK: - Design Elements
     
     func setDesignElements() {
@@ -130,24 +130,22 @@ class StickerOptionViewController: UIViewController {
     }
     
     func showLoadingSkeletonView() {
-        DispatchQueue.main.async { [self] in
-            stickerHeartButtonImageView.isSkeletonable = true
-            Utilities.setDesignOn(imageView: stickerHeartButtonImageView, isSkeletonCircular: true)
-            stickerHeartButtonImageView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            stickerHeartButtonImageView.showAnimatedSkeleton()
-            stickerCategoryView.isSkeletonable = true
-            Utilities.setDesignOn(view: stickerCategoryView, isSkeletonCircular: true)
-            stickerCategoryView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            stickerCategoryView.showAnimatedSkeleton()
-            stickerTagView.isSkeletonable = true
-            Utilities.setDesignOn(view: stickerTagView, isSkeletonCircular: true)
-            stickerTagView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            stickerTagView.showAnimatedSkeleton()
-            stickerTryMeButton.isSkeletonable = true
-            Utilities.setDesignOn(button: stickerTryMeButton, isSkeletonCircular: true, isHidden: false)
-            stickerTryMeButton.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            stickerTryMeButton.showAnimatedSkeleton()
-        }
+        stickerHeartButtonImageView.isSkeletonable = true
+        Utilities.setDesignOn(imageView: stickerHeartButtonImageView, isSkeletonCircular: true)
+        stickerHeartButtonImageView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        stickerHeartButtonImageView.showAnimatedSkeleton()
+        stickerCategoryView.isSkeletonable = true
+        Utilities.setDesignOn(view: stickerCategoryView, isSkeletonCircular: true)
+        stickerCategoryView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        stickerCategoryView.showAnimatedSkeleton()
+        stickerTagView.isSkeletonable = true
+        Utilities.setDesignOn(view: stickerTagView, isSkeletonCircular: true)
+        stickerTagView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        stickerTagView.showAnimatedSkeleton()
+        stickerTryMeButton.isSkeletonable = true
+        Utilities.setDesignOn(button: stickerTryMeButton, isSkeletonCircular: true, isHidden: false)
+        stickerTryMeButton.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        stickerTryMeButton.showAnimatedSkeleton()
     }
     
     func hideLoadingSkeletonView() {

@@ -185,9 +185,7 @@ class HomeViewController: UIViewController {
     func showLoadingStickersDesign() {
         homeStickerCollectionView.isHidden = true
         Utilities.setDesignOn(activityIndicatorView: homeLoadingIndicatorView, isStartAnimating: true, isHidden: false)
-//        DispatchQueue.main.async { [self] in
-            homeStickerCollectionView.reloadData()
-//        }
+        homeStickerCollectionView.reloadData()
     }
     
     func showStickers() {
@@ -198,10 +196,8 @@ class HomeViewController: UIViewController {
     }
     
     func reloadStickerCategoryCollection() {
-        DispatchQueue.main.async { [self] in
-            homeStickerCategoryCollectionView.reloadData()
-            homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath!, animated: false, scrollPosition: .right)
-        }
+        homeStickerCategoryCollectionView.reloadData()
+        homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath!, animated: false, scrollPosition: .centeredHorizontally)
     }
     
     @objc func reloadProfilePic() {
@@ -422,9 +418,7 @@ class HomeViewController: UIViewController {
             guard let error = error else {
                 guard let featuredStickerData = featuredStickerData else {return}
                 featuredStickerViewModel = featuredStickerData
-//                DispatchQueue.main.async {
-                    homeFeaturedStickerCollectionView.reloadData()
-//                }
+                homeFeaturedStickerCollectionView.reloadData()
                 return
             }
             showAlertController(alertMessage: error.localizedDescription, withHandler: false)
@@ -433,10 +427,8 @@ class HomeViewController: UIViewController {
     
     func getStickersCategoryCollectionViewData() {
         stickerCategoryViewModel = stickerData.fetchStickerCategories()
-        DispatchQueue.main.async { [self] in
-            homeStickerCategoryCollectionView.reloadData()
-            setInitalSelectedCategoryCell()
-        }
+        homeStickerCategoryCollectionView.reloadData()
+        setInitalSelectedCategoryCell()
     }
     
     func getStickersCollectionViewData(onCategory stickerCategory: String) {
@@ -444,9 +436,7 @@ class HomeViewController: UIViewController {
             guard let error = error else {
                 guard let stickerData = stickerData else {return}
                 stickerViewModel = stickerData
-                DispatchQueue.main.async {
-                    homeStickerCollectionView.reloadData()
-                }
+                homeStickerCollectionView.reloadData()
                 changeStickerStatusOnFirstTimeLogin(using: stickerViewModel!)
                 setStickerDataToUserID(using: stickerViewModel!)
                 removeDeletedStickersInUserCollection()
@@ -497,22 +487,28 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if collectionView == homeFeaturedStickerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedStickerCollectionViewCell
             guard let featuredStickerViewModel = featuredStickerViewModel else {return cell}
-            cell.prepareFeaturedStickerCell()
-            cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.item]
-            cell.featuredStickerCellDelegate = self
+            DispatchQueue.main.async {
+                cell.prepareFeaturedStickerCell()
+                cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.item]
+                cell.featuredStickerCellDelegate = self
+            }
             return cell
         }
         if collectionView == homeStickerCategoryCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCategoryCell, for: indexPath) as! StickerCategoryCollectionViewCell
-            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
-            cell.setDesignElements()
+            DispatchQueue.main.async { [self] in
+                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
+                cell.setDesignElements()
+            }
             return cell
         }
         if collectionView == homeStickerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCollectionViewCell, for: indexPath) as! StickerCollectionViewCell
             guard let stickerViewModel = stickerViewModel else {return cell}
-            cell.prepareStickerCollectionViewCell()
-            cell.stickerViewModel = stickerViewModel[indexPath.item]
+            DispatchQueue.main.async {
+                cell.prepareStickerCell()
+                cell.stickerViewModel = stickerViewModel[indexPath.item]
+            }
             return cell
         }
         return UICollectionViewCell()
@@ -529,7 +525,7 @@ extension HomeViewController: UICollectionViewDelegate {
         if collectionView == homeStickerCategoryCollectionView {
             selectedIndexPath = indexPath
             stickerCategoryViewModel[indexPath.item].isCategorySelected = true
-            let cell = collectionView.cellForItem(at: indexPath) as! StickerCategoryCollectionViewCell
+            guard let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell else {return}
             cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
             stickerCategorySelected = stickerCategoryViewModel[indexPath.item].category
             showLoadingStickersDesign()

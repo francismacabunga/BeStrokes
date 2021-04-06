@@ -94,12 +94,10 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     }
     
     func showLoadingSkeletonView() {
-        DispatchQueue.main.async { [self] in
-            featuredStickerView.isSkeletonable = true
-            Utilities.setDesignOn(view: featuredStickerView, isSkeletonCircular: true, setCustomSkeletonCircleCurve: 40)
-            featuredStickerView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            featuredStickerView.showAnimatedSkeleton()
-        }
+        featuredStickerView.isSkeletonable = true
+        Utilities.setDesignOn(view: featuredStickerView, isSkeletonCircular: true, setCustomSkeletonCircleCurve: 40)
+        featuredStickerView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        featuredStickerView.showAnimatedSkeleton()
     }
     
     func hideLoadingSkeletonView() {

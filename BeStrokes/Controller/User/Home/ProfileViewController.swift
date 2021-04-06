@@ -126,7 +126,6 @@ class ProfileViewController: UIViewController {
     
     func showLoadingSkeletonView() {
         setSkeletonColor()
-        DispatchQueue.main.async { [self] in
             profileImageContentView.isSkeletonable = true
             Utilities.setDesignOn(view: profileImageContentView, isSkeletonCircular: true)
             profileNameLabel.isSkeletonable = true
@@ -137,7 +136,6 @@ class ProfileViewController: UIViewController {
             profileImageContentView.showAnimatedSkeleton()
             profileNameLabel.showAnimatedSkeleton()
             profileEmailLabel.showAnimatedSkeleton()
-        }
     }
     
     func hideLoadingSkeletonView() {
@@ -173,9 +171,7 @@ class ProfileViewController: UIViewController {
     
     func setData() {
         profileSettingsViewModel = fetchProfileData.settings()
-        DispatchQueue.main.async { [self] in
             profileTableView.reloadData()
-        }
         showLoadingSkeletonView()
         getSignedInUserData()
     }
