@@ -175,22 +175,23 @@ class LoginViewController: UIViewController {
     func processLogin() {
         guard let email = loginEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
         guard let password = loginPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
-        userData.signInUser(with: email, and: password) { [self] (error, _) in
+        userData.signInUser(with: email, and: password) { [weak self] (error, _) in
+            guard let self = self else {return}
             guard let error = error else {
-                removeWarningLabel()
-                setLoginButtonTappedAnimation()
-                loginSuccessful()
+                self.removeWarningLabel()
+                self.setLoginButtonTappedAnimation()
+                self.loginSuccessful()
                 return
             }
-            showWarningLabel(on: loginWarningLabel, with: error, isASuccessMessage: false)
-            setLoginButtonToOriginalDesign()
+            self.showWarningLabel(on: self.loginWarningLabel, with: error, isASuccessMessage: false)
+            self.setLoginButtonToOriginalDesign()
         }
     }
     
     func loginSuccessful() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
             setLoginButtonToOriginalDesign()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
                 tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
                 view.window?.rootViewController = tabBarVC

@@ -265,62 +265,70 @@ class SignUpViewController: UIViewController {
         if validateTextFields() && validateProfilePicture() {
             let userDataDictionary = userInfo()
             setSignUpButtonTappedAnimation()
-            userData.createUser(with: userDataDictionary[Strings.userEmailField]!, and: userDataDictionary[Strings.userPasswordField]!) { [self] (error, authResult) in
+            userData.createUser(with: userDataDictionary[Strings.userEmailField]!, and: userDataDictionary[Strings.userPasswordField]!) { [weak self] (error, authResult) in
+                guard let self = self else {return}
                 guard let error = error else {
                     guard let authResult = authResult else {return}
-                    UIView.animate(withDuration: 0.2) { [self] in
-                        signUpWarning1Label.isHidden = true
+                    UIView.animate(withDuration: 0.2) {
+                        self.signUpWarning1Label.isHidden = true
                     }
-                    uploadUserData(using: authResult, with: userDataDictionary)
+                    self.uploadUserData(using: authResult, with: userDataDictionary)
                     return
                 }
-                showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
-                setSignUpButtonToOriginalDesign()
+                self.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
+                self.setSignUpButtonToOriginalDesign()
             }
         }
     }
     
     func uploadUserData(using authResult: AuthDataResult, with userDataDictionary: [String : String]) {
-        userData.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { [self] (error, profilePic) in
+        userData.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { [weak self] (error, profilePic) in
+            guard let self = self else {return}
             if error != nil {
-                showWarningLabel(on: signUpWarning1Label, with: error!, isASuccessMessage: false)
-                setSignUpButtonToOriginalDesign()
+                self.showWarningLabel(on: self.signUpWarning1Label, with: error!, isASuccessMessage: false)
+                self.setSignUpButtonToOriginalDesign()
                 return
             }
             guard let profilePic = profilePic else {return}
-            let dictionary = [Strings.userIDField : authResult.user.uid,
-                              Strings.userFirstNameField : userDataDictionary[Strings.userFirstNameField]!,
-                              Strings.userLastNameField : userDataDictionary[Strings.userLastNameField]!,
-                              Strings.userEmailField : userDataDictionary[Strings.userEmailField]!,
-                              Strings.userProfilePicField : profilePic]
-            userData.storeData(using: authResult.user.uid, with: dictionary) { (error, isFinishedStoring) in
-                guard let error = error else {
-                    if isFinishedStoring {
-                        sendEmailVerification()
-                    }
-                    return
+            let userData = [Strings.userIDField : authResult.user.uid,
+                            Strings.userFirstNameField : userDataDictionary[Strings.userFirstNameField]!,
+                            Strings.userLastNameField : userDataDictionary[Strings.userLastNameField]!,
+                            Strings.userEmailField : userDataDictionary[Strings.userEmailField]!,
+                            Strings.userProfilePicField : profilePic]
+            self.storeUserData(on: authResult.user.uid, with: userData)
+        }
+    }
+    
+    func storeUserData(on userID: String, with userDataDictionary: [String : String]) {
+        userData.storeData(using: userID, with: userDataDictionary) { [weak self] (error, isFinishedStoring) in
+            guard let self = self else {return}
+            guard let error = error else {
+                if isFinishedStoring {
+                    self.sendEmailVerification()
                 }
-                showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
-                setSignUpButtonToOriginalDesign()
+                return
             }
+            self.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
+            self.setSignUpButtonToOriginalDesign()
         }
     }
     
     func sendEmailVerification() {
-        userData.sendEmailVerification { [self] (error, _, isEmailVerificationSent) in
+        userData.sendEmailVerification { [weak self] (error, _, isEmailVerificationSent) in
+            guard let self = self else {return}
             if error != nil {
-                showWarningLabel(on: signUpWarning1Label, with: error, isASuccessMessage: false)
-                setSignUpButtonToOriginalDesign()
+                self.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
+                self.setSignUpButtonToOriginalDesign()
                 return
             }
             if isEmailVerificationSent {
-                showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
-                setSignUpButtonTransitionAnimation()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
+                self.showWarningLabel(on: self.signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
+                self.setSignUpButtonTransitionAnimation()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                     let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
                     tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
-                    view.window?.rootViewController = tabBarVC
-                    view.window?.makeKeyAndVisible()
+                    self.view.window?.rootViewController = tabBarVC
+                    self.view.window?.makeKeyAndVisible()
                 }
                 UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
             }

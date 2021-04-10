@@ -108,8 +108,8 @@ class ForgotPasswordViewController: UIViewController {
         UIView.animate(withDuration: 0.3) { [self] in
             forgotPasswordSubmitButton.isHidden = true
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            UIView.animate(withDuration: 0.2) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+            UIView.animate(withDuration: 0.2) {
                 forgotPasswordDismissButton.isHidden = false
             }
         }
@@ -159,15 +159,16 @@ class ForgotPasswordViewController: UIViewController {
     
     func processForgotPassword() {
         guard let email = forgotPasswordEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
-        userData.forgotPassword(with: email) { [self] (error, isPasswordResetSent) in
+        userData.forgotPassword(with: email) { [weak self] (error, isPasswordResetSent) in
+            guard let self = self else {return}
             guard let error = error else {
                 if isPasswordResetSent {
-                    showWarningLabel(on: forgotPasswordWarningLabel, customizedWarning: Strings.forgotPasswordProcessSuccessfulLabel, isASuccessMessage: true)
-                    showDismissButton()
+                    self.showWarningLabel(on: self.forgotPasswordWarningLabel, customizedWarning: Strings.forgotPasswordProcessSuccessfulLabel, isASuccessMessage: true)
+                    self.showDismissButton()
                 }
                 return
             }
-            showWarningLabel(on: forgotPasswordWarningLabel, with: error, isASuccessMessage: false)
+            self.showWarningLabel(on: self.forgotPasswordWarningLabel, with: error, isASuccessMessage: false)
         }
     }
     

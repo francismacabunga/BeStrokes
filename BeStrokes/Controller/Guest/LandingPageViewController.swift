@@ -11,7 +11,7 @@ class LandingPageViewController: UIPageViewController {
     
     //MARK: - Constants / Variables
     
-    var landingPageVCDelegate: LandingPageVCDelegate?
+    weak var landingPageVCDelegate: LandingPageVCDelegate?
     private var currentIndex = 0
     private let landingPage = LandingPage()
     
@@ -103,6 +103,6 @@ extension LandingPageViewController: UIPageViewControllerDelegate {
 
 //MARK: - Protocols
 
-protocol LandingPageVCDelegate {
+protocol LandingPageVCDelegate: AnyObject {
     func getValueOf(_ index: Int)
 }

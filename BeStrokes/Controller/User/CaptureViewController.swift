@@ -231,13 +231,18 @@ class CaptureViewController: UIViewController {
     func downloadImage(using stickerImage: String) {
         guard let url = URL(string: stickerImage) else {return}
         let session = URLSession(configuration: .default)
-        let dataTask = session.dataTask(with: url) { [self] (data, response, error) in
+        let dataTask = session.dataTask(with: url) { [weak self] (data, response, error) in
+            guard let self = self else {return}
             guard let error = error else {
                 guard let imageData = data else {return}
-                stickerMaterial.diffuse.contents = UIImage(data: imageData)
+                DispatchQueue.main.async {
+                    self.stickerMaterial.diffuse.contents = UIImage(data: imageData)
+                }
                 return
             }
-            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            DispatchQueue.main.async {
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            }
         }
         dataTask.resume()
     }
@@ -279,10 +284,11 @@ class CaptureViewController: UIViewController {
     }
     
     func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [self] (error, isUserSignedIn, _) in
+        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
         }
@@ -342,14 +348,15 @@ class CaptureViewController: UIViewController {
         UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
         if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
             guard let userStickerData = userStickerViewModel else {return}
-            stickerData.updateNewSticker(on: userStickerData.stickerID) { [self] (error, isUserSignedIn) in
+            stickerData.updateNewSticker(on: userStickerData.stickerID) { [weak self] (error, isUserSignedIn) in
+                guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}
-                    showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                     return
                 }
                 if error != nil {
-                    showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                     return
                 }
             }
@@ -539,5 +546,3 @@ extension CaptureViewController: ARSCNViewDelegate {
     }
     
 }
-
-
