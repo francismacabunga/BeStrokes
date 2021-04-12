@@ -298,7 +298,8 @@ class CaptureViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.isCaptureVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
-                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
+                        guard let self = self else {return}
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     show(alertWithHandler!, sender: nil)

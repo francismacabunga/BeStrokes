@@ -126,16 +126,16 @@ class ProfileViewController: UIViewController {
     
     func showLoadingSkeletonView() {
         setSkeletonColor()
-            profileImageContentView.isSkeletonable = true
-            Utilities.setDesignOn(view: profileImageContentView, isSkeletonCircular: true)
-            profileNameLabel.isSkeletonable = true
-            profileEmailLabel.isSkeletonable = true
-            profileImageContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            profileNameLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            profileEmailLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
-            profileImageContentView.showAnimatedSkeleton()
-            profileNameLabel.showAnimatedSkeleton()
-            profileEmailLabel.showAnimatedSkeleton()
+        profileImageContentView.isSkeletonable = true
+        Utilities.setDesignOn(view: profileImageContentView, isSkeletonCircular: true)
+        profileNameLabel.isSkeletonable = true
+        profileEmailLabel.isSkeletonable = true
+        profileImageContentView.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        profileNameLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        profileEmailLabel.showSkeleton(usingColor: skeletonColor!, transition: .crossDissolve(0.3))
+        profileImageContentView.showAnimatedSkeleton()
+        profileNameLabel.showAnimatedSkeleton()
+        profileEmailLabel.showAnimatedSkeleton()
     }
     
     func hideLoadingSkeletonView() {
@@ -148,23 +148,24 @@ class ProfileViewController: UIViewController {
     }
     
     func getSignedInUserData() {
-        userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userData = userData else {return}
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-                profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
-                profileEmailLabel.text = userData.email
-                hasProfilePicLoaded = true
-                hideLoadingSkeletonView()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                self.profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
+                self.profileEmailLabel.text = userData.email
+                self.hasProfilePicLoaded = true
+                self.hideLoadingSkeletonView()
             }
         }
     }
@@ -177,12 +178,13 @@ class ProfileViewController: UIViewController {
     }
     
     func signOutUser() {
-        let logoutAlert = Utilities.showAlert(alertTitle: Strings.logoutAlertTitle, alertMessage: "", alertActionTitle1: Strings.logoutYesAction, alertActionTitle2: Strings.logoutNoAction) { [self] in
-            let isUserSignedOut = userData.signOutUser()
+        let logoutAlert = Utilities.showAlert(alertTitle: Strings.logoutAlertTitle, alertMessage: "", alertActionTitle1: Strings.logoutYesAction, alertActionTitle2: Strings.logoutNoAction) { [weak self] in
+            guard let self = self else {return}
+            let isUserSignedOut = self.userData.signOutUser()
             if isUserSignedOut {
-                _ = Utilities.transition(from: view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
             } else {
-                showAlertController(alertMessage: Strings.profileCannotSignOutUserLabel, withHandler: false)
+                self.showAlertController(alertMessage: Strings.profileCannotSignOutUserLabel, withHandler: false)
             }
         }
         present(logoutAlert!, animated: true)
@@ -192,7 +194,8 @@ class ProfileViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.isProfileVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
-                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
+                        guard let self = self else {return}
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(alertWithHandler!, animated: true)
@@ -209,8 +212,8 @@ class ProfileViewController: UIViewController {
     
     @IBAction func profileSettingsButton(_ sender: UIButton) {
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.dismiss(animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            dismiss(animated: true)
         }
     }
     

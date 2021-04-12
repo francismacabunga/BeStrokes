@@ -330,26 +330,29 @@ struct StickerData {
         }
     }
     
-    func checkIfStickerExistsInUserCollection(stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
+    func checkIfStickerExistsInUserCollection(stickerViewModel: [StickerViewModel], completion: @escaping (Error?, Bool, Bool?, StickerViewModel?) -> Void) {
         userData.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
-                completion(error, false, nil)
+                completion(error, false, nil, nil)
                 return
             }
             guard let signedInUser = user else {return}
-            let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID)
-            fetchUserStickerData(withQuery: firebaseQuery, withListener: false) { (error, userStickerData) in
-                if error != nil {
-                    completion(error, true, nil)
-                    return
+            _ = stickerViewModel.map({
+                let newSticker = $0
+                let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: $0.stickerID)
+                fetchUserStickerData(withQuery: firebaseQuery, withListener: false) { (error, userStickerData) in
+                    if error != nil {
+                        completion(error, true, nil, nil)
+                        return
+                    }
+                    guard let _ = userStickerData?.first else {
+                        completion(nil, true, false, newSticker)
+                        return
+                    }
+                    completion(nil, true, true, newSticker)
                 }
-                guard let _ = userStickerData?.first else {
-                    completion(nil, true, false)
-                    return
-                }
-                completion(nil, true, true)
-            }
+            })
         }
     }
     
@@ -389,7 +392,7 @@ struct StickerData {
         }
     }
     
-    func uploadStickerInUserCollection(from stickerData: StickerViewModel,
+    func uploadStickerInUserCollection(from stickerViewModel: [StickerViewModel],
                                        isRecentlyUploaded: Bool,
                                        isNew: Bool,
                                        completion: @escaping (Error?, Bool) -> Void)
@@ -401,19 +404,21 @@ struct StickerData {
                 return
             }
             guard let signedInUser = user else {return}
-            let userStickerViewModelDictionary: [String : Any] = [Strings.stickerIDField : stickerData.stickerID,
-                                                                  Strings.stickerNameField : stickerData.name,
-                                                                  Strings.stickerImageField : stickerData.image,
-                                                                  Strings.stickerDescriptionField : stickerData.description,
-                                                                  Strings.stickerCategoryField : stickerData.category,
-                                                                  Strings.stickerTagField : stickerData.tag,
-                                                                  Strings.stickerIsRecentlyUploadedField : isRecentlyUploaded,
-                                                                  Strings.stickerIsNewField : isNew,
-                                                                  Strings.stickerIsLovedField : false]
-            db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).document(stickerData.stickerID).setData(userStickerViewModelDictionary) { (error) in
-                guard let error = error else {return}
-                completion(error, true)
-            }
+            _ = stickerViewModel.map({
+                let userStickerViewModelDictionary: [String : Any] = [Strings.stickerIDField : $0.stickerID,
+                                                                      Strings.stickerNameField : $0.name,
+                                                                      Strings.stickerImageField : $0.image,
+                                                                      Strings.stickerDescriptionField : $0.description,
+                                                                      Strings.stickerCategoryField : $0.category,
+                                                                      Strings.stickerTagField : $0.tag,
+                                                                      Strings.stickerIsRecentlyUploadedField : isRecentlyUploaded,
+                                                                      Strings.stickerIsNewField : isNew,
+                                                                      Strings.stickerIsLovedField : false]
+                db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).document($0.stickerID).setData(userStickerViewModelDictionary) { (error) in
+                    guard let error = error else {return}
+                    completion(error, true)
+                }
+            })
         }
     }
     
@@ -505,6 +510,3 @@ struct HeartButtonLogic {
     }
     
 }
-
-
-

@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     var window: UIWindow?
-    let notificationCenter = UNUserNotificationCenter.current()
+    //let notificationCenter = UNUserNotificationCenter.current()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        notificationCenter.getNotificationSettings { (permission) in
+        UNUserNotificationCenter.current().getNotificationSettings { (permission) in
             if permission.authorizationStatus == .authorized {
                 UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
                 NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
@@ -48,6 +48,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
             }
         }
+        
+//        notificationCenter.getNotificationSettings { (permission) in
+//            if permission.authorizationStatus == .authorized {
+//                UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
+//                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
+//            } else {
+//                UserDefaults.standard.setValue(false, forKey: Strings.notificationKey)
+//                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
+//            }
+//        }
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

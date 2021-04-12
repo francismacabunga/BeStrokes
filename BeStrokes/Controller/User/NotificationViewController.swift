@@ -87,19 +87,20 @@ class NotificationViewController: UIViewController {
     }
     
     func setNotificationData() {
-        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, _, userStickerData) in
+        stickerData.fetchNewSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userStickerData = userStickerData else {return}
-            userStickerViewModel = userStickerData
-            checkIfUserStickerViewModelIsEmpty()
+            self.userStickerViewModel = userStickerData
+            self.checkIfUserStickerViewModelIsEmpty()
         }
     }
     
@@ -123,10 +124,11 @@ class NotificationViewController: UIViewController {
     }
     
     func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [self] (error, isUserSignedIn, _) in
+        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
         }
@@ -136,7 +138,8 @@ class NotificationViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.isNotificationVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
-                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
+                        guard let self = self else {return}
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(alertWithHandler!, animated: true)
@@ -208,4 +211,3 @@ extension NotificationViewController: StickerTableViewCellDelegate {
     }
     
 }
-

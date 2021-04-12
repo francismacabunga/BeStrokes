@@ -26,7 +26,7 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     private let heartButtonLogic = HeartButtonLogic()
     private var heartButtonTapped: Bool?
     private var skeletonColor: UIColor?
-    var featuredStickerCellDelegate: FeaturedStickerCellDelegate?
+    weak var featuredStickerCellDelegate: FeaturedStickerCellDelegate?
     var featuredStickerViewModel: FeaturedStickerViewModel? {
         didSet {
             guard let featuredStickerData = featuredStickerViewModel else {return}
@@ -125,13 +125,6 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
 
 //MARK: - Protocols
 
-protocol FeaturedStickerCellDelegate {
+protocol FeaturedStickerCellDelegate: AnyObject {
     func getVC(using viewController: UIViewController)
 }
-
-
-
-
-
-
-

@@ -24,7 +24,7 @@ class StickerTableViewCell: UITableViewCell {
     //MARK: - Constants / Variables
     
     private var skeletonColor: UIColor?
-    var stickerCellDelegate: StickerTableViewCellDelegate?
+    weak var stickerCellDelegate: StickerTableViewCellDelegate?
     var userStickerViewModel: UserStickerViewModel? {
         didSet {
             guard let userStickerData = userStickerViewModel else {return}
@@ -139,6 +139,6 @@ class StickerTableViewCell: UITableViewCell {
 
 //MARK: - Protocols
 
-protocol StickerTableViewCellDelegate {
+protocol StickerTableViewCellDelegate: AnyObject {
     func getVC(using viewController: UIViewController)
 }

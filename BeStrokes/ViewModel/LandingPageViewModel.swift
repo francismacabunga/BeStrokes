@@ -51,5 +51,3 @@ struct LandingPage {
     }
     
 }
-
-

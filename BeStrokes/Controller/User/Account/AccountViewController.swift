@@ -196,40 +196,42 @@ class AccountViewController: UIViewController {
     }
     
     func setSignedInUserData() {
-        userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userData = userData else {return}
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
-                accountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                accountNameHeadingLabel.text = "\(userData.firstName) \(userData.lastname)"
-                accountEmailHeadingLabel.text = userData.email
-                hideLoadingSkeletonView()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.accountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                self.accountNameHeadingLabel.text = "\(userData.firstName) \(userData.lastname)"
+                self.accountEmailHeadingLabel.text = userData.email
+                self.hideLoadingSkeletonView()
             }
         }
     }
     
     func setLovedStickersData() {
-        stickerData.fetchLovedSticker { [self] (error, isUserSignedIn, _, userStickerData) in
+        stickerData.fetchLovedSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userStickerData = userStickerData else {return}
-            userStickerViewModel = userStickerData
-            checkIfUserStickerViewModelIsEmpty(withDelay: 0.5)
+            self.userStickerViewModel = userStickerData
+            self.checkIfUserStickerViewModelIsEmpty(withDelay: 0.5)
         }
     }
     
@@ -260,10 +262,11 @@ class AccountViewController: UIViewController {
     }
     
     func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [self] (error, isUserSignedIn, _) in
+        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
         }
@@ -273,7 +276,8 @@ class AccountViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.isAccountVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
-                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
+                        guard let self = self else {return}
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(alertWithHandler!, animated: true)
@@ -372,21 +376,22 @@ extension AccountViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         accountSearchTextField.resignFirstResponder()
         if accountSearchTextField.text != nil {
-            stickerData.searchSticker(using: accountSearchTextField.text!) { [self] (error, isUserSignedIn, userStickerData) in
+            stickerData.searchSticker(using: accountSearchTextField.text!) { [weak self] (error, isUserSignedIn, userStickerData) in
+                guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}
-                    showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                     return
                 }
                 if error != nil {
-                    showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                     return
                 }
                 guard let userStickerViewModel = userStickerData else {
-                    showNoStickerResultLabel()
+                    self.showNoStickerResultLabel()
                     return
                 }
-                showSearchedSticker(using: [userStickerViewModel])
+                self.showSearchedSticker(using: [userStickerViewModel])
             }
             return true
         }

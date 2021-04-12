@@ -33,10 +33,10 @@ class HomeViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let userData = UserData()
+    private let stickerData = StickerData()
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
     private var stickerViewModel: [StickerViewModel]?
-    private let stickerData = StickerData()
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
     private var stickerCategorySelected: String?
     private var selectedIndexPath: IndexPath?
@@ -159,24 +159,25 @@ class HomeViewController: UIViewController {
     }
     
     func setProfilePicture() {
-        userData.getSignedInUserData { [self] (error, isUserSignedIn, userData) in
+        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userData = userData else {return}
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
-                Utilities.setDesignOn(button: homeProfilePictureButton, backgroundColor: .clear, isCircular: true)
-                homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-                hasProfilePicLoaded = true
+                self.homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
+                Utilities.setDesignOn(button: self.homeProfilePictureButton, backgroundColor: .clear, isCircular: true)
+                self.homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                self.hasProfilePicLoaded = true
                 if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
-                    Utilities.setShadowOn(view: homeProfilePicContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
+                    Utilities.setShadowOn(view: self.homeProfilePicContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
                 }
             }
         }
@@ -211,56 +212,68 @@ class HomeViewController: UIViewController {
     }
     
     func checkIfNotificationIsPermitted() {
-        notificationCenter.getNotificationSettings { [self] (permission) in
+        notificationCenter.getNotificationSettings { [weak self] (permission) in
+            guard let self = self else {return}
             if permission.authorizationStatus == .notDetermined {
                 let options: UNAuthorizationOptions = [.alert, .sound]
-                notificationCenter.requestAuthorization(options: options) { (isPermissionGranted, error) in
-                    if isPermissionGranted {
-                        UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
-                    } else {
-                        UserDefaults.standard.setValue(false, forKey: Strings.notificationKey)
-                    }
-                }
+                self.requestAuthorization(options)
+            }
+        }
+    }
+    
+    func requestAuthorization(_ options: UNAuthorizationOptions) {
+        notificationCenter.requestAuthorization(options: options) { (isPermissionGranted, error) in
+            if isPermissionGranted {
+                UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
+            } else {
+                UserDefaults.standard.setValue(false, forKey: Strings.notificationKey)
             }
         }
     }
     
     func showBannerNotification() {
-        stickerData.fetchRecentlyUploadedSticker { [self] (error, isUserSignedIn, userStickerData) in
+        stickerData.fetchRecentlyUploadedSticker { [weak self] (error, isUserSignedIn, userStickerData) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let userStickerData = userStickerData else {return}
-            triggerNotification()
-            stickerData.updateRecentlyUploadedSticker(on: userStickerData.stickerID) { (error, isUserSignedIn) in
-                if !isUserSignedIn {
-                    guard let error = error else {return}
-                    showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                    return
-                }
-                if error != nil {
-                    showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                    return
-                }
+            self.triggerNotification()
+            self.updateRecentlyUploadedSticker(using: userStickerData.stickerID)
+        }
+    }
+    
+    func updateRecentlyUploadedSticker(using stickerID: String) {
+        stickerData.updateRecentlyUploadedSticker(on: stickerID) { [weak self] (error, isUserSignedIn) in
+            guard let self = self else {return}
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                return
+            }
+            if error != nil {
+                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                return
             }
         }
     }
     
     func updateBadgeCounter() {
-        stickerData.fetchNewSticker { [self] (error, isUserSignedIn, numberOfNewStickers, _) in
+        stickerData.fetchNewSticker { [weak self] (error, isUserSignedIn, numberOfNewStickers, _) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 return
             }
             guard let numberOfNewStickers = numberOfNewStickers else {return}
@@ -276,17 +289,19 @@ class HomeViewController: UIViewController {
         notificationContent.body = Strings.notificationBody
         let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let notificationRequest = UNNotificationRequest(identifier: notificationIdentifier, content: notificationContent, trigger: notificationTrigger)
-        notificationCenter.add(notificationRequest) { [self] (error) in
+        notificationCenter.add(notificationRequest) { [weak self] (error) in
+            guard let self = self else {return}
             guard let error = error else {return}
-            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            self.showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
     func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [self] (error, isUserSignedIn, _) in
+        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
         }
@@ -296,7 +311,8 @@ class HomeViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.isHomeVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
-                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) {
+                    let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
+                        guard let self = self else {return}
                         _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
                     }
                     present(alertWithHandler!, animated: true)
@@ -315,7 +331,6 @@ class HomeViewController: UIViewController {
         let profileVC = Utilities.transition(to: Strings.profileVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! ProfileViewController
         profileVC.modalPresentationStyle = .popover
         present(profileVC, animated: true)
-        
     }
     
     
@@ -353,75 +368,87 @@ class HomeViewController: UIViewController {
     func changeStickerStatusOnFirstTimeLogin(using stickerData: [StickerViewModel]) {
         if UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
             UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
-            _ = stickerData.map({
-                self.stickerData.uploadStickerInUserCollection(from: $0, isRecentlyUploaded: false, isNew: false) { [self] (error, isUserSignedIn) in
-                    if !isUserSignedIn {
-                        guard let error = error else {return}
-                        showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                        return
-                    }
-                    if error != nil {
-                        showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                    }
+            self.stickerData.uploadStickerInUserCollection(from: stickerData, isRecentlyUploaded: false, isNew: false) { [weak self] (error, isUserSignedIn) in
+                guard let self = self else {return}
+                if !isUserSignedIn {
+                    guard let error = error else {return}
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    return
                 }
-            })
+                if error != nil {
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                }
+            }
         }
     }
     
-    func setStickerDataToUserID(using stickerData: [StickerViewModel]) {
+    func setStickerDataToUserID(using stickerViewModel: [StickerViewModel]) {
         if !UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
-            _ = stickerData.map({
-                let stickerViewModel = $0
-                self.stickerData.checkIfStickerExistsInUserCollection(stickerID: stickerViewModel.stickerID) { [self] (error, isUserSignedIn, isStickerPresent) in
-                    if !isUserSignedIn {
-                        guard let error = error else {return}
-                        showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                        return
-                    }
-                    if error != nil {
-                        showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                        return
-                    }
-                    guard let isStickerPresent = isStickerPresent else {return}
-                    if !isStickerPresent {
-                        self.stickerData.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { (error, isUserSignedIn) in
-                            if !isUserSignedIn {
-                                guard let error = error else {return}
-                                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                                return
-                            }
-                            if error != nil {
-                                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                            }
-                        }
+            self.stickerData.checkIfStickerExistsInUserCollection(stickerViewModel: stickerViewModel) { [weak self] (error, isUserSignedIn, isStickerPresent, newSticker) in
+                guard let self = self else {return}
+                if !isUserSignedIn {
+                    guard let error = error else {return}
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    return
+                }
+                if error != nil {
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    return
+                }
+                if isStickerPresent != nil {
+                    if !isStickerPresent! {
+                        guard let newSticker = newSticker else {return}
+                        self.uploadStickerInUserCollection(using: [newSticker])
                     }
                 }
-            })
+            }
+        }
+    }
+    
+    func uploadStickerInUserCollection(using stickerViewModel: [StickerViewModel]) {
+        stickerData.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { [weak self] (error, isUserSignedIn) in
+            guard let self = self else {return}
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                return
+            }
+            if error != nil {
+                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+            }
         }
     }
     
     func removeDeletedStickersInUserCollection() {
-        stickerData.checkIfUserStickerExistsInStickerCollection { [self] (error, isUserSignedIn) in
+        stickerData.checkIfUserStickerExistsInStickerCollection { [weak self] (error, isUserSignedIn) in
+            guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
-                showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                 return
             }
             if error != nil {
-                showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
             }
         }
     }
     
+    func maintenanceFunctions() {
+        removeDeletedStickersInUserCollection()
+        showBannerNotification()
+        updateBadgeCounter()
+    }
+    
     func getFeaturedStickersCollectionViewData() {
-        stickerData.fetchFeaturedSticker { [self] (error, featuredStickerData) in
+        stickerData.fetchFeaturedSticker { [weak self] (error, featuredStickerData) in
+            guard let self = self else {return}
             guard let error = error else {
                 guard let featuredStickerData = featuredStickerData else {return}
-                featuredStickerViewModel = featuredStickerData
-                homeFeaturedStickerCollectionView.reloadData()
+                self.featuredStickerViewModel = featuredStickerData
+                self.homeFeaturedStickerCollectionView.reloadData()
                 return
             }
-            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            self.showAlertController(alertMessage: error.localizedDescription, withHandler: false)
         }
     }
     
@@ -432,20 +459,26 @@ class HomeViewController: UIViewController {
     }
     
     func getStickersCollectionViewData(onCategory stickerCategory: String) {
-        stickerData.fetchSticker(onCategory: stickerCategory) { [self] (error, stickerData) in
+        stickerData.fetchSticker(onCategory: stickerCategory) { [weak self] (error, stickerData) in
+            guard let self = self else {return}
             guard let error = error else {
                 guard let stickerData = stickerData else {return}
-                stickerViewModel = stickerData
-                homeStickerCollectionView.reloadData()
-                changeStickerStatusOnFirstTimeLogin(using: stickerViewModel!)
-                setStickerDataToUserID(using: stickerViewModel!)
-                removeDeletedStickersInUserCollection()
-                showBannerNotification()
-                updateBadgeCounter()
-                showStickers()
+                DispatchQueue.main.async {
+                    self.stickerViewModel = stickerData
+                    self.homeStickerCollectionView.reloadData()
+                    self.changeStickerStatusOnFirstTimeLogin(using: stickerData)
+                    self.setStickerDataToUserID(using: stickerData)
+                    
+                    // Causes memory leak
+                    self.maintenanceFunctions()
+                    
+                    self.showStickers()
+                }
                 return
             }
-            showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            DispatchQueue.main.async {
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            }
         }
     }
     
@@ -525,9 +558,9 @@ extension HomeViewController: UICollectionViewDelegate {
         if collectionView == homeStickerCategoryCollectionView {
             selectedIndexPath = indexPath
             stickerCategoryViewModel[indexPath.item].isCategorySelected = true
+            stickerCategorySelected = stickerCategoryViewModel[indexPath.item].category
             guard let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell else {return}
             cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
-            stickerCategorySelected = stickerCategoryViewModel[indexPath.item].category
             showLoadingStickersDesign()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
                 getStickersCollectionViewData(onCategory: stickerCategorySelected!)
