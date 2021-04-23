@@ -315,7 +315,7 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - PromisesObjC (1.2.12)
-  - SkeletonView (1.14.0)
+  - SkeletonView (1.15.0)
 
 DEPENDENCIES:
   - CropViewController
@@ -372,7 +372,7 @@ SPEC CHECKSUMS:
   MSPeekCollectionViewDelegateImplementation: be35a217bd302976a9e4476151be992c1f150127
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  SkeletonView: f10a3285ebf4bdd05d965ec6aaf62017bc8577e9
+  SkeletonView: cac18a3ac4f893b09d99e65072d806ef08377aae
 
 PODFILE CHECKSUM: ee9164beb7bd4238a3e7e363b6da447e5c4252b2
 
