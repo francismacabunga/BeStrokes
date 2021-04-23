@@ -130,6 +130,7 @@ class StickerTableViewCell: UITableViewCell {
         }
         let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true)! as! CaptureViewController
         captureVC.userStickerViewModel = userStickerViewModel
+        captureVC.isStickerPicked = true
         captureVC.modalPresentationStyle = .fullScreen
         stickerCellDelegate?.getVC(using: captureVC)
     }

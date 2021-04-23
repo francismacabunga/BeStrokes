@@ -61,21 +61,10 @@ struct Strings {
     static let logoutAlertTitle = "Are you sure?"
     static let logoutYesAction = "Yes"
     static let logoutNoAction = "No"
-    //static let editAccountAlertMessage = "Your account details and email has been successfully updated. You may now sign in with your new email. Signing you out."
-//    static let landingInvalidCErrorAlertTitle = "Invalid credentials"
-//    static let landingInvalidUTErrorAlertTitle = "Invalid user token"
-//    static let landingInvalidCTErrorAlertTitle = "Invalid custom token"
-//    static let landingUserTEErrorAlertTitle = "User token expired"
-//    static let landingUserDErrorAlertTitle = "User is disabled"
-//    static let landingUserNFErrorAlertTitle = "User not found"
-//    static let landingCustomTMErrorAlertTitle = "Custom token mismatch"
-//    static let landingCallDErrorAlertTitle = "Default error"
-    //static let captureAlertWarningTitle = "Warning"
     static let captureAlertExcessStickerErrorMessage = "Sticker is already present. You can only add 1 sticker as of the moment."
     static let captureAlertNoStickerErrorMessage = "Please choose a sticker first."
     static let captureAlertRaycastErrorMessage = "No flat surface has been detected yet."
     static let captureAlertAnchorErrorMessage = "Cannot create a plane anchor as of the moment."
-    static let noSignedInUserAlert = "There is currently no signed in user."
     static let errorAlert = "Error"
     static let dismissAlert = "Dismiss"
     
@@ -94,7 +83,6 @@ struct Strings {
     static let signUpPasswordTextFieldErrorLabel = "Password is required."
     static let signUpPasswordErrorLabel = "Password must be at least 8 characters long with one alphabet and one special character or more."
     static let signUpProfilePictureErrorLabel = "Profile picture is required, please choose an image."
-    static let signUpNoUserIsCreatedErrorLabel = "Cannot send email verification. No user has been created yet, try creating again."
     static let signUpProcessSuccessfulLabel = "Successfully created your account. Email verification has been sent, please check your email."
     static let forgotPasswordProcessSuccessfulLabel = "Your password has been successfuly reset. Please check your email."
     static let notificationWarningLabel = "No new stickers as of the moment."
@@ -169,7 +157,6 @@ struct Strings {
     //MARK: - View Controllers Names
     static let landingVC = "LandingViewController"
     static let tabBarVC = "TabBarController"
-    static let homeVC = "HomeViewController"
     static let stickerOptionVC = "StickerOptionViewController"
     static let landingPageContentVC = "LandingPageContentViewController"
     static let captureVC = "CaptureViewController"
@@ -182,7 +169,7 @@ struct Strings {
     static let stickerCollectionViewCell = "StickerCollectionViewCell"
     static let stickerTableViewCell = "StickerTableViewCell"
     
-    //MARK: - Segue
+    //MARK: - Segues
     static let unwindToLandingVC = "goBackToLandingVC"
     
     
@@ -223,7 +210,6 @@ struct Strings {
     
     
     //MARK: - User Defaults
-    
     static let tryMeButtonKey = "openedFromTryMeButton"
     static let captureButtonKey = "openedFromCaptureButton"
     static let lightModeKey = "isLightModeOn"
@@ -243,7 +229,6 @@ struct Strings {
     static let isEditAccountVCLoadedKey = "isEditAccountVCLoaded"
     
     //MARK: - Notification
-    
     static let lightModeAppearanceNotificationName = "setLightModeAppearance"
     static let darkModeAppearanceNotificationName = "setDarkModeAppearance"
     static let badgeCounterToNotificationName = "setBadgeCounterToNotificationIcon"
