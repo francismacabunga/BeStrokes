@@ -41,6 +41,7 @@ class EditAccountViewController: UIViewController {
     private lazy var userID = String()
     private lazy var profilePic = String()
     private lazy var initialUserEmail = String()
+    private var isCroppingDone = false
     
     
     //MARK: - View Controller Life Cycle
@@ -54,7 +55,8 @@ class EditAccountViewController: UIViewController {
         registerGestures()
         setDataSourceAndDelegate()
         setData()
-        
+                
+        print(isCroppingDone)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -78,7 +80,9 @@ class EditAccountViewController: UIViewController {
         Utilities.setDesignOn(stackView: editAccountStackView, backgroundColor: .clear)
         Utilities.setDesignOn(navigationBar: editAccountNavigationBar, isDarkMode: true)
         Utilities.setDesignOn(imageView: editAccountImageView, isCircular: true)
-        Utilities.setDesignOn(imageView: editAccountCameraIconImageView, image: UIImage(named: Strings.cameraImage), isCircular: true)
+        if !isCroppingDone {
+            Utilities.setDesignOn(imageView: editAccountCameraIconImageView, image: UIImage(named: Strings.cameraImage))
+        }
         Utilities.setDesignOn(label: editAccountHeadingLabel, fontName: Strings.defaultFontBold, fontSize: 35, numberofLines: 0, textAlignment: .left, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.editAccountHeadingText)
         Utilities.setDesignOn(label: editAccountWarningLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isHidden: true)
         Utilities.setDesignOn(label: editAccountFirstNameLabel, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.firstNameTextField)
@@ -141,13 +145,15 @@ class EditAccountViewController: UIViewController {
                 return
             }
             guard let userData = userData else {return}
-            self.userID = userData.userID
-            self.profilePic = userData.profilePic
-            self.initialUserEmail = userData.email
-            self.editAccountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-            self.editAccountFirstNameTextField.text = userData.firstName
-            self.editAccountLastNameTextField.text = userData.lastname
-            self.editAccountEmailTextField.text = userData.email
+            DispatchQueue.main.async {
+                self.userID = userData.userID
+                self.profilePic = userData.profilePic
+                self.initialUserEmail = userData.email
+                self.editAccountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                self.editAccountFirstNameTextField.text = userData.firstName
+                self.editAccountLastNameTextField.text = userData.lastname
+                self.editAccountEmailTextField.text = userData.email
+            }
         }
     }
     
@@ -285,7 +291,12 @@ class EditAccountViewController: UIViewController {
             }
             if isEmailVerificationSent {
                 self.showWarningLabel(on: self.editAccountWarningLabel, customizedWarning: successLabel, isASuccessMessage: true)
-                self.setEditAccountButtonToOriginalDesign()
+                NotificationCenter.default.post(name: Utilities.reloadUserData, object: nil)
+                NotificationCenter.default.post(name: Utilities.reloadProfilePic, object: nil)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.setEditAccountButtonToOriginalDesign()
+                    self.dismiss(animated: true)
+                }
             }
         }
     }
@@ -395,8 +406,17 @@ extension EditAccountViewController: UINavigationControllerDelegate, UIImagePick
 extension EditAccountViewController: CropViewControllerDelegate {
     
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
-        editAccountImageView.image = image
+        dismiss(animated: true)
+        isCroppingDone = true
+        editAccountImageView.isHidden = true
         editedImage = image
+        Utilities.setDesignOn(imageView: editAccountCameraIconImageView, image: image, isCircular: true)
+        let viewController = cropViewController.children.first!
+        viewController.modalTransitionStyle = .coverVertical
+        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    func cropViewController(_ cropViewController: CropViewController, didFinishCancelled cancelled: Bool) {
         let viewController = cropViewController.children.first!
         viewController.modalTransitionStyle = .coverVertical
         viewController.presentingViewController?.dismiss(animated: true, completion: nil)

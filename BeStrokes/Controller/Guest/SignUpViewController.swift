@@ -365,6 +365,12 @@ extension SignUpViewController: CropViewControllerDelegate {
         viewController.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
+    func cropViewController(_ cropViewController: CropViewController, didFinishCancelled cancelled: Bool) {
+        let viewController = cropViewController.children.first!
+        viewController.modalTransitionStyle = .coverVertical
+        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
 }
 
 
