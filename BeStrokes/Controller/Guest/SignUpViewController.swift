@@ -58,6 +58,7 @@ class SignUpViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
+        Utilities.setDesignOn(scrollView: signUpScrollView, keyboardDismissMode: .onDrag)
         Utilities.setDesignOn(view: signUpContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: signUpHeadingStackView, backgroundColor: .clear)
         Utilities.setDesignOn(view: signUpImageContentView, backgroundColor: .clear, isCircular: true)

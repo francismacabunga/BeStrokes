@@ -48,6 +48,7 @@ class ForgotPasswordViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
+        Utilities.setDesignOn(scrollView: forgotPasswordScrollView, keyboardDismissMode: .onDrag)
         Utilities.setDesignOn(view: forgotPasswordContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: forgotPasswordHeadingsStackView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: forgotPasswordTextFieldStackView, backgroundColor: .clear)

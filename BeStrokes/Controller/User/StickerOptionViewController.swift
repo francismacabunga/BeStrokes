@@ -85,6 +85,10 @@ class StickerOptionViewController: UIViewController {
         checkThemeAppearance()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
+    
     func checkThemeAppearance() {
         if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
             setLightMode()

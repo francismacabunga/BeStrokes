@@ -52,6 +52,7 @@ class LoginViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
+        Utilities.setDesignOn(scrollView: loginScrollView, keyboardDismissMode: .onDrag)
         Utilities.setDesignOn(view: loginContentView, backgroundColor: .clear)
         Utilities.setDesignOn(stackView: loginHeadingStackView, backgroundColor: .clear)
         Utilities.setDesignOn(view: loginImageContentView, backgroundColor: .clear, isCircular: true)

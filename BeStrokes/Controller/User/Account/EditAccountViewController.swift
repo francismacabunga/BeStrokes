@@ -69,7 +69,7 @@ class EditAccountViewController: UIViewController {
     //MARK: - Design Elements
     
     func setDesignElements() {
-        Utilities.setDesignOn(scrollView: editAccountScrollView, indicatorColor: .black)
+        Utilities.setDesignOn(scrollView: editAccountScrollView, indicatorColor: .black, keyboardDismissMode: .onDrag)
         Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
         Utilities.setDesignOn(view: editAccountHeadingContentView, backgroundColor: .clear)
         Utilities.setDesignOn(view: editAccountImageContentView, backgroundColor: .clear, isCircular: true)

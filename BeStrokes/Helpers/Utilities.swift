@@ -266,9 +266,15 @@ struct Utilities {
     
     // Scroll View
     static func setDesignOn(scrollView: UIScrollView,
-                            indicatorColor: UIScrollView.IndicatorStyle)
+                            indicatorColor: UIScrollView.IndicatorStyle? = nil,
+                            keyboardDismissMode: UIScrollView.KeyboardDismissMode? = nil)
     {
-        scrollView.indicatorStyle = indicatorColor
+        if indicatorColor != nil {
+            scrollView.indicatorStyle = indicatorColor!
+        }
+        if keyboardDismissMode != nil {
+            scrollView.keyboardDismissMode = keyboardDismissMode!
+        }
     }
     
     // Loading Indicator
@@ -518,7 +524,8 @@ struct Utilities {
     static func setMeasurementsOn(collectionViewFlowLayout: UICollectionViewFlowLayout,
                                   leftSectionInset: CGFloat,
                                   rightSectionInset: CGFloat,
-                                  minimumLineSpacing: CGFloat? = nil) {
+                                  minimumLineSpacing: CGFloat? = nil)
+    {
         collectionViewFlowLayout.sectionInset.left = leftSectionInset
         collectionViewFlowLayout.sectionInset.right = rightSectionInset
         if minimumLineSpacing != nil {
@@ -533,6 +540,7 @@ struct Utilities {
                             showVerticalScrollIndicator: Bool,
                             separatorColor: UIColor? = nil,
                             rowHeight: CGFloat? = nil,
+                            keyboardDismissMode: UITableView.KeyboardDismissMode? = nil,
                             isHidden: Bool? = nil)
     {
         tableView.backgroundColor = backgroundColor
@@ -543,6 +551,9 @@ struct Utilities {
         }
         if rowHeight != nil {
             tableView.rowHeight = rowHeight!
+        }
+        if keyboardDismissMode != nil {
+            tableView.keyboardDismissMode = keyboardDismissMode!
         }
         if isHidden != nil {
             if isHidden! {
@@ -559,7 +570,8 @@ struct Utilities {
     }
     
     // Animation
-    static func animate(button: UIButton? = nil, view: UIView? = nil)
+    static func animate(button: UIButton? = nil,
+                        view: UIView? = nil)
     {
         if button != nil {
             UIView.animate(withDuration: 0.2) {
