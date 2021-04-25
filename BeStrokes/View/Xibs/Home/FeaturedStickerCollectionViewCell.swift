@@ -22,9 +22,6 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Constants / Variables
     
-    private let stickerData = StickerData()
-    private let heartButtonLogic = HeartButtonLogic()
-    private var heartButtonTapped: Bool?
     private var skeletonColor: UIColor?
     weak var featuredStickerCellDelegate: FeaturedStickerCellDelegate?
     var featuredStickerViewModel: FeaturedStickerViewModel? {
@@ -70,18 +67,18 @@ class FeaturedStickerCollectionViewCell: UICollectionViewCell {
     @objc func setLightMode() {
         UIView.animate(withDuration: 0.3) { [self] in
             Utilities.setDesignOn(view: featuredStickerView, backgroundColor: .white)
+            Utilities.setDesignOn(button: featuredStickerTryMeButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
             Utilities.setShadowOn(view: featuredStickerView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
             Utilities.setShadowOn(button: featuredStickerTryMeButton, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 2)
-            Utilities.setDesignOn(button: featuredStickerTryMeButton, titleColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: .white)
         }
     }
     
     @objc func setDarkMode() {
         UIView.animate(withDuration: 0.3) { [self] in
             Utilities.setDesignOn(view: featuredStickerView, backgroundColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(button: featuredStickerTryMeButton, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             Utilities.setShadowOn(view: featuredStickerView, isHidden: true)
             Utilities.setShadowOn(button: featuredStickerTryMeButton, isHidden: true)
-            Utilities.setDesignOn(button: featuredStickerTryMeButton, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         }
     }
     

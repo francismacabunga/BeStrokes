@@ -22,7 +22,8 @@ struct Capture {
                     height: CGFloat? = nil,
                     material: SCNMaterial,
                     transform: SCNMatrix4? = nil,
-                    position: SCNVector3) -> SCNNode {
+                    position: SCNVector3) -> SCNNode
+    {
         var plane = SCNPlane()
         if planeAnchor != nil {
             plane = SCNPlane(width: CGFloat(planeAnchor!.extent.x), height: CGFloat(planeAnchor!.extent.z))
@@ -39,13 +40,17 @@ struct Capture {
         return planeNode
     }
     
-    func performRaycast(on view: ARSCNView, _ tapLocation: CGPoint) -> ARRaycastResult? {
+    func performRaycast(on view: ARSCNView,
+                        _ tapLocation: CGPoint) -> ARRaycastResult?
+    {
         guard let raycastQuery = view.raycastQuery(from: tapLocation, allowing: .estimatedPlane, alignment: .any) else {return nil}
         guard let raycastResult = view.session.raycast(raycastQuery).first else {return nil}
         return raycastResult
     }
     
-    func performHitTest(using location: CGPoint, from view: ARSCNView) -> [SCNHitTestResult] {
+    func performHitTest(using location: CGPoint,
+                        from view: ARSCNView) -> [SCNHitTestResult]
+    {
         let hitTest = view.hitTest(location, options: nil)
         return hitTest
     }
@@ -57,7 +62,8 @@ struct Capture {
     
     func performLongPressGesture(using longPressGesture: UILongPressGestureRecognizer,
                                  from view: ARSCNView,
-                                 on selectedNode: SCNNode) {
+                                 on selectedNode: SCNNode)
+    {
         let longPressLocation = longPressGesture.location(in: view)
         if longPressGesture.state == .changed {
             guard let raycastResult = performRaycast(on: view, longPressLocation) else {return}
@@ -67,7 +73,9 @@ struct Capture {
         }
     }
     
-    func performPinchGesture(using pinchGesture: UIPinchGestureRecognizer, on selectedNode: SCNNode) {
+    func performPinchGesture(using pinchGesture: UIPinchGestureRecognizer,
+                             on selectedNode: SCNNode)
+    {
         if pinchGesture.state == .changed {
             selectedNode.scale = SCNVector3((pinchGesture.scale) * CGFloat(selectedNode.scale.x),
                                             (pinchGesture.scale) * CGFloat(selectedNode.scale.y),
@@ -78,7 +86,8 @@ struct Capture {
     
     mutating func performRotationGesture(using rotateGesture: UIRotationGestureRecognizer,
                                          on selectedNode: SCNNode,
-                                         raycastTargetAlignment: ARRaycastQuery.TargetAlignment) {
+                                         raycastTargetAlignment: ARRaycastQuery.TargetAlignment)
+    {
         let rotation = -rotateGesture.rotation
         switch rotateGesture.state {
         case .changed:

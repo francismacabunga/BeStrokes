@@ -22,7 +22,6 @@ class StickerCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Constants / Variables
     
-    private var heartButtonTapped: Bool?
     private var skeletonColor: UIColor?
     var stickerViewModel: StickerViewModel? {
         didSet {

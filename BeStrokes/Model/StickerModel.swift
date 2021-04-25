@@ -32,4 +32,3 @@ struct StickerCategoryModel {
     let category: String
     var isCategorySelected: Bool
 }
-

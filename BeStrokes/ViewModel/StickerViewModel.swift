@@ -94,7 +94,8 @@ struct StickerData {
     
     func fetchStickerData(withQuery query: Query,
                           withListener: Bool,
-                          completion: @escaping (Error?, [StickerModel]?) -> Void) {
+                          completion: @escaping (Error?, [StickerModel]?) -> Void)
+    {
         if withListener {
             query.addSnapshotListener { (snapshot, error) in
                 if error != nil {
@@ -136,7 +137,8 @@ struct StickerData {
     
     func fetchUserStickerData(withQuery query: Query,
                               withListener: Bool,
-                              completion: @escaping (Error?, [UserStickerViewModel]?) -> Void) {
+                              completion: @escaping (Error?, [UserStickerViewModel]?) -> Void)
+    {
         if withListener {
             query.addSnapshotListener { (snapshot, error) in
                 if error != nil {
@@ -195,7 +197,9 @@ struct StickerData {
         }
     }
     
-    func fetchSticker(onCategory category: String, completion: @escaping (Error?, [StickerViewModel]?) -> Void) {
+    func fetchSticker(onCategory category: String,
+                      completion: @escaping (Error?, [StickerViewModel]?) -> Void)
+    {
         var firebaseQuery: Query
         if category == Strings.allStickers {
             firebaseQuery = db.collection(Strings.stickerCollection)
@@ -272,7 +276,9 @@ struct StickerData {
         }
     }
     
-    func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool, Bool?, [UserStickerViewModel]?) -> Void) {
+    func fetchLovedSticker(on stickerID: String? = nil,
+                           completion: @escaping (Error?, Bool, Bool?, [UserStickerViewModel]?) -> Void)
+    {
         userData.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -307,7 +313,9 @@ struct StickerData {
         }
     }
     
-    func searchSticker(using searchText: String, completion: @escaping (Error?, Bool, UserStickerViewModel?) -> Void) {
+    func searchSticker(using searchText: String,
+                       completion: @escaping (Error?, Bool, UserStickerViewModel?) -> Void)
+    {
         userData.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -330,7 +338,9 @@ struct StickerData {
         }
     }
     
-    func checkIfStickerExistsInUserCollection(stickerViewModel: [StickerViewModel], completion: @escaping (Error?, Bool, Bool?, StickerViewModel?) -> Void) {
+    func checkIfStickerExistsInUserCollection(stickerViewModel: [StickerViewModel],
+                                              completion: @escaping (Error?, Bool, Bool?, StickerViewModel?) -> Void)
+    {
         userData.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -422,7 +432,9 @@ struct StickerData {
         }
     }
     
-    func updateRecentlyUploadedSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
+    func updateRecentlyUploadedSticker(on stickerID: String,
+                                       completion: @escaping (Error?, Bool) -> Void)
+    {
         userData.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -437,7 +449,9 @@ struct StickerData {
         }
     }
     
-    func updateNewSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
+    func updateNewSticker(on stickerID: String,
+                          completion: @escaping (Error?, Bool) -> Void)
+    {
         userData.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -460,7 +474,9 @@ struct HeartButtonLogic {
     private let db = Firestore.firestore()
     private let userData = UserData()
     
-    func tapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
+    func tapHeartButton(using stickerID: String,
+                        completion: @escaping (Error?, Bool) -> Void)
+    {
         userData.getSignedInUserData { (error, isUserSignedIn, userData) in
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -487,7 +503,9 @@ struct HeartButtonLogic {
         }
     }
     
-    func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
+    func untapHeartButton(using stickerID: String,
+                          completion: @escaping (Error?, Bool, Bool?) -> Void)
+    {
         userData.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
                 guard let error = error else {return}
