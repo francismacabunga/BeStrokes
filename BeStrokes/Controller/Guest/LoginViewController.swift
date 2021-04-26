@@ -14,11 +14,11 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginNavigationBar: UINavigationBar!
     @IBOutlet weak var loginScrollView: UIScrollView!
     @IBOutlet weak var loginContentView: UIView!
-    @IBOutlet weak var loginHeadingStackView: UIStackView!
     @IBOutlet weak var loginImageContentView: UIView!
+    @IBOutlet weak var loginForgotPasswordButtonSpacerView: UIView!
+    @IBOutlet weak var loginHeadingStackView: UIStackView!
     @IBOutlet weak var loginTextFieldsStackView: UIStackView!
     @IBOutlet weak var loginForgotPasswordButtonStackView: UIStackView!
-    @IBOutlet weak var loginForgotPasswordButtonSpacerView: UIView!
     @IBOutlet weak var loginHeadingLabel: UILabel!
     @IBOutlet weak var loginWarningLabel: UILabel!
     @IBOutlet weak var loginImageView: UIImageView!
@@ -116,6 +116,11 @@ class LoginViewController: UIViewController {
         }
     }
     
+    func setLoginButtonToOriginalDesign() {
+        Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, isStartAnimating: false, isHidden: true)
+        loginButton.isHidden = false
+    }
+    
     func setLoginButtonTappedAnimation() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             loginButton.isHidden = true
@@ -123,31 +128,9 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func setLoginButtonToOriginalDesign() {
-        Utilities.setDesignOn(activityIndicatorView: loginLoadingIndicatorView, isStartAnimating: false, isHidden: true)
-        loginButton.isHidden = false
-    }
-    
     func dismissKeyboard() {
         loginEmailTextField.endEditing(true)
         loginPasswordTextField.endEditing(true)
-    }
-    
-    func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
-        if error != nil {
-            label.text = error!.localizedDescription
-        }
-        if customizedWarning != nil {
-            label.text = customizedWarning
-        }
-        if isASuccessMessage {
-            Utilities.setDesignOn(label: label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1))
-        } else {
-            Utilities.setDesignOn(label: label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        }
-        UIView.animate(withDuration: 0.2) {
-            label.isHidden = false
-        }
     }
     
     func removeWarningLabel() {
@@ -161,7 +144,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginButton(_ sender: UIButton) {
         Utilities.animate(button: sender)
-        processLogin()
+        loginButtonTapped()
         dismissKeyboard()
     }
     
@@ -173,23 +156,27 @@ class LoginViewController: UIViewController {
         loginPasswordTextField.delegate = self
     }
     
-    func processLogin() {
+    func loginButtonTapped() {
         guard let email = loginEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
         guard let password = loginPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
         userData.signInUser(with: email, and: password) { [weak self] (error, _) in
             guard let self = self else {return}
             guard let error = error else {
-                self.removeWarningLabel()
-                self.setLoginButtonTappedAnimation()
-                self.loginSuccessful()
+                DispatchQueue.main.async {
+                    self.removeWarningLabel()
+                    self.setLoginButtonTappedAnimation()
+                    self.successfulLogin()
+                }
                 return
             }
-            self.showWarningLabel(on: self.loginWarningLabel, with: error, isASuccessMessage: false)
-            self.setLoginButtonToOriginalDesign()
+            DispatchQueue.main.async {
+                Utilities.showWarningLabel(on: self.loginWarningLabel, with: error, isASuccessMessage: false)
+                self.setLoginButtonToOriginalDesign()
+            }
         }
     }
     
-    func loginSuccessful() {
+    func successfulLogin() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
             setLoginButtonToOriginalDesign()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -209,7 +196,7 @@ class LoginViewController: UIViewController {
 extension LoginViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        processLogin()
+        loginButtonTapped()
         dismissKeyboard()
         return true
     }

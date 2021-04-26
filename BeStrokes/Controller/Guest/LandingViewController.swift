@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Firebase
 
 class LandingViewController: UIViewController {
     
@@ -33,16 +32,7 @@ class LandingViewController: UIViewController {
         
         setDesignElements()
         checkIfUserIsSignedIn()
-        
-        // Fix this later, see if you can delete this!
-        UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
+        resetTabKeysValues()
         
     }
     
@@ -63,6 +53,17 @@ class LandingViewController: UIViewController {
         return .darkContent
     }
     
+    func resetTabKeysValues() {
+        UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let landingPageVC = segue.destination as? LandingPageViewController {
             landingPageVC.landingPageVCDelegate = self
@@ -76,15 +77,19 @@ class LandingViewController: UIViewController {
         userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
             guard let self = self else {return}
             if isUserSignedIn {
-                let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
-                tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
-                self.view.window?.rootViewController = tabBarVC
-                self.view.window?.makeKeyAndVisible()
+                DispatchQueue.main.async {
+                    let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
+                    tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
+                    self.view.window?.rootViewController = tabBarVC
+                    self.view.window?.makeKeyAndVisible()
+                }
                 return
             }
             guard let error = error else {return}
-            let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-            self.present(errorAlert!, animated: true)
+            DispatchQueue.main.async {
+                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
+                self.present(errorAlert!, animated: true)
+            }
         }
     }
     

@@ -16,8 +16,8 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var signUpNavigationBar: UINavigationBar!
     @IBOutlet weak var signUpScrollView: UIScrollView!
     @IBOutlet weak var signUpContentView: UIView!
-    @IBOutlet weak var signUpHeadingStackView: UIStackView!
     @IBOutlet weak var signUpImageContentView: UIView!
+    @IBOutlet weak var signUpHeadingStackView: UIStackView!
     @IBOutlet weak var signUpTextFieldsStackView: UIStackView!
     @IBOutlet weak var signUpHeadingLabel: UILabel!
     @IBOutlet weak var signUpWarning1Label: UILabel!
@@ -128,6 +128,18 @@ class SignUpViewController: UIViewController {
         }
     }
     
+    func setPlaceholderErrorDesign(on firstName: UITextField, _ lastName: UITextField, _ email: UITextField, _ password: UITextField) {
+        Utilities.setDesignOn(textField: firstName, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpFirstNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+        Utilities.setDesignOn(textField: lastName, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpLastNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+        Utilities.setDesignOn(textField: email, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, placeholder: Strings.signUpEmailTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+        Utilities.setDesignOn(textField: password, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, placeholder: Strings.signUpPasswordTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
+    }
+    
+    func setSignUpButtonToOriginalDesign() {
+        Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, isStartAnimating: false, isHidden: true)
+        signUpButton.isHidden = false
+    }
+    
     func setSignUpButtonTappedAnimation() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             signUpButton.isHidden = true
@@ -143,11 +155,6 @@ class SignUpViewController: UIViewController {
         }
     }
     
-    func setSignUpButtonToOriginalDesign() {
-        Utilities.setDesignOn(activityIndicatorView: signUpLoadingIndicatorView, isStartAnimating: false, isHidden: true)
-        signUpButton.isHidden = false
-    }
-    
     func dismissKeyboard() {
         signUpFirstNameTextField.endEditing(true)
         signUpLastNameTextField.endEditing(true)
@@ -155,28 +162,10 @@ class SignUpViewController: UIViewController {
         signUpPasswordTextField.endEditing(true)
     }
     
-    func setPlaceholderErrorDesign(on firstName: UITextField, _ lastName: UITextField, _ email: UITextField, _ password: UITextField) {
-        Utilities.setDesignOn(textField: firstName, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpFirstNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        Utilities.setDesignOn(textField: lastName, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpLastNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        Utilities.setDesignOn(textField: email, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, placeholder: Strings.signUpEmailTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        Utilities.setDesignOn(textField: password, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: true, keyboardType: .default, textContentType: .password, placeholder: Strings.signUpPasswordTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-    }
-    
-    func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
-        if error != nil {
-            label.text = error!.localizedDescription
-        }
-        if customizedWarning != nil {
-            label.text = customizedWarning
-        }
-        if isASuccessMessage {
-            Utilities.setDesignOn(label: label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1))
-        } else {
-            Utilities.setDesignOn(label: label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        }
-        UIView.animate(withDuration: 0.2) {
-            label.isHidden = false
-        }
+    func dismiss(_ cropViewController: CropViewController) {
+        let viewController = cropViewController.children.first!
+        viewController.modalTransitionStyle = .coverVertical
+        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     func presentCropViewController(_ imagePicked: UIImage) {
@@ -206,7 +195,7 @@ class SignUpViewController: UIViewController {
         Utilities.animate(button: sender)
         _ = validateProfilePicture()
         _ = validateTextFields()
-        signUpAccount()
+        signUpButtonTapped()
         dismissKeyboard()
     }
     
@@ -226,7 +215,7 @@ class SignUpViewController: UIViewController {
         if imageIsChanged {
             return true
         } else {
-            showWarningLabel(on: signUpWarning2Label, customizedWarning: Strings.signUpProfilePictureErrorLabel, isASuccessMessage: false)
+            Utilities.showWarningLabel(on: signUpWarning2Label, customizedWarning: Strings.signUpProfilePictureErrorLabel, isASuccessMessage: false)
             return false
         }
     }
@@ -243,7 +232,7 @@ class SignUpViewController: UIViewController {
                 signUpWarning1Label.isHidden = true
                 return true
             } else {
-                showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpPasswordErrorLabel, isASuccessMessage: false)
+                Utilities.showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpPasswordErrorLabel, isASuccessMessage: false)
                 return false
             }
         }
@@ -262,7 +251,7 @@ class SignUpViewController: UIViewController {
         return userDataDictionary
     }
     
-    func signUpAccount() {
+    func signUpButtonTapped() {
         if validateTextFields() && validateProfilePicture() {
             let userDataDictionary = userInfo()
             setSignUpButtonTappedAnimation()
@@ -270,24 +259,30 @@ class SignUpViewController: UIViewController {
                 guard let self = self else {return}
                 guard let error = error else {
                     guard let authResult = authResult else {return}
-                    UIView.animate(withDuration: 0.2) {
-                        self.signUpWarning1Label.isHidden = true
+                    DispatchQueue.main.async {
+                        UIView.animate(withDuration: 0.2) {
+                            self.signUpWarning1Label.isHidden = true
+                        }
                     }
-                    self.uploadUserData(using: authResult, with: userDataDictionary)
+                    self.uploadProfilePic(using: authResult, with: userDataDictionary)
                     return
                 }
-                self.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
-                self.setSignUpButtonToOriginalDesign()
+                DispatchQueue.main.async {
+                    Utilities.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
+                    self.setSignUpButtonToOriginalDesign()
+                }
             }
         }
     }
     
-    func uploadUserData(using authResult: AuthDataResult, with userDataDictionary: [String : String]) {
+    func uploadProfilePic(using authResult: AuthDataResult, with userDataDictionary: [String : String]) {
         userData.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { [weak self] (error, profilePic) in
             guard let self = self else {return}
             if error != nil {
-                self.showWarningLabel(on: self.signUpWarning1Label, with: error!, isASuccessMessage: false)
-                self.setSignUpButtonToOriginalDesign()
+                DispatchQueue.main.async {
+                    Utilities.showWarningLabel(on: self.signUpWarning1Label, with: error!, isASuccessMessage: false)
+                    self.setSignUpButtonToOriginalDesign()
+                }
                 return
             }
             guard let profilePic = profilePic else {return}
@@ -296,11 +291,11 @@ class SignUpViewController: UIViewController {
                             Strings.userLastNameField : userDataDictionary[Strings.userLastNameField]!,
                             Strings.userEmailField : userDataDictionary[Strings.userEmailField]!,
                             Strings.userProfilePicField : profilePic]
-            self.storeUserData(on: authResult.user.uid, with: userData)
+            self.storeData(on: authResult.user.uid, with: userData)
         }
     }
     
-    func storeUserData(on userID: String, with userDataDictionary: [String : String]) {
+    func storeData(on userID: String, with userDataDictionary: [String : String]) {
         userData.storeData(using: userID, with: userDataDictionary) { [weak self] (error, isFinishedStoring) in
             guard let self = self else {return}
             guard let error = error else {
@@ -309,8 +304,10 @@ class SignUpViewController: UIViewController {
                 }
                 return
             }
-            self.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
-            self.setSignUpButtonToOriginalDesign()
+            DispatchQueue.main.async {
+                Utilities.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
+                self.setSignUpButtonToOriginalDesign()
+            }
         }
     }
     
@@ -318,20 +315,24 @@ class SignUpViewController: UIViewController {
         userData.sendEmailVerification { [weak self] (error, _, isEmailVerificationSent) in
             guard let self = self else {return}
             if error != nil {
-                self.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
-                self.setSignUpButtonToOriginalDesign()
+                DispatchQueue.main.async {
+                    Utilities.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
+                    self.setSignUpButtonToOriginalDesign()
+                }
                 return
             }
             if isEmailVerificationSent {
-                self.showWarningLabel(on: self.signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
-                self.setSignUpButtonTransitionAnimation()
+                UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
+                DispatchQueue.main.async {
+                    Utilities.showWarningLabel(on: self.signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
+                    self.setSignUpButtonTransitionAnimation()
+                }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                     let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
                     tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
                     self.view.window?.rootViewController = tabBarVC
                     self.view.window?.makeKeyAndVisible()
                 }
-                UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
             }
         }
     }
@@ -339,7 +340,7 @@ class SignUpViewController: UIViewController {
 }
 
 
-//MARK: - Image Picker & Navigation Delegate
+//MARK: - Image Picker & Navigation Controller Delegate
 
 extension SignUpViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
@@ -360,15 +361,11 @@ extension SignUpViewController: CropViewControllerDelegate {
         signUpImageView.image = image
         imageIsChanged = true
         signUpWarning2Label.isHidden = true
-        let viewController = cropViewController.children.first!
-        viewController.modalTransitionStyle = .coverVertical
-        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+        dismiss(cropViewController)
     }
     
     func cropViewController(_ cropViewController: CropViewController, didFinishCancelled cancelled: Bool) {
-        let viewController = cropViewController.children.first!
-        viewController.modalTransitionStyle = .coverVertical
-        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+        dismiss(cropViewController)
     }
     
 }
@@ -380,7 +377,7 @@ extension SignUpViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
-        signUpAccount()
+        signUpButtonTapped()
         return true
     }
     

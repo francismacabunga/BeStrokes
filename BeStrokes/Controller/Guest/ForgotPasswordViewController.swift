@@ -120,29 +120,12 @@ class ForgotPasswordViewController: UIViewController {
         forgotPasswordEmailTextField.endEditing(true)
     }
     
-    func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
-        if error != nil {
-            label.text = error!.localizedDescription
-        }
-        if customizedWarning != nil {
-            label.text = customizedWarning
-        }
-        if isASuccessMessage {
-            Utilities.setDesignOn(label: label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1))
-        } else {
-            Utilities.setDesignOn(label: label, fontName: Strings.defaultFontBold, fontSize: 15, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), backgroundColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
-        }
-        UIView.animate(withDuration: 0.2) {
-            label.isHidden = false
-        }
-    }
-    
     
     //MARK: - Buttons
     
     @IBAction func forgotPasswordSubmitButton(_ sender: UIButton) {
         Utilities.animate(button: sender)
-        processForgotPassword()
+        forgotPasswordButtonTapped()
         dismissKeyboard()
     }
     
@@ -158,18 +141,22 @@ class ForgotPasswordViewController: UIViewController {
         forgotPasswordEmailTextField.delegate = self
     }
     
-    func processForgotPassword() {
+    func forgotPasswordButtonTapped() {
         guard let email = forgotPasswordEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
         userData.forgotPassword(with: email) { [weak self] (error, isPasswordResetSent) in
             guard let self = self else {return}
             guard let error = error else {
                 if isPasswordResetSent {
-                    self.showWarningLabel(on: self.forgotPasswordWarningLabel, customizedWarning: Strings.forgotPasswordProcessSuccessfulLabel, isASuccessMessage: true)
-                    self.showDismissButton()
+                    DispatchQueue.main.async {
+                        Utilities.showWarningLabel(on: self.forgotPasswordWarningLabel, customizedWarning: Strings.forgotPasswordProcessSuccessfulLabel, isASuccessMessage: true)
+                        self.showDismissButton()
+                    }
                 }
                 return
             }
-            self.showWarningLabel(on: self.forgotPasswordWarningLabel, with: error, isASuccessMessage: false)
+            DispatchQueue.main.async {
+                Utilities.showWarningLabel(on: self.forgotPasswordWarningLabel, with: error, isASuccessMessage: false)
+            }
         }
     }
     
@@ -182,7 +169,7 @@ extension ForgotPasswordViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         forgotPasswordEmailTextField.endEditing(true)
-        processForgotPassword()
+        forgotPasswordButtonTapped()
         return true
     }
     

@@ -156,9 +156,9 @@ struct Strings {
     
     //MARK: - View Controllers Names
     static let landingVC = "LandingViewController"
+    static let landingPageContentVC = "LandingPageContentViewController"
     static let tabBarVC = "TabBarController"
     static let stickerOptionVC = "StickerOptionViewController"
-    static let landingPageContentVC = "LandingPageContentViewController"
     static let captureVC = "CaptureViewController"
     static let profileVC = "ProfileViewController"
     

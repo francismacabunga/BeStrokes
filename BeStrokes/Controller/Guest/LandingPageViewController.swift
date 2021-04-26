@@ -55,13 +55,12 @@ class LandingPageViewController: UIPageViewController {
         if !indexIsValid {
             return nil
         }
-        let storyboard = UIStoryboard(name: Strings.guestStoryboard, bundle: nil)
-        let landingPageContentViewController = storyboard.instantiateViewController(withIdentifier: Strings.landingPageContentVC) as! LandingPageContentViewController
-        landingPageContentViewController.imageFileName = images[index]
-        landingPageContentViewController.headingLabelText = headings[index]
-        landingPageContentViewController.subheadingText = subheadings[index]
-        landingPageContentViewController.index = index
-        return landingPageContentViewController
+        let landingPageContentVC = Utilities.transition(to: Strings.landingPageContentVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: true) as! LandingPageContentViewController
+        landingPageContentVC.imageFileName = images[index]
+        landingPageContentVC.headingLabelText = headings[index]
+        landingPageContentVC.subheadingText = subheadings[index]
+        landingPageContentVC.index = index
+        return landingPageContentVC
     }
     
 }
