@@ -128,7 +128,11 @@ class SignUpViewController: UIViewController {
         }
     }
     
-    func setPlaceholderErrorDesign(on firstName: UITextField, _ lastName: UITextField, _ email: UITextField, _ password: UITextField) {
+    func setPlaceholderErrorDesign(on firstName: UITextField,
+                                   _ lastName: UITextField,
+                                   _ email: UITextField,
+                                   _ password: UITextField)
+    {
         Utilities.setDesignOn(textField: firstName, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpFirstNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
         Utilities.setDesignOn(textField: lastName, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .default, isSecureTextEntry: false, keyboardType: .default, textContentType: .name, placeholder: Strings.signUpLastNameTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
         Utilities.setDesignOn(textField: email, fontName: Strings.defaultFont, fontSize: 15, autocorrectionType: .no, isSecureTextEntry: false, keyboardType: .emailAddress, textContentType: .emailAddress, placeholder: Strings.signUpEmailTextFieldErrorLabel, placeholderTextColor: #colorLiteral(red: 0.9673412442, green: 0.0823205933, blue: 0.006666854955, alpha: 1))
@@ -160,12 +164,6 @@ class SignUpViewController: UIViewController {
         signUpLastNameTextField.endEditing(true)
         signUpEmailTextField.endEditing(true)
         signUpPasswordTextField.endEditing(true)
-    }
-    
-    func dismiss(_ cropViewController: CropViewController) {
-        let viewController = cropViewController.children.first!
-        viewController.modalTransitionStyle = .coverVertical
-        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     func presentCropViewController(_ imagePicked: UIImage) {
@@ -275,7 +273,9 @@ class SignUpViewController: UIViewController {
         }
     }
     
-    func uploadProfilePic(using authResult: AuthDataResult, with userDataDictionary: [String : String]) {
+    func uploadProfilePic(using authResult: AuthDataResult,
+                          with userDataDictionary: [String : String])
+    {
         userData.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { [weak self] (error, profilePic) in
             guard let self = self else {return}
             if error != nil {
@@ -295,7 +295,9 @@ class SignUpViewController: UIViewController {
         }
     }
     
-    func storeData(on userID: String, with userDataDictionary: [String : String]) {
+    func storeData(on userID: String,
+                   with userDataDictionary: [String : String])
+    {
         userData.storeData(using: userID, with: userDataDictionary) { [weak self] (error, isFinishedStoring) in
             guard let self = self else {return}
             guard let error = error else {
@@ -361,11 +363,11 @@ extension SignUpViewController: CropViewControllerDelegate {
         signUpImageView.image = image
         imageIsChanged = true
         signUpWarning2Label.isHidden = true
-        dismiss(cropViewController)
+        Utilities.dismiss(cropViewController)
     }
     
     func cropViewController(_ cropViewController: CropViewController, didFinishCancelled cancelled: Bool) {
-        dismiss(cropViewController)
+        Utilities.dismiss(cropViewController)
     }
     
 }

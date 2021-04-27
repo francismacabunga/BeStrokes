@@ -124,6 +124,22 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    func setData() {
+        profileSettingsViewModel = fetchProfileData.settings()
+        profileTableView.reloadData()
+        showLoadingSkeletonView()
+        getSignedInUserData()
+    }
+    
+    func hideLoadingSkeletonView() {
+        profileImageContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        profileNameLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        profileEmailLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
+            Utilities.setShadowOn(view: profileImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
+        }
+    }
+    
     func showLoadingSkeletonView() {
         setSkeletonColor()
         profileImageContentView.isSkeletonable = true
@@ -138,68 +154,17 @@ class ProfileViewController: UIViewController {
         profileEmailLabel.showAnimatedSkeleton()
     }
     
-    func hideLoadingSkeletonView() {
-        profileImageContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        profileNameLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        profileEmailLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
-            Utilities.setShadowOn(view: profileImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
-        }
-    }
-    
-    func getSignedInUserData() {
-        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
-            guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                return
-            }
-            if error != nil {
-                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                return
-            }
-            guard let userData = userData else {return}
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                self.profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
-                self.profileEmailLabel.text = userData.email
-                self.hasProfilePicLoaded = true
-                self.profileWarningLabel.isHidden = false
-                self.profileSettingsButton.isHidden = false
-                self.profileTableView.isHidden = false
-                self.hideLoadingSkeletonView()
-            }
-        }
-    }
-    
-    func setData() {
-        profileSettingsViewModel = fetchProfileData.settings()
-        profileTableView.reloadData()
-        showLoadingSkeletonView()
-        getSignedInUserData()
-    }
-    
-    func signOutUser() {
-        let logoutAlert = Utilities.showAlert(alertTitle: Strings.logoutAlertTitle, alertMessage: "", alertActionTitle1: Strings.logoutYesAction, alertActionTitle2: Strings.logoutNoAction) { [weak self] in
-            guard let self = self else {return}
-            let isUserSignedOut = self.userData.signOutUser()
-            if isUserSignedOut {
-                _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-            } else {
-                self.showAlertController(alertMessage: Strings.profileCannotSignOutUserLabel, withHandler: false)
-            }
-        }
-        present(logoutAlert!, animated: true)
-    }
-    
-    func showAlertController(alertMessage: String, withHandler: Bool) {
+    func showAlertController(alertMessage: String,
+                             withHandler: Bool)
+    {
         if UserDefaults.standard.bool(forKey: Strings.isProfileVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
                         guard let self = self else {return}
-                        _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        DispatchQueue.main.async {
+                            _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        }
                     }
                     present(alertWithHandler!, animated: true)
                     return
@@ -218,6 +183,59 @@ class ProfileViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
             dismiss(animated: true)
         }
+    }
+    
+    
+    //MARK: - Fetching of User Data
+    
+    func getSignedInUserData() {
+        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+            guard let self = self else {return}
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                }
+                return
+            }
+            if error != nil {
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                }
+                return
+            }
+            guard let userData = userData else {return}
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                self.profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
+                self.profileEmailLabel.text = userData.email
+                self.hasProfilePicLoaded = true
+                self.profileWarningLabel.isHidden = false
+                self.profileSettingsButton.isHidden = false
+                self.profileTableView.isHidden = false
+                self.hideLoadingSkeletonView()
+            }
+        }
+    }
+    
+    
+    //MARK: - Sign Out User
+    
+    func signOutUser() {
+        let logoutAlert = Utilities.showAlert(alertTitle: Strings.logoutAlertTitle, alertMessage: "", alertActionTitle1: Strings.logoutYesAction, alertActionTitle2: Strings.logoutNoAction) { [weak self] in
+            guard let self = self else {return}
+            let isUserSignedOut = self.userData.signOutUser()
+            if isUserSignedOut {
+                DispatchQueue.main.async {
+                    _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: Strings.profileCannotSignOutUserLabel, withHandler: false)
+                }
+            }
+        }
+        present(logoutAlert!, animated: true)
     }
     
     
@@ -245,9 +263,7 @@ extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.profileCell) as! ProfileTableViewCell
-        DispatchQueue.main.async { [self] in
-            cell.profileSettingsViewModel = profileSettingsViewModel[indexPath.row]
-        }
+        cell.profileSettingsViewModel = profileSettingsViewModel[indexPath.row]
         return cell
     }
     

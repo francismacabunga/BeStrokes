@@ -13,7 +13,6 @@ class TabBarViewController: UITabBarController {
     
     private var userTabBar: UITabBar?
     private var userTabBarItem = [UITabBarItem]()
-    private let stickerData = StickerData()
     
     
     //MARK: - View Controller Life Cycle
@@ -58,7 +57,11 @@ class TabBarViewController: UITabBarController {
         }
     }
     
-    @objc func updateBadgeCounter() {
+    func setIconData() {
+        Utilities.setDesignOn(tabBarItem: userTabBarItem[0], tag: 0, image: UIImage(systemName: Strings.tabHomeIcon)!)
+        Utilities.setDesignOn(tabBarItem: userTabBarItem[1], tag: 1, image: UIImage(systemName: Strings.tabCaptureIcon)!)
+        Utilities.setDesignOn(tabBarItem: userTabBarItem[2], tag: 2, image: UIImage(systemName: Strings.tabNotificationIcon)!)
+        Utilities.setDesignOn(tabBarItem: userTabBarItem[3], tag: 3, image: UIImage(systemName: Strings.tabAccountIcon)!)
         setBadgeCounterValue()
     }
     
@@ -74,11 +77,7 @@ class TabBarViewController: UITabBarController {
         }
     }
     
-    func setIconData() {
-        Utilities.setDesignOn(tabBarItem: userTabBarItem[0], tag: 0, image: UIImage(systemName: Strings.tabHomeIcon)!)
-        Utilities.setDesignOn(tabBarItem: userTabBarItem[1], tag: 1, image: UIImage(systemName: Strings.tabCaptureIcon)!)
-        Utilities.setDesignOn(tabBarItem: userTabBarItem[2], tag: 2, image: UIImage(systemName: Strings.tabNotificationIcon)!)
-        Utilities.setDesignOn(tabBarItem: userTabBarItem[3], tag: 3, image: UIImage(systemName: Strings.tabAccountIcon)!)
+    @objc func updateBadgeCounter() {
         setBadgeCounterValue()
     }
     

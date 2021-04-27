@@ -73,34 +73,20 @@ class NotificationViewController: UIViewController {
     }
     
     @objc func setLightMode() {
-        Utilities.setDesignOn(view: view, backgroundColor: .white)
-        Utilities.setDesignOn(label: notificationHeadingLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(label: notificationWarningLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isStartAnimating: false, isHidden: true)
+        UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(view: view, backgroundColor: .white)
+            Utilities.setDesignOn(label: notificationHeadingLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(label: notificationWarningLabel, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isStartAnimating: false, isHidden: true)
+        }
     }
     
     @objc func setDarkMode() {
-        Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        Utilities.setDesignOn(label: notificationHeadingLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(label: notificationWarningLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
-        Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: false, isHidden: true)
-    }
-    
-    func setNotificationData() {
-        stickerData.fetchNewSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
-            guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                return
-            }
-            if error != nil {
-                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                return
-            }
-            guard let userStickerData = userStickerData else {return}
-            self.userStickerViewModel = userStickerData
-            self.checkIfUserStickerViewModelIsEmpty()
+        UIView.animate(withDuration: 0.3) { [self] in
+            Utilities.setDesignOn(view: view, backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            Utilities.setDesignOn(label: notificationHeadingLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(label: notificationWarningLabel, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1))
+            Utilities.setDesignOn(activityIndicatorView: notificationLoadingIndicatorView, color: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), isStartAnimating: false, isHidden: true)
         }
     }
     
@@ -123,30 +109,66 @@ class NotificationViewController: UIViewController {
         }
     }
     
-    func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
-            guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                return
-            }
-        }
-    }
-    
-    func showAlertController(alertMessage: String, withHandler: Bool) {
+    func showAlertController(alertMessage: String,
+                             withHandler: Bool)
+    {
         if UserDefaults.standard.bool(forKey: Strings.isNotificationVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
                         guard let self = self else {return}
-                        _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        DispatchQueue.main.async {
+                            _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        }
                     }
                     present(alertWithHandler!, animated: true)
                     return
                 }
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
                 present(alert!, animated: true)
+            }
+        }
+    }
+    
+    
+    //MARK: - Fetching of User Data
+    
+    func checkIfUserIsSignedIn() {
+        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+            guard let self = self else {return}
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                }
+                return
+            }
+        }
+    }
+    
+    
+    //MARK: - Fetching of Sticker Data
+    
+    func setNotificationData() {
+        stickerData.fetchNewSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
+            guard let self = self else {return}
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                }
+                return
+            }
+            if error != nil {
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                }
+                return
+            }
+            guard let userStickerData = userStickerData else {return}
+            DispatchQueue.main.async {
+                self.userStickerViewModel = userStickerData
+                self.checkIfUserStickerViewModelIsEmpty()
             }
         }
     }
@@ -177,11 +199,9 @@ extension NotificationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.stickerTableViewCell) as! StickerTableViewCell
         guard let userStickerViewModel = userStickerViewModel else {return cell}
-        DispatchQueue.main.async {
-            cell.prepareStickerTableViewCell()
-            cell.userStickerViewModel = userStickerViewModel[indexPath.row]
-            cell.stickerCellDelegate = self
-        }
+        cell.prepareStickerTableViewCell()
+        cell.userStickerViewModel = userStickerViewModel[indexPath.row]
+        cell.stickerCellDelegate = self
         return cell
     }
     
@@ -199,6 +219,7 @@ extension NotificationViewController: UITableViewDelegate {
         stickerOptionVC.modalPresentationStyle = .fullScreen
         present(stickerOptionVC, animated: true)
     }
+    
 }
 
 

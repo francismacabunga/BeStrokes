@@ -48,7 +48,6 @@ class CaptureViewController: UIViewController {
     private var planeNodes = [SCNNode]()
     private var stickerNodes = [SCNNode]()
     private var raycastTargetAlignment: ARRaycastQuery.TargetAlignment?
-    private var isAlertControllerPresented = false
     private var isCaptureVCLoaded = false
     var featuredStickerViewModel: FeaturedStickerViewModel? {
         didSet {
@@ -86,34 +85,24 @@ class CaptureViewController: UIViewController {
         
         setNoPlaneDetection()
         if isPresentedFromLandingVC {
-            showCaptureVCTutorial()
-            captureTutorial3Label.isHidden = false
-            registerTapGestureOnStickerContentView()
+            showTutorial(onLandingVC: true)
             return
         }
         if isPresentedWithTabBar() {
             checkIfUserIsSignedIn()
-            if UserDefaults.standard.bool(forKey: Strings.captureButtonKey) == false {
-                showCaptureVCTutorial()
+            if !UserDefaults.standard.bool(forKey: Strings.captureButtonKey) {
+                showTutorial(onCaptureVCWithTabBar: true)
             } else {
-                showCaptureVCDefaultDesign()
+                showDefaultDesign(onCaptureVCWithTabBar: true)
             }
         } else {
             UserDefaults.standard.setValue(true, forKey: Strings.isCaptureVCLoadedKey)
-            if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
-                UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
-            }
-            if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
-                UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
-            }
-            if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
-                UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
-            }
+            setUserDefaultsTabKeys()
             checkIfUserIsSignedIn()
-            if UserDefaults.standard.bool(forKey: Strings.tryMeButtonKey) == false {
-                showCaptureVCTutorial()
+            if !UserDefaults.standard.bool(forKey: Strings.tryMeButtonKey) {
+                showTutorial(onCaptureVCWithoutTabBar: true)
             } else {
-                showCaptureVCDefaultDesign()
+                showDefaultDesign(onCaptureVCWithoutTabBar: true)
             }
         }
         
@@ -189,33 +178,6 @@ class CaptureViewController: UIViewController {
         }
     }
     
-    func showCaptureVCTutorial() {
-        if isPresentedWithTabBar() {
-            setQuickOptionsDesignWithTabBar()
-            captureDeleteButtonImageView.isHidden = true
-            captureTutorialContentView.isHidden = false
-        } else {
-            captureVisualEffectView.isHidden = false
-        }
-    }
-    
-    func showCaptureVCDefaultDesign() {
-        if isPresentedWithTabBar() {
-            setQuickOptionsDesignWithTabBar()
-            captureDeleteButtonImageView.isHidden = false
-            captureTutorialContentView.isHidden = true
-        } else {
-            setPlaneDetection()
-            setQuickOptionsDesignWithoutTabBar()
-            getStickerInformation()
-        }
-    }
-    
-    func hideCaptureVCTutorial() {
-        captureTutorialContentView.isHidden = true
-        captureTutorial3Label.isHidden = true
-    }
-    
     func getStickerInformation() {
         if featuredStickerViewModel != nil {
             setStickerInformation(stickerImage: featuredStickerViewModel!.image, stickerName: featuredStickerViewModel!.name)
@@ -228,26 +190,9 @@ class CaptureViewController: UIViewController {
         }
     }
     
-    func downloadImage(using stickerImage: String) {
-        guard let url = URL(string: stickerImage) else {return}
-        let session = URLSession(configuration: .default)
-        let dataTask = session.dataTask(with: url) { [weak self] (data, response, error) in
-            guard let self = self else {return}
-            guard let error = error else {
-                guard let imageData = data else {return}
-                DispatchQueue.main.async {
-                    self.stickerMaterial.diffuse.contents = UIImage(data: imageData)
-                }
-                return
-            }
-            DispatchQueue.main.async {
-                self.showAlertController(alertMessage: error.localizedDescription, withHandler: false)
-            }
-        }
-        dataTask.resume()
-    }
-    
-    func setStickerInformation(stickerImage: String, stickerName: String) {
+    func setStickerInformation(stickerImage: String,
+                               stickerName: String)
+    {
         captureStickerContentView.isHidden = false
         captureStickerImageView.kf.setImage(with: URL(string: stickerImage))
         captureStickerNameLabel.text = stickerName
@@ -275,6 +220,18 @@ class CaptureViewController: UIViewController {
         captureSceneView.session.run(trackingConfiguration)
     }
     
+    func setUserDefaultsTabKeys() {
+        if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
+        }
+    }
+    
     func isPresentedWithTabBar() -> Bool {
         if self.tabBarController?.isBeingPresented == nil {
             return false
@@ -283,24 +240,66 @@ class CaptureViewController: UIViewController {
         }
     }
     
-    func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
-            guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                return
+    func hideCaptureVCTutorial() {
+        captureTutorialContentView.isHidden = true
+        captureTutorial3Label.isHidden = true
+    }
+    
+    func showTutorial(onLandingVC: Bool? = nil,
+                      onCaptureVCWithTabBar: Bool? = nil,
+                      onCaptureVCWithoutTabBar: Bool? = nil)
+    {
+        if onLandingVC != nil {
+            if onLandingVC! {
+                captureVisualEffectView.isHidden = false
+                captureTutorial3Label.isHidden = false
+                registerTapGestureOnStickerContentView()
+            }
+        }
+        if onCaptureVCWithTabBar != nil {
+            if onCaptureVCWithTabBar! {
+                setQuickOptionsDesignWithTabBar()
+                captureDeleteButtonImageView.isHidden = true
+                captureTutorialContentView.isHidden = false
+            }
+        }
+        if onCaptureVCWithoutTabBar != nil {
+            if onCaptureVCWithoutTabBar! {
+                captureVisualEffectView.isHidden = false
             }
         }
     }
     
-    func showAlertController(alertMessage: String, withHandler: Bool) {
+    func showDefaultDesign(onCaptureVCWithTabBar: Bool? = nil,
+                           onCaptureVCWithoutTabBar: Bool? = nil)
+    {
+        if onCaptureVCWithTabBar != nil {
+            if onCaptureVCWithTabBar! {
+                setQuickOptionsDesignWithTabBar()
+                captureDeleteButtonImageView.isHidden = false
+                captureTutorialContentView.isHidden = true
+            }
+        }
+        if onCaptureVCWithoutTabBar != nil {
+            if onCaptureVCWithoutTabBar! {
+                setPlaneDetection()
+                setQuickOptionsDesignWithoutTabBar()
+                getStickerInformation()
+            }
+        }
+    }
+    
+    func showAlertController(alertMessage: String,
+                             withHandler: Bool)
+    {
         if UserDefaults.standard.bool(forKey: Strings.isCaptureVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
                         guard let self = self else {return}
-                        _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        DispatchQueue.main.async {
+                            _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        }
                     }
                     show(alertWithHandler!, sender: nil)
                     return
@@ -308,6 +307,30 @@ class CaptureViewController: UIViewController {
                 let alert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
                 show(alert!, sender: nil)
             }
+        }
+    }
+    
+    
+    //MARK: - Buttons
+    
+    @IBAction func captureDontShowAgainButton(_ sender: UIButton) {
+        captureVisualEffectView.isHidden = true
+        setPlaneDetection()
+        if isPresentedFromLandingVC {
+            setQuickOptionsDesignWithoutTabBar()
+            captureChooseImageButtonImageView.isHidden = false
+            captureTutorialContentView.isHidden = false
+            captureTutorialContentViewTopConstraint.constant = 128
+            return
+        }
+        if isPresentedWithTabBar() {
+            UserDefaults.standard.setValue(true, forKey: Strings.captureButtonKey)
+            setQuickOptionsDesignWithTabBar()
+            captureDeleteButtonImageView.isHidden = false
+        } else {
+            UserDefaults.standard.setValue(true, forKey: Strings.tryMeButtonKey)
+            setQuickOptionsDesignWithoutTabBar()
+            getStickerInformation()
         }
     }
     
@@ -353,11 +376,15 @@ class CaptureViewController: UIViewController {
                 guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}
-                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    DispatchQueue.main.async {
+                        self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    }
                     return
                 }
                 if error != nil {
-                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    DispatchQueue.main.async {
+                        self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    }
                     return
                 }
             }
@@ -427,27 +454,41 @@ class CaptureViewController: UIViewController {
     }
     
     
-    //MARK: - Buttons
+    //MARK: - Fetching of User Data
     
-    @IBAction func captureDontShowAgainButton(_ sender: UIButton) {
-        captureVisualEffectView.isHidden = true
-        setPlaneDetection()
-        if isPresentedFromLandingVC {
-            setQuickOptionsDesignWithoutTabBar()
-            captureChooseImageButtonImageView.isHidden = false
-            captureTutorialContentView.isHidden = false
-            captureTutorialContentViewTopConstraint.constant = 128
-            return
+    func checkIfUserIsSignedIn() {
+        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+            guard let self = self else {return}
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                }
+                return
+            }
         }
-        if isPresentedWithTabBar() {
-            UserDefaults.standard.setValue(true, forKey: Strings.captureButtonKey)
-            setQuickOptionsDesignWithTabBar()
-            captureDeleteButtonImageView.isHidden = false
-        } else {
-            UserDefaults.standard.setValue(true, forKey: Strings.tryMeButtonKey)
-            setQuickOptionsDesignWithoutTabBar()
-            getStickerInformation()
+    }
+    
+    
+    //MARK: - Fetching of Sticker Data
+    
+    func downloadImage(using stickerImage: String) {
+        guard let url = URL(string: stickerImage) else {return}
+        let session = URLSession(configuration: .default)
+        let dataTask = session.dataTask(with: url) { [weak self] (data, _, error) in
+            guard let self = self else {return}
+            guard let error = error else {
+                guard let imageData = data else {return}
+                DispatchQueue.main.async {
+                    self.stickerMaterial.diffuse.contents = UIImage(data: imageData)
+                }
+                return
+            }
+            DispatchQueue.main.async {
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            }
         }
+        dataTask.resume()
     }
     
     
@@ -511,7 +552,7 @@ class CaptureViewController: UIViewController {
 }
 
 
-//MARK: - Image Picker & Navigation Delegate
+//MARK: - Image Picker & Navigation Controller Delegate
 
 extension CaptureViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
@@ -522,7 +563,9 @@ extension CaptureViewController: UINavigationControllerDelegate, UIImagePickerCo
         imagePicker.dismiss(animated: true)
         captureTutorialContentView.isHidden = true
         if !isPresentedFromLandingVC {
-            captureVisualEffectView.isHidden = false
+            if !UserDefaults.standard.bool(forKey: Strings.captureButtonKey) {
+                captureVisualEffectView.isHidden = false
+            }
         }
     }
     

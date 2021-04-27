@@ -187,7 +187,9 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func showAlertController(alertMessage: String, withHandler: Bool) {
+    func showAlertController(alertMessage: String,
+                             withHandler: Bool)
+    {
         if UserDefaults.standard.bool(forKey: Strings.isHomeVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
@@ -576,28 +578,22 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
         if collectionView == homeFeaturedStickerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedStickerCollectionViewCell
             guard let featuredStickerViewModel = featuredStickerViewModel else {return cell}
-            DispatchQueue.main.async {
-                cell.prepareFeaturedStickerCell()
-                cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.item]
-                cell.featuredStickerCellDelegate = self
-            }
+            cell.prepareFeaturedStickerCell()
+            cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.item]
+            cell.featuredStickerCellDelegate = self
             return cell
         }
         if collectionView == homeStickerCategoryCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCategoryCell, for: indexPath) as! StickerCategoryCollectionViewCell
-            DispatchQueue.main.async { [self] in
-                cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
-                cell.setDesignElements()
-            }
+            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
+            cell.setDesignElements()
             return cell
         }
         if collectionView == homeStickerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCollectionViewCell, for: indexPath) as! StickerCollectionViewCell
             guard let stickerViewModel = stickerViewModel else {return cell}
-            DispatchQueue.main.async {
-                cell.prepareStickerCell()
-                cell.stickerViewModel = stickerViewModel[indexPath.item]
-            }
+            cell.prepareStickerCell()
+            cell.stickerViewModel = stickerViewModel[indexPath.item]
             return cell
         }
         return UICollectionViewCell()

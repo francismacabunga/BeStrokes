@@ -466,7 +466,7 @@
         <!--Tab Bar View Controller-->
         <scene sceneID="FTl-L9-mY1">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarController" id="wV8-qg-fsa" customClass="TabBarViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="wV8-qg-fsa" customClass="TabBarViewController" customModule="BeStrokes" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FvM-qg-Ae0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

@@ -15,9 +15,9 @@ class AccountViewController: UIViewController {
     
     @IBOutlet weak var accountTopView: UIView!
     @IBOutlet weak var accountImageContentView: UIView!
-    @IBOutlet weak var accountBottomStackView: UIStackView!
     @IBOutlet weak var accountBottomSearchContentView: UIView!
     @IBOutlet weak var accountTextFieldContentView: UIView!
+    @IBOutlet weak var accountBottomStackView: UIStackView!
     @IBOutlet weak var accountHeading1Label: UILabel!
     @IBOutlet weak var accountHeading2Label: UILabel!
     @IBOutlet weak var accountNameHeadingLabel: UILabel!
@@ -37,7 +37,6 @@ class AccountViewController: UIViewController {
     private let userData = UserData()
     private let stickerData = StickerData()
     private var userStickerViewModel: [UserStickerViewModel]?
-    private let heartButtonLogic = HeartButtonLogic()
     private var isButtonPressed = false
     private var hasPerformedSearch = false
     private var skeletonColor: UIColor?
@@ -144,6 +143,28 @@ class AccountViewController: UIViewController {
         }
     }
     
+    @objc func reloadUserData() {
+        setSignedInUserData()
+    }
+    
+    func hideSearchTextField() {
+        accountTextFieldContentView.isHidden = true
+        accountSearchTextField.text = nil
+        accountSearchTextField.resignFirstResponder()
+        accountSearchButton.setBackgroundImage(UIImage(systemName: Strings.accountSearchStickerIcon), for: .normal)
+        if hasPerformedSearch {
+            setLovedStickersData()
+            hasPerformedSearch = false
+        }
+    }
+    
+    func hideLoadingSkeletonView() {
+        accountImageContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        accountEmailHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
+        Utilities.setShadowOn(view: accountImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
+    }
+    
     func showLoadingSkeletonView() {
         setSkeletonColor()
         accountImageContentView.isSkeletonable = true
@@ -158,27 +179,9 @@ class AccountViewController: UIViewController {
         accountEmailHeadingLabel.showAnimatedSkeleton()
     }
     
-    func hideLoadingSkeletonView() {
-        accountImageContentView.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        accountNameHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        accountEmailHeadingLabel.hideSkeleton(reloadDataAfter: true, transition: SkeletonTransitionStyle.crossDissolve(0.5))
-        Utilities.setShadowOn(view: accountImageContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
-    }
-    
     func showSearchTextField() {
         accountTextFieldContentView.isHidden = false
         Utilities.setDesignOn(button: accountSearchButton, backgroundImage: UIImage(systemName: Strings.accountArrowUpIcon))
-    }
-    
-    func hideSearchTextField() {
-        accountTextFieldContentView.isHidden = true
-        accountSearchTextField.text = nil
-        accountSearchTextField.resignFirstResponder()
-        accountSearchButton.setBackgroundImage(UIImage(systemName: Strings.accountSearchStickerIcon), for: .normal)
-        if hasPerformedSearch {
-            setLovedStickersData()
-            hasPerformedSearch = false
-        }
     }
     
     func showSearchedSticker(using stickerData: [UserStickerViewModel]) {
@@ -195,90 +198,17 @@ class AccountViewController: UIViewController {
         accountNoLovedStickerLabelConstraint.constant = 115
     }
     
-    func setSignedInUserData() {
-        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
-            guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                return
-            }
-            if error != nil {
-                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                return
-            }
-            guard let userData = userData else {return}
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                self.accountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                self.accountNameHeadingLabel.text = "\(userData.firstName) \(userData.lastname)"
-                self.accountEmailHeadingLabel.text = userData.email
-                self.hideLoadingSkeletonView()
-            }
-        }
-    }
-    
-    func setLovedStickersData() {
-        stickerData.fetchLovedSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
-            guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                return
-            }
-            if error != nil {
-                self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                return
-            }
-            guard let userStickerData = userStickerData else {return}
-            self.userStickerViewModel = userStickerData
-            self.checkIfUserStickerViewModelIsEmpty(withDelay: 0.5)
-        }
-    }
-    
-    func checkIfUserStickerViewModelIsEmpty(withDelay delay: Double) {
-        accountBottomStackView.isHidden = true
-        accountWarningLabel.isHidden = true
-        accountLovedStickerTableView.isHidden = true
-        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, isStartAnimating: true, isHidden: false)
-        if userStickerViewModel?.count == 0 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
-                Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, isStartAnimating: false, isHidden: true)
-                accountWarningLabel.text = Strings.accountNoLovedStickerLabel
-                accountWarningLabel.isHidden = false
-            }
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [self] in
-                accountBottomStackView.isHidden = false
-                accountLovedStickerTableView.isHidden = false
-                Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, isStartAnimating: false, isHidden: true)
-                accountWarningLabel.isHidden = true
-                accountLovedStickerTableView.reloadData()
-            }
-        }
-    }
-    
-    @objc func reloadUserData() {
-        setSignedInUserData()
-    }
-    
-    func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
-            guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                return
-            }
-        }
-    }
-    
-    func showAlertController(alertMessage: String, withHandler: Bool) {
+    func showAlertController(alertMessage: String,
+                             withHandler: Bool)
+    {
         if UserDefaults.standard.bool(forKey: Strings.isAccountVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
                         guard let self = self else {return}
-                        _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        DispatchQueue.main.async {
+                            _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
+                        }
                     }
                     present(alertWithHandler!, animated: true)
                     return
@@ -302,6 +232,97 @@ class AccountViewController: UIViewController {
         if accountLovedStickerTableView.isHidden == true {
             accountNoLovedStickerLabelConstraint.constant = 100
             checkIfUserStickerViewModelIsEmpty(withDelay: 0)
+        }
+    }
+    
+    
+    //MARK: - Fetching of User Data
+    
+    func checkIfUserIsSignedIn() {
+        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+            guard let self = self else {return}
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                }
+                return
+            }
+        }
+    }
+    
+    func setSignedInUserData() {
+        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+            guard let self = self else {return}
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                }
+                return
+            }
+            if error != nil {
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                }
+                return
+            }
+            guard let userData = userData else {return}
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.accountImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                self.accountNameHeadingLabel.text = "\(userData.firstName) \(userData.lastname)"
+                self.accountEmailHeadingLabel.text = userData.email
+                self.hideLoadingSkeletonView()
+            }
+        }
+    }
+    
+    
+    //MARK: - Fetching of Sticker Data
+    
+    func setLovedStickersData() {
+        stickerData.fetchLovedSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
+            guard let self = self else {return}
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                }
+                return
+            }
+            if error != nil {
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                }
+                return
+            }
+            guard let userStickerData = userStickerData else {return}
+            DispatchQueue.main.async {
+                self.userStickerViewModel = userStickerData
+                self.checkIfUserStickerViewModelIsEmpty(withDelay: 0.5)
+            }
+        }
+    }
+    
+    func checkIfUserStickerViewModelIsEmpty(withDelay delay: Double) {
+        accountBottomStackView.isHidden = true
+        accountWarningLabel.isHidden = true
+        accountLovedStickerTableView.isHidden = true
+        Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, isStartAnimating: true, isHidden: false)
+        if userStickerViewModel?.count == 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
+                Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, isStartAnimating: false, isHidden: true)
+                accountWarningLabel.text = Strings.accountNoLovedStickerLabel
+                accountWarningLabel.isHidden = false
+            }
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [self] in
+                accountBottomStackView.isHidden = false
+                accountLovedStickerTableView.isHidden = false
+                Utilities.setDesignOn(activityIndicatorView: accountLoadingIndicatorView, isStartAnimating: false, isHidden: true)
+                accountWarningLabel.isHidden = true
+                accountLovedStickerTableView.reloadData()
+            }
         }
     }
     
@@ -332,11 +353,9 @@ extension AccountViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.stickerTableViewCell) as! StickerTableViewCell
         guard let userStickerViewModel = userStickerViewModel else {return cell}
-        DispatchQueue.main.async {
-            cell.prepareStickerTableViewCell()
-            cell.userStickerViewModel = userStickerViewModel[indexPath.row]
-            cell.stickerCellDelegate = self
-        }
+        cell.prepareStickerTableViewCell()
+        cell.userStickerViewModel = userStickerViewModel[indexPath.row]
+        cell.stickerCellDelegate = self
         return cell
     }
     
@@ -380,18 +399,26 @@ extension AccountViewController: UITextFieldDelegate {
                 guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}
-                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    DispatchQueue.main.async {
+                        self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    }
                     return
                 }
                 if error != nil {
-                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    DispatchQueue.main.async {
+                        self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    }
                     return
                 }
                 guard let userStickerViewModel = userStickerData else {
-                    self.showNoStickerResultLabel()
+                    DispatchQueue.main.async {
+                        self.showNoStickerResultLabel()
+                    }
                     return
                 }
-                self.showSearchedSticker(using: [userStickerViewModel])
+                DispatchQueue.main.async {
+                    self.showSearchedSticker(using: [userStickerViewModel])
+                }
             }
             return true
         }

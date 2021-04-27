@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Firebase
+import CropViewController
 
 struct Utilities {
     
@@ -593,6 +594,12 @@ struct Utilities {
                 }
             }
         }
+    }
+    
+    static func dismiss(_ cropViewController: CropViewController) {
+        let viewController = cropViewController.children.first!
+        viewController.modalTransitionStyle = .coverVertical
+        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     static func transition(from view: UIView? = nil,
