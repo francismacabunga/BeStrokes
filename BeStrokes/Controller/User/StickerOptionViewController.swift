@@ -294,6 +294,7 @@ class StickerOptionViewController: UIViewController {
     @objc func tapHeartButtonGestureHandler(tap: UITapGestureRecognizer) {
         guard let heartButtonTapped = heartButtonTapped else {return}
         if heartButtonTapped {
+            Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             if stickerViewModel != nil {
                 untapHeartButton(using: stickerViewModel!.stickerID) { (isProcessDone) in}
                 return
@@ -311,6 +312,7 @@ class StickerOptionViewController: UIViewController {
                 return
             }
         } else {
+            Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             if stickerViewModel != nil {
                 tapHeartButton(using: stickerViewModel!.stickerID)
                 return
@@ -321,6 +323,44 @@ class StickerOptionViewController: UIViewController {
             }
         }
     }
+    
+    
+    //MARK: - Fetching of Sticker Data
+    
+    func checkIfStickerIsLoved(_ stickerID: String) {
+        stickerData.fetchLovedSticker(on: stickerID) { [weak self] (error, isUserSignedIn, isStickerLoved, _) in
+            guard let self = self else {return}
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                }
+                return
+            }
+            if error != nil {
+                DispatchQueue.main.async {
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                }
+                return
+            }
+            guard let isStickerLoved = isStickerLoved else {return}
+            DispatchQueue.main.async {
+                if isStickerLoved {
+                    Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                    self.heartButtonTapped = true
+                } else {
+                    Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+                    self.heartButtonTapped = false
+                }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.hideLoadingSkeletonView()
+            }
+        }
+    }
+    
+    
+    //MARK: - Heart Button Process
     
     func tapHeartButton(using stickerID: String) {
         heartButtonLogic.tapHeartButton(using: stickerID) { [weak self] (error, isUserSignedIn) in
@@ -361,41 +401,6 @@ class StickerOptionViewController: UIViewController {
             guard let isProcessDone = isProcessDone else {return}
             if isProcessDone {
                 completion(true)
-            }
-        }
-    }
-    
-    
-    //MARK: - Fetching of Sticker Data
-    
-    func checkIfStickerIsLoved(_ stickerID: String) {
-        stickerData.fetchLovedSticker(on: stickerID) { [weak self] (error, isUserSignedIn, isStickerLoved, _) in
-            guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
-                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
-                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                }
-                return
-            }
-            guard let isStickerLoved = isStickerLoved else {return}
-            DispatchQueue.main.async {
-                if isStickerLoved {
-                    Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                    self.heartButtonTapped = true
-                } else {
-                    Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                    self.heartButtonTapped = false
-                }
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.hideLoadingSkeletonView()
             }
         }
     }
