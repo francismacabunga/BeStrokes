@@ -31,7 +31,6 @@ class LandingViewController: UIViewController {
         super.viewDidLoad()
         
         setDesignElements()
-        checkIfUserIsSignedIn()
         resetTabKeysValues()
         
     }
@@ -67,29 +66,6 @@ class LandingViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let landingPageVC = segue.destination as? LandingPageViewController {
             landingPageVC.landingPageVCDelegate = self
-        }
-    }
-    
-    
-    //MARK: - Checking of Signed In User Process
-    
-    func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
-            guard let self = self else {return}
-            if isUserSignedIn {
-                DispatchQueue.main.async {
-                    let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
-                    tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
-                    self.view.window?.rootViewController = tabBarVC
-                    self.view.window?.makeKeyAndVisible()
-                }
-                return
-            }
-            guard let error = error else {return}
-            DispatchQueue.main.async {
-                let errorAlert = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: error.localizedDescription, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: false) {}
-                self.present(errorAlert!, animated: true)
-            }
         }
     }
     

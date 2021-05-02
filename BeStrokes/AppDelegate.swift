@@ -23,6 +23,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
         
+        if Auth.auth().currentUser != nil {
+            let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
+            tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
+            self.window?.rootViewController = tabBarVC
+            self.window?.makeKeyAndVisible()
+        } else {
+            let landingVC = Utilities.transition(to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: true) as! LandingViewController
+            self.window?.rootViewController = landingVC
+            self.window?.makeKeyAndVisible()
+        }
+        
         return true
         
     }
