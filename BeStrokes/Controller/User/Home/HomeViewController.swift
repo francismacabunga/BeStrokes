@@ -404,9 +404,9 @@ class HomeViewController: UIViewController {
     //MARK: - In-App Notification Process
     
     func checkIfNotificationIsPermitted() {
-        notificationCenter.getNotificationSettings { [weak self] (permission) in
+        Utilities.checkIfNotificationIsPermitted { [weak self] (permission) in
             guard let self = self else {return}
-            if permission.authorizationStatus == .notDetermined {
+            if !permission {
                 let options: UNAuthorizationOptions = [.alert, .sound]
                 self.requestAuthorization(options)
             }

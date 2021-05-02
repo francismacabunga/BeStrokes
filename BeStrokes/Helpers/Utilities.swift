@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import Firebase
 import CropViewController
+import UserNotifications
 
 struct Utilities {
     
@@ -19,6 +20,19 @@ struct Utilities {
     static let setBadgeCounterToNotificationIcon = Notification.Name(Strings.badgeCounterToNotificationName)
     static let reloadUserData = Notification.Name(Strings.reloadUserDataNotificationName)
     static let reloadProfilePic = Notification.Name(Strings.reloadProfilePicNotificationName)
+    
+    
+    //MARK: - Notification Functions
+    
+    static func checkIfNotificationIsPermitted(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings { permission in
+            if permission.authorizationStatus == .authorized {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+    }
     
     
     //MARK: - Design Elements

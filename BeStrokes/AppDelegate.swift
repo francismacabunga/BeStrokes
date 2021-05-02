@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     var window: UIWindow?
-    //let notificationCenter = UNUserNotificationCenter.current()
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -23,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
-    
+        
         return true
         
     }
@@ -39,8 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        UNUserNotificationCenter.current().getNotificationSettings { (permission) in
-            if permission.authorizationStatus == .authorized {
+        Utilities.checkIfNotificationIsPermitted { (permission) in
+            if permission {
                 UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
                 NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
             } else {
@@ -48,16 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
             }
         }
-        
-//        notificationCenter.getNotificationSettings { (permission) in
-//            if permission.authorizationStatus == .authorized {
-//                UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
-//                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
-//            } else {
-//                UserDefaults.standard.setValue(false, forKey: Strings.notificationKey)
-//                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
-//            }
-//        }
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -66,4 +55,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
 }
-
