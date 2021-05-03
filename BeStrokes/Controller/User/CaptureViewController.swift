@@ -139,9 +139,9 @@ class CaptureViewController: UIViewController {
         Utilities.setDesignOn(imageView: captureChooseImageButtonImageView, image: UIImage(systemName: Strings.captureChooseImageIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         Utilities.setDesignOn(label: captureTutorial1Label, fontName: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial1Text)
         Utilities.setDesignOn(label: captureTutorial2Label, fontName: Strings.defaultFontBold, fontSize: 25, numberofLines: 0, textAlignment: .center, fontColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), text: Strings.captureTutorial2Text)
-        Utilities.setDesignOn(label: captureTutorial3Label, fontName: Strings.defaultFontBold, fontSize: 12, numberofLines: 1, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureTutorial3Text, isHidden: true)
+        Utilities.setDesignOn(label: captureTutorial3Label, fontName: Strings.defaultFontBold, fontSize: 12, numberofLines: 0, textAlignment: .center, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureTutorial3Text, isHidden: true)
         Utilities.setDesignOn(label: captureStickerLabel, fontName: Strings.defaultFont, fontSize: 12, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureStickerText)
-        Utilities.setDesignOn(label: captureStickerNameLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureDefaultStickerNameText)
+        Utilities.setDesignOn(label: captureStickerNameLabel, fontName: Strings.defaultFontBold, fontSize: 20, numberofLines: 1, textAlignment: .left, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), text: Strings.captureDefaultStickerNameText, canResize: true, minimumScaleFactor: 0.7)
         Utilities.setDesignOn(button: captureDontShowAgainButton, title: Strings.dontShowAgainButtonText, fontName: Strings.defaultFontBold, fontSize: 16, titleColor: #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1), backgroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), isCircular: true)
         NotificationCenter.default.addObserver(self, selector: #selector(setLightMode), name: Utilities.setLightModeAppearance, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDarkMode), name: Utilities.setDarkModeAppearance, object: nil)
@@ -275,6 +275,7 @@ class CaptureViewController: UIViewController {
     {
         if onCaptureVCWithTabBar != nil {
             if onCaptureVCWithTabBar! {
+                setPlaneDetection()
                 setQuickOptionsDesignWithTabBar()
                 captureDeleteButtonImageView.isHidden = false
                 captureTutorialContentView.isHidden = true
@@ -411,7 +412,7 @@ class CaptureViewController: UIViewController {
         Utilities.animate(view: captureStickerContentView)
         stickerMaterial.diffuse.contents = UIImage(named: Strings.defaultStickerImage)
         isStickerPicked = true
-        hideCaptureVCTutorial()
+        captureTutorial3Label.text = Strings.captureTutorial4Text
     }
     
     @objc func tapStickerGestureHandler(tapGesture: UITapGestureRecognizer) {
@@ -424,6 +425,7 @@ class CaptureViewController: UIViewController {
             }
             raycastTargetAlignment = raycastResult.targetAlignment
             createStickerNode(using: raycastResult)
+            hideCaptureVCTutorial()
             return
         }
         showAlertController(alertMessage: Strings.captureAlertNoStickerErrorMessage, withHandler: false)
@@ -560,13 +562,15 @@ extension CaptureViewController: UINavigationControllerDelegate, UIImagePickerCo
         let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
         stickerMaterial.diffuse.contents = imagePicked
         isStickerPicked = true
-        imagePicker.dismiss(animated: true)
         captureTutorialContentView.isHidden = true
+        captureStickerContentView.isHidden = true
+        captureTutorial3Label.text = Strings.captureTutorial4Text
         if !isPresentedFromLandingVC {
             if !UserDefaults.standard.bool(forKey: Strings.captureButtonKey) {
                 captureVisualEffectView.isHidden = false
             }
         }
+        imagePicker.dismiss(animated: true)
     }
     
 }
