@@ -1080,7 +1080,7 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells>
-                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="nge-vb-0gV" customClass="FeaturedStickerCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
+                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeaturedStickerCollectionViewCell" id="nge-vb-0gV" customClass="FeaturedStickerCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
                                                                 <rect key="frame" x="22.5" y="0.0" width="330" height="280"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="SDV-AF-6Nj">
@@ -1125,7 +1125,7 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells>
-                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="SLd-2g-wjZ" customClass="StickerCategoryCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
+                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="StickerCategoryCollectionViewCell" id="SLd-2g-wjZ" customClass="StickerCategoryCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="vaT-fZ-Sdy">
@@ -1148,7 +1148,7 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells>
-                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="vgY-VF-TFM" customClass="StickerCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
+                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="StickerCollectionViewCell" id="vgY-VF-TFM" customClass="StickerCollectionViewCell" customModule="BeStrokes" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Do8-Fm-8p7">

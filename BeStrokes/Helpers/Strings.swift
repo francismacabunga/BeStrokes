@@ -166,8 +166,8 @@ struct Strings {
     //MARK: - NIBs Names
     static let featuredStickerCell = "FeaturedStickerCollectionViewCell"
     static let stickerCategoryCell = "StickerCategoryCollectionViewCell"
-    static let profileCell = "ProfileTableViewCell"
     static let stickerCollectionViewCell = "StickerCollectionViewCell"
+    static let profileCell = "ProfileTableViewCell"
     static let stickerTableViewCell = "StickerTableViewCell"
     
     //MARK: - Segues
