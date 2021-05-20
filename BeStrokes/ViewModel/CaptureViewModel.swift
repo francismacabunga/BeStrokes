@@ -8,9 +8,24 @@
 import Foundation
 import ARKit
 
-struct Capture {
+struct CaptureViewModel {
     
     private var lastRotation: CGFloat?
+    
+    func downloadStickerImage(using stickerURL: String,
+                              completion: @escaping (Error?, Data?) -> Void) {
+        guard let url = URL(string: stickerURL) else {return}
+        let session = URLSession(configuration: .default)
+        let dataTask = session.dataTask(with: url) { data, _, error in
+            guard let error = error else {
+                guard let stickerImageData = data else {return}
+                completion(nil, stickerImageData)
+                return
+            }
+            completion(error, nil)
+        }
+        dataTask.resume()
+    }
     
     func createPlaneAnchor(using anchor: ARAnchor) -> ARPlaneAnchor? {
         guard let planeAnchor = anchor as? ARPlaneAnchor else {return nil}

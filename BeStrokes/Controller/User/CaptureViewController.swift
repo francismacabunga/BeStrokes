@@ -39,7 +39,7 @@ class CaptureViewController: UIViewController {
     
     private let userData = UserData()
     private let stickerData = StickerData()
-    private var capture = Capture()
+    private var captureViewModel = CaptureViewModel()
     private let imagePicker = UIImagePickerController()
     var isStickerPicked = false
     var isPresentedFromLandingVC = false
@@ -52,19 +52,19 @@ class CaptureViewController: UIViewController {
     var featuredStickerViewModel: FeaturedStickerViewModel? {
         didSet {
             guard let featuredStickerData = featuredStickerViewModel else {return}
-            downloadImage(using: featuredStickerData.image)
+            downloadStickerImage(using: featuredStickerData.image)
         }
     }
     var stickerViewModel: StickerViewModel? {
         didSet {
             guard let stickerData = stickerViewModel else {return}
-            downloadImage(using: stickerData.image)
+            downloadStickerImage(using: stickerData.image)
         }
     }
     var userStickerViewModel: UserStickerViewModel? {
         didSet {
             guard let userStickerData = userStickerViewModel else {return}
-            downloadImage(using: userStickerData.image)
+            downloadStickerImage(using: userStickerData.image)
         }
     }
     
@@ -419,7 +419,7 @@ class CaptureViewController: UIViewController {
         if isStickerPicked {
             guard let ARSCNView = tapGesture.view as? ARSCNView else {return}
             let tapLocation = tapGesture.location(in: ARSCNView)
-            guard let raycastResult = capture.performRaycast(on: ARSCNView, tapLocation) else {
+            guard let raycastResult = captureViewModel.performRaycast(on: ARSCNView, tapLocation) else {
                 showAlertController(alertMessage: Strings.captureAlertRaycastErrorMessage, withHandler: false)
                 return
             }
@@ -434,25 +434,25 @@ class CaptureViewController: UIViewController {
     @objc func longPressStickerGestureHandler(longPressGesture: UILongPressGestureRecognizer) {
         guard let ARSCNView = longPressGesture.view as? ARSCNView else {return}
         let longPressLocation = longPressGesture.location(in: ARSCNView)
-        let pointSelectedInScreen = capture.performHitTest(using: longPressLocation, from: ARSCNView)
-        guard let selectedNode = capture.getSelectedNode(using: pointSelectedInScreen) else {return}
-        capture.performLongPressGesture(using: longPressGesture, from: ARSCNView, on: selectedNode)
+        let pointSelectedInScreen = captureViewModel.performHitTest(using: longPressLocation, from: ARSCNView)
+        guard let selectedNode = captureViewModel.getSelectedNode(using: pointSelectedInScreen) else {return}
+        captureViewModel.performLongPressGesture(using: longPressGesture, from: ARSCNView, on: selectedNode)
     }
     
     @objc func pinchStickerGestureHandler(pinchGesture: UIPinchGestureRecognizer) {
         guard let ARSCNView = pinchGesture.view as? ARSCNView else {return}
         let pinchLocation = pinchGesture.location(in: ARSCNView)
-        let pointSelectedInScreen = capture.performHitTest(using: pinchLocation, from: ARSCNView)
-        guard let selectedNode = capture.getSelectedNode(using: pointSelectedInScreen) else {return}
-        capture.performPinchGesture(using: pinchGesture, on: selectedNode)
+        let pointSelectedInScreen = captureViewModel.performHitTest(using: pinchLocation, from: ARSCNView)
+        guard let selectedNode = captureViewModel.getSelectedNode(using: pointSelectedInScreen) else {return}
+        captureViewModel.performPinchGesture(using: pinchGesture, on: selectedNode)
     }
     
     @objc func rotateStickerGestureHandler(rotateGesture: UIRotationGestureRecognizer) {
         guard let ARSCNView = rotateGesture.view as? ARSCNView else {return}
         let rotateLocation = rotateGesture.location(in: ARSCNView)
-        let pointSelectedInScreen = capture.performHitTest(using: rotateLocation, from: ARSCNView)
-        guard let selectedNode = capture.getSelectedNode(using: pointSelectedInScreen) else {return}
-        capture.performRotationGesture(using: rotateGesture, on: selectedNode, raycastTargetAlignment: raycastTargetAlignment!)
+        let pointSelectedInScreen = captureViewModel.performHitTest(using: rotateLocation, from: ARSCNView)
+        guard let selectedNode = captureViewModel.getSelectedNode(using: pointSelectedInScreen) else {return}
+        captureViewModel.performRotationGesture(using: rotateGesture, on: selectedNode, raycastTargetAlignment: raycastTargetAlignment!)
     }
     
     
@@ -474,15 +474,13 @@ class CaptureViewController: UIViewController {
     
     //MARK: - Fetching of Sticker Data
     
-    func downloadImage(using stickerImage: String) {
-        guard let url = URL(string: stickerImage) else {return}
-        let session = URLSession(configuration: .default)
-        let dataTask = session.dataTask(with: url) { [weak self] (data, _, error) in
+    func downloadStickerImage(using stickerURL: String) {
+        captureViewModel.downloadStickerImage(using: stickerURL) { [weak self] error, stickerData in
             guard let self = self else {return}
             guard let error = error else {
-                guard let imageData = data else {return}
+                guard let stickerData = stickerData else {return}
                 DispatchQueue.main.async {
-                    self.stickerMaterial.diffuse.contents = UIImage(data: imageData)
+                    self.stickerMaterial.diffuse.contents = UIImage(data: stickerData)
                 }
                 return
             }
@@ -490,7 +488,6 @@ class CaptureViewController: UIViewController {
                 self.showAlertController(alertMessage: error.localizedDescription, withHandler: false)
             }
         }
-        dataTask.resume()
     }
     
     
@@ -506,13 +503,13 @@ class CaptureViewController: UIViewController {
     //MARK: - SCNode Process
     
     func createPlaneNode(using anchor: ARAnchor) -> SCNNode? {
-        guard let planeAnchor = capture.createPlaneAnchor(using: anchor) else {
+        guard let planeAnchor = captureViewModel.createPlaneAnchor(using: anchor) else {
             showAlertController(alertMessage: Strings.captureAlertAnchorErrorMessage, withHandler: false)
             return nil
         }
         let planeMaterials = SCNMaterial()
         planeMaterials.diffuse.contents = UIColor(white: 1, alpha: 0.5)
-        let planeNode = capture.createNode(using: planeAnchor,
+        let planeNode = captureViewModel.createNode(using: planeAnchor,
                                            material: planeMaterials,
                                            position: SCNVector3(CGFloat(planeAnchor.center.x),
                                                                 CGFloat(planeAnchor.center.y),
@@ -524,7 +521,7 @@ class CaptureViewController: UIViewController {
     func createStickerNode(using raycastResult: ARRaycastResult) {
         if stickerNodes.count == 0 {
             guard let raycastResultTransform = raycastResult.anchor?.transform else {return}
-            let stickerNode = capture.createNode(width: 0.1,
+            let stickerNode = captureViewModel.createNode(width: 0.1,
                                                  height: 0.1,
                                                  material: stickerMaterial,
                                                  transform: SCNMatrix4(raycastResultTransform),
