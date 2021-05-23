@@ -19,8 +19,7 @@ class NotificationViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let userData = UserData()
-    private let stickerData = StickerData()
+    private let service = Service()
     private var userStickerViewModel: [UserStickerViewModel]?
     
     
@@ -134,7 +133,7 @@ class NotificationViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+        service.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -150,7 +149,7 @@ class NotificationViewController: UIViewController {
     //MARK: - Fetching of Sticker Data
     
     func setNotificationData() {
-        stickerData.fetchNewSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
+        service.fetchNewSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}

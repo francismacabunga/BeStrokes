@@ -9,21 +9,11 @@ import Foundation
 
 struct ProfileSettingsViewModel {
     
-    let profileSettings: [SettingsData]
-    
-    init(_ settings: ProfileSettingsModel) {
-        self.profileSettings = settings.profileSettings
-    }
-    
-}
-
-struct FetchProfileData {
-    
-    func settings() -> [ProfileSettingsViewModel] {
-        let profileSettingsViewModel = [
-            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.settingNotificationIcon, settingLabel: Strings.profileSettingsNotifications)])),
-            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.settingDarkModeIcon, settingLabel: Strings.profileSettingsDarkAppearance)])),
-            ProfileSettingsViewModel(ProfileSettingsModel(profileSettings: [SettingsData(settingIcon: Strings.settingLogoutIcon, settingLabel: Strings.profileSettingsLogout)]))]
+    var model: [ProfileSettingsModel]?
+    var data: [ProfileSettingsViewModel] {
+        let profileSettingsViewModel = [ProfileSettingsViewModel(model: [ProfileSettingsModel(settingIcon: Strings.settingNotificationIcon, settingLabel: Strings.profileSettingsNotifications)]),
+                                        ProfileSettingsViewModel(model: [ProfileSettingsModel(settingIcon: Strings.settingDarkModeIcon, settingLabel: Strings.profileSettingsDarkAppearance)]),
+                                        ProfileSettingsViewModel(model: [ProfileSettingsModel(settingIcon: Strings.settingLogoutIcon, settingLabel: Strings.profileSettingsLogout)])]
         return profileSettingsViewModel
     }
     

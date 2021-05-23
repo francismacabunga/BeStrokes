@@ -27,7 +27,7 @@ class ForgotPasswordViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let userData = UserData()
+    private let service = Service()
     
     
     //MARK: - View Controller Life Cycle
@@ -143,7 +143,7 @@ class ForgotPasswordViewController: UIViewController {
     
     func forgotPasswordButtonTapped() {
         guard let email = forgotPasswordEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
-        userData.forgotPassword(with: email) { [weak self] (error, isPasswordResetSent) in
+        service.forgotPassword(with: email) { [weak self] (error, isPasswordResetSent) in
             guard let self = self else {return}
             guard let error = error else {
                 if isPasswordResetSent {

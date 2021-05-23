@@ -34,8 +34,7 @@ class AccountViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let userData = UserData()
-    private let stickerData = StickerData()
+    private let service = Service()
     private var userStickerViewModel: [UserStickerViewModel]?
     private var isButtonPressed = false
     private var hasPerformedSearch = false
@@ -239,7 +238,7 @@ class AccountViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+        service.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -252,7 +251,7 @@ class AccountViewController: UIViewController {
     }
     
     func setSignedInUserData() {
-        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+        service.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -281,7 +280,7 @@ class AccountViewController: UIViewController {
     //MARK: - Fetching of Sticker Data
     
     func setLovedStickersData() {
-        stickerData.fetchLovedSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
+        service.fetchLovedSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -395,7 +394,7 @@ extension AccountViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         accountSearchTextField.resignFirstResponder()
         if accountSearchTextField.text != nil {
-            stickerData.searchSticker(using: accountSearchTextField.text!) { [weak self] (error, isUserSignedIn, userStickerData) in
+            service.searchSticker(using: accountSearchTextField.text!) { [weak self] (error, isUserSignedIn, userStickerData) in
                 guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}

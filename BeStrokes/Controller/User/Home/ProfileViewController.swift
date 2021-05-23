@@ -29,9 +29,8 @@ class ProfileViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private var profileSettingsViewModel: [ProfileSettingsViewModel]!
-    private let fetchProfileData = FetchProfileData()
-    private let userData = UserData()
+    private let service = Service()
+    private var profileSettingsViewModel = ProfileSettingsViewModel()
     private var skeletonColor: UIColor?
     private var hasProfilePicLoaded = false
     
@@ -125,7 +124,6 @@ class ProfileViewController: UIViewController {
     }
     
     func setData() {
-        profileSettingsViewModel = fetchProfileData.settings()
         profileTableView.reloadData()
         showLoadingSkeletonView()
         getSignedInUserData()
@@ -189,7 +187,7 @@ class ProfileViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func getSignedInUserData() {
-        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+        service.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -224,7 +222,7 @@ class ProfileViewController: UIViewController {
     func signOutUser() {
         let logoutAlert = Utilities.showAlert(alertTitle: Strings.logoutAlertTitle, alertMessage: "", alertActionTitle1: Strings.logoutYesAction, alertActionTitle2: Strings.logoutNoAction) { [weak self] in
             guard let self = self else {return}
-            let isUserSignedOut = self.userData.signOutUser()
+            let isUserSignedOut = self.service.signOutUser()
             if isUserSignedOut {
                 DispatchQueue.main.async {
                     _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
@@ -258,12 +256,12 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return profileSettingsViewModel.count
+        return profileSettingsViewModel.data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.profileCell) as! ProfileTableViewCell
-        cell.profileSettingsViewModel = profileSettingsViewModel[indexPath.row]
+        cell.profileSettingsViewModel = profileSettingsViewModel.data[indexPath.row]
         return cell
     }
     
@@ -275,7 +273,7 @@ extension ProfileViewController: UITableViewDataSource {
 extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let clickedCell = profileSettingsViewModel[indexPath.row].profileSettings.first!.settingLabel
+        let clickedCell = profileSettingsViewModel.data[indexPath.row].model!.first!.settingLabel
         if clickedCell == Strings.profileSettingsLogout {
             signOutUser()
         }

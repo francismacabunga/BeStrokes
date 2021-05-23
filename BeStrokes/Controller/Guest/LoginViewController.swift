@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let userData = UserData()
+    private let service = Service()
     
     
     //MARK: - View Controller Life Cyle
@@ -159,7 +159,7 @@ class LoginViewController: UIViewController {
     func loginButtonTapped() {
         guard let email = loginEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
         guard let password = loginPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
-        userData.signInUser(with: email, and: password) { [weak self] (error, _) in
+        service.signInUser(with: email, and: password) { [weak self] (error, _) in
             guard let self = self else {return}
             guard let error = error else {
                 DispatchQueue.main.async {

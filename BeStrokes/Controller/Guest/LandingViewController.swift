@@ -20,11 +20,6 @@ class LandingViewController: UIViewController {
     @IBAction func unwindToLandingVC(segue: UIStoryboardSegue) {}
     
     
-    //MARK: - Constants / Variables
-    
-    private lazy var userData = UserData()
-    
-    
     //MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {

@@ -25,7 +25,14 @@
 		2F5608BA253CA9B300544F68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDE0C5F251B2F8E00A0A75D /* Assets.xcassets */; };
 		2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */; };
 		2F58B0E125A47CE0009EFDE5 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F58B0E025A47CE0009EFDE5 /* UserModel.swift */; };
-		2F628EB125D2DD7200B9F615 /* CaptureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F628EB025D2DD7200B9F615 /* CaptureViewModel.swift */; };
+		2F5CCC54265802AB007D6070 /* FeaturedStickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC53265802AB007D6070 /* FeaturedStickerViewModel.swift */; };
+		2F5CCC562658033D007D6070 /* UserStickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC552658033D007D6070 /* UserStickerViewModel.swift */; };
+		2F5CCC5826580382007D6070 /* StickerCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC5726580382007D6070 /* StickerCategoryViewModel.swift */; };
+		2F5CCC5D265825B7007D6070 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC5C265825B7007D6070 /* Service.swift */; };
+		2F5CCC5F265831E3007D6070 /* UserStickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC5E265831E3007D6070 /* UserStickerModel.swift */; };
+		2F5CCC6126583200007D6070 /* StickerCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC6026583200007D6070 /* StickerCategoryModel.swift */; };
+		2F5CCC6326583FE7007D6070 /* ARKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC6226583FE7007D6070 /* ARKit.swift */; };
+		2F6C84D8265985E400CD2FA8 /* ProfileSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6C84D7265985E400CD2FA8 /* ProfileSettingsModel.swift */; };
 		2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */; };
 		2F88A016259B1FBC00AAC82D /* StickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A015259B1FBC00AAC82D /* StickerModel.swift */; };
 		2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F88A018259B239700AAC82D /* StickerViewModel.swift */; };
@@ -48,7 +55,6 @@
 		2FF328312580FEF4001E6E1E /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF328302580FEF4001E6E1E /* TabBarViewController.swift */; };
 		2FFB0C4825A84EAC00FAED42 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */; };
 		2FFB0C4B25A873EC00FAED42 /* ProfileSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */; };
-		2FFB0C4E25A8740400FAED42 /* ProfileSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFB0C4D25A8740400FAED42 /* ProfileSettingsModel.swift */; };
 		C701D0654D7D370E8996BA27 /* Pods_BeStrokes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497871CF40741AC493C61604 /* Pods_BeStrokes.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,7 +76,14 @@
 		2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModel.swift; sourceTree = "<group>"; };
 		2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		2F58B0E025A47CE0009EFDE5 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
-		2F628EB025D2DD7200B9F615 /* CaptureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewModel.swift; sourceTree = "<group>"; };
+		2F5CCC53265802AB007D6070 /* FeaturedStickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedStickerViewModel.swift; sourceTree = "<group>"; };
+		2F5CCC552658033D007D6070 /* UserStickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStickerViewModel.swift; sourceTree = "<group>"; };
+		2F5CCC5726580382007D6070 /* StickerCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryViewModel.swift; sourceTree = "<group>"; };
+		2F5CCC5C265825B7007D6070 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		2F5CCC5E265831E3007D6070 /* UserStickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStickerModel.swift; sourceTree = "<group>"; };
+		2F5CCC6026583200007D6070 /* StickerCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryModel.swift; sourceTree = "<group>"; };
+		2F5CCC6226583FE7007D6070 /* ARKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARKit.swift; sourceTree = "<group>"; };
+		2F6C84D7265985E400CD2FA8 /* ProfileSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsModel.swift; sourceTree = "<group>"; };
 		2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerOptionViewController.swift; sourceTree = "<group>"; };
 		2F88A015259B1FBC00AAC82D /* StickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerModel.swift; sourceTree = "<group>"; };
 		2F88A018259B239700AAC82D /* StickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerViewModel.swift; sourceTree = "<group>"; };
@@ -96,7 +109,6 @@
 		2FF328302580FEF4001E6E1E /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		2FFB0C4725A84EAC00FAED42 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewModel.swift; sourceTree = "<group>"; };
-		2FFB0C4D25A8740400FAED42 /* ProfileSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsModel.swift; sourceTree = "<group>"; };
 		497871CF40741AC493C61604 /* Pods_BeStrokes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BeStrokes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		648C2547C4CAA81B7FA7CD60 /* Pods-BeStrokes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeStrokes.release.xcconfig"; path = "Target Support Files/Pods-BeStrokes/Pods-BeStrokes.release.xcconfig"; sourceTree = "<group>"; };
 		9E470226026C6FA7D956F1DD /* Pods-BeStrokes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeStrokes.debug.xcconfig"; path = "Target Support Files/Pods-BeStrokes/Pods-BeStrokes.debug.xcconfig"; sourceTree = "<group>"; };
@@ -161,8 +173,10 @@
 			children = (
 				2F58B0E025A47CE0009EFDE5 /* UserModel.swift */,
 				2F88A015259B1FBC00AAC82D /* StickerModel.swift */,
+				2F5CCC5E265831E3007D6070 /* UserStickerModel.swift */,
+				2F5CCC6026583200007D6070 /* StickerCategoryModel.swift */,
+				2F6C84D7265985E400CD2FA8 /* ProfileSettingsModel.swift */,
 				2F45D04725B4ABC3005167AE /* LandingPageModel.swift */,
-				2FFB0C4D25A8740400FAED42 /* ProfileSettingsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -172,9 +186,11 @@
 			children = (
 				2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */,
 				2F88A018259B239700AAC82D /* StickerViewModel.swift */,
-				2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */,
+				2F5CCC552658033D007D6070 /* UserStickerViewModel.swift */,
+				2F5CCC53265802AB007D6070 /* FeaturedStickerViewModel.swift */,
+				2F5CCC5726580382007D6070 /* StickerCategoryViewModel.swift */,
 				2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */,
-				2F628EB025D2DD7200B9F615 /* CaptureViewModel.swift */,
+				2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -218,8 +234,10 @@
 		2FB1ABE32552ED430076A8FD /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				2FB1ABE42552ED8C0076A8FD /* Strings.swift */,
+				2F5CCC5C265825B7007D6070 /* Service.swift */,
 				2F382FC52562E3CD00D3A125 /* Utilities.swift */,
+				2FB1ABE42552ED8C0076A8FD /* Strings.swift */,
+				2F5CCC6226583FE7007D6070 /* ARKit.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -428,6 +446,7 @@
 			files = (
 				2F1125622551A097004A02B1 /* AccountViewController.swift in Sources */,
 				2F11255B2551A03E004A02B1 /* ForgotPasswordViewController.swift in Sources */,
+				2F5CCC5826580382007D6070 /* StickerCategoryViewModel.swift in Sources */,
 				2F94B5F225EFD4FA00417982 /* NotificationViewController.swift in Sources */,
 				2F393A13255AEB57006CDBDE /* LandingViewController.swift in Sources */,
 				2FE99CFC25183D3F002AFFDC /* CaptureViewController.swift in Sources */,
@@ -436,22 +455,27 @@
 				2F88A016259B1FBC00AAC82D /* StickerModel.swift in Sources */,
 				2FD6E4DA257AC99900B49E41 /* StickerCollectionViewCell.swift in Sources */,
 				2FD6E4E0257AC9BE00B49E41 /* StickerCategoryCollectionViewCell.swift in Sources */,
+				2F5CCC54265802AB007D6070 /* FeaturedStickerViewModel.swift in Sources */,
 				2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */,
 				2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */,
-				2F628EB125D2DD7200B9F615 /* CaptureViewModel.swift in Sources */,
+				2F5CCC562658033D007D6070 /* UserStickerViewModel.swift in Sources */,
 				2FFB0C4825A84EAC00FAED42 /* ProfileViewController.swift in Sources */,
 				2FD6E4D2257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift in Sources */,
+				2F5CCC5F265831E3007D6070 /* UserStickerModel.swift in Sources */,
 				2FFB0C4B25A873EC00FAED42 /* ProfileSettingsViewModel.swift in Sources */,
 				2F11255E2551A083004A02B1 /* HomeViewController.swift in Sources */,
 				2F9C40F525AAF52600A7663F /* EditAccountViewController.swift in Sources */,
 				2F58B0DE25A47CB7009EFDE5 /* UserViewModel.swift in Sources */,
-				2FFB0C4E25A8740400FAED42 /* ProfileSettingsModel.swift in Sources */,
+				2F5CCC5D265825B7007D6070 /* Service.swift in Sources */,
+				2F6C84D8265985E400CD2FA8 /* ProfileSettingsModel.swift in Sources */,
 				2F393A17255AEBBE006CDBDE /* LandingPageContentViewController.swift in Sources */,
 				2F45D04B25B4ACAA005167AE /* LandingPageViewModel.swift in Sources */,
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
 				2F393A0F255AEAEA006CDBDE /* LandingPageViewController.swift in Sources */,
+				2F5CCC6326583FE7007D6070 /* ARKit.swift in Sources */,
 				2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */,
 				2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */,
+				2F5CCC6126583200007D6070 /* StickerCategoryModel.swift in Sources */,
 				2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */,
 				2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */,
 				2F45D04825B4ABC3005167AE /* LandingPageModel.swift in Sources */,

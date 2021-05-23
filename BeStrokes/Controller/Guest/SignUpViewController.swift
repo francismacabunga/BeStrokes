@@ -36,7 +36,7 @@ class SignUpViewController: UIViewController {
     private let imagePicker = UIImagePickerController()
     private var editedImage: UIImage? = nil
     private var imageIsChanged = false
-    private let userData = UserData()
+    private let service = Service()
     
     
     //MARK: - View Controller Life Cycle
@@ -225,7 +225,7 @@ class SignUpViewController: UIViewController {
         }
         if signUpPasswordTextField.text != "" {
             guard let password = signUpPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return false}
-            let passwordValid = userData.isPasswordValid(password)
+            let passwordValid = service.isPasswordValid(password)
             if passwordValid {
                 signUpWarning1Label.isHidden = true
                 return true
@@ -253,7 +253,7 @@ class SignUpViewController: UIViewController {
         if validateTextFields() && validateProfilePicture() {
             let userDataDictionary = userInfo()
             setSignUpButtonTappedAnimation()
-            userData.createUser(with: userDataDictionary[Strings.userEmailField]!, and: userDataDictionary[Strings.userPasswordField]!) { [weak self] (error, authResult) in
+            service.createUser(with: userDataDictionary[Strings.userEmailField]!, and: userDataDictionary[Strings.userPasswordField]!) { [weak self] (error, authResult) in
                 guard let self = self else {return}
                 guard let error = error else {
                     guard let authResult = authResult else {return}
@@ -276,7 +276,7 @@ class SignUpViewController: UIViewController {
     func uploadProfilePic(using authResult: AuthDataResult,
                           with userDataDictionary: [String : String])
     {
-        userData.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { [weak self] (error, profilePic) in
+        service.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { [weak self] (error, profilePic) in
             guard let self = self else {return}
             if error != nil {
                 DispatchQueue.main.async {
@@ -298,7 +298,7 @@ class SignUpViewController: UIViewController {
     func storeData(on userID: String,
                    with userDataDictionary: [String : String])
     {
-        userData.storeData(using: userID, with: userDataDictionary) { [weak self] (error, isFinishedStoring) in
+        service.storeData(using: userID, with: userDataDictionary) { [weak self] (error, isFinishedStoring) in
             guard let self = self else {return}
             guard let error = error else {
                 if isFinishedStoring {
@@ -314,7 +314,7 @@ class SignUpViewController: UIViewController {
     }
     
     func sendEmailVerification() {
-        userData.sendEmailVerification { [weak self] (error, _, isEmailVerificationSent) in
+        service.sendEmailVerification { [weak self] (error, _, isEmailVerificationSent) in
             guard let self = self else {return}
             if error != nil {
                 DispatchQueue.main.async {

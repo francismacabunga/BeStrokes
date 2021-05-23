@@ -30,8 +30,7 @@ class StickerOptionViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let stickerData = StickerData()
-    private let heartButtonLogic = HeartButtonLogic()
+    private let service = Service()
     private var heartButtonTapped: Bool?
     private var skeletonColor: UIColor?
     var stickerViewModel: StickerViewModel?
@@ -268,7 +267,7 @@ class StickerOptionViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
             UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
             if userStickerViewModel != nil {
-                stickerData.updateNewSticker(on: userStickerViewModel!.stickerID) { [weak self] (error, isUserSignedIn) in
+                service.updateNewSticker(on: userStickerViewModel!.stickerID) { [weak self] (error, isUserSignedIn) in
                     guard let self = self else {return}
                     if !isUserSignedIn {
                         guard let error = error else {return}
@@ -328,7 +327,7 @@ class StickerOptionViewController: UIViewController {
     //MARK: - Fetching of Sticker Data
     
     func checkIfStickerIsLoved(_ stickerID: String) {
-        stickerData.fetchLovedSticker(on: stickerID) { [weak self] (error, isUserSignedIn, isStickerLoved, _) in
+        service.fetchLovedSticker(on: stickerID) { [weak self] (error, isUserSignedIn, isStickerLoved, _) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -363,7 +362,7 @@ class StickerOptionViewController: UIViewController {
     //MARK: - Heart Button Process
     
     func tapHeartButton(using stickerID: String) {
-        heartButtonLogic.tapHeartButton(using: stickerID) { [weak self] (error, isUserSignedIn) in
+        service.tapHeartButton(using: stickerID) { [weak self] (error, isUserSignedIn) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -383,7 +382,7 @@ class StickerOptionViewController: UIViewController {
     func untapHeartButton(using stickerID: String,
                           completion: @escaping (Bool) -> Void)
     {
-        heartButtonLogic.untapHeartButton(using: stickerID) { [weak self] (error, isUserSignedIn, isProcessDone) in
+        service.untapHeartButton(using: stickerID) { [weak self] (error, isUserSignedIn, isProcessDone) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}

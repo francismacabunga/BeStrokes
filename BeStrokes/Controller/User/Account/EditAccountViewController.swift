@@ -35,7 +35,7 @@ class EditAccountViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let userData = UserData()
+    private let service = Service()
     private let imagePicker = UIImagePickerController()
     private var editedImage: UIImage?
     private var userID = String()
@@ -219,7 +219,7 @@ class EditAccountViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func setData() {
-        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+        service.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -274,7 +274,7 @@ class EditAccountViewController: UIViewController {
                                 _ email: String,
                                 _ initialUserEmail: String)
     {
-        userData.isEmailVerified { [weak self] (error, isUserSignedIn, isEmailVerified) in
+        service.isEmailVerified { [weak self] (error, isUserSignedIn, isEmailVerified) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -306,7 +306,7 @@ class EditAccountViewController: UIViewController {
     }
     
     func sendEmailVerification(with successLabel: String) {
-        userData.sendEmailVerification { [weak self] (error, isUserSignedIn, isEmailVerificationSent) in
+        service.sendEmailVerification { [weak self] (error, isUserSignedIn, isEmailVerificationSent) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -342,7 +342,7 @@ class EditAccountViewController: UIViewController {
                           _ initialUserEmail: String)
     {
         if editedImage != nil {
-            userData.uploadProfilePic(with: editedImage!, using: userID) { [weak self] (error, chosenPic) in
+            service.uploadProfilePic(with: editedImage!, using: userID) { [weak self] (error, chosenPic) in
                 guard let self = self else {return}
                 guard let error = error else {
                     guard let chosenPic = chosenPic else {return}
@@ -365,7 +365,7 @@ class EditAccountViewController: UIViewController {
                         _ initialUserEmail: String)
     {
         if initialUserEmail != email {
-            userData.updateUserData(firstName, lastName, email, profilePic) { [weak self] (error, isUserSignedIn, isUpdateFinished) in
+            service.updateUserData(firstName, lastName, email, profilePic) { [weak self] (error, isUserSignedIn, isUpdateFinished) in
                 guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}
@@ -387,7 +387,7 @@ class EditAccountViewController: UIViewController {
                 }
             }
         } else {
-            userData.updateUserData(firstName, lastName, email, profilePic) { [weak self] (error, isUserSignedIn, isUpdateFinished) in
+            service.updateUserData(firstName, lastName, email, profilePic) { [weak self] (error, isUserSignedIn, isUpdateFinished) in
                 guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}

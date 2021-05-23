@@ -23,8 +23,8 @@ class ProfileTableViewCell: UITableViewCell {
     var profileSettingsViewModel: ProfileSettingsViewModel? {
         didSet {
             guard let profileSettingsData = profileSettingsViewModel else {return}
-            let label = profileSettingsData.profileSettings.first!.settingLabel
-            let icon = profileSettingsData.profileSettings.first!.settingIcon
+            let label = profileSettingsData.model!.first!.settingLabel
+            let icon = profileSettingsData.model!.first!.settingIcon
             setSettingData(using: label, and: icon)
             setNotificationSetting()
             setThemeSetting()

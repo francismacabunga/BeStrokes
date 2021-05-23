@@ -31,8 +31,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let userData = UserData()
-    private let stickerData = StickerData()
+    private let service = Service()
     private var stickerViewModel: [StickerViewModel]?
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
     private var stickerCategoryViewModel = [StickerCategoryViewModel]()
@@ -221,7 +220,7 @@ class HomeViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func setProfilePicture() {
-        userData.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+        service.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -250,7 +249,7 @@ class HomeViewController: UIViewController {
     }
     
     func checkIfUserIsSignedIn() {
-        userData.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+        service.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -266,7 +265,7 @@ class HomeViewController: UIViewController {
     //MARK: - Fetching of Collection View Data
     
     func getFeaturedStickersCollectionViewData() {
-        stickerData.fetchFeaturedSticker { [weak self] (error, featuredStickerData) in
+        service.fetchFeaturedSticker { [weak self] (error, featuredStickerData) in
             guard let self = self else {return}
             guard let error = error else {
                 guard let featuredStickerData = featuredStickerData else {return}
@@ -283,13 +282,13 @@ class HomeViewController: UIViewController {
     }
     
     func getStickersCategoryCollectionViewData() {
-        stickerCategoryViewModel = stickerData.fetchStickerCategories()
+        stickerCategoryViewModel = service.fetchStickerCategories()
         homeStickerCategoryCollectionView.reloadData()
         setInitalSelectedCategoryCell()
     }
     
     func getStickersCollectionViewData(onCategory stickerCategory: String) {
-        stickerData.fetchSticker(onCategory: stickerCategory) { [weak self] (error, stickerData) in
+        service.fetchSticker(onCategory: stickerCategory) { [weak self] (error, stickerData) in
             guard let self = self else {return}
             guard let error = error else {
                 guard let stickerData = stickerData else {return}
@@ -317,7 +316,7 @@ class HomeViewController: UIViewController {
     func changeStickerStatusOnFirstTimeLogin(using stickerData: [StickerViewModel]) {
         if UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
             UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
-            self.stickerData.uploadStickerInUserCollection(from: stickerData, isRecentlyUploaded: false, isNew: false) { [weak self] (error, isUserSignedIn) in
+            service.uploadStickerInUserCollection(from: stickerData, isRecentlyUploaded: false, isNew: false) { [weak self] (error, isUserSignedIn) in
                 guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}
@@ -337,7 +336,7 @@ class HomeViewController: UIViewController {
     
     func setStickerDataToUserID(using stickerViewModel: [StickerViewModel]) {
         if !UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
-            self.stickerData.checkIfStickerExistsInUserCollection(stickerViewModel: stickerViewModel) { [weak self] (error, isUserSignedIn, isStickerPresent, newSticker) in
+            service.checkIfStickerExistsInUserCollection(stickerViewModel: stickerViewModel) { [weak self] (error, isUserSignedIn, isStickerPresent, newSticker) in
                 guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}
@@ -365,7 +364,7 @@ class HomeViewController: UIViewController {
     }
     
     func uploadStickerInUserCollection(using stickerViewModel: [StickerViewModel]) {
-        stickerData.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { [weak self] (error, isUserSignedIn) in
+        service.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { [weak self] (error, isUserSignedIn) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -383,7 +382,7 @@ class HomeViewController: UIViewController {
     }
     
     func removeDeletedStickersInUserCollection() {
-        stickerData.checkIfUserStickerExistsInStickerCollection { [weak self] (error, isUserSignedIn) in
+        service.checkIfUserStickerExistsInStickerCollection { [weak self] (error, isUserSignedIn) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -430,7 +429,7 @@ class HomeViewController: UIViewController {
     }
     
     func showBannerNotification() {
-        stickerData.fetchRecentlyUploadedSticker { [weak self] (error, isUserSignedIn, userStickerData) in
+        service.fetchRecentlyUploadedSticker { [weak self] (error, isUserSignedIn, userStickerData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -454,7 +453,7 @@ class HomeViewController: UIViewController {
     }
     
     func updateRecentlyUploadedSticker(using stickerID: String) {
-        stickerData.updateRecentlyUploadedSticker(on: stickerID) { [weak self] (error, isUserSignedIn) in
+        service.updateRecentlyUploadedSticker(on: stickerID) { [weak self] (error, isUserSignedIn) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -473,7 +472,7 @@ class HomeViewController: UIViewController {
     }
     
     func updateBadgeCounter() {
-        stickerData.fetchNewSticker { [weak self] (error, isUserSignedIn, numberOfNewStickers, _) in
+        service.fetchNewSticker { [weak self] (error, isUserSignedIn, numberOfNewStickers, _) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
