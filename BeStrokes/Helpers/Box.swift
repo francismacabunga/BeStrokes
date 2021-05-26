@@ -8,6 +8,9 @@
 import Foundation
 
 final class Box<T> {
+    
+    // Write comment
+    
     typealias Listener = (T) -> Void
     var listener: Listener?
     var value: T {
