@@ -32,6 +32,7 @@ class LoginViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let service = Service()
+    private let loginViewModel = LoginViewModel()
     
     
     //MARK: - View Controller Life Cyle
@@ -144,7 +145,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginButton(_ sender: UIButton) {
         Utilities.animate(button: sender)
-        loginButtonTapped()
+        loginProcess()
         dismissKeyboard()
     }
     
@@ -156,22 +157,20 @@ class LoginViewController: UIViewController {
         loginPasswordTextField.delegate = self
     }
     
-    func loginButtonTapped() {
-        guard let email = loginEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
-        guard let password = loginPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return}
-        service.signInUser(with: email, and: password) { [weak self] (error, _) in
+    func loginProcess() {
+        loginViewModel.loginUser(with: loginEmailTextField.text!, passwordTextField: loginPasswordTextField.text!) { [weak self] (error, loginIsSuccessful) in
             guard let self = self else {return}
-            guard let error = error else {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if error != nil {
+                    Utilities.showWarningLabel(on: self.loginWarningLabel, with: error, isASuccessMessage: false)
+                    self.setLoginButtonToOriginalDesign()
+                    return
+                }
+                if loginIsSuccessful {
                     self.removeWarningLabel()
                     self.setLoginButtonTappedAnimation()
                     self.successfulLogin()
                 }
-                return
-            }
-            DispatchQueue.main.async {
-                Utilities.showWarningLabel(on: self.loginWarningLabel, with: error, isASuccessMessage: false)
-                self.setLoginButtonToOriginalDesign()
             }
         }
     }
@@ -180,9 +179,7 @@ class LoginViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
             setLoginButtonToOriginalDesign()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
-                tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
-                view.window?.rootViewController = tabBarVC
+                view.window?.rootViewController = loginViewModel.homeVC()
                 view.window?.makeKeyAndVisible()
             }
         }
@@ -196,7 +193,7 @@ class LoginViewController: UIViewController {
 extension LoginViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        loginButtonTapped()
+        loginProcess()
         dismissKeyboard()
         return true
     }

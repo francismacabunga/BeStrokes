@@ -12,8 +12,7 @@ class LandingPageViewController: UIPageViewController {
     //MARK: - Constants / Variables
     
     weak var landingPageVCDelegate: LandingPageVCDelegate?
-    private var currentIndex = 0
-    private let landingPage = LandingPage()
+    private let landingPageViewModel = LandingPageViewModel()
     
     
     //MARK: - View Controller Life Cycle
@@ -34,33 +33,17 @@ class LandingPageViewController: UIPageViewController {
     }
     
     func setInitialVC() {
-        if let firstContent = landingPageContentViewController(at: 0) {
-            setViewControllers([firstContent], direction: .forward, animated: true, completion: nil)
+        if let vc = landingPageViewModel.landingPageContentVC(at: 0) {
+            setViewControllers([vc], direction: .forward, animated: true)
         }
     }
     
     
-    //MARK: - Page View Controller Process
+    //MARK: - Data Source And Delegate
     
     func setDatasourceAndDelegate() {
         dataSource = self
         delegate = self
-    }
-    
-    func landingPageContentViewController(at index: Int) -> LandingPageContentViewController? {
-        let images = landingPage.fetchData().imageArray
-        let headings = landingPage.fetchData().headingArray
-        let subheadings = landingPage.fetchData().subheadingArray
-        let indexIsValid = landingPage.checkIfIndexIsValid(index: index, imagesCount: images.count)
-        if !indexIsValid {
-            return nil
-        }
-        let landingPageContentVC = Utilities.transition(to: Strings.landingPageContentVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: true) as! LandingPageContentViewController
-        landingPageContentVC.imageFileName = images[index]
-        landingPageContentVC.headingLabelText = headings[index]
-        landingPageContentVC.subheadingText = subheadings[index]
-        landingPageContentVC.index = index
-        return landingPageContentVC
     }
     
 }
@@ -72,14 +55,14 @@ extension LandingPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let index = (viewController as! LandingPageContentViewController).index
-        let newIndex = landingPage.minusOneTo(index)
-        return landingPageContentViewController(at: newIndex)
+        let newIndex = landingPageViewModel.minusOneTo(index)
+        return landingPageViewModel.landingPageContentVC(at: newIndex)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let index = (viewController as! LandingPageContentViewController).index
-        let newIndex = landingPage.plusOneTo(index)
-        return landingPageContentViewController(at: newIndex)
+        let newIndex = landingPageViewModel.plusOneTo(index)
+        return landingPageViewModel.landingPageContentVC(at: newIndex)
     }
     
 }
@@ -92,8 +75,7 @@ extension LandingPageViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed {
             let pageIndex = pageViewController.viewControllers?.first as! LandingPageContentViewController
-            currentIndex = pageIndex.index
-            landingPageVCDelegate?.getValueOf(currentIndex)
+            landingPageVCDelegate?.getValueOf(pageIndex.index)
         }
     }
     

@@ -16,11 +16,6 @@ struct Service {
     private let auth = Auth.auth()
     private let user = Auth.auth().currentUser
     
-    func isPasswordValid(_ password: String) -> Bool {
-        let passwordTest = NSPredicate(format: Strings.regexFormat, Strings.validationType)
-        return passwordTest.evaluate(with: password)
-    }
-    
     func createUser(with email: String,
                     and password: String,
                     completion: @escaping (Error?, AuthDataResult?) -> Void)

@@ -20,13 +20,18 @@ class LandingViewController: UIViewController {
     @IBAction func unwindToLandingVC(segue: UIStoryboardSegue) {}
     
     
+    //MARK: - Constants / Variables
+    
+    private let landingPageViewModel = LandingPageViewModel()
+    
+    
     //MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setDesignElements()
-        resetTabKeysValues()
+        landingPageViewModel.resetTabKeysValues()
         
     }
     
@@ -47,17 +52,6 @@ class LandingViewController: UIViewController {
         return .darkContent
     }
     
-    func resetTabKeysValues() {
-        UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let landingPageVC = segue.destination as? LandingPageViewController {
             landingPageVC.landingPageVCDelegate = self
@@ -69,9 +63,7 @@ class LandingViewController: UIViewController {
     
     @IBAction func getStartedButton(_ sender: UIButton) {
         Utilities.animate(button: sender)
-        let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! CaptureViewController
-        captureVC.isPresentedFromLandingVC = true
-        captureVC.modalPresentationStyle = .fullScreen
+        let captureVC = landingPageViewModel.transitionToCaptureVC()
         present(captureVC, animated: true)
     }
     

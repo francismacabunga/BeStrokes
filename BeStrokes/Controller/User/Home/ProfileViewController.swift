@@ -30,7 +30,7 @@ class ProfileViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let service = Service()
-    private var profileSettingsViewModel = ProfileSettingsViewModel()
+    private let profileSettingsViewModel = ProfileSettingsViewModel()
     private var skeletonColor: UIColor?
     private var hasProfilePicLoaded = false
     
@@ -254,29 +254,29 @@ class ProfileViewController: UIViewController {
 //MARK: - Table View Data Source
 
 extension ProfileViewController: UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return profileSettingsViewModel.data.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.profileCell) as! ProfileTableViewCell
         cell.profileSettingsViewModel = profileSettingsViewModel.data[indexPath.row]
         return cell
     }
-    
+
 }
 
 
 //MARK: - Table View Delegate
 
 extension ProfileViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let clickedCell = profileSettingsViewModel.data[indexPath.row].model!.first!.settingLabel
         if clickedCell == Strings.profileSettingsLogout {
             signOutUser()
         }
     }
-    
+
 }

@@ -7,7 +7,6 @@
 
 import UIKit
 import CropViewController
-import Firebase
 
 class SignUpViewController: UIViewController {
     
@@ -34,9 +33,8 @@ class SignUpViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let imagePicker = UIImagePickerController()
-    private var editedImage: UIImage? = nil
-    private var imageIsChanged = false
     private let service = Service()
+    private var signUpViewModel = SignUpViewModel()
     
     
     //MARK: - View Controller Life Cycle
@@ -191,9 +189,8 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpButton(_ sender: UIButton) {
         Utilities.animate(button: sender)
-        _ = validateProfilePicture()
-        _ = validateTextFields()
-        signUpButtonTapped()
+        validateInputs()
+        signUpProcess()
         dismissKeyboard()
     }
     
@@ -209,131 +206,76 @@ class SignUpViewController: UIViewController {
         signUpPasswordTextField.delegate = self
     }
     
-    func validateProfilePicture() -> Bool {
-        if imageIsChanged {
-            return true
-        } else {
-            Utilities.showWarningLabel(on: signUpWarning2Label, customizedWarning: Strings.signUpProfilePictureErrorLabel, isASuccessMessage: false)
-            return false
-        }
-    }
-    
-    func validateTextFields() -> Bool {
-        if signUpFirstNameTextField.text == "" || signUpLastNameTextField.text == "" || signUpEmailTextField.text == "" || signUpPasswordTextField.text == "" {
-            setPlaceholderErrorDesign(on: signUpFirstNameTextField, signUpLastNameTextField, signUpEmailTextField, signUpPasswordTextField)
-            return false
-        }
-        if signUpPasswordTextField.text != "" {
-            guard let password = signUpPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {return false}
-            let passwordValid = service.isPasswordValid(password)
-            if passwordValid {
-                signUpWarning1Label.isHidden = true
-                return true
-            } else {
-                Utilities.showWarningLabel(on: signUpWarning1Label, customizedWarning: Strings.signUpPasswordErrorLabel, isASuccessMessage: false)
-                return false
+    func validateInputs() {
+        signUpViewModel.validateProfilePic { [weak self] (profilePicIsValidated) in
+            guard let self = self else {return}
+            if !profilePicIsValidated {
+                DispatchQueue.main.async {
+                    Utilities.showWarningLabel(on: self.signUpWarning2Label, customizedWarning: Strings.signUpProfilePictureErrorLabel, isASuccessMessage: false)
+                }
             }
         }
-        return Bool()
+        signUpViewModel.validateTextFields(signUpFirstNameTextField.text, signUpLastNameTextField.text, signUpEmailTextField.text, signUpPasswordTextField.text, completion: { [weak self] (textFieldsAreValidated, passwordIsValidated) in
+            guard let self = self else {return}
+            DispatchQueue.main.async {
+                if textFieldsAreValidated != nil {
+                    if !textFieldsAreValidated! {
+                        self.setPlaceholderErrorDesign(on: self.signUpFirstNameTextField, self.signUpLastNameTextField, self.signUpEmailTextField, self.signUpPasswordTextField)
+                    }
+                }
+                if passwordIsValidated != nil {
+                    if passwordIsValidated! {
+                        self.signUpWarning1Label.isHidden = true
+                    } else {
+                        Utilities.showWarningLabel(on: self.signUpWarning1Label, customizedWarning: Strings.signUpPasswordErrorLabel, isASuccessMessage: false)
+                    }
+                }
+            }
+        })
     }
     
-    func userInfo() -> [String : String] {
-        let firstName = signUpFirstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let lastName = signUpLastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let email = signUpEmailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let password = signUpPasswordTextField.text
-        let userDataDictionary = [Strings.userFirstNameField: firstName!,
-                                  Strings.userLastNameField: lastName!,
-                                  Strings.userEmailField: email!,
-                                  Strings.userPasswordField: password!]
-        return userDataDictionary
-    }
-    
-    func signUpButtonTapped() {
-        if validateTextFields() && validateProfilePicture() {
-            let userDataDictionary = userInfo()
-            setSignUpButtonTappedAnimation()
-            service.createUser(with: userDataDictionary[Strings.userEmailField]!, and: userDataDictionary[Strings.userPasswordField]!) { [weak self] (error, authResult) in
-                guard let self = self else {return}
-                guard let error = error else {
-                    guard let authResult = authResult else {return}
-                    DispatchQueue.main.async {
+    func signUpProcess() {
+        signUpViewModel.signUpUser(using: signUpFirstNameTextField.text, signUpLastNameTextField.text, signUpEmailTextField.text, signUpPasswordTextField.text!) { [weak self] (error, inputsAreValidated, userIsCreated, profilePicIsUploaded, userDataIsStored, emailVerificationIsSent) in
+            guard let self = self else {return}
+            DispatchQueue.main.async {
+                if error != nil {
+                    Utilities.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
+                }
+                if inputsAreValidated != nil {
+                    if inputsAreValidated! {
+                        self.setSignUpButtonTappedAnimation()
+                    }
+                }
+                if userIsCreated != nil {
+                    if userIsCreated! {
                         UIView.animate(withDuration: 0.2) {
                             self.signUpWarning1Label.isHidden = true
                         }
+                    } else {
+                        self.setSignUpButtonToOriginalDesign()
                     }
-                    self.uploadProfilePic(using: authResult, with: userDataDictionary)
-                    return
                 }
-                DispatchQueue.main.async {
-                    Utilities.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
-                    self.setSignUpButtonToOriginalDesign()
+                if profilePicIsUploaded != nil {
+                    if !profilePicIsUploaded! {
+                        self.setSignUpButtonToOriginalDesign()
+                    }
                 }
-            }
-        }
-    }
-    
-    func uploadProfilePic(using authResult: AuthDataResult,
-                          with userDataDictionary: [String : String])
-    {
-        service.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { [weak self] (error, profilePic) in
-            guard let self = self else {return}
-            if error != nil {
-                DispatchQueue.main.async {
-                    Utilities.showWarningLabel(on: self.signUpWarning1Label, with: error!, isASuccessMessage: false)
-                    self.setSignUpButtonToOriginalDesign()
+                if userDataIsStored != nil {
+                    if !userDataIsStored! {
+                        self.setSignUpButtonToOriginalDesign()
+                    }
                 }
-                return
-            }
-            guard let profilePic = profilePic else {return}
-            let userData = [Strings.userIDField : authResult.user.uid,
-                            Strings.userFirstNameField : userDataDictionary[Strings.userFirstNameField]!,
-                            Strings.userLastNameField : userDataDictionary[Strings.userLastNameField]!,
-                            Strings.userEmailField : userDataDictionary[Strings.userEmailField]!,
-                            Strings.userProfilePicField : profilePic]
-            self.storeData(on: authResult.user.uid, with: userData)
-        }
-    }
-    
-    func storeData(on userID: String,
-                   with userDataDictionary: [String : String])
-    {
-        service.storeData(using: userID, with: userDataDictionary) { [weak self] (error, isFinishedStoring) in
-            guard let self = self else {return}
-            guard let error = error else {
-                if isFinishedStoring {
-                    self.sendEmailVerification()
-                }
-                return
-            }
-            DispatchQueue.main.async {
-                Utilities.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
-                self.setSignUpButtonToOriginalDesign()
-            }
-        }
-    }
-    
-    func sendEmailVerification() {
-        service.sendEmailVerification { [weak self] (error, _, isEmailVerificationSent) in
-            guard let self = self else {return}
-            if error != nil {
-                DispatchQueue.main.async {
-                    Utilities.showWarningLabel(on: self.signUpWarning1Label, with: error, isASuccessMessage: false)
-                    self.setSignUpButtonToOriginalDesign()
-                }
-                return
-            }
-            if isEmailVerificationSent {
-                UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
-                DispatchQueue.main.async {
-                    Utilities.showWarningLabel(on: self.signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
-                    self.setSignUpButtonTransitionAnimation()
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
-                    tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
-                    self.view.window?.rootViewController = tabBarVC
-                    self.view.window?.makeKeyAndVisible()
+                if emailVerificationIsSent != nil {
+                    if emailVerificationIsSent! {
+                        Utilities.showWarningLabel(on: self.signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
+                        self.setSignUpButtonTransitionAnimation()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            self.view.window?.rootViewController = self.signUpViewModel.homeVC()
+                            self.view.window?.makeKeyAndVisible()
+                        }
+                    } else {
+                        self.setSignUpButtonToOriginalDesign()
+                    }
                 }
             }
         }
@@ -359,9 +301,9 @@ extension SignUpViewController: UINavigationControllerDelegate, UIImagePickerCon
 extension SignUpViewController: CropViewControllerDelegate {
     
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
-        editedImage = image
         signUpImageView.image = image
-        imageIsChanged = true
+        signUpViewModel.editedImage = image
+        signUpViewModel.imageIsChanged = true
         signUpWarning2Label.isHidden = true
         Utilities.dismiss(cropViewController)
     }
@@ -378,8 +320,9 @@ extension SignUpViewController: CropViewControllerDelegate {
 extension SignUpViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        validateInputs()
+        signUpProcess()
         dismissKeyboard()
-        signUpButtonTapped()
         return true
     }
     
