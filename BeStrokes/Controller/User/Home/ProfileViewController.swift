@@ -29,7 +29,7 @@ class ProfileViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let service = Service()
+    private let firebase = Firebase()
     private let profileSettingsViewModel = ProfileSettingsViewModel()
     private var skeletonColor: UIColor?
     private var hasProfilePicLoaded = false
@@ -50,16 +50,14 @@ class ProfileViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        UserDefaults.standard.setValue(true, forKey: Strings.isProfileVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        profileSettingsViewModel.setUserDefaultsValueOnDidAppear()
         
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        UserDefaults.standard.setValue(false, forKey: Strings.isProfileVCLoadedKey)
-        UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+        profileSettingsViewModel.setUserDefaultsValueWillDisappear()
         
     }
     
@@ -152,9 +150,7 @@ class ProfileViewController: UIViewController {
         profileEmailLabel.showAnimatedSkeleton()
     }
     
-    func showAlertController(alertMessage: String,
-                             withHandler: Bool)
-    {
+    func showAlertController(alertMessage: String, withHandler: Bool) {
         if UserDefaults.standard.bool(forKey: Strings.isProfileVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
@@ -187,7 +183,7 @@ class ProfileViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func getSignedInUserData() {
-        service.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+        firebase.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -222,7 +218,7 @@ class ProfileViewController: UIViewController {
     func signOutUser() {
         let logoutAlert = Utilities.showAlert(alertTitle: Strings.logoutAlertTitle, alertMessage: "", alertActionTitle1: Strings.logoutYesAction, alertActionTitle2: Strings.logoutNoAction) { [weak self] in
             guard let self = self else {return}
-            let isUserSignedOut = self.service.signOutUser()
+            let isUserSignedOut = self.profileSettingsViewModel.signOutUser()
             if isUserSignedOut {
                 DispatchQueue.main.async {
                     _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
@@ -254,29 +250,28 @@ class ProfileViewController: UIViewController {
 //MARK: - Table View Data Source
 
 extension ProfileViewController: UITableViewDataSource {
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return profileSettingsViewModel.data.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.profileCell) as! ProfileTableViewCell
-        cell.profileSettingsViewModel = profileSettingsViewModel.data[indexPath.row]
-        return cell
+        let profileCell = profileSettingsViewModel.profileCell(profileTableView, indexPath, profileSettingsViewModel.data)
+        return profileCell
     }
-
+    
 }
 
 
 //MARK: - Table View Delegate
 
 extension ProfileViewController: UITableViewDelegate {
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let clickedCell = profileSettingsViewModel.data[indexPath.row].model!.first!.settingLabel
         if clickedCell == Strings.profileSettingsLogout {
             signOutUser()
         }
     }
-
+    
 }

@@ -37,7 +37,8 @@ class CaptureViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let service = Service()
+    private let service = Firebase()
+    private let networking = Networking()
     private var arkit = ARKit()
     private let imagePicker = UIImagePickerController()
     var isStickerPicked = false
@@ -474,10 +475,10 @@ class CaptureViewController: UIViewController {
     //MARK: - Fetching of Sticker Data
     
     func downloadStickerImage(using stickerURL: String) {
-        service.downloadStickerImage(using: stickerURL) { [weak self] error, stickerData in
+        networking.fetchData(using: stickerURL) { [weak self] (error, data) in
             guard let self = self else {return}
             guard let error = error else {
-                guard let stickerData = stickerData else {return}
+                guard let stickerData = data else {return}
                 DispatchQueue.main.async {
                     self.stickerMaterial.diffuse.contents = UIImage(data: stickerData)
                 }

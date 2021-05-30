@@ -63,7 +63,7 @@ class LandingViewController: UIViewController {
     
     @IBAction func getStartedButton(_ sender: UIButton) {
         Utilities.animate(button: sender)
-        let captureVC = landingPageViewModel.transitionToCaptureVC()
+        let captureVC = landingPageViewModel.captureVC()
         present(captureVC, animated: true)
     }
     

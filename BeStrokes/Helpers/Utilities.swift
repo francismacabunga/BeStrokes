@@ -262,9 +262,7 @@ struct Utilities {
     }
     
     // Navigation Bar
-    static func setDesignOn(navigationBar: UINavigationBar,
-                            isDarkMode: Bool)
-    {
+    static func setDesignOn(navigationBar: UINavigationBar, isDarkMode: Bool) {
         let imageView = UIImageView()
         var image = UIImage()
         if isDarkMode {
@@ -331,9 +329,7 @@ struct Utilities {
     }
     
     // Switch
-    static func setDesignOn(switchIndicator: UISwitch,
-                            alpha: CGFloat)
-    {
+    static func setDesignOn(switchIndicator: UISwitch, alpha: CGFloat) {
         switchIndicator.alpha = alpha
     }
     
@@ -578,16 +574,12 @@ struct Utilities {
     }
     
     // Table View Cell
-    static func setDesignOn(cell: UITableViewCell,
-                            selectionStyle: UITableViewCell.SelectionStyle)
-    {
+    static func setDesignOn(cell: UITableViewCell, selectionStyle: UITableViewCell.SelectionStyle) {
         cell.selectionStyle = selectionStyle
     }
     
     // Animation
-    static func animate(button: UIButton? = nil,
-                        view: UIView? = nil)
-    {
+    static func animate(button: UIButton? = nil, view: UIView? = nil) {
         if button != nil {
             UIView.animate(withDuration: 0.2) {
                 button!.alpha = 0.4
@@ -669,7 +661,11 @@ struct Utilities {
         return nil
     }
     
-    static func showWarningLabel(on label: UILabel, with error: Error? = nil, customizedWarning: String? = nil, isASuccessMessage: Bool) {
+    static func showWarningLabel(on label: UILabel,
+                                 with error: Error? = nil,
+                                 customizedWarning: String? = nil,
+                                 isASuccessMessage: Bool)
+    {
         if error != nil {
             label.text = error!.localizedDescription
         }

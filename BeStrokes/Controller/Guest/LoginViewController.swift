@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let service = Service()
+    private let service = Firebase()
     private let loginViewModel = LoginViewModel()
     
     
@@ -179,8 +179,7 @@ class LoginViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [self] in
             setLoginButtonToOriginalDesign()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                view.window?.rootViewController = loginViewModel.homeVC()
-                view.window?.makeKeyAndVisible()
+                loginViewModel.transitionToHomeVC(with: self)
             }
         }
     }

@@ -31,14 +31,12 @@ class HomeViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let service = Service()
+    private let firebase = Firebase()
+    private var homeViewModel = HomeViewModel()
     private var stickerViewModel: [StickerViewModel]?
     private var featuredStickerViewModel: [FeaturedStickerViewModel]?
-    private var stickerCategoryViewModel = [StickerCategoryViewModel]()
+    private var stickerCategoryViewModel: [StickerCategoryViewModel]!
     private var viewPeekingBehavior: MSCollectionViewPeekingBehavior!
-    private var stickerCategorySelected: String?
-    private var selectedIndexPath: IndexPath?
-    private var shouldReloadStickerCategoryCollectionView = false
     private var skeletonColor: UIColor?
     private var hasProfilePicLoaded = false
     private let notificationCenter = UNUserNotificationCenter.current()
@@ -85,7 +83,7 @@ class HomeViewController: UIViewController {
         checkThemeAppearance()
         showLoadingProfilePicDesign()
         viewPeekingBehavior = MSCollectionViewPeekingBehavior()
-        setViewPeekingBehavior(using: viewPeekingBehavior)
+        homeViewModel.setViewPeekingBehavior(using: viewPeekingBehavior, on: homeFeaturedStickerCollectionView)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -106,8 +104,8 @@ class HomeViewController: UIViewController {
     
     @objc func setLightMode() {
         setNeedsStatusBarAppearanceUpdate()
-        if shouldReloadStickerCategoryCollectionView {
-            reloadStickerCategoryCollection()
+        if homeViewModel.shouldReloadCategoryCollectionView {
+            homeViewModel.reload(homeStickerCategoryCollectionView)
         }
         UIView.animate(withDuration: 0.3) { [self] in
             if hasProfilePicLoaded {
@@ -123,8 +121,8 @@ class HomeViewController: UIViewController {
     
     @objc func setDarkMode() {
         setNeedsStatusBarAppearanceUpdate()
-        if shouldReloadStickerCategoryCollectionView {
-            reloadStickerCategoryCollection()
+        if homeViewModel.shouldReloadCategoryCollectionView {
+            homeViewModel.reload(homeStickerCategoryCollectionView)
         }
         UIView.animate(withDuration: 0.3) { [self] in
             Utilities.setDesignOn(scrollView: homeScrollView, indicatorColor: .white)
@@ -148,23 +146,6 @@ class HomeViewController: UIViewController {
         setProfilePicture()
     }
     
-    func reloadStickerCategoryCollection() {
-        homeStickerCategoryCollectionView.reloadData()
-        homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath!, animated: false, scrollPosition: .centeredHorizontally)
-    }
-    
-    func setInitalSelectedCategoryCell() {
-        selectedIndexPath = IndexPath(item: 0, section: 0)
-        homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .right)
-        shouldReloadStickerCategoryCollectionView = true
-    }
-    
-    func setViewPeekingBehavior(using behavior: MSCollectionViewPeekingBehavior) {
-        homeFeaturedStickerCollectionView.configureForPeekingBehavior(behavior: behavior)
-        behavior.cellPeekWidth = 15
-        behavior.cellSpacing = 5
-    }
-    
     func showLoadingProfilePicDesign() {
         setSkeletonColor()
         homeProfilePicContentView.isSkeletonable = true
@@ -186,9 +167,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func showAlertController(alertMessage: String,
-                             withHandler: Bool)
-    {
+    func showAlertController(alertMessage: String, withHandler: Bool) {
         if UserDefaults.standard.bool(forKey: Strings.isHomeVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
@@ -211,8 +190,7 @@ class HomeViewController: UIViewController {
     //MARK: - Buttons
     
     @IBAction func homeProfilePictureButton(_ sender: UIButton) {
-        let profileVC = Utilities.transition(to: Strings.profileVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! ProfileViewController
-        profileVC.modalPresentationStyle = .popover
+        let profileVC = homeViewModel.profileVC()
         present(profileVC, animated: true)
     }
     
@@ -220,7 +198,7 @@ class HomeViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func setProfilePicture() {
-        service.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+        firebase.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -249,7 +227,7 @@ class HomeViewController: UIViewController {
     }
     
     func checkIfUserIsSignedIn() {
-        service.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -265,7 +243,7 @@ class HomeViewController: UIViewController {
     //MARK: - Fetching of Collection View Data
     
     func getFeaturedStickersCollectionViewData() {
-        service.fetchFeaturedSticker { [weak self] (error, featuredStickerData) in
+        homeViewModel.fetchFeaturedSticker { [weak self] (error, featuredStickerData) in
             guard let self = self else {return}
             guard let error = error else {
                 guard let featuredStickerData = featuredStickerData else {return}
@@ -282,13 +260,13 @@ class HomeViewController: UIViewController {
     }
     
     func getStickersCategoryCollectionViewData() {
-        stickerCategoryViewModel = service.fetchStickerCategories()
+        stickerCategoryViewModel = homeViewModel.stickerCategory()
         homeStickerCategoryCollectionView.reloadData()
-        setInitalSelectedCategoryCell()
+        homeViewModel.setInitialSelectedCell(on: homeStickerCategoryCollectionView)
     }
     
     func getStickersCollectionViewData(onCategory stickerCategory: String) {
-        service.fetchSticker(onCategory: stickerCategory) { [weak self] (error, stickerData) in
+        homeViewModel.fetchSticker(onCategory: stickerCategory) { [weak self] (error, stickerData) in
             guard let self = self else {return}
             guard let error = error else {
                 guard let stickerData = stickerData else {return}
@@ -316,7 +294,7 @@ class HomeViewController: UIViewController {
     func changeStickerStatusOnFirstTimeLogin(using stickerData: [StickerViewModel]) {
         if UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
             UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
-            service.uploadStickerInUserCollection(from: stickerData, isRecentlyUploaded: false, isNew: false) { [weak self] (error, isUserSignedIn) in
+            homeViewModel.uploadStickerInUserCollection(from: stickerData, isRecentlyUploaded: false, isNew: false) { [weak self] (error, isUserSignedIn) in
                 guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}
@@ -336,7 +314,7 @@ class HomeViewController: UIViewController {
     
     func setStickerDataToUserID(using stickerViewModel: [StickerViewModel]) {
         if !UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
-            service.checkIfStickerExistsInUserCollection(stickerViewModel: stickerViewModel) { [weak self] (error, isUserSignedIn, isStickerPresent, newSticker) in
+            homeViewModel.checkIfStickerExistsInUserCollection(stickerViewModel: stickerViewModel) { [weak self] (error, isUserSignedIn, isStickerPresent, newSticker) in
                 guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}
@@ -364,7 +342,7 @@ class HomeViewController: UIViewController {
     }
     
     func uploadStickerInUserCollection(using stickerViewModel: [StickerViewModel]) {
-        service.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { [weak self] (error, isUserSignedIn) in
+        homeViewModel.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { [weak self] (error, isUserSignedIn) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -382,7 +360,7 @@ class HomeViewController: UIViewController {
     }
     
     func removeDeletedStickersInUserCollection() {
-        service.checkIfUserStickerExistsInStickerCollection { [weak self] (error, isUserSignedIn) in
+        homeViewModel.checkIfUserStickerExistsInStickerCollection { [weak self] (error, isUserSignedIn) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -403,33 +381,16 @@ class HomeViewController: UIViewController {
     //MARK: - In-App Notification Process
     
     func checkIfNotificationIsPermitted() {
-        Utilities.checkIfNotificationIsPermitted { [weak self] (permission) in
+        homeViewModel.checkIfNotificationIsPermitted { [weak self] (error) in
             guard let self = self else {return}
-            if !permission {
-                let options: UNAuthorizationOptions = [.alert, .sound]
-                self.requestAuthorization(options)
-            }
-        }
-    }
-    
-    func requestAuthorization(_ options: UNAuthorizationOptions) {
-        notificationCenter.requestAuthorization(options: options) { (isPermissionGranted, error) in
-            guard let error = error else {
-                if isPermissionGranted {
-                    UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
-                } else {
-                    UserDefaults.standard.setValue(false, forKey: Strings.notificationKey)
-                }
-                return
-            }
-            DispatchQueue.main.async { [self] in
-                showAlertController(alertMessage: error.localizedDescription, withHandler: false)
+            DispatchQueue.main.async {
+                self.showAlertController(alertMessage: error.localizedDescription, withHandler: false)
             }
         }
     }
     
     func showBannerNotification() {
-        service.fetchRecentlyUploadedSticker { [weak self] (error, isUserSignedIn, userStickerData) in
+        homeViewModel.fetchRecentlyUploadedSticker { [weak self] (error, isUserSignedIn, userStickerData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -453,7 +414,7 @@ class HomeViewController: UIViewController {
     }
     
     func updateRecentlyUploadedSticker(using stickerID: String) {
-        service.updateRecentlyUploadedSticker(on: stickerID) { [weak self] (error, isUserSignedIn) in
+        homeViewModel.updateRecentlyUploadedSticker(on: stickerID) { [weak self] (error, isUserSignedIn) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -472,7 +433,7 @@ class HomeViewController: UIViewController {
     }
     
     func updateBadgeCounter() {
-        service.fetchNewSticker { [weak self] (error, isUserSignedIn, numberOfNewStickers, _) in
+        firebase.fetchNewSticker { [weak self] (error, isUserSignedIn, numberOfNewStickers, _) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -494,12 +455,7 @@ class HomeViewController: UIViewController {
     }
     
     func triggerNotification() {
-        let notificationIdentifier = Strings.notificationIdentifier
-        let notificationContent = UNMutableNotificationContent()
-        notificationContent.title = Strings.notificationTitle
-        notificationContent.body = Strings.notificationBody
-        let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let notificationRequest = UNNotificationRequest(identifier: notificationIdentifier, content: notificationContent, trigger: notificationTrigger)
+        let notificationRequest = homeViewModel.notificationRequest()
         notificationCenter.add(notificationRequest) { [weak self] (error) in
             guard let self = self else {return}
             guard let error = error else {return}
@@ -575,25 +531,20 @@ extension HomeViewController: SkeletonCollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == homeFeaturedStickerCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.featuredStickerCell, for: indexPath) as! FeaturedStickerCollectionViewCell
-            guard let featuredStickerViewModel = featuredStickerViewModel else {return cell}
-            cell.prepareFeaturedStickerCell()
-            cell.featuredStickerViewModel = featuredStickerViewModel[indexPath.item]
-            cell.featuredStickerCellDelegate = self
-            return cell
+            let featuredStickerCell = homeViewModel.featuredStickerCell(homeFeaturedStickerCollectionView, indexPath)
+            guard let featuredStickerViewModel = featuredStickerViewModel else {return featuredStickerCell}
+            homeViewModel.setup(featuredStickerCell, indexPath, featuredStickerViewModel, self)
+            return featuredStickerCell
         }
         if collectionView == homeStickerCategoryCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCategoryCell, for: indexPath) as! StickerCategoryCollectionViewCell
-            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
-            cell.setDesignElements()
-            return cell
+            let stickerCategoryCell = homeViewModel.setupStickerCategoryCell(homeStickerCategoryCollectionView, indexPath, stickerCategoryViewModel)
+            return stickerCategoryCell
         }
         if collectionView == homeStickerCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Strings.stickerCollectionViewCell, for: indexPath) as! StickerCollectionViewCell
-            guard let stickerViewModel = stickerViewModel else {return cell}
-            cell.prepareStickerCell()
-            cell.stickerViewModel = stickerViewModel[indexPath.item]
-            return cell
+            let stickerCell = homeViewModel.stickerCell(homeStickerCollectionView, indexPath)
+            guard let stickerViewModel = stickerViewModel else {return stickerCell}
+            homeViewModel.setup(stickerCell, indexPath, stickerViewModel)
+            return stickerCell
         }
         return UICollectionViewCell()
     }
@@ -607,37 +558,22 @@ extension HomeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == homeStickerCategoryCollectionView {
-            selectedIndexPath = indexPath
-            stickerCategoryViewModel[indexPath.item].isCategorySelected = true
-            stickerCategorySelected = stickerCategoryViewModel[indexPath.item].category
-            guard let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell else {return}
-            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
+            let selectedStickerCategory = homeViewModel.selectStickerCategory(homeStickerCategoryCollectionView, indexPath, &stickerCategoryViewModel)!
             showLoadingStickersDesign()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-                getStickersCollectionViewData(onCategory: stickerCategorySelected!)
+                getStickersCollectionViewData(onCategory: selectedStickerCategory)
             }
         }
         if collectionView == homeStickerCollectionView {
-            UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
             guard let stickerViewModel = stickerViewModel else {return}
-            let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
-            stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.item]
-            stickerOptionVC.modalPresentationStyle = .fullScreen
+            let stickerOptionVC = homeViewModel.stickerOptionVC(stickerViewModel, indexPath)
             present(stickerOptionVC, animated: true)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if collectionView == homeStickerCategoryCollectionView {
-            stickerCategoryViewModel[indexPath.item].isCategorySelected = false
-            guard let cell = collectionView.cellForItem(at: indexPath) as? StickerCategoryCollectionViewCell else {
-                DispatchQueue.main.async { [self] in
-                    homeStickerCategoryCollectionView.reloadData()
-                    homeStickerCategoryCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredHorizontally)
-                }
-                return
-            }
-            cell.stickerCategoryViewModel = stickerCategoryViewModel[indexPath.item]
+            homeViewModel.deselectStickerCategory(homeStickerCategoryCollectionView, indexPath, &stickerCategoryViewModel)
         }
     }
     
@@ -676,7 +612,6 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 extension HomeViewController: FeaturedStickerCellDelegate {
     
     func getVC(using viewController: UIViewController) {
-        viewController.modalPresentationStyle = .fullScreen
         present(viewController, animated: true)
     }
     

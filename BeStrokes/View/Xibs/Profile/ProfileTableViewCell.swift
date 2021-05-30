@@ -88,14 +88,13 @@ class ProfileTableViewCell: UITableViewCell {
     //MARK: - Switches
     
     @IBAction func profileSwitch(_ sender: UISwitch) {
+        guard let profileSettingsViewModel = profileSettingsViewModel else {return}
         switch settingLabel.text {
         case Strings.profileSettingsDarkAppearance:
             if sender.isOn {
-                UserDefaults.standard.setValue(false, forKey: Strings.lightModeKey)
-                NotificationCenter.default.post(name: Utilities.setDarkModeAppearance, object: nil)
+                profileSettingsViewModel.setNotificationForDarkMode()
             } else {
-                UserDefaults.standard.setValue(true, forKey: Strings.lightModeKey)
-                NotificationCenter.default.post(name: Utilities.setLightModeAppearance, object: nil)
+                profileSettingsViewModel.setNotificationForLightMode()
             }
         default:
             return

@@ -32,7 +32,7 @@ struct LandingPageViewModel {
         return landingPageContentVC
     }
     
-    func transitionToCaptureVC() -> CaptureViewController {
+    func captureVC() -> CaptureViewController {
         let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! CaptureViewController
         captureVC.isPresentedFromLandingVC = true
         captureVC.modalPresentationStyle = .fullScreen

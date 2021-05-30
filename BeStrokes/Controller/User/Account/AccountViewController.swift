@@ -34,7 +34,7 @@ class AccountViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let service = Service()
+    private let service = Firebase()
     private var userStickerViewModel: [UserStickerViewModel]?
     private var isButtonPressed = false
     private var hasPerformedSearch = false
@@ -280,27 +280,27 @@ class AccountViewController: UIViewController {
     //MARK: - Fetching of Sticker Data
     
     func setLovedStickersData() {
-        service.fetchLovedSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
-            guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
-                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
-                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                }
-                return
-            }
-            guard let userStickerData = userStickerData else {return}
-            DispatchQueue.main.async {
-                self.userStickerViewModel = userStickerData
-                self.checkIfUserStickerViewModelIsEmpty(withDelay: 0.5)
-            }
-        }
+//        service.fetchLovedSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
+//            guard let self = self else {return}
+//            if !isUserSignedIn {
+//                guard let error = error else {return}
+//                DispatchQueue.main.async {
+//                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+//                }
+//                return
+//            }
+//            if error != nil {
+//                DispatchQueue.main.async {
+//                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+//                }
+//                return
+//            }
+//            guard let userStickerData = userStickerData else {return}
+//            DispatchQueue.main.async {
+//                self.userStickerViewModel = userStickerData
+//                self.checkIfUserStickerViewModelIsEmpty(withDelay: 0.5)
+//            }
+//        }
     }
     
     func checkIfUserStickerViewModelIsEmpty(withDelay delay: Double) {
@@ -394,32 +394,32 @@ extension AccountViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         accountSearchTextField.resignFirstResponder()
         if accountSearchTextField.text != nil {
-            service.searchSticker(using: accountSearchTextField.text!) { [weak self] (error, isUserSignedIn, userStickerData) in
-                guard let self = self else {return}
-                if !isUserSignedIn {
-                    guard let error = error else {return}
-                    DispatchQueue.main.async {
-                        self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                    }
-                    return
-                }
-                if error != nil {
-                    DispatchQueue.main.async {
-                        self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                    }
-                    return
-                }
-                guard let userStickerViewModel = userStickerData else {
-                    DispatchQueue.main.async {
-                        self.showNoStickerResultLabel()
-                    }
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.showSearchedSticker(using: [userStickerViewModel])
-                }
-            }
-            return true
+//            service.searchSticker(using: accountSearchTextField.text!) { [weak self] (error, isUserSignedIn, userStickerData) in
+//                guard let self = self else {return}
+//                if !isUserSignedIn {
+//                    guard let error = error else {return}
+//                    DispatchQueue.main.async {
+//                        self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+//                    }
+//                    return
+//                }
+//                if error != nil {
+//                    DispatchQueue.main.async {
+//                        self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+//                    }
+//                    return
+//                }
+//                guard let userStickerViewModel = userStickerData else {
+//                    DispatchQueue.main.async {
+//                        self.showNoStickerResultLabel()
+//                    }
+//                    return
+//                }
+//                DispatchQueue.main.async {
+//                    self.showSearchedSticker(using: [userStickerViewModel])
+//                }
+//            }
+//            return true
         }
         return false
     }

@@ -19,7 +19,8 @@ class NotificationViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let service = Service()
+    private let firebase = Firebase()
+    private let notificationViewModel = NotificationViewModel()
     private var userStickerViewModel: [UserStickerViewModel]?
     
     
@@ -108,9 +109,7 @@ class NotificationViewController: UIViewController {
         }
     }
     
-    func showAlertController(alertMessage: String,
-                             withHandler: Bool)
-    {
+    func showAlertController(alertMessage: String, withHandler: Bool) {
         if UserDefaults.standard.bool(forKey: Strings.isNotificationVCLoadedKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
@@ -133,7 +132,7 @@ class NotificationViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func checkIfUserIsSignedIn() {
-        service.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -149,7 +148,7 @@ class NotificationViewController: UIViewController {
     //MARK: - Fetching of Sticker Data
     
     func setNotificationData() {
-        service.fetchNewSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
+        firebase.fetchNewSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -196,12 +195,10 @@ extension NotificationViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.stickerTableViewCell) as! StickerTableViewCell
-        guard let userStickerViewModel = userStickerViewModel else {return cell}
-        cell.prepareStickerTableViewCell()
-        cell.userStickerViewModel = userStickerViewModel[indexPath.row]
-        cell.stickerCellDelegate = self
-        return cell
+        let stickerCell = notificationViewModel.stickerCell(notificationTableView)
+        guard let userStickerViewModel = userStickerViewModel else {return stickerCell}
+        notificationViewModel.setupStickerCell(stickerCell, indexPath, userStickerViewModel, self)
+        return stickerCell
     }
     
 }
@@ -213,9 +210,7 @@ extension NotificationViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let userStickerViewModel = userStickerViewModel else {return}
-        let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
-        stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.row]
-        stickerOptionVC.modalPresentationStyle = .fullScreen
+        let stickerOptionVC = notificationViewModel.stickerOptionVC(indexPath, userStickerViewModel)
         present(stickerOptionVC, animated: true)
     }
     

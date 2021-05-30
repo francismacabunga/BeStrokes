@@ -12,7 +12,7 @@ struct StickerCategoryViewModel {
     let category: String
     var isCategorySelected: Bool
     
-    init(_ stickerCategory: StickerCategoryModel) {
+    init(stickerCategory: StickerCategoryModel) {
         self.category = stickerCategory.category
         self.isCategorySelected = stickerCategory.isCategorySelected
     }

@@ -27,7 +27,7 @@ class ForgotPasswordViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let service = Service()
+    private let service = Firebase()
     private let forgotPasswordViewModel = ForgotPasswordViewModel()
     
     

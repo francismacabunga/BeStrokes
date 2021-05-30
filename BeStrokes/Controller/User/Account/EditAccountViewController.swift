@@ -35,7 +35,7 @@ class EditAccountViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let service = Service()
+    private let service = Firebase()
     private let imagePicker = UIImagePickerController()
     private var editedImage: UIImage?
     private var userID = String()

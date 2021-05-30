@@ -30,7 +30,7 @@ class StickerOptionViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let service = Service()
+    private let service = Firebase()
     private var heartButtonTapped: Bool?
     private var skeletonColor: UIColor?
     var stickerViewModel: StickerViewModel?
@@ -327,35 +327,35 @@ class StickerOptionViewController: UIViewController {
     //MARK: - Fetching of Sticker Data
     
     func checkIfStickerIsLoved(_ stickerID: String) {
-        service.fetchLovedSticker(on: stickerID) { [weak self] (error, isUserSignedIn, isStickerLoved, _) in
-            guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
-                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
-                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                }
-                return
-            }
-            guard let isStickerLoved = isStickerLoved else {return}
-            DispatchQueue.main.async {
-                if isStickerLoved {
-                    Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                    self.heartButtonTapped = true
-                } else {
-                    Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                    self.heartButtonTapped = false
-                }
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.hideLoadingSkeletonView()
-            }
-        }
+//        service.fetchLovedSticker(on: stickerID) { [weak self] (error, isUserSignedIn, isStickerLoved, _) in
+//            guard let self = self else {return}
+//            if !isUserSignedIn {
+//                guard let error = error else {return}
+//                DispatchQueue.main.async {
+//                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+//                }
+//                return
+//            }
+//            if error != nil {
+//                DispatchQueue.main.async {
+//                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+//                }
+//                return
+//            }
+//            guard let isStickerLoved = isStickerLoved else {return}
+//            DispatchQueue.main.async {
+//                if isStickerLoved {
+//                    Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+//                    self.heartButtonTapped = true
+//                } else {
+//                    Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+//                    self.heartButtonTapped = false
+//                }
+//            }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+//                self.hideLoadingSkeletonView()
+//            }
+//        }
     }
     
     

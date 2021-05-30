@@ -6,15 +6,17 @@
 //
 
 import Foundation
+import Firebase
 import UIKit
 
 struct SignUpViewModel {
     
-    private let service = Service()
-    var editedImage: UIImage? = nil
-    var imageIsChanged = false
+    private let firebase = Firebase()
+    private let auth = Auth.auth()
     private var profilePicValidated = false
     private var textFieldsValidated = false
+    var editedImage: UIImage? = nil
+    var imageIsChanged = false
     
     mutating func validateProfilePic(completion: @escaping (Bool) -> Void) {
         if imageIsChanged {
@@ -66,14 +68,14 @@ struct SignUpViewModel {
             var userData = [Strings.userFirstNameField : firstName!.trimmingCharacters(in: .whitespacesAndNewlines),
                             Strings.userLastNameField : lastName!.trimmingCharacters(in: .whitespacesAndNewlines),
                             Strings.userEmailField : email!.trimmingCharacters(in: .whitespacesAndNewlines)]
-            service.createUser(with: userData[Strings.userEmailField]!, and: password) { (error, authResult) in
+            createUser(with: userData[Strings.userEmailField]!, and: password) { (error, authResult) in
                 if error != nil {
                     completion(error, nil, false, nil, nil, nil)
                     return
                 }
                 guard let authResult = authResult else {return}
                 completion(nil, nil, true, nil, nil, nil)
-                service.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { (error, profilePic) in
+                firebase.uploadProfilePic(with: editedImage!, using: authResult.user.uid) { (error, profilePic) in
                     if error != nil {
                         completion(error, nil, nil, false, nil, nil)
                         return
@@ -81,13 +83,13 @@ struct SignUpViewModel {
                     guard let profilePic = profilePic else {return}
                     userData[Strings.userIDField] = authResult.user.uid
                     userData[Strings.userProfilePicField] = profilePic
-                    service.storeData(using: authResult.user.uid, with: userData) { (error, isFinishedStoring) in
+                    firebase.storeData(using: authResult.user.uid, with: userData) { (error, isFinishedStoring) in
                         if error != nil {
                             completion(error, nil, nil, nil, false, nil)
                             return
                         }
                         if isFinishedStoring {
-                            service.sendEmailVerification { (error, _, isEmailVerificationSent) in
+                            firebase.sendEmailVerification { (error, _, isEmailVerificationSent) in
                                 if error != nil {
                                     completion(error, nil, nil, nil, nil, false)
                                     return
@@ -104,10 +106,28 @@ struct SignUpViewModel {
         }
     }
     
+    func createUser(with email: String,
+                    and password: String,
+                    completion: @escaping (Error?, AuthDataResult?) -> Void)
+    {
+        auth.createUser(withEmail: email, password: password) { (authResult, error) in
+            guard let error = error else {
+                completion(nil, authResult)
+                return
+            }
+            completion(error, nil)
+        }
+    }
+    
     func homeVC() -> TabBarViewController {
         let tabBarVC = Utilities.transition(to: Strings.tabBarVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! TabBarViewController
         tabBarVC.selectedViewController = tabBarVC.viewControllers?[0]
         return tabBarVC
+    }
+    
+    func transitionToHomeVC(with vc: SignUpViewController) {
+        vc.view.window?.rootViewController = homeVC()
+        vc.view.window?.makeKeyAndVisible()
     }
     
 }

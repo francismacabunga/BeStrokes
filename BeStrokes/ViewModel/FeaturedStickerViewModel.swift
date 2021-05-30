@@ -25,4 +25,13 @@ struct FeaturedStickerViewModel {
         self.tag = featuredSticker.tag
     }
     
+    func captureVC(_ featuredStickerViewModel: FeaturedStickerViewModel) -> CaptureViewController {
+        let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true)! as! CaptureViewController
+        captureVC.isStickerPicked = true
+        captureVC.featuredStickerViewModel = featuredStickerViewModel
+        captureVC.modalPresentationStyle = .fullScreen
+        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        return captureVC
+    }
+    
 }

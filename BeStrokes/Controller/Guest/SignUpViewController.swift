@@ -33,7 +33,7 @@ class SignUpViewController: UIViewController {
     //MARK: - Constants / Variables
     
     private let imagePicker = UIImagePickerController()
-    private let service = Service()
+    private let service = Firebase()
     private var signUpViewModel = SignUpViewModel()
     
     
@@ -270,8 +270,7 @@ class SignUpViewController: UIViewController {
                         Utilities.showWarningLabel(on: self.signUpWarning1Label, customizedWarning: Strings.signUpProcessSuccessfulLabel, isASuccessMessage: true)
                         self.setSignUpButtonTransitionAnimation()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                            self.view.window?.rootViewController = self.signUpViewModel.homeVC()
-                            self.view.window?.makeKeyAndVisible()
+                            self.signUpViewModel.transitionToHomeVC(with: self)
                         }
                     } else {
                         self.setSignUpButtonToOriginalDesign()

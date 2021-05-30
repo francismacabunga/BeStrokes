@@ -53,7 +53,7 @@ class LandingPageContentViewController: UIViewController {
         Utilities.setDesignOn(label: landingPageContentSubheadingLabel, fontName: Strings.defaultFontMedium, fontSize: 17, numberofLines: 0, textAlignment: .center, lineBreakMode: .byWordWrapping, fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
     }
     
-
+    
     //MARK: - Fetching of Landing Page View Controller Data
     
     func setData() {
