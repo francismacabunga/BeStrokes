@@ -48,7 +48,7 @@ class HomeViewModel {
         let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
         stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.item]
         stickerOptionVC.modalPresentationStyle = .fullScreen
-        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.homePageKey)
         return stickerOptionVC
     }
     

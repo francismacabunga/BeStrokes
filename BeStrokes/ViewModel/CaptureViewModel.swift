@@ -1,16 +1,51 @@
 //
-//  ARKit.swift
+//  CaptureViewModel.swift
 //  BeStrokes
 //
-//  Created by Francis Norman Macabunga on 5/22/21.
+//  Created by Francis Norman Macabunga on 6/1/21.
 //
 
 import Foundation
 import ARKit
 
-struct ARKit {
+struct CaptureViewModel {
     
     private var lastRotation: CGFloat?
+    private let trackingConfiguration = ARWorldTrackingConfiguration()
+    var stickerIsPicked = false
+    var presentedFromLandingPage = false
+    
+    func setUserDefaultsKeysOnWillAppear() {
+        if UserDefaults.standard.bool(forKey: Strings.homeTabKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.homePageKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.notificationTabKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.notificationPageKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.accountTabKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.accountPageKey)
+        }
+    }
+    
+    func setUserDefaultsKeysOnExitButton() {
+        if UserDefaults.standard.bool(forKey: Strings.homeTabKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.homePageKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.notificationTabKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.notificationPageKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.accountTabKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.accountPageKey)
+        }
+        UserDefaults.standard.setValue(false, forKey: Strings.capturePageKey)
+    }
+    
+    //MARK: - ARKit Related Functions
+    
+    func setPlaneDetection(on ARSCNView: ARSCNView) {
+        trackingConfiguration.planeDetection = [.horizontal, .vertical]
+        ARSCNView.session.run(trackingConfiguration)
+    }
     
     func createPlaneAnchor(using anchor: ARAnchor) -> ARPlaneAnchor? {
         guard let planeAnchor = anchor as? ARPlaneAnchor else {return nil}

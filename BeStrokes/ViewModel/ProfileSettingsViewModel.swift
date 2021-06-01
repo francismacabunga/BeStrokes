@@ -28,9 +28,9 @@ struct ProfileSettingsViewModel {
         }
     }
     
-    func profileCell(_ tableView: UITableView,
-                     _ indexPath: IndexPath,
-                     _ profileSettingsViewModel: [ProfileSettingsViewModel]) -> ProfileTableViewCell
+    func setupProfileCell(_ tableView: UITableView,
+                          _ indexPath: IndexPath,
+                          _ profileSettingsViewModel: [ProfileSettingsViewModel]) -> ProfileTableViewCell
     {
         let profileCell = tableView.dequeueReusableCell(withIdentifier: Strings.profileCell) as! ProfileTableViewCell
         profileCell.profileSettingsViewModel = profileSettingsViewModel[indexPath.row]
@@ -38,13 +38,13 @@ struct ProfileSettingsViewModel {
     }
     
     func setUserDefaultsValueOnDidAppear() {
-        UserDefaults.standard.setValue(true, forKey: Strings.isProfileVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        UserDefaults.standard.setValue(true, forKey: Strings.profilePageKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.homePageKey)
     }
     
     func setUserDefaultsValueWillDisappear() {
-        UserDefaults.standard.setValue(false, forKey: Strings.isProfileVCLoadedKey)
-        UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.profilePageKey)
+        UserDefaults.standard.setValue(true, forKey: Strings.homePageKey)
     }
     
     func setNotificationForDarkMode() {

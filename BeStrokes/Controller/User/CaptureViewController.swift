@@ -37,13 +37,10 @@ class CaptureViewController: UIViewController {
     
     //MARK: - Constants / Variables
     
-    private let service = Firebase()
+    private let firebase = Firebase()
     private let networking = Networking()
-    private var arkit = ARKit()
+    var captureViewModel = CaptureViewModel()
     private let imagePicker = UIImagePickerController()
-    var isStickerPicked = false
-    var isPresentedFromLandingVC = false
-    private let trackingConfiguration = ARWorldTrackingConfiguration()
     private let stickerMaterial = SCNMaterial()
     private var planeNodes = [SCNNode]()
     private var stickerNodes = [SCNNode]()
@@ -83,23 +80,23 @@ class CaptureViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setNoPlaneDetection()
-        if isPresentedFromLandingVC {
+        if captureViewModel.presentedFromLandingPage {
+            UserDefaults.standard.setValue(true, forKey: Strings.capturePageKey)
             showTutorial(onLandingVC: true)
             return
         }
         if isPresentedWithTabBar() {
             checkIfUserIsSignedIn()
-            if !UserDefaults.standard.bool(forKey: Strings.captureButtonKey) {
+            if !UserDefaults.standard.bool(forKey: Strings.capturePageOpenedFromCaptureTabKey) {
                 showTutorial(onCaptureVCWithTabBar: true)
             } else {
                 showDefaultDesign(onCaptureVCWithTabBar: true)
             }
         } else {
-            UserDefaults.standard.setValue(true, forKey: Strings.isCaptureVCLoadedKey)
-            setUserDefaultsTabKeys()
+            UserDefaults.standard.setValue(true, forKey: Strings.capturePageKey)
+            captureViewModel.setUserDefaultsKeysOnWillAppear()
             checkIfUserIsSignedIn()
-            if !UserDefaults.standard.bool(forKey: Strings.tryMeButtonKey) {
+            if !UserDefaults.standard.bool(forKey: Strings.capturePageOpenedFromTryMeButtonKey) {
                 showTutorial(onCaptureVCWithoutTabBar: true)
             } else {
                 showDefaultDesign(onCaptureVCWithoutTabBar: true)
@@ -210,28 +207,6 @@ class CaptureViewController: UIViewController {
         captureChooseImageButtonImageView.isHidden = true
     }
     
-    func setPlaneDetection() {
-        trackingConfiguration.planeDetection = [.horizontal, .vertical]
-        captureSceneView.session.run(trackingConfiguration)
-    }
-    
-    func setNoPlaneDetection() {
-        trackingConfiguration.planeDetection = []
-        captureSceneView.session.run(trackingConfiguration)
-    }
-    
-    func setUserDefaultsTabKeys() {
-        if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
-            UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
-        }
-        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
-            UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
-        }
-        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
-            UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
-        }
-    }
-    
     func isPresentedWithTabBar() -> Bool {
         if self.tabBarController?.isBeingPresented == nil {
             return false
@@ -275,7 +250,7 @@ class CaptureViewController: UIViewController {
     {
         if onCaptureVCWithTabBar != nil {
             if onCaptureVCWithTabBar! {
-                setPlaneDetection()
+                captureViewModel.setPlaneDetection(on: captureSceneView)
                 setQuickOptionsDesignWithTabBar()
                 captureDeleteButtonImageView.isHidden = false
                 captureTutorialContentView.isHidden = true
@@ -283,17 +258,15 @@ class CaptureViewController: UIViewController {
         }
         if onCaptureVCWithoutTabBar != nil {
             if onCaptureVCWithoutTabBar! {
-                setPlaneDetection()
+                captureViewModel.setPlaneDetection(on: captureSceneView)
                 setQuickOptionsDesignWithoutTabBar()
                 getStickerInformation()
             }
         }
     }
     
-    func showAlertController(alertMessage: String,
-                             withHandler: Bool)
-    {
-        if UserDefaults.standard.bool(forKey: Strings.isCaptureVCLoadedKey) {
+    func showAlertController(alertMessage: String, withHandler: Bool) {
+        if UserDefaults.standard.bool(forKey: Strings.capturePageKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
@@ -316,8 +289,8 @@ class CaptureViewController: UIViewController {
     
     @IBAction func captureDontShowAgainButton(_ sender: UIButton) {
         captureVisualEffectView.isHidden = true
-        setPlaneDetection()
-        if isPresentedFromLandingVC {
+        captureViewModel.setPlaneDetection(on: captureSceneView)
+        if captureViewModel.presentedFromLandingPage {
             setQuickOptionsDesignWithoutTabBar()
             captureChooseImageButtonImageView.isHidden = false
             captureTutorialContentView.isHidden = false
@@ -325,11 +298,11 @@ class CaptureViewController: UIViewController {
             return
         }
         if isPresentedWithTabBar() {
-            UserDefaults.standard.setValue(true, forKey: Strings.captureButtonKey)
+            UserDefaults.standard.setValue(true, forKey: Strings.capturePageOpenedFromCaptureTabKey)
             setQuickOptionsDesignWithTabBar()
             captureDeleteButtonImageView.isHidden = false
         } else {
-            UserDefaults.standard.setValue(true, forKey: Strings.tryMeButtonKey)
+            UserDefaults.standard.setValue(true, forKey: Strings.capturePageOpenedFromTryMeButtonKey)
             setQuickOptionsDesignWithoutTabBar()
             getStickerInformation()
         }
@@ -361,19 +334,10 @@ class CaptureViewController: UIViewController {
     }
     
     @objc func tapExitButtonGestureHandler() {
-        if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
-            UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
-        }
-        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
-            UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
-        }
-        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
-            UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
-        }
-        UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
-        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
+        captureViewModel.setUserDefaultsKeysOnExitButton()
+        if UserDefaults.standard.bool(forKey: Strings.notificationTabKey) {
             guard let userStickerData = userStickerViewModel else {return}
-            service.updateNewSticker(on: userStickerData.stickerID) { [weak self] (error, isUserSignedIn) in
+            firebase.updateNewSticker(on: userStickerData.stickerID) { [weak self] (error, isUserSignedIn) in
                 guard let self = self else {return}
                 if !isUserSignedIn {
                     guard let error = error else {return}
@@ -411,15 +375,15 @@ class CaptureViewController: UIViewController {
     @objc func tapStickerNameGestureHandler() {
         Utilities.animate(view: captureStickerContentView)
         stickerMaterial.diffuse.contents = UIImage(named: Strings.defaultStickerImage)
-        isStickerPicked = true
+        captureViewModel.stickerIsPicked = true
         captureTutorial3Label.text = Strings.captureTutorial4Text
     }
     
     @objc func tapStickerGestureHandler(tapGesture: UITapGestureRecognizer) {
-        if isStickerPicked {
+        if captureViewModel.stickerIsPicked {
             guard let ARSCNView = tapGesture.view as? ARSCNView else {return}
             let tapLocation = tapGesture.location(in: ARSCNView)
-            guard let raycastResult = arkit.performRaycast(on: ARSCNView, tapLocation) else {
+            guard let raycastResult = captureViewModel.performRaycast(on: ARSCNView, tapLocation) else {
                 showAlertController(alertMessage: Strings.captureAlertRaycastErrorMessage, withHandler: false)
                 return
             }
@@ -434,32 +398,32 @@ class CaptureViewController: UIViewController {
     @objc func longPressStickerGestureHandler(longPressGesture: UILongPressGestureRecognizer) {
         guard let ARSCNView = longPressGesture.view as? ARSCNView else {return}
         let longPressLocation = longPressGesture.location(in: ARSCNView)
-        let pointSelectedInScreen = arkit.performHitTest(using: longPressLocation, from: ARSCNView)
-        guard let selectedNode = arkit.getSelectedNode(using: pointSelectedInScreen) else {return}
-        arkit.performLongPressGesture(using: longPressGesture, from: ARSCNView, on: selectedNode)
+        let pointSelectedInScreen = captureViewModel.performHitTest(using: longPressLocation, from: ARSCNView)
+        guard let selectedNode = captureViewModel.getSelectedNode(using: pointSelectedInScreen) else {return}
+        captureViewModel.performLongPressGesture(using: longPressGesture, from: ARSCNView, on: selectedNode)
     }
     
     @objc func pinchStickerGestureHandler(pinchGesture: UIPinchGestureRecognizer) {
         guard let ARSCNView = pinchGesture.view as? ARSCNView else {return}
         let pinchLocation = pinchGesture.location(in: ARSCNView)
-        let pointSelectedInScreen = arkit.performHitTest(using: pinchLocation, from: ARSCNView)
-        guard let selectedNode = arkit.getSelectedNode(using: pointSelectedInScreen) else {return}
-        arkit.performPinchGesture(using: pinchGesture, on: selectedNode)
+        let pointSelectedInScreen = captureViewModel.performHitTest(using: pinchLocation, from: ARSCNView)
+        guard let selectedNode = captureViewModel.getSelectedNode(using: pointSelectedInScreen) else {return}
+        captureViewModel.performPinchGesture(using: pinchGesture, on: selectedNode)
     }
     
     @objc func rotateStickerGestureHandler(rotateGesture: UIRotationGestureRecognizer) {
         guard let ARSCNView = rotateGesture.view as? ARSCNView else {return}
         let rotateLocation = rotateGesture.location(in: ARSCNView)
-        let pointSelectedInScreen = arkit.performHitTest(using: rotateLocation, from: ARSCNView)
-        guard let selectedNode = arkit.getSelectedNode(using: pointSelectedInScreen) else {return}
-        arkit.performRotationGesture(using: rotateGesture, on: selectedNode, raycastTargetAlignment: raycastTargetAlignment!)
+        let pointSelectedInScreen = captureViewModel.performHitTest(using: rotateLocation, from: ARSCNView)
+        guard let selectedNode = captureViewModel.getSelectedNode(using: pointSelectedInScreen) else {return}
+        captureViewModel.performRotationGesture(using: rotateGesture, on: selectedNode, raycastTargetAlignment: raycastTargetAlignment!)
     }
     
     
     //MARK: - Fetching of User Data
     
     func checkIfUserIsSignedIn() {
-        service.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}
@@ -503,13 +467,13 @@ class CaptureViewController: UIViewController {
     //MARK: - SCNode Process
     
     func createPlaneNode(using anchor: ARAnchor) -> SCNNode? {
-        guard let planeAnchor = arkit.createPlaneAnchor(using: anchor) else {
+        guard let planeAnchor = captureViewModel.createPlaneAnchor(using: anchor) else {
             showAlertController(alertMessage: Strings.captureAlertAnchorErrorMessage, withHandler: false)
             return nil
         }
         let planeMaterials = SCNMaterial()
         planeMaterials.diffuse.contents = UIColor(white: 1, alpha: 0.5)
-        let planeNode = arkit.createNode(using: planeAnchor,
+        let planeNode = captureViewModel.createNode(using: planeAnchor,
                                          material: planeMaterials,
                                          position: SCNVector3(CGFloat(planeAnchor.center.x),
                                                               CGFloat(planeAnchor.center.y),
@@ -521,7 +485,7 @@ class CaptureViewController: UIViewController {
     func createStickerNode(using raycastResult: ARRaycastResult) {
         if stickerNodes.count == 0 {
             guard let raycastResultTransform = raycastResult.anchor?.transform else {return}
-            let stickerNode = arkit.createNode(width: 0.1,
+            let stickerNode = captureViewModel.createNode(width: 0.1,
                                                height: 0.1,
                                                material: stickerMaterial,
                                                transform: SCNMatrix4(raycastResultTransform),
@@ -558,12 +522,12 @@ extension CaptureViewController: UINavigationControllerDelegate, UIImagePickerCo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let imagePicked = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
         stickerMaterial.diffuse.contents = imagePicked
-        isStickerPicked = true
+        captureViewModel.stickerIsPicked = true
         captureTutorialContentView.isHidden = true
         captureStickerContentView.isHidden = true
         captureTutorial3Label.text = Strings.captureTutorial4Text
-        if !isPresentedFromLandingVC {
-            if !UserDefaults.standard.bool(forKey: Strings.captureButtonKey) {
+        if !captureViewModel.presentedFromLandingPage {
+            if !UserDefaults.standard.bool(forKey: Strings.capturePageOpenedFromCaptureTabKey) {
                 captureVisualEffectView.isHidden = false
             }
         }

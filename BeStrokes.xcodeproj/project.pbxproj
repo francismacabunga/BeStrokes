@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F0214E42663DF640043C490 /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0214E32663DF640043C490 /* AccountViewModel.swift */; };
+		2F0214E62663F7C60043C490 /* EditAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0214E52663F7C60043C490 /* EditAccountViewModel.swift */; };
 		2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1125532551A005004A02B1 /* LoginViewController.swift */; };
 		2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1125562551A024004A02B1 /* SignUpViewController.swift */; };
 		2F11255B2551A03E004A02B1 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F11255A2551A03E004A02B1 /* ForgotPasswordViewController.swift */; };
@@ -15,6 +17,7 @@
 		2F1125662551AE59004A02B1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F1125652551AE59004A02B1 /* GoogleService-Info.plist */; };
 		2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */; };
 		2F3141582594EFC900D47E3F /* ProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F3141562594EFC900D47E3F /* ProfileTableViewCell.xib */; };
+		2F332DC626655D0700FA78A0 /* CaptureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F332DC526655D0700FA78A0 /* CaptureViewModel.swift */; };
 		2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F382FC52562E3CD00D3A125 /* Utilities.swift */; };
 		2F393A0F255AEAEA006CDBDE /* LandingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F393A0E255AEAEA006CDBDE /* LandingPageViewController.swift */; };
 		2F393A13255AEB57006CDBDE /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F393A12255AEB57006CDBDE /* LandingViewController.swift */; };
@@ -31,7 +34,6 @@
 		2F5CCC5D265825B7007D6070 /* Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC5C265825B7007D6070 /* Firebase.swift */; };
 		2F5CCC5F265831E3007D6070 /* UserStickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC5E265831E3007D6070 /* UserStickerModel.swift */; };
 		2F5CCC6126583200007D6070 /* StickerCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC6026583200007D6070 /* StickerCategoryModel.swift */; };
-		2F5CCC6326583FE7007D6070 /* ARKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC6226583FE7007D6070 /* ARKit.swift */; };
 		2F64C551265FC77200FDF3E4 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F64C550265FC77200FDF3E4 /* HomeViewModel.swift */; };
 		2F64C553265FDE3E00FDF3E4 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F64C552265FDE3E00FDF3E4 /* Networking.swift */; };
 		2F6C84D8265985E400CD2FA8 /* ProfileSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6C84D7265985E400CD2FA8 /* ProfileSettingsModel.swift */; };
@@ -65,6 +67,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F0214E32663DF640043C490 /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
+		2F0214E52663F7C60043C490 /* EditAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewModel.swift; sourceTree = "<group>"; };
 		2F1125532551A005004A02B1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2F1125562551A024004A02B1 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		2F11255A2551A03E004A02B1 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +77,7 @@
 		2F1125652551AE59004A02B1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F3141552594EFC900D47E3F /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		2F3141562594EFC900D47E3F /* ProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileTableViewCell.xib; sourceTree = "<group>"; };
+		2F332DC526655D0700FA78A0 /* CaptureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViewModel.swift; sourceTree = "<group>"; };
 		2F382FC52562E3CD00D3A125 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2F393A0E255AEAEA006CDBDE /* LandingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewController.swift; sourceTree = "<group>"; };
 		2F393A12255AEB57006CDBDE /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
@@ -88,7 +93,6 @@
 		2F5CCC5C265825B7007D6070 /* Firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Firebase.swift; sourceTree = "<group>"; };
 		2F5CCC5E265831E3007D6070 /* UserStickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStickerModel.swift; sourceTree = "<group>"; };
 		2F5CCC6026583200007D6070 /* StickerCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryModel.swift; sourceTree = "<group>"; };
-		2F5CCC6226583FE7007D6070 /* ARKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARKit.swift; sourceTree = "<group>"; };
 		2F64C550265FC77200FDF3E4 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		2F64C552265FDE3E00FDF3E4 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		2F6C84D7265985E400CD2FA8 /* ProfileSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsModel.swift; sourceTree = "<group>"; };
@@ -208,6 +212,9 @@
 				2F5CCC5726580382007D6070 /* StickerCategoryViewModel.swift */,
 				2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */,
 				2F7C00CB266309E600E5E4D7 /* NotificationViewModel.swift */,
+				2F0214E32663DF640043C490 /* AccountViewModel.swift */,
+				2F0214E52663F7C60043C490 /* EditAccountViewModel.swift */,
+				2F332DC526655D0700FA78A0 /* CaptureViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -254,7 +261,6 @@
 				2F5CCC5C265825B7007D6070 /* Firebase.swift */,
 				2F382FC52562E3CD00D3A125 /* Utilities.swift */,
 				2FB1ABE42552ED8C0076A8FD /* Strings.swift */,
-				2F5CCC6226583FE7007D6070 /* ARKit.swift */,
 				2F64C552265FDE3E00FDF3E4 /* Networking.swift */,
 			);
 			path = Helpers;
@@ -495,11 +501,13 @@
 				2FD47C5F265EEA13009AEEB4 /* LoginViewModel.swift in Sources */,
 				2F1125542551A005004A02B1 /* LoginViewController.swift in Sources */,
 				2F393A0F255AEAEA006CDBDE /* LandingPageViewController.swift in Sources */,
-				2F5CCC6326583FE7007D6070 /* ARKit.swift in Sources */,
+				2F332DC626655D0700FA78A0 /* CaptureViewModel.swift in Sources */,
 				2F88A019259B239700AAC82D /* StickerViewModel.swift in Sources */,
+				2F0214E62663F7C60043C490 /* EditAccountViewModel.swift in Sources */,
 				2FE99CF825183D3F002AFFDC /* AppDelegate.swift in Sources */,
 				2F5CCC6126583200007D6070 /* StickerCategoryModel.swift in Sources */,
 				2F1125572551A024004A02B1 /* SignUpViewController.swift in Sources */,
+				2F0214E42663DF640043C490 /* AccountViewModel.swift in Sources */,
 				2F64C551265FC77200FDF3E4 /* HomeViewModel.swift in Sources */,
 				2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */,
 				2F45D04825B4ABC3005167AE /* LandingPageModel.swift in Sources */,

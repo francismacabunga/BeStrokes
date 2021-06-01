@@ -110,7 +110,7 @@ class NotificationViewController: UIViewController {
     }
     
     func showAlertController(alertMessage: String, withHandler: Bool) {
-        if UserDefaults.standard.bool(forKey: Strings.isNotificationVCLoadedKey) {
+        if UserDefaults.standard.bool(forKey: Strings.notificationPageKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
@@ -197,7 +197,7 @@ extension NotificationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let stickerCell = notificationViewModel.stickerCell(notificationTableView)
         guard let userStickerViewModel = userStickerViewModel else {return stickerCell}
-        notificationViewModel.setupStickerCell(stickerCell, indexPath, userStickerViewModel, self)
+        notificationViewModel.setup(stickerCell, indexPath, userStickerViewModel, self)
         return stickerCell
     }
     
@@ -210,7 +210,7 @@ extension NotificationViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let userStickerViewModel = userStickerViewModel else {return}
-        let stickerOptionVC = notificationViewModel.stickerOptionVC(indexPath, userStickerViewModel)
+        let stickerOptionVC = notificationViewModel.stickerOptionVC(userStickerViewModel, indexPath)
         present(stickerOptionVC, animated: true)
     }
     

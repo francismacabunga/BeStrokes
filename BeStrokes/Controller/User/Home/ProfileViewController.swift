@@ -151,7 +151,7 @@ class ProfileViewController: UIViewController {
     }
     
     func showAlertController(alertMessage: String, withHandler: Bool) {
-        if UserDefaults.standard.bool(forKey: Strings.isProfileVCLoadedKey) {
+        if UserDefaults.standard.bool(forKey: Strings.profilePageKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
@@ -256,7 +256,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let profileCell = profileSettingsViewModel.profileCell(profileTableView, indexPath, profileSettingsViewModel.data)
+        let profileCell = profileSettingsViewModel.setupProfileCell(profileTableView, indexPath, profileSettingsViewModel.data)
         return profileCell
     }
     

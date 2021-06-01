@@ -34,7 +34,7 @@ struct LandingPageViewModel {
     
     func captureVC() -> CaptureViewController {
         let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! CaptureViewController
-        captureVC.isPresentedFromLandingVC = true
+        captureVC.captureViewModel.presentedFromLandingPage = true
         captureVC.modalPresentationStyle = .fullScreen
         return captureVC
     }
@@ -59,14 +59,14 @@ struct LandingPageViewModel {
     }
     
     func resetTabKeysValues() {
-        UserDefaults.standard.setValue(false, forKey: Strings.homeVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.captureVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.notificationVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.accountVCTappedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isCaptureVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
-        UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.homeTabKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.homePageKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.captureTabKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.notificationTabKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.accountTabKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.capturePageKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.notificationPageKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.accountPageKey)
     }
     
 }

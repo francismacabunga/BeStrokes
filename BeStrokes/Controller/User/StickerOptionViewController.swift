@@ -124,15 +124,15 @@ class StickerOptionViewController: UIViewController {
     }
     
     func setUserDefaultsTabKeys() {
-        UserDefaults.standard.setValue(true, forKey: Strings.isStickerOptionVCLoadedKey)
-        if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
-            UserDefaults.standard.setValue(false, forKey: Strings.isHomeVCLoadedKey)
+        UserDefaults.standard.setValue(true, forKey: Strings.stickerOptionPageKey)
+        if UserDefaults.standard.bool(forKey: Strings.homeTabKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.homePageKey)
         }
-        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
-            UserDefaults.standard.setValue(false, forKey: Strings.isNotificationVCLoadedKey)
+        if UserDefaults.standard.bool(forKey: Strings.notificationTabKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.notificationPageKey)
         }
-        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
-            UserDefaults.standard.setValue(false, forKey: Strings.isAccountVCLoadedKey)
+        if UserDefaults.standard.bool(forKey: Strings.accountTabKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.accountPageKey)
         }
     }
     
@@ -219,7 +219,7 @@ class StickerOptionViewController: UIViewController {
     func showAlertController(alertMessage: String,
                              withHandler: Bool)
     {
-        if UserDefaults.standard.bool(forKey: Strings.isStickerOptionVCLoadedKey) {
+        if UserDefaults.standard.bool(forKey: Strings.stickerOptionPageKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in
@@ -244,7 +244,7 @@ class StickerOptionViewController: UIViewController {
         let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! CaptureViewController
         captureVC.stickerViewModel = stickerViewModel
         captureVC.userStickerViewModel = userStickerViewModel
-        captureVC.isStickerPicked = true
+        captureVC.captureViewModel.stickerIsPicked = true
         captureVC.modalPresentationStyle = .fullScreen
         present(captureVC, animated: true)
     }
@@ -260,12 +260,12 @@ class StickerOptionViewController: UIViewController {
     }
     
     @objc func tapExitButtonGestureHandler() {
-        UserDefaults.standard.setValue(false, forKey: Strings.isStickerOptionVCLoadedKey)
-        if UserDefaults.standard.bool(forKey: Strings.homeVCTappedKey) {
-            UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+        UserDefaults.standard.setValue(false, forKey: Strings.stickerOptionPageKey)
+        if UserDefaults.standard.bool(forKey: Strings.homeTabKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.homePageKey)
         }
-        if UserDefaults.standard.bool(forKey: Strings.notificationVCTappedKey) {
-            UserDefaults.standard.setValue(true, forKey: Strings.isNotificationVCLoadedKey)
+        if UserDefaults.standard.bool(forKey: Strings.notificationTabKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.notificationPageKey)
             if userStickerViewModel != nil {
                 service.updateNewSticker(on: userStickerViewModel!.stickerID) { [weak self] (error, isUserSignedIn) in
                     guard let self = self else {return}
@@ -284,8 +284,8 @@ class StickerOptionViewController: UIViewController {
                 }
             }
         }
-        if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
-            UserDefaults.standard.setValue(true, forKey: Strings.isAccountVCLoadedKey)
+        if UserDefaults.standard.bool(forKey: Strings.accountTabKey) {
+            UserDefaults.standard.setValue(true, forKey: Strings.accountPageKey)
         }
         dismiss(animated: true)
     }
@@ -299,7 +299,7 @@ class StickerOptionViewController: UIViewController {
                 return
             }
             if userStickerViewModel != nil {
-                if UserDefaults.standard.bool(forKey: Strings.accountVCTappedKey) {
+                if UserDefaults.standard.bool(forKey: Strings.accountTabKey) {
                     untapHeartButton(using: userStickerViewModel!.stickerID) { (isProcessDone) in
                         if isProcessDone {
                             self.dismiss(animated: true)

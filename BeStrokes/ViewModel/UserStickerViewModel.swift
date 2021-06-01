@@ -31,4 +31,21 @@ struct UserStickerViewModel {
         self.isLoved = userSticker.isLoved
     }
     
+    func setUserDefaultsOnTryMeButton() {
+        if UserDefaults.standard.bool(forKey: Strings.notificationTabKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.notificationPageKey)
+        }
+        if UserDefaults.standard.bool(forKey: Strings.accountTabKey) {
+            UserDefaults.standard.setValue(false, forKey: Strings.accountPageKey)
+        }
+    }
+    
+    func captureVC(_ userStickerViewModel: UserStickerViewModel) -> CaptureViewController {
+        let captureVC = Utilities.transition(to: Strings.captureVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true)! as! CaptureViewController
+        captureVC.userStickerViewModel = userStickerViewModel
+        captureVC.captureViewModel.stickerIsPicked = true
+        captureVC.modalPresentationStyle = .fullScreen
+        return captureVC
+    }
+    
 }

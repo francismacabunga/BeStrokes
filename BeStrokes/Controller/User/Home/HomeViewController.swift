@@ -58,7 +58,7 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        UserDefaults.standard.setValue(true, forKey: Strings.isHomeVCLoadedKey)
+        UserDefaults.standard.setValue(true, forKey: Strings.homePageKey)
         checkIfUserIsSignedIn()
         
     }
@@ -168,7 +168,7 @@ class HomeViewController: UIViewController {
     }
     
     func showAlertController(alertMessage: String, withHandler: Bool) {
-        if UserDefaults.standard.bool(forKey: Strings.isHomeVCLoadedKey) {
+        if UserDefaults.standard.bool(forKey: Strings.homePageKey) {
             if self.presentedViewController as? UIAlertController == nil {
                 if withHandler {
                     let alertWithHandler = Utilities.showAlert(alertTitle: Strings.errorAlert, alertMessage: alertMessage, alertActionTitle1: Strings.dismissAlert, forSingleActionTitleWillItUseHandler: true) { [weak self] in

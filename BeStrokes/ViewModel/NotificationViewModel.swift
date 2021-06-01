@@ -14,17 +14,17 @@ struct NotificationViewModel {
         return stickerCell
     }
     
-    func setupStickerCell(_ stickerCell: StickerTableViewCell,
-                          _ indexPath: IndexPath,
-                          _ userStickerViewModel: [UserStickerViewModel],
-                          _ notificationVC: NotificationViewController)
+    func setup(_ stickerCell: StickerTableViewCell,
+               _ indexPath: IndexPath,
+               _ userStickerViewModel: [UserStickerViewModel],
+               _ notificationVC: NotificationViewController)
     {
         stickerCell.prepareStickerTableViewCell()
         stickerCell.userStickerViewModel = userStickerViewModel[indexPath.row]
         stickerCell.stickerCellDelegate = notificationVC
     }
     
-    func stickerOptionVC(_ indexPath: IndexPath, _ userStickerViewModel: [UserStickerViewModel]) -> StickerOptionViewController {
+    func stickerOptionVC(_ userStickerViewModel: [UserStickerViewModel], _ indexPath: IndexPath) -> StickerOptionViewController {
         let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
         stickerOptionVC.userStickerViewModel = userStickerViewModel[indexPath.row]
         stickerOptionVC.modalPresentationStyle = .fullScreen
