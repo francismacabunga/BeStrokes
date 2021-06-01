@@ -200,20 +200,9 @@
 		2F88A014259B1DE100AAC82D /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */,
-				2F6ED79B265AF4CF00A91CAA /* SignUpViewModel.swift */,
-				2FD47C5E265EEA13009AEEB4 /* LoginViewModel.swift */,
-				2FD47C60265EF70C009AEEB4 /* ForgotPasswordViewModel.swift */,
+				2FB900362666CEBE00641B41 /* Guest */,
+				2FB900372666CECA00641B41 /* User */,
 				2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */,
-				2F64C550265FC77200FDF3E4 /* HomeViewModel.swift */,
-				2F88A018259B239700AAC82D /* StickerViewModel.swift */,
-				2F5CCC552658033D007D6070 /* UserStickerViewModel.swift */,
-				2F5CCC53265802AB007D6070 /* FeaturedStickerViewModel.swift */,
-				2F5CCC5726580382007D6070 /* StickerCategoryViewModel.swift */,
-				2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */,
-				2F7C00CB266309E600E5E4D7 /* NotificationViewModel.swift */,
-				2F0214E32663DF640043C490 /* AccountViewModel.swift */,
-				2F0214E52663F7C60043C490 /* EditAccountViewModel.swift */,
 				2F332DC526655D0700FA78A0 /* CaptureViewModel.swift */,
 			);
 			path = ViewModel;
@@ -264,6 +253,49 @@
 				2F64C552265FDE3E00FDF3E4 /* Networking.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		2FB900362666CEBE00641B41 /* Guest */ = {
+			isa = PBXGroup;
+			children = (
+				2F45D04A25B4ACAA005167AE /* LandingPageViewModel.swift */,
+				2F6ED79B265AF4CF00A91CAA /* SignUpViewModel.swift */,
+				2FD47C5E265EEA13009AEEB4 /* LoginViewModel.swift */,
+				2FD47C60265EF70C009AEEB4 /* ForgotPasswordViewModel.swift */,
+			);
+			path = Guest;
+			sourceTree = "<group>";
+		};
+		2FB900372666CECA00641B41 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				2FB900382666CF6A00641B41 /* Home */,
+				2FB900392666CF9400641B41 /* Account */,
+				2F88A018259B239700AAC82D /* StickerViewModel.swift */,
+				2F5CCC552658033D007D6070 /* UserStickerViewModel.swift */,
+				2F7C00CB266309E600E5E4D7 /* NotificationViewModel.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		2FB900382666CF6A00641B41 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				2F64C550265FC77200FDF3E4 /* HomeViewModel.swift */,
+				2F5CCC53265802AB007D6070 /* FeaturedStickerViewModel.swift */,
+				2F5CCC5726580382007D6070 /* StickerCategoryViewModel.swift */,
+				2FFB0C4A25A873EC00FAED42 /* ProfileSettingsViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		2FB900392666CF9400641B41 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				2F0214E32663DF640043C490 /* AccountViewModel.swift */,
+				2F0214E52663F7C60043C490 /* EditAccountViewModel.swift */,
+			);
+			path = Account;
 			sourceTree = "<group>";
 		};
 		2FC8FAED25A7D98E00A3C7F2 /* Profile */ = {
