@@ -213,6 +213,7 @@
 			children = (
 				2FD634692567F76600C00EE9 /* Guest */,
 				2FD6346A2567F77800C00EE9 /* User */,
+				2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -325,7 +326,6 @@
 			children = (
 				2F9C40F825AAF53200A7663F /* Home */,
 				2F9C40FA25AAF54D00A7663F /* Account */,
-				2FE99CFB25183D3F002AFFDC /* CaptureViewController.swift */,
 				2F94B5F125EFD4FA00417982 /* NotificationViewController.swift */,
 				2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */,
 				2FF328302580FEF4001E6E1E /* TabBarViewController.swift */,
