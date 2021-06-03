@@ -36,6 +36,7 @@
 		2F5CCC6126583200007D6070 /* StickerCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CCC6026583200007D6070 /* StickerCategoryModel.swift */; };
 		2F64C551265FC77200FDF3E4 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F64C550265FC77200FDF3E4 /* HomeViewModel.swift */; };
 		2F64C553265FDE3E00FDF3E4 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F64C552265FDE3E00FDF3E4 /* Networking.swift */; };
+		2F6564F82668619A00921E32 /* StickerOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6564F72668619A00921E32 /* StickerOptionViewModel.swift */; };
 		2F6C84D8265985E400CD2FA8 /* ProfileSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6C84D7265985E400CD2FA8 /* ProfileSettingsModel.swift */; };
 		2F6EAB1625A5A9A400BEFE6C /* StickerOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */; };
 		2F6ED79C265AF4CF00A91CAA /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6ED79B265AF4CF00A91CAA /* SignUpViewModel.swift */; };
@@ -95,6 +96,7 @@
 		2F5CCC6026583200007D6070 /* StickerCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCategoryModel.swift; sourceTree = "<group>"; };
 		2F64C550265FC77200FDF3E4 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		2F64C552265FDE3E00FDF3E4 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		2F6564F72668619A00921E32 /* StickerOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerOptionViewModel.swift; sourceTree = "<group>"; };
 		2F6C84D7265985E400CD2FA8 /* ProfileSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsModel.swift; sourceTree = "<group>"; };
 		2F6EAB1525A5A9A300BEFE6C /* StickerOptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerOptionViewController.swift; sourceTree = "<group>"; };
 		2F6ED79B265AF4CF00A91CAA /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
@@ -203,6 +205,8 @@
 				2FB900362666CEBE00641B41 /* Guest */,
 				2FB900372666CECA00641B41 /* User */,
 				2F58B0DD25A47CB7009EFDE5 /* UserViewModel.swift */,
+				2F88A018259B239700AAC82D /* StickerViewModel.swift */,
+				2F5CCC552658033D007D6070 /* UserStickerViewModel.swift */,
 				2F332DC526655D0700FA78A0 /* CaptureViewModel.swift */,
 			);
 			path = ViewModel;
@@ -272,9 +276,8 @@
 			children = (
 				2FB900382666CF6A00641B41 /* Home */,
 				2FB900392666CF9400641B41 /* Account */,
-				2F88A018259B239700AAC82D /* StickerViewModel.swift */,
-				2F5CCC552658033D007D6070 /* UserStickerViewModel.swift */,
 				2F7C00CB266309E600E5E4D7 /* NotificationViewModel.swift */,
+				2F6564F72668619A00921E32 /* StickerOptionViewModel.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -517,6 +520,7 @@
 				2F7C00CC266309E600E5E4D7 /* NotificationViewModel.swift in Sources */,
 				2F382FC62562E3CD00D3A125 /* Utilities.swift in Sources */,
 				2F3141572594EFC900D47E3F /* ProfileTableViewCell.swift in Sources */,
+				2F6564F82668619A00921E32 /* StickerOptionViewModel.swift in Sources */,
 				2F5CCC562658033D007D6070 /* UserStickerViewModel.swift in Sources */,
 				2FFB0C4825A84EAC00FAED42 /* ProfileViewController.swift in Sources */,
 				2FD6E4D2257AC96100B49E41 /* FeaturedStickerCollectionViewCell.swift in Sources */,
