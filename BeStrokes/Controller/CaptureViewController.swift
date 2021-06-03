@@ -321,9 +321,9 @@ class CaptureViewController: UIViewController {
     //MARK: - UIGestureHandlers
     
     func registerGestures() {
-        let tapExitButton = UITapGestureRecognizer(target: self, action: #selector(tapToExitButtonGestureHandler))
-        let tapDeleteButton = UITapGestureRecognizer(target: self, action: #selector(tapToDeleteButtonGestureHandler))
-        let tapChooseImageButton = UITapGestureRecognizer(target: self, action: #selector(tapToChooseImageButtonGestureHandler))
+        let tapExitButton = UITapGestureRecognizer(target: self, action: #selector(tapToExitGestureHandler))
+        let tapDeleteButton = UITapGestureRecognizer(target: self, action: #selector(tapToDeleteGestureHandler))
+        let tapChooseImageButton = UITapGestureRecognizer(target: self, action: #selector(tapToChooseImageGestureHandler))
         let tapSticker = UITapGestureRecognizer(target: self, action: #selector(tapToStickerGestureHandler(tapGesture:)))
         let longPressSticker = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressStickerGestureHandler(longPressGesture:)))
         let pinchSticker = UIPinchGestureRecognizer(target: self, action: #selector(Self.pinchStickerGestureHandler(pinchGesture:)))
@@ -342,7 +342,7 @@ class CaptureViewController: UIViewController {
         captureStickerContentView.addGestureRecognizer(tapStickerName)
     }
     
-    @objc func tapToExitButtonGestureHandler() {
+    @objc func tapToExitGestureHandler() {
         captureViewModel.setUserDefaultsKeysOnExitButton()
         if UserDefaults.standard.bool(forKey: Strings.notificationTabKey) {
             guard let userStickerData = userStickerViewModel else {return}
@@ -364,11 +364,11 @@ class CaptureViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    @objc func tapToDeleteButtonGestureHandler() {
+    @objc func tapToDeleteGestureHandler() {
         captureViewModel.tapToDeleteGesture()
     }
     
-    @objc func tapToChooseImageButtonGestureHandler() {
+    @objc func tapToChooseImageGestureHandler() {
         present(imagePicker, animated: true)
     }
     

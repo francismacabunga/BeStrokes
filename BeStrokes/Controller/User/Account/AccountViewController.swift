@@ -299,7 +299,7 @@ class AccountViewController: UIViewController {
     //MARK: - Fetching of Sticker Data
     
     func setLovedStickersData() {
-        accountViewModel.fetchLovedSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
+        firebase.fetchLovedSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
             guard let self = self else {return}
             if !isUserSignedIn {
                 guard let error = error else {return}

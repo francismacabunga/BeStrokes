@@ -30,41 +30,6 @@ struct AccountViewModel {
     
     //MARK: - Sticker Related Functions
     
-    func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool, Bool?, [UserStickerViewModel]?) -> Void) {
-        firebase.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                completion(error, false, nil, nil)
-                return
-            }
-            guard let signedInUser = user else {return}
-            if stickerID != nil {
-                let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIDField, isEqualTo: stickerID!).whereField(Strings.stickerIsLovedField, isEqualTo: true)
-                firebase.fetchUserStickerData(withQuery: firebaseQuery, withListener: true) { (error, userStickerData) in
-                    if error != nil {
-                        completion(error, true, nil, nil)
-                        return
-                    }
-                    guard let _ = userStickerData?.first else {
-                        completion(nil, true, false, nil)
-                        return
-                    }
-                    completion(nil, true, true, nil)
-                }
-            } else {
-                let firebaseQuery = db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).whereField(Strings.stickerIsLovedField, isEqualTo: true)
-                firebase.fetchUserStickerData(withQuery: firebaseQuery, withListener: true) { (error, userStickerData) in
-                    guard let error = error else {
-                        guard let userStickerViewModel = userStickerData else {return}
-                        completion(nil, true, nil, userStickerViewModel)
-                        return
-                    }
-                    completion(error, true, nil, nil)
-                }
-            }
-        }
-    }
-    
     func searchSticker(using searchText: String, completion: @escaping (Error?, Bool, UserStickerViewModel?) -> Void) {
         firebase.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
