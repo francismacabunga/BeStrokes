@@ -10,11 +10,12 @@ import Firebase
 
 struct Firebase {
     
-    //MARK: - User Data Related Firebase Functions
-    
     private let db = Firestore.firestore()
     private let auth = Auth.auth()
     private let user = Auth.auth().currentUser
+    
+    
+    //MARK: - User Data Related Firebase Functions
     
     func storeData(using userID: String,
                    with dictionary: [String : String],
@@ -26,6 +27,79 @@ struct Firebase {
                 return
             }
             completion(error, false)
+        }
+    }
+    
+    func uploadProfilePic(with image: UIImage,
+                          using userID: String,
+                          completion: @escaping (Error?, String?) -> Void)
+    {
+        guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
+        let storagePath = Storage.storage().reference(forURL: Strings.firebaseStoragePath)
+        let profilePicStoragePath = storagePath.child(Strings.firebaseProfilePicStoragePath).child(userID)
+        let imageMetadata = StorageMetadata()
+        imageMetadata.contentType = Strings.metadataContentType
+        profilePicStoragePath.putData(imageData, metadata: imageMetadata) { (_, error) in
+            if error != nil {
+                completion(error, nil)
+                return
+            }
+            profilePicStoragePath.downloadURL { (url, error) in
+                guard let error = error else {
+                    guard let imageString = url?.absoluteString else {return}
+                    completion(nil, imageString)
+                    return
+                }
+                completion(error, nil)
+            }
+        }
+    }
+    
+    func updateUserData(_ firstName: String,
+                        _ lastName: String,
+                        _ email: String,
+                        _ profilePicURL: String,
+                        completion: @escaping (Error?, Bool, Bool) -> Void)
+    {
+        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                completion(error, false, false)
+                return
+            }
+            guard let signedInUser = user else {return}
+            signedInUser.updateEmail(to: email) { (error) in
+                if error != nil {
+                    completion(error, true, false)
+                    return
+                }
+                db.collection(Strings.userCollection).document(signedInUser.uid).updateData([Strings.userFirstNameField : firstName,
+                                                                                             Strings.userLastNameField : lastName,
+                                                                                             Strings.userEmailField : email,
+                                                                                             Strings.userProfilePicField : profilePicURL]) { (error) in
+                    guard let error = error else {
+                        completion(nil, true, true)
+                        return
+                    }
+                    completion(error, true, false)
+                }
+            }
+        }
+    }
+    
+    func isEmailVerified(completion: @escaping (Error?, Bool, Bool) -> Void) {
+        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                completion(error, false, false)
+                return
+            }
+            guard let signedInUser = user else {return}
+            if signedInUser.isEmailVerified {
+                completion(nil, true, true)
+            } else {
+                completion(nil, true, false)
+            }
         }
     }
     
@@ -82,82 +156,8 @@ struct Firebase {
         }
     }
     
-    func isEmailVerified(completion: @escaping (Error?, Bool, Bool) -> Void) {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                completion(error, false, false)
-                return
-            }
-            guard let signedInUser = user else {return}
-            if signedInUser.isEmailVerified {
-                completion(nil, true, true)
-            } else {
-                completion(nil, true, false)
-            }
-        }
-    }
-    
-    func updateUserData(_ firstName: String,
-                        _ lastName: String,
-                        _ email: String,
-                        _ profilePicURL: String,
-                        completion: @escaping (Error?, Bool, Bool) -> Void)
-    {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                completion(error, false, false)
-                return
-            }
-            guard let signedInUser = user else {return}
-            signedInUser.updateEmail(to: email) { (error) in
-                if error != nil {
-                    completion(error, true, false)
-                    return
-                }
-                db.collection(Strings.userCollection).document(signedInUser.uid).updateData([Strings.userFirstNameField : firstName,
-                                                                                             Strings.userLastNameField : lastName,
-                                                                                             Strings.userEmailField : email,
-                                                                                             Strings.userProfilePicField : profilePicURL]) { (error) in
-                    guard let error = error else {
-                        completion(nil, true, true)
-                        return
-                    }
-                    completion(error, true, false)
-                }
-            }
-        }
-    }
-    
-    func uploadProfilePic(with image: UIImage,
-                          using userID: String,
-                          completion: @escaping (Error?, String?) -> Void)
-    {
-        guard let imageData = image.jpegData(compressionQuality: 0.4) else {return}
-        let storagePath = Storage.storage().reference(forURL: Strings.firebaseStoragePath)
-        let profilePicStoragePath = storagePath.child(Strings.firebaseProfilePicStoragePath).child(userID)
-        let imageMetadata = StorageMetadata()
-        imageMetadata.contentType = Strings.metadataContentType
-        profilePicStoragePath.putData(imageData, metadata: imageMetadata) { (_, error) in
-            if error != nil {
-                completion(error, nil)
-                return
-            }
-            profilePicStoragePath.downloadURL { (url, error) in
-                guard let error = error else {
-                    guard let imageString = url?.absoluteString else {return}
-                    completion(nil, imageString)
-                    return
-                }
-                completion(error, nil)
-            }
-        }
-    }
-    
-    
-    
 }
+
 
 //MARK: - Sticker Data Related Firebase Functions
 
@@ -212,7 +212,6 @@ extension Firebase {
         }
     }
     
-    
     func fetchNewSticker(completion: @escaping (Error?, Bool, Int?, [UserStickerViewModel]?) -> Void) {
         checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
             if !isUserSignedIn {
@@ -232,45 +231,6 @@ extension Firebase {
             }
         }
     }
-    
-    
-    
-    
-    
-    
- 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    func updateNewSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                completion(error, false)
-                return
-            }
-            guard let signedInUser = user else {return}
-            db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsNewField : false]) { (error) in
-                guard let error = error else {return}
-                completion(error, true)
-            }
-        }
-    }
-    
-    
     
     func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool, Bool?, [UserStickerViewModel]?) -> Void) {
         checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
@@ -307,7 +267,19 @@ extension Firebase {
         }
     }
     
-    
+    func updateNewSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
+        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
+            if !isUserSignedIn {
+                guard let error = error else {return}
+                completion(error, false)
+                return
+            }
+            guard let signedInUser = user else {return}
+            db.collection(Strings.userCollection).document(signedInUser.uid).collection(Strings.stickerCollection).document(stickerID).updateData([Strings.stickerIsNewField : false]) { (error) in
+                guard let error = error else {return}
+                completion(error, true)
+            }
+        }
+    }
     
 }
-

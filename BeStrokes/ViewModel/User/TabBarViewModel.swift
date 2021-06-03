@@ -9,18 +9,7 @@ import Foundation
 
 struct TabBarViewModel {
     
-    func setBadgeCounterValue() -> String? {
-        if UserDefaults.standard.bool(forKey: Strings.notificationKey) {
-            if UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey) > 0 {
-                let counter = "\(UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey))"
-                return counter
-            } else {
-                return nil
-            }
-        } else {
-           return nil
-        }
-    }
+    //MARK: - User Defaults
     
     func setTrueValueOnHomeUserDefaultsKey() {
         UserDefaults.standard.setValue(true, forKey: Strings.homeTabKey)
@@ -43,7 +32,7 @@ struct TabBarViewModel {
         UserDefaults.standard.setValue(false, forKey: Strings.notificationPageKey)
         UserDefaults.standard.setValue(false, forKey: Strings.accountPageKey)
     }
-        
+    
     func setTrueValueOnNotificationUserDefaultsKey() {
         UserDefaults.standard.setValue(true, forKey: Strings.notificationTabKey)
         UserDefaults.standard.setValue(true, forKey: Strings.notificationPageKey)
@@ -65,5 +54,21 @@ struct TabBarViewModel {
         UserDefaults.standard.setValue(false, forKey: Strings.capturePageKey)
         UserDefaults.standard.setValue(false, forKey: Strings.notificationPageKey)
     }
-
+    
+    
+    //MARK: - Badge Counter Related Functions
+    
+    func badgeCounterValue() -> String? {
+        if UserDefaults.standard.bool(forKey: Strings.notificationKey) {
+            if UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey) > 0 {
+                let badgeCounterValue = "\(UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey))"
+                return badgeCounterValue
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+    
 }

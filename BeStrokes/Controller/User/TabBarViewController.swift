@@ -67,9 +67,9 @@ class TabBarViewController: UITabBarController {
     }
     
     func setBadgeCounterValue() {
-        let counterValue = tabBarViewModel.setBadgeCounterValue()
-        if counterValue != nil {
-            userTabBarItem[2].badgeValue = counterValue
+        let badgeCounterValue = tabBarViewModel.badgeCounterValue()
+        if badgeCounterValue != nil {
+            userTabBarItem[2].badgeValue = badgeCounterValue
         } else {
             userTabBarItem[2].badgeValue = nil
         }
