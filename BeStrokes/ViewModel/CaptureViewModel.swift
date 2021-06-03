@@ -36,6 +36,7 @@ class CaptureViewModel {
     }
     
     func setUserDefaultsKeysOnExitButton() {
+        UserDefaults.standard.setValue(false, forKey: Strings.capturePageKey)
         if UserDefaults.standard.bool(forKey: Strings.homeTabKey) {
             UserDefaults.standard.setValue(true, forKey: Strings.homePageKey)
         }
@@ -45,7 +46,6 @@ class CaptureViewModel {
         if UserDefaults.standard.bool(forKey: Strings.accountTabKey) {
             UserDefaults.standard.setValue(true, forKey: Strings.accountPageKey)
         }
-        UserDefaults.standard.setValue(false, forKey: Strings.capturePageKey)
     }
     
     

@@ -143,9 +143,7 @@ class StickerOptionViewController: UIViewController {
         stickerHeartButtonImageView.isHidden = false
     }
     
-    func getHeartButtonValue(stickerViewModel: StickerViewModel? = nil,
-                             userStickerViewModel: UserStickerViewModel? = nil)
-    {
+    func getHeartButtonValue(stickerViewModel: StickerViewModel? = nil, userStickerViewModel: UserStickerViewModel? = nil) {
         if stickerViewModel != nil {
             checkIfStickerIsLoved(stickerViewModel!.stickerID)
         }
@@ -264,7 +262,7 @@ class StickerOptionViewController: UIViewController {
     }
     
     @objc func tapToHeartGestureHandler(tapGesture: UITapGestureRecognizer) {
-        stickerOptionViewModel.tapToHeartGesture(with: tapGesture, on: stickerViewModel, userStickerViewModel) { [weak self] (heartButtonIsTapped, error, userIsSignedIn, untapHeartButtonProcessIsDone) in
+        stickerOptionViewModel.tapToHeartGesture(with: tapGesture, on: stickerViewModel, userStickerViewModel) { [weak self] (heartButtonIsTapped, error, userIsSignedIn, untapHeartButtonProcessIsDoneOnAccountPage) in
             guard let self = self else {return}
             DispatchQueue.main.async {
                 if !userIsSignedIn {
@@ -278,8 +276,11 @@ class StickerOptionViewController: UIViewController {
                 }
                 if heartButtonIsTapped {
                     Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.loveStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-                    if untapHeartButtonProcessIsDone {
-                        self.dismiss(animated: true)
+                    if untapHeartButtonProcessIsDoneOnAccountPage != nil {
+                        if untapHeartButtonProcessIsDoneOnAccountPage! {
+                            UserDefaults.standard.setValue(false, forKey: Strings.stickerOptionPageKey)
+                            self.dismiss(animated: true)
+                        }
                     }
                 } else {
                     Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
@@ -315,7 +316,6 @@ class StickerOptionViewController: UIViewController {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     self.hideLoadingSkeletonView()
                 }
-                
             }
         }
     }

@@ -13,6 +13,7 @@ class TabBarViewController: UITabBarController {
     
     private var userTabBar: UITabBar?
     private var userTabBarItem = [UITabBarItem]()
+    private let tabBarViewModel = TabBarViewModel()
     
     
     //MARK: - View Controller Life Cycle
@@ -66,12 +67,9 @@ class TabBarViewController: UITabBarController {
     }
     
     func setBadgeCounterValue() {
-        if UserDefaults.standard.bool(forKey: Strings.notificationKey) {
-            if UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey) > 0 {
-                userTabBarItem[2].badgeValue = "\(UserDefaults.standard.integer(forKey: Strings.notificationBadgeCounterKey))"
-            } else {
-                userTabBarItem[2].badgeValue = nil
-            }
+        let counterValue = tabBarViewModel.setBadgeCounterValue()
+        if counterValue != nil {
+            userTabBarItem[2].badgeValue = counterValue
         } else {
             userTabBarItem[2].badgeValue = nil
         }
@@ -102,41 +100,13 @@ extension TabBarViewController: UITabBarControllerDelegate {
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         if tabBar.selectedItem?.tag == 0 {
-            UserDefaults.standard.setValue(true, forKey: Strings.homeTabKey)
-            UserDefaults.standard.setValue(true, forKey: Strings.homePageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.captureTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.accountTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.capturePageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.notificationPageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.accountPageKey)
+            tabBarViewModel.setTrueValueOnHomeUserDefaultsKey()
         } else if tabBar.selectedItem?.tag == 1 {
-            UserDefaults.standard.setValue(true, forKey: Strings.captureTabKey)
-            UserDefaults.standard.setValue(true, forKey: Strings.capturePageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.homeTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.accountTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.homePageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.notificationPageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.accountPageKey)
+            tabBarViewModel.setTrueValueOnCaptureUserDefaultsKey()
         } else if tabBar.selectedItem?.tag == 2 {
-            UserDefaults.standard.setValue(true, forKey: Strings.notificationTabKey)
-            UserDefaults.standard.setValue(true, forKey: Strings.notificationPageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.homeTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.captureTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.accountTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.homePageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.capturePageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.accountPageKey)
+            tabBarViewModel.setTrueValueOnNotificationUserDefaultsKey()
         } else if tabBar.selectedItem?.tag == 3 {
-            UserDefaults.standard.setValue(true, forKey: Strings.accountTabKey)
-            UserDefaults.standard.setValue(true, forKey: Strings.accountPageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.homeTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.captureTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.notificationTabKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.homePageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.capturePageKey)
-            UserDefaults.standard.setValue(false, forKey: Strings.notificationPageKey)
+            tabBarViewModel.setTrueValueOnAccountUserDefaultsKey()
         }
     }
     
