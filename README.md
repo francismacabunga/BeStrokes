@@ -1,2 +1,2 @@
 # BeStrokes
-An iOS AR app that sticks design to clothes.
+An iOS AR application that sticks designs to your favorite clothes.
