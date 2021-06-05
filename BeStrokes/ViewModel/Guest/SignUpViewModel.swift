@@ -89,12 +89,12 @@ struct SignUpViewModel {
                             return
                         }
                         if isFinishedStoring {
-                            firebase.sendEmailVerification { (error, _, isEmailVerificationSent) in
+                            firebase.sendEmailVerification { (error, _, emailVerificationIsSent) in
                                 if error != nil {
                                     completion(error, nil, nil, nil, nil, false)
                                     return
                                 }
-                                if isEmailVerificationSent {
+                                if emailVerificationIsSent {
                                     UserDefaults.standard.setValue(true, forKey: Strings.userFirstTimeLoginKey)
                                     completion(error, nil, nil, nil, nil, true)
                                 }

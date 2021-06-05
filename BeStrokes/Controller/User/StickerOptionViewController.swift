@@ -243,10 +243,10 @@ class StickerOptionViewController: UIViewController {
         if UserDefaults.standard.bool(forKey: Strings.notificationTabKey) {
             UserDefaults.standard.setValue(true, forKey: Strings.notificationPageKey)
             if userStickerViewModel != nil {
-                service.updateNewSticker(on: userStickerViewModel!.stickerID) { [weak self] (error, isUserSignedIn) in
+                service.updateNewSticker(on: userStickerViewModel!.stickerID) { [weak self] (error, userIsSignedIn) in
                     guard let self = self else {return}
                     DispatchQueue.main.async {
-                        if !isUserSignedIn {
+                        if !userIsSignedIn {
                             guard let error = error else {return}
                             self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                             return
@@ -293,10 +293,10 @@ class StickerOptionViewController: UIViewController {
     //MARK: - Fetching of Sticker Data
     
     func checkIfStickerIsLoved(_ stickerID: String) {
-        service.fetchLovedSticker(on: stickerID) { [weak self] (error, isUserSignedIn, isStickerLoved, _) in
+        service.fetchLovedSticker(on: stickerID) { [weak self] (error, userIsSignedIn, stickerIsLoved, _) in
             guard let self = self else {return}
             DispatchQueue.main.async {
-                if !isUserSignedIn {
+                if !userIsSignedIn {
                     guard let error = error else {return}
                     self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                     return
@@ -305,8 +305,8 @@ class StickerOptionViewController: UIViewController {
                     self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                     return
                 }
-                guard let isStickerLoved = isStickerLoved else {return}
-                if isStickerLoved {
+                guard let stickerIsLoved = stickerIsLoved else {return}
+                if stickerIsLoved {
                     Utilities.setDesignOn(imageView: self.stickerHeartButtonImageView, image: UIImage(systemName: Strings.lovedStickerIcon), tintColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
                     self.stickerOptionViewModel.heartButtonTapped = true
                 } else {

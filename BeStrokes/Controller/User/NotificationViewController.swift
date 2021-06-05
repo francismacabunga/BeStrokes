@@ -132,9 +132,9 @@ class NotificationViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func checkIfUserIsSignedIn() {
-        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, userIsSignedIn, _) in
             guard let self = self else {return}
-            if !isUserSignedIn {
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 DispatchQueue.main.async {
                     self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
@@ -148,23 +148,19 @@ class NotificationViewController: UIViewController {
     //MARK: - Fetching of Sticker Data
     
     func setNotificationData() {
-        firebase.fetchNewSticker { [weak self] (error, isUserSignedIn, _, userStickerData) in
+        firebase.fetchNewSticker { [weak self] (error, userIsSignedIn, _, userStickerData) in
             guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
-                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
-                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                }
-                return
-            }
-            guard let userStickerData = userStickerData else {return}
             DispatchQueue.main.async {
+                if !userIsSignedIn {
+                    guard let error = error else {return}
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    return
+                }
+                if error != nil {
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    return
+                }
+                guard let userStickerData = userStickerData else {return}
                 self.userStickerViewModel = userStickerData
                 self.checkIfUserStickerViewModelIsEmpty()
             }

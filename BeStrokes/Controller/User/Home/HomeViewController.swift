@@ -198,38 +198,36 @@ class HomeViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func setProfilePicture() {
-        firebase.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+        firebase.getSignedInUserData { [weak self] (error, userIsSignedIn, userData) in
             guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if !userIsSignedIn {
+                    guard let error = error else {return}
                     self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    return
                 }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
+                if error != nil {
                     self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    return
                 }
-                return
-            }
-            guard let userData = userData else {return}
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
-                Utilities.setDesignOn(button: self.homeProfilePictureButton, backgroundColor: .clear, isCircular: true)
-                self.homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
-                self.hasProfilePicLoaded = true
-                if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
-                    Utilities.setShadowOn(view: self.homeProfilePicContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
+                guard let userData = userData else {return}
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.homeProfilePictureButton.kf.setBackgroundImage(with: URL(string: userData.profilePic), for: .normal)
+                    Utilities.setDesignOn(button: self.homeProfilePictureButton, backgroundColor: .clear, isCircular: true)
+                    self.homeProfilePicContentView.hideSkeleton(reloadDataAfter: false, transition: .crossDissolve(0.5))
+                    self.hasProfilePicLoaded = true
+                    if UserDefaults.standard.bool(forKey: Strings.lightModeKey) {
+                        Utilities.setShadowOn(view: self.homeProfilePicContentView, isHidden: false, shadowColor: #colorLiteral(red: 0.6948884352, green: 0.6939979255, blue: 0.7095529112, alpha: 1), shadowOpacity: 1, shadowOffset: .zero, shadowRadius: 5)
+                    }
                 }
             }
         }
     }
     
     func checkIfUserIsSignedIn() {
-        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, userIsSignedIn, _) in
             guard let self = self else {return}
-            if !isUserSignedIn {
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 DispatchQueue.main.async {
                     self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
@@ -245,15 +243,13 @@ class HomeViewController: UIViewController {
     func getFeaturedStickersCollectionViewData() {
         homeViewModel.fetchFeaturedSticker { [weak self] (error, featuredStickerData) in
             guard let self = self else {return}
-            guard let error = error else {
-                guard let featuredStickerData = featuredStickerData else {return}
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                guard let error = error else {
+                    guard let featuredStickerData = featuredStickerData else {return}
                     self.featuredStickerViewModel = featuredStickerData
                     self.homeFeaturedStickerCollectionView.reloadData()
+                    return
                 }
-                return
-            }
-            DispatchQueue.main.async {
                 self.showAlertController(alertMessage: error.localizedDescription, withHandler: false)
             }
         }
@@ -268,9 +264,9 @@ class HomeViewController: UIViewController {
     func getStickersCollectionViewData(onCategory stickerCategory: String) {
         homeViewModel.fetchSticker(onCategory: stickerCategory) { [weak self] (error, stickerData) in
             guard let self = self else {return}
-            guard let error = error else {
-                guard let stickerData = stickerData else {return}
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                guard let error = error else {
+                    guard let stickerData = stickerData else {return}
                     self.stickerViewModel = stickerData
                     self.homeStickerCollectionView.reloadData()
                     self.changeStickerStatusOnFirstTimeLogin(using: stickerData)
@@ -279,10 +275,8 @@ class HomeViewController: UIViewController {
                     self.showBannerNotification()
                     self.updateBadgeCounter()
                     self.showStickers()
+                    return
                 }
-                return
-            }
-            DispatchQueue.main.async {
                 self.showAlertController(alertMessage: error.localizedDescription, withHandler: false)
             }
         }
@@ -294,17 +288,15 @@ class HomeViewController: UIViewController {
     func changeStickerStatusOnFirstTimeLogin(using stickerData: [StickerViewModel]) {
         if UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
             UserDefaults.standard.setValue(false, forKey: Strings.userFirstTimeLoginKey)
-            homeViewModel.uploadStickerInUserCollection(from: stickerData, isRecentlyUploaded: false, isNew: false) { [weak self] (error, isUserSignedIn) in
+            homeViewModel.uploadStickerInUserCollection(from: stickerData, isRecentlyUploaded: false, isNew: false) { [weak self] (error, userIsSignedIn) in
                 guard let self = self else {return}
-                if !isUserSignedIn {
-                    guard let error = error else {return}
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if !userIsSignedIn {
+                        guard let error = error else {return}
                         self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                        return
                     }
-                    return
-                }
-                if error != nil {
-                    DispatchQueue.main.async {
+                    if error != nil {
                         self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                     }
                 }
@@ -314,25 +306,21 @@ class HomeViewController: UIViewController {
     
     func setStickerDataToUserID(using stickerViewModel: [StickerViewModel]) {
         if !UserDefaults.standard.bool(forKey: Strings.userFirstTimeLoginKey) {
-            homeViewModel.checkIfStickerExistsInUserCollection(stickerViewModel: stickerViewModel) { [weak self] (error, isUserSignedIn, isStickerPresent, newSticker) in
+            homeViewModel.checkIfStickerExistsInUserCollection(stickerViewModel: stickerViewModel) { [weak self] (error, userIsSignedIn, stickerIsPresent, newSticker) in
                 guard let self = self else {return}
-                if !isUserSignedIn {
-                    guard let error = error else {return}
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if !userIsSignedIn {
+                        guard let error = error else {return}
                         self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                        return
                     }
-                    return
-                }
-                if error != nil {
-                    DispatchQueue.main.async {
+                    if error != nil {
                         self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                        return
                     }
-                    return
-                }
-                if isStickerPresent != nil {
-                    if !isStickerPresent! {
-                        guard let newSticker = newSticker else {return}
-                        DispatchQueue.main.async {
+                    if stickerIsPresent != nil {
+                        if !stickerIsPresent! {
+                            guard let newSticker = newSticker else {return}
                             self.uploadStickerInUserCollection(using: [newSticker])
                         }
                     }
@@ -342,17 +330,15 @@ class HomeViewController: UIViewController {
     }
     
     func uploadStickerInUserCollection(using stickerViewModel: [StickerViewModel]) {
-        homeViewModel.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { [weak self] (error, isUserSignedIn) in
+        homeViewModel.uploadStickerInUserCollection(from: stickerViewModel, isRecentlyUploaded: true, isNew: true) { [weak self] (error, userIsSignedIn) in
             guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if !userIsSignedIn {
+                    guard let error = error else {return}
                     self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    return
                 }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
+                if error != nil {
                     self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 }
             }
@@ -360,17 +346,15 @@ class HomeViewController: UIViewController {
     }
     
     func removeDeletedStickersInUserCollection() {
-        homeViewModel.checkIfUserStickerExistsInStickerCollection { [weak self] (error, isUserSignedIn) in
+        homeViewModel.checkIfUserStickerExistsInStickerCollection { [weak self] (error, userIsSignedIn) in
             guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if !userIsSignedIn {
+                    guard let error = error else {return}
                     self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    return
                 }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
+                if error != nil {
                     self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
                 }
             }
@@ -390,23 +374,19 @@ class HomeViewController: UIViewController {
     }
     
     func showBannerNotification() {
-        homeViewModel.fetchRecentlyUploadedSticker { [weak self] (error, isUserSignedIn, userStickerData) in
+        homeViewModel.fetchRecentlyUploadedSticker { [weak self] (error, userIsSignedIn, userStickerData) in
             guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
-                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
-                }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
-                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
-                }
-                return
-            }
-            guard let userStickerData = userStickerData else {return}
             DispatchQueue.main.async {
+                if !userIsSignedIn {
+                    guard let error = error else {return}
+                    self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    return
+                }
+                if error != nil {
+                    self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    return
+                }
+                guard let userStickerData = userStickerData else {return}
                 self.triggerNotification()
                 self.updateRecentlyUploadedSticker(using: userStickerData.stickerID)
             }
@@ -414,43 +394,39 @@ class HomeViewController: UIViewController {
     }
     
     func updateRecentlyUploadedSticker(using stickerID: String) {
-        homeViewModel.updateRecentlyUploadedSticker(on: stickerID) { [weak self] (error, isUserSignedIn) in
+        homeViewModel.updateRecentlyUploadedSticker(on: stickerID) { [weak self] (error, userIsSignedIn) in
             guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if !userIsSignedIn {
+                    guard let error = error else {return}
                     self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    return
                 }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
+                if error != nil {
                     self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    return
                 }
-                return
             }
         }
     }
     
     func updateBadgeCounter() {
-        firebase.fetchNewSticker { [weak self] (error, isUserSignedIn, numberOfNewStickers, _) in
+        firebase.fetchNewSticker { [weak self] (error, userIsSignedIn, numberOfNewStickers, _) in
             guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if !userIsSignedIn {
+                    guard let error = error else {return}
                     self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    return
                 }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
+                if error != nil {
                     self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    return
                 }
-                return
+                guard let numberOfNewStickers = numberOfNewStickers else {return}
+                UserDefaults.standard.setValue(numberOfNewStickers, forKey: Strings.notificationBadgeCounterKey)
+                NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
             }
-            guard let numberOfNewStickers = numberOfNewStickers else {return}
-            UserDefaults.standard.setValue(numberOfNewStickers, forKey: Strings.notificationBadgeCounterKey)
-            NotificationCenter.default.post(name: Utilities.setBadgeCounterToNotificationIcon, object: nil)
         }
     }
     

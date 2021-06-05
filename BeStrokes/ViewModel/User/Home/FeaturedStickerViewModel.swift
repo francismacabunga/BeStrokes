@@ -30,7 +30,6 @@ struct FeaturedStickerViewModel {
         captureVC.captureViewModel.stickerIsPicked = true
         captureVC.featuredStickerViewModel = featuredStickerViewModel
         captureVC.modalPresentationStyle = .fullScreen
-        UserDefaults.standard.setValue(false, forKey: Strings.homePageKey)
         return captureVC
     }
     

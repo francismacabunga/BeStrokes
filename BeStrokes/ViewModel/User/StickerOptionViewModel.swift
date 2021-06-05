@@ -183,8 +183,8 @@ struct StickerOptionViewModel {
     //MARK: - Heart Button Logic Related Functions
     
     func tapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
-        firebase.getSignedInUserData { (error, isUserSignedIn, userData) in
-            if !isUserSignedIn {
+        firebase.getSignedInUserData { (error, userIsSignedIn, userData) in
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false)
                 return
@@ -210,8 +210,8 @@ struct StickerOptionViewModel {
     }
     
     func untapHeartButton(using stickerID: String, completion: @escaping (Error?, Bool, Bool?) -> Void) {
-        firebase.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
+        firebase.checkIfUserIsSignedIn { (error, userIsSignedIn, user) in
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false, nil)
                 return

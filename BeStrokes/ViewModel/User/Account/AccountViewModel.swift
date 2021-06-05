@@ -31,8 +31,8 @@ struct AccountViewModel {
     //MARK: - Sticker Related Functions
     
     func searchSticker(using searchText: String, completion: @escaping (Error?, Bool, UserStickerViewModel?) -> Void) {
-        firebase.checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
+        firebase.checkIfUserIsSignedIn { (error, userIsSignedIn, user) in
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false, nil)
                 return

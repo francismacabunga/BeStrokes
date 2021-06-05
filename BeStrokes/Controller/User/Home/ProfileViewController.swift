@@ -183,31 +183,29 @@ class ProfileViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func getSignedInUserData() {
-        firebase.getSignedInUserData { [weak self] (error, isUserSignedIn, userData) in
+        firebase.getSignedInUserData { [weak self] (error, userIsSignedIn, userData) in
             guard let self = self else {return}
-            if !isUserSignedIn {
-                guard let error = error else {return}
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if !userIsSignedIn {
+                    guard let error = error else {return}
                     self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
+                    return
                 }
-                return
-            }
-            if error != nil {
-                DispatchQueue.main.async {
+                if error != nil {
                     self.showAlertController(alertMessage: error!.localizedDescription, withHandler: false)
+                    return
                 }
-                return
-            }
-            guard let userData = userData else {return}
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
-                self.profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
-                self.profileEmailLabel.text = userData.email
-                self.hasProfilePicLoaded = true
-                self.profileWarningLabel.isHidden = false
-                self.profileSettingsButton.isHidden = false
-                self.profileTableView.isHidden = false
-                self.hideLoadingSkeletonView()
+                guard let userData = userData else {return}
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.profileImageView.kf.setImage(with: URL(string: userData.profilePic)!)
+                    self.profileNameLabel.text = "\(userData.firstName) \(userData.lastname)"
+                    self.profileEmailLabel.text = userData.email
+                    self.hasProfilePicLoaded = true
+                    self.profileWarningLabel.isHidden = false
+                    self.profileSettingsButton.isHidden = false
+                    self.profileTableView.isHidden = false
+                    self.hideLoadingSkeletonView()
+                }
             }
         }
     }
@@ -218,13 +216,11 @@ class ProfileViewController: UIViewController {
     func signOutUser() {
         let logoutAlert = Utilities.showAlert(alertTitle: Strings.logoutAlertTitle, alertMessage: "", alertActionTitle1: Strings.logoutYesAction, alertActionTitle2: Strings.logoutNoAction) { [weak self] in
             guard let self = self else {return}
-            let isUserSignedOut = self.profileSettingsViewModel.signOutUser()
-            if isUserSignedOut {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                let isUserSignedOut = self.profileSettingsViewModel.signOutUser()
+                if isUserSignedOut {
                     _ = Utilities.transition(from: self.view, to: Strings.landingVC, onStoryboard: Strings.guestStoryboard, canAccessDestinationProperties: false)
-                }
-            } else {
-                DispatchQueue.main.async {
+                } else {
                     self.showAlertController(alertMessage: Strings.profileCannotSignOutUserLabel, withHandler: false)
                 }
             }

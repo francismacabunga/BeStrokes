@@ -61,8 +61,8 @@ struct Firebase {
                         _ profilePicURL: String,
                         completion: @escaping (Error?, Bool, Bool) -> Void)
     {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
+        checkIfUserIsSignedIn { (error, userIsSignedIn, user) in
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false, false)
                 return
@@ -88,8 +88,8 @@ struct Firebase {
     }
     
     func isEmailVerified(completion: @escaping (Error?, Bool, Bool) -> Void) {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
+        checkIfUserIsSignedIn { (error, userIsSignedIn, user) in
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false, false)
                 return
@@ -104,8 +104,8 @@ struct Firebase {
     }
     
     func sendEmailVerification(completion: @escaping (Error?, Bool, Bool) -> Void) {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
+        checkIfUserIsSignedIn { (error, userIsSignedIn, user) in
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false, false)
                 return
@@ -133,8 +133,8 @@ struct Firebase {
     }
     
     func getSignedInUserData(completion: @escaping (Error?, Bool, UserViewModel?) -> Void) {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
+        checkIfUserIsSignedIn { (error, userIsSignedIn, user) in
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false, nil)
                 return
@@ -213,8 +213,8 @@ extension Firebase {
     }
     
     func fetchNewSticker(completion: @escaping (Error?, Bool, Int?, [UserStickerViewModel]?) -> Void) {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
+        checkIfUserIsSignedIn { (error, userIsSignedIn, user) in
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false, nil, nil)
                 return
@@ -233,8 +233,8 @@ extension Firebase {
     }
     
     func fetchLovedSticker(on stickerID: String? = nil, completion: @escaping (Error?, Bool, Bool?, [UserStickerViewModel]?) -> Void) {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
+        checkIfUserIsSignedIn { (error, userIsSignedIn, user) in
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false, nil, nil)
                 return
@@ -268,8 +268,8 @@ extension Firebase {
     }
     
     func updateNewSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
-        checkIfUserIsSignedIn { (error, isUserSignedIn, user) in
-            if !isUserSignedIn {
+        checkIfUserIsSignedIn { (error, userIsSignedIn, user) in
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false)
                 return

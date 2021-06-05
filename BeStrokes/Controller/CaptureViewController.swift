@@ -346,10 +346,10 @@ class CaptureViewController: UIViewController {
         captureViewModel.setUserDefaultsKeysOnExitButton()
         if UserDefaults.standard.bool(forKey: Strings.notificationTabKey) {
             guard let userStickerData = userStickerViewModel else {return}
-            firebase.updateNewSticker(on: userStickerData.stickerID) { [weak self] (error, isUserSignedIn) in
+            firebase.updateNewSticker(on: userStickerData.stickerID) { [weak self] (error, userIsSignedIn) in
                 guard let self = self else {return}
                 DispatchQueue.main.async {
-                    if !isUserSignedIn {
+                    if !userIsSignedIn {
                         guard let error = error else {return}
                         self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)
                         return
@@ -417,9 +417,9 @@ class CaptureViewController: UIViewController {
     //MARK: - Fetching of User Data
     
     func checkIfUserIsSignedIn() {
-        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, _) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, userIsSignedIn, _) in
             guard let self = self else {return}
-            if !isUserSignedIn {
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 DispatchQueue.main.async {
                     self.showAlertController(alertMessage: error.localizedDescription, withHandler: true)

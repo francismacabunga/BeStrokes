@@ -48,7 +48,6 @@ class HomeViewModel {
         let stickerOptionVC = Utilities.transition(to: Strings.stickerOptionVC, onStoryboard: Strings.userStoryboard, canAccessDestinationProperties: true) as! StickerOptionViewController
         stickerOptionVC.stickerViewModel = stickerViewModel[indexPath.item]
         stickerOptionVC.modalPresentationStyle = .fullScreen
-        UserDefaults.standard.setValue(false, forKey: Strings.homePageKey)
         return stickerOptionVC
     }
     
@@ -149,9 +148,9 @@ class HomeViewModel {
     }
     
     func fetchRecentlyUploadedSticker(completion: @escaping (Error?, Bool, UserStickerViewModel?) -> Void) {
-        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, user) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, userIsSignedIn, user) in
             guard let self = self else {return}
-            if !isUserSignedIn {
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false, nil)
                 return
@@ -170,9 +169,9 @@ class HomeViewModel {
     }
     
     func checkIfStickerExistsInUserCollection(stickerViewModel: [StickerViewModel], completion: @escaping (Error?, Bool, Bool?, StickerViewModel?) -> Void) {
-        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, user) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, userIsSignedIn, user) in
             guard let self = self else {return}
-            if !isUserSignedIn {
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false, nil, nil)
                 return
@@ -197,9 +196,9 @@ class HomeViewModel {
     }
     
     func checkIfUserStickerExistsInStickerCollection(completion: @escaping (Error?, Bool) -> Void) {
-        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, user) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, userIsSignedIn, user) in
             guard let self = self else {return}
-            if !isUserSignedIn {
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false)
                 return
@@ -238,9 +237,9 @@ class HomeViewModel {
                                        isNew: Bool,
                                        completion: @escaping (Error?, Bool) -> Void)
     {
-        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, user) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, userIsSignedIn, user) in
             guard let self = self else {return}
-            if !isUserSignedIn {
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false)
                 return
@@ -265,9 +264,9 @@ class HomeViewModel {
     }
     
     func updateRecentlyUploadedSticker(on stickerID: String, completion: @escaping (Error?, Bool) -> Void) {
-        firebase.checkIfUserIsSignedIn { [weak self] (error, isUserSignedIn, user) in
+        firebase.checkIfUserIsSignedIn { [weak self] (error, userIsSignedIn, user) in
             guard let self = self else {return}
-            if !isUserSignedIn {
+            if !userIsSignedIn {
                 guard let error = error else {return}
                 completion(error, false)
                 return
@@ -367,9 +366,9 @@ class HomeViewModel {
             guard let self = self else {return}
             if !permission {
                 let options: UNAuthorizationOptions = [.alert, .sound]
-                self.notificationCenter.requestAuthorization(options: options) { (isPermissionGranted, error) in
+                self.notificationCenter.requestAuthorization(options: options) { (permissionIsGranted, error) in
                     guard let error = error else {
-                        if isPermissionGranted {
+                        if permissionIsGranted {
                             UserDefaults.standard.setValue(true, forKey: Strings.notificationKey)
                         } else {
                             UserDefaults.standard.setValue(false, forKey: Strings.notificationKey)
