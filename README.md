@@ -2,4 +2,4 @@
 
 <body>It's an augment reality application that enables you to stick stickers to your clothes.</body>
 
-![GitHub Logo](/ReadMeFiles/Landing.png)
+![BeStrokes](/ReadMeFiles/Landing.png)
