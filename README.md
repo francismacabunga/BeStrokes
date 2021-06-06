@@ -3,7 +3,7 @@
 
 
 
-<img src="/ReadMeFiles/Capture-Dark.jpg" width="100" height="100">
+<img src="/ReadMeFiles/Capture-Dark.jpg" width="400">
 
 
 
