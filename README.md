@@ -22,6 +22,11 @@
 <br />
 
 ## About
+BeStrokes was made in companion to my friend's business, linked [here][6]. She handpaints design to denim clothes, one of her main problem is that she can't quickly do an outline of a design to show to her customer on the cloth itself, as it takes a lot of time. So I created her an app that will solve the problem instantly.
+
+Besides from the host of stickers availble in the app, the user can also choose any image from their Photos app to essentially stick to their clothes. As of the moment only one sticker at a time can be used in the clothes. 
+
+The app though functionable, is still in its very early stages. I'm planning to add more features along the way and make it a full blown e-commerce app.
 
 ## Built With
 * Swift
@@ -38,12 +43,6 @@
 * [SkeletonView][4]
 * [Kingfisher][5]
 
-[1]: https://github.com/TimOliver/TOCropViewController
-[2]: https://github.com/hackiftekhar/IQKeyboardManager
-[3]: https://github.com/MaherKSantina/MSPeekCollectionViewDelegateImplementation
-[4]: https://github.com/Juanpe/SkeletonView
-[5]: https://cocoapods.org/pods/Kingfisher
-
 ## Screenshots
 
 <img src="/ReadMeFiles/Landing.PNG" width="250"/> <img src="/ReadMeFiles/Home-Light.PNG" width="250"/> <img src="/ReadMeFiles/Account-Light.PNG" width="250"/>
@@ -52,7 +51,9 @@
 
 <img src="/ReadMeFiles/Demo.gif" width="250"/>
 
-
-
-
-
+[1]: https://github.com/TimOliver/TOCropViewController
+[2]: https://github.com/hackiftekhar/IQKeyboardManager
+[3]: https://github.com/MaherKSantina/MSPeekCollectionViewDelegateImplementation
+[4]: https://github.com/Juanpe/SkeletonView
+[5]: https://cocoapods.org/pods/Kingfisher
+[6]: https://www.instagram.com/be.strokes/
