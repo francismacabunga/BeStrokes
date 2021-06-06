@@ -2,4 +2,4 @@
 
 
 ![BeStrokes](/ReadMeFiles/Landing.PNG)
-![BeStrokes](/ReadMeFiles/Demo.gif)
+![BeStrokes](/ReadMeFiles/Home-Dark.PNG)
