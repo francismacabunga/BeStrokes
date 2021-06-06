@@ -28,6 +28,17 @@
 * 
 
 ## Cocoapods Used
+* [TOCropViewController][1]
+* [IQKeyboardManager][2]
+* [MSPeekCollectionViewDelegateImplementation][3]
+* [SkeletonView][4]
+* [Kingfisher][5]
+
+[1]: https://github.com/TimOliver/TOCropViewController
+[2]: https://github.com/hackiftekhar/IQKeyboardManager
+[3]: https://github.com/MaherKSantina/MSPeekCollectionViewDelegateImplementation
+[4]: https://github.com/Juanpe/SkeletonView
+[5]: https://cocoapods.org/pods/Kingfisher
 
 ## Screenshots
 
@@ -36,3 +47,8 @@
 ## Demo
 
 <img src="/ReadMeFiles/Demo.gif" width="250"/>
+
+
+
+
+
