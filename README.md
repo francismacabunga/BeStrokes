@@ -22,7 +22,6 @@
 <br />
 
 ## About
-BeStrokes is in
 
 ## Built With
 * Swift
