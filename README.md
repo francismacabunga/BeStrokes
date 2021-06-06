@@ -1,3 +1,3 @@
 # BeStrokes
 
-<h1 align="center">BeStrokes</h1>
+<h1>It's an augment reality application that enables you to stick stickers to your clothes.</h1>
