@@ -22,10 +22,15 @@
 <br />
 
 ## About
+BeStrokes is in
 
 ## Built With
-* 
-* 
+* Swift
+* Storyboards
+* UIKit
+* ARKit
+* SceneKit
+* Firebase
 
 ## Cocoapods Used
 * [TOCropViewController][1]
