@@ -1,10 +1,42 @@
-BeStrokes
-========================================
+<p align="center">
+  <p align="center">
+    <img src="/ReadMeFiles/BeStrokes Icon.png" width="100" height="100">
+  </p>
+  
+  <p align="center">
+    BeStrokes is an augmented reality iOS application that sticks stickers to clothes.
+    <br />
+    <br />
+    <a href="#about">About</a>
+    ·
+    <a href="#built-with">Built With</a>
+    ·
+    <a href="#cocoapods-used">Cocoapods Used</a>
+    ·
+    <a href="#screenshots">Screenshots</a>
+    ·
+    <a href="#demo">Demo</a>
+  </p>
+  
+</p>
 
-<img src="/ReadMeFiles/Landing.PNG" width="200"/> <img src="/ReadMeFiles/Home-Dark.PNG" width="200"/> <img src="/ReadMeFiles/Capture-Dark.jpg" width="200"/>
-<img src="/ReadMeFiles/Account-Dark.PNG" width="200"/>
+<br />
+<br />
 
+## About
+<br />
 
-Demo
-------------
-<img src="/ReadMeFiles/Demo.gif" width="200"/>
+## Built With
+<br />
+
+## Cocoapods Used
+<br />
+
+## Screenshots
+
+<img src="/ReadMeFiles/Landing.PNG" width="250"/> <img src="/ReadMeFiles/Home-Light.PNG" width="250"/> <img src="/ReadMeFiles/Account-Light.PNG" width="250"/>
+<br />
+
+## Demo
+
+<img src="/ReadMeFiles/Demo.gif" width="250"/>
