@@ -1,7 +1,9 @@
 # BeStrokes
 
 
-![BeStrokes](/ReadMeFiles/Capture-Dark.jpg){:height="400px"}
+
+
+<img src="h/ReadMeFiles/Capture-Dark.jpg" width="100" height="100">
 
 
 
