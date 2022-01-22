@@ -10,7 +10,7 @@
     ·
     <a href="#built-with">Built With</a>
     ·
-    <a href="#cocoapods-used">Cocoapods Used</a>
+    <a href="#cocoapods-used">CocoaPods Used</a>
     ·
     <a href="#screenshots">Screenshots</a>
     ·
@@ -36,7 +36,7 @@ The app though functionable, is still in its very early stages. I'm planning to 
 * SceneKit
 * Firebase
 
-## Cocoapods Used
+## CocoaPods Used
 * [TOCropViewController][1]
 * [IQKeyboardManager][2]
 * [MSPeekCollectionViewDelegateImplementation][3]
