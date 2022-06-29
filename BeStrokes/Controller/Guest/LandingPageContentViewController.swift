@@ -57,6 +57,7 @@ class LandingPageContentViewController: UIViewController {
     //MARK: - Fetching of Landing Page View Controller Data
     
     func setData() {
+        let sample: [String] = []
         landingPageContentImageView.image = UIImage(named: imageFileName)
         landingPageContentHeadingLabel.text = headingLabelText
         landingPageContentSubheadingLabel.text = subheadingText
