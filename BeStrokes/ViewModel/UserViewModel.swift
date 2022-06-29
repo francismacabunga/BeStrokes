@@ -9,14 +9,14 @@ import Foundation
 
 struct UserViewModel {
     
-    let userID: String
+    let userIDs: String
     let firstName: String
     let lastname: String
     let email: String
     let profilePic: String
     
     init(_ user: UserModel) {
-        self.userID = user.userID
+        self.userIDs = user.userIDs
         self.firstName = user.firstName
         self.lastname = user.lastName
         self.email = user.email
